@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الهضم والإخراج والتنفس والدوران — كتاب تفاعلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#edf1e7; --sheet:#fbfcf8; --sheet-2:#f2f5ec; --ink:#1d3428; --muted:#55685b; --line:#d5ddcc;
+  --moss:#2f5f3c; --fern:#3e7c4a; --leaf:#7aa84a; --spore:#c4871a; --water:#2a6c8c; --dry:#8b6a45;
+  --ok:#24804f; --ok-bg:#e1f2e6; --bad:#b9412d; --bad-bg:#f8e4df; --sel:#2a6c8c; --sel-bg:#e0edf3;
+  --bar:#1f2a24; --bar-ink:#f1f5ec; --desk:#2c3832; --edge:#d9d4c4; --page:#fdfcf7; --gold:#c9a24a;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+    --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+    --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+    --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+  --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+  --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+  --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+  color-scheme:dark;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;background:var(--desk)}
+body{margin:0;height:100%;overflow:hidden;display:flex;flex-direction:column;background:var(--desk);color:var(--ink);font-family:"Amiri","Traditional Arabic","Times New Roman",serif;font-size:19px;line-height:2}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+h1,h2,h3,.kufi{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;line-height:1.5;font-weight:700}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.btn,.tab,.toc button,.badge,.top-title,.top-count,.zone-h,.chip,.steps button,.vocab button,.lab-status,.msg,.hint,.where,.fact b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+:focus-visible{outline:3px solid var(--spore);outline-offset:2px;border-radius:6px}
+img,svg{max-width:100%}
+
+/* top bar */
+.top{flex:none;position:relative;z-index:20;background:var(--bar);color:var(--bar-ink)}
+.top-row{display:flex;align-items:center;gap:10px;max-width:860px;margin:auto;padding:10px 14px}
+.top-title{flex:1;min-width:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-count{font-size:14px;opacity:.8}
+.icon-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:10px;width:40px;height:40px;display:grid;place-items:center}
+.prog{height:4px;background:rgba(255,255,255,.12)}
+.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:40;display:none}
+.drawer.open{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.drawer-panel{position:absolute;top:0;bottom:0;right:0;width:min(340px,88vw);background:var(--sheet);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 14px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.drawer-panel h2{font-size:20px;margin:0 6px 10px}
+.toc{list-style:none;margin:0;padding:0}
+.toc button{width:100%;text-align:right;background:none;border:0;padding:10px 10px;border-radius:10px;display:flex;gap:10px;align-items:center;font-size:16px}
+.toc button:hover{background:var(--sheet-2)}
+.toc button.cur{background:var(--sel-bg);color:var(--sel);font-weight:700}
+.toc .n{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;flex:none}
+.toc .seen .n{background:var(--fern);border-color:var(--fern);color:#fff}
+
+/* book */
+.desk{flex:1;min-height:0;display:flex;justify-content:center;padding:14px 18px 12px 26px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,rgba(255,255,255,.07),transparent 70%)}
+.book{--turn:850ms;position:relative;width:100%;max-width:780px;height:100%;perspective:2400px}
+.book::before{content:"";position:absolute;top:8px;bottom:8px;left:-12px;width:16px;border-radius:10px 0 0 10px;background:repeating-linear-gradient(90deg,var(--edge) 0 1px,var(--page) 1px 3px);box-shadow:-3px 6px 12px rgba(0,0,0,.4)}
+.book::after{content:"";position:absolute;top:-5px;bottom:-5px;right:-8px;width:14px;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#163223,#2c5a3c 55%,#163223);box-shadow:3px 6px 12px rgba(0,0,0,.4)}
+.page{position:absolute;inset:0;display:none;overflow-y:auto;overscroll-behavior:contain;
+  background:linear-gradient(270deg,rgba(0,0,0,.13),rgba(0,0,0,0) 30px),linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,0) 16px),var(--page);
+  border-radius:14px 3px 3px 14px;box-shadow:0 12px 30px rgba(0,0,0,.35);padding:16px clamp(18px,4.5vw,44px) 16px;
+  transform-origin:right center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.page.on{display:block;z-index:2}
+.page.under{display:block;z-index:1}
+.page.turn-fwd,.page.turn-back{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+.page.turn-fwd{animation:turnFwd var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.turn-back{animation:turnBack var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes turnFwd{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes turnBack{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
+.leaf{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;transform-origin:right center;border-radius:3px 14px 14px 3px;background:linear-gradient(90deg,var(--page) 0,var(--page) 70%,var(--edge) 100%);box-shadow:0 14px 44px rgba(0,0,0,.45)}
+@keyframes leafFwd{0%{transform:rotateY(0);opacity:0}49.9%{opacity:0}50%{opacity:1}82%{opacity:1}100%{transform:rotateY(180deg);opacity:0}}
+@keyframes leafBack{0%{transform:rotateY(180deg);opacity:0}18%{opacity:1}49.9%{opacity:1}50%{opacity:0}100%{transform:rotateY(0);opacity:0}}
+.shade{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;border-radius:14px 3px 3px 14px;background:linear-gradient(90deg,rgba(0,0,0,.4),rgba(0,0,0,0) 75%)}
+@keyframes shade{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
+.corner{position:absolute;left:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 0 14px;
+  background:linear-gradient(45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.corner:hover{width:56px;height:56px}
+.runhead{display:flex;justify-content:space-between;gap:10px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:14px}
+.folio{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);margin-top:24px;padding-bottom:4px}
+.folio span{display:inline-block;min-width:40px;border-top:1px solid var(--line);padding-top:4px}
+
+/* two-page spread */
+.book.spread{max-width:1320px;transition:transform var(--turn) cubic-bezier(.55,.05,.35,1)}
+.book.spread::before,.book.spread::after{display:none}
+.book.spread.closed{transform:translateX(25%)}
+.book.spread.endonly{transform:translateX(-25%)}
+.book.spread .page{width:50%}
+.book.spread .page.pos-r{left:auto;right:0;border-radius:3px 14px 14px 3px;transform-origin:left center;background:linear-gradient(90deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l{right:auto;left:0;border-radius:14px 3px 3px 14px;transform-origin:right center;background:linear-gradient(270deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;border-radius:14px 4px 4px 14px}
+.page.flipL-out,.page.flipR-in,.page.flipR-out,.page.flipL-in{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.page.flipL-out{animation:fLout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-in{animation:fRin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-out{animation:fRout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipL-in{animation:fLin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes fLout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(180deg)}}
+@keyframes fRin{0%{transform:rotateY(-180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+@keyframes fRout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(-180deg)}}
+@keyframes fLin{0%{transform:rotateY(180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+.corner-back{display:none}
+.book.spread .corner-back{display:block;position:absolute;right:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 14px 0;background:linear-gradient(-45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:-3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.book.spread .corner-back:hover{width:56px;height:56px}
+.book.spread .corner-back[hidden]{display:none}
+
+/* AR card on page */
+.ar-card{display:flex;gap:14px;align-items:center;border:1.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:0 0 20px;background:var(--sheet)}
+.ar-card h3{margin:0;font-size:17px}
+.ar-card p{margin:2px 0 8px;font-size:16px;color:var(--muted);line-height:1.8}
+.ar-marker{flex:none;width:84px;height:84px;color:var(--ink);position:relative;overflow:hidden;border-radius:4px}
+.ar-marker svg{display:block;width:100%;height:100%}
+.ar-marker::after{content:"";position:absolute;left:0;right:0;height:30%;background:linear-gradient(transparent,rgba(42,168,101,.55),transparent);animation:scanl 2.6s linear infinite}
+@keyframes scanl{from{top:-30%}to{top:100%}}
+
+/* AR overlay */
+.ar{position:fixed;inset:0;z-index:60;background:radial-gradient(ellipse at 50% 38%,#24392d 0%,#0a120d 70%,#050806 100%);color:#eaf6ee;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;opacity:0;transition:opacity .35s}
+.ar.on{opacity:1}
+.ar.cam{background:#000}
+.ar video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.ar.cam video{display:block}
+.ar canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;display:block}
+.ar canvas:active{cursor:grabbing}
+.ar-hud{position:absolute;inset:0;pointer-events:none;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;flex-direction:column}
+.ar-hud button{pointer-events:auto}
+.ar-top{display:flex;align-items:center;gap:10px;position:relative;z-index:2}
+.ar-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid rgba(125,255,176,.6);color:#7dffb0;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ar-live::before{content:"";width:7px;height:7px;border-radius:50%;background:#7dffb0;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.ar-title{flex:1;min-width:0;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-x{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.4);color:#fff;font-size:17px}
+.brk{position:absolute;width:30px;height:30px;border:3px solid rgba(125,255,176,.75)}
+.b1{top:calc(env(safe-area-inset-top,0px) + 66px);right:14px;border-left:0;border-bottom:0}
+.b2{top:calc(env(safe-area-inset-top,0px) + 66px);left:14px;border-right:0;border-bottom:0}
+.b3{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);right:14px;border-left:0;border-top:0}
+.b4{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);left:14px;border-right:0;border-top:0}
+.ar-scan{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:14px;transition:opacity .5s;font-size:15px}
+.reticle{width:130px;height:130px;border-radius:50%;border:2px dashed #7dffb0;position:relative;animation:spin 4s linear infinite}
+.reticle::after{content:"";position:absolute;inset:44%;border-radius:50%;background:#7dffb0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ar-labels{position:absolute;inset:0;overflow:hidden}
+.ar-lbl{position:absolute;transform:translate(-50%,calc(-100% - 16px));background:rgba(6,18,11,.84);border:1px solid #7dffb0;color:#eaf6ee;font-size:13px;padding:3px 10px;border-radius:8px;white-space:nowrap;transition:opacity .3s;opacity:0}
+.ar-lbl::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:16px;background:#7dffb0}
+.ar-bottom{margin-top:auto;display:grid;gap:10px;justify-items:center;position:relative;z-index:2}
+.ar-cap{background:rgba(6,18,11,.86);border:1px solid rgba(125,255,176,.5);border-radius:14px;padding:10px 18px;font-size:15.5px;line-height:1.9;max-width:680px;text-align:center;min-height:52px}
+.ar-tl{display:flex;gap:6px}
+.ar-tl i{width:20px;height:5px;border-radius:3px;background:rgba(255,255,255,.25)}
+.ar-tl i.on{background:#7dffb0}
+.ar-ctrl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ar-ctrl button{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px}
+.ar-hint{font-size:11.5px;opacity:.65;text-align:center}
+.ar-toast{background:#3a1f1a;border:1px solid #f08a76;border-radius:10px;padding:8px 14px;font-size:13.5px;max-width:560px;text-align:center}
+
+/* launch steps */
+.lsteps{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:ls}
+.lsteps li{counter-increment:ls;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:8px}
+.lsteps label{display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.8}
+.lsteps label::before{content:counter(ls,arabic-indic);flex:none;width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;margin-top:3px}
+.lsteps input[type="checkbox"]{width:20px;height:20px;accent-color:var(--fern);margin-top:6px;flex:none}
+
+/* concept map */
+.cm-bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border:1.5px dashed var(--line);border-radius:12px;background:var(--sheet-2);margin-bottom:14px;min-height:52px}
+.cmap{display:grid;gap:6px}
+.cm-top{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.cm-node,.cm-slot{min-height:44px;border-radius:12px;padding:6px 12px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.5}
+.cm-node.root{background:var(--fern);color:#fff;font-size:15.5px;padding:8px 18px}
+.cm-slot{border:2px dashed var(--line);background:var(--sheet-2);width:100%;color:var(--ink)}
+.cm-top .cm-slot{width:auto;min-width:130px}
+.cm-slot:not(.filled)::before{content:"؟";color:var(--muted)}
+.cm-slot.filled{border-style:solid;border-color:var(--moss);background:var(--sheet)}
+.cm-slot.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.cm-slot.ok{border-color:var(--ok);background:var(--ok-bg)}
+.cm-slot.bad{border-color:var(--bad);background:var(--bad-bg)}
+.cm-link{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.6}
+.cm-split{height:16px;border:2px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;margin:0 22%}
+.cm-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-col{display:grid;gap:6px;align-content:start;border:1.5px solid var(--line);border-radius:14px;padding:10px;background:var(--sheet)}
+
+/* AR marker card */
+.ar-mk{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);background:rgba(6,18,11,.86);border:1px dashed #ff5cb8;color:#fff;border-radius:14px;padding:12px 18px;font-size:14.5px;text-align:center;max-width:320px;line-height:1.9}
+.mk-view{position:fixed;inset:0;z-index:70;background:#fff;color:#1d3428;display:flex;align-items:center;justify-content:center;padding:20px}
+.mk-view[hidden]{display:none}
+.mk-card{display:grid;justify-items:center;gap:14px;text-align:center;max-width:520px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.mk-sq{width:min(70vw,58vh,340px);aspect-ratio:1;background:#E6007E;border-radius:18px;display:grid;place-items:center}
+.mk-sq svg{width:34%;height:34%}
+.mk-card h3{margin:0;font-size:19px}
+.mk-card p{margin:0;font-size:14.5px;line-height:1.9}
+@media print{
+  body.pm .page{display:none!important}
+  body.pm .mk-view{display:flex!important;position:static;height:100vh}
+  body.pm .mk-card .row{display:none}
+}
+
+/* diagnosis & remedial plan */
+.diag-sum{display:flex;gap:14px;align-items:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.8}
+.diag-sum .big{font-size:34px;color:var(--fern);font-weight:700}
+.obj-row,.plan-card{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;background:var(--sheet)}
+.plan-card{border-color:var(--bad)}
+.plan-card.healed{border-color:var(--water)}
+.top-l{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.top-l h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15.5px;font-weight:600;line-height:1.7}
+.lvl{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;padding:2px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid currentColor}
+.lvl.m{color:var(--ok)}.lvl.n{color:var(--spore)}.lvl.w{color:var(--bad)}.lvl.r{color:var(--water)}
+.obj-bar{height:12px;background:var(--sheet-2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.obj-bar i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.evid{font-size:13px;color:var(--muted);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:12px}
+.plan-steps>li{display:grid;grid-template-columns:30px 1fr;gap:10px}
+.plan-steps .k{width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:13px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;font-weight:600}
+.concept{background:var(--sheet-2);border-radius:10px;padding:10px 12px;font-size:16.5px;margin-top:6px}
+.print-only{display:none}
+@media print{
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  .top,.bnav,.drawer,.corner,.corner-back,.leaf,.shade,.ar,.no-print,.runhead,.folio{display:none!important}
+  .desk{display:block;padding:0;overflow:visible}
+  .book{height:auto;max-width:none;transform:none!important;perspective:none}
+  .page{display:none!important}
+  .page[data-page="diagnosis"],.page[data-page="plan"]{display:block!important;position:static!important;width:auto!important;height:auto;overflow:visible;box-shadow:none;background:#fff!important;transform:none!important;animation:none!important;break-after:page}
+  .print-only{display:block}
+}
+
+/* hardcover */
+.page[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;color:#f2ead2;padding:14px}
+.cover-frame{min-height:100%;border:2px solid var(--gold);outline:1px solid var(--gold);outline-offset:-9px;border-radius:8px;padding:30px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.cover-frame .kick{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:#dcc78c}
+.cover-frame h1{color:#e4c670;font-size:clamp(34px,8.5vw,56px);margin:0}
+.cover-frame .sub{color:#efe6cc;font-size:19px;margin:0}
+.cover-win{width:min(100%,440px);border:2px solid var(--gold);border-radius:220px 220px 10px 10px;overflow:hidden;background:#f1eddf}
+.cover-win svg{display:block;width:100%;height:auto}
+.orn{color:var(--gold);font-size:18px;letter-spacing:8px;line-height:1}
+.cover-frame .open{margin-top:4px;background:transparent;border:1.5px solid var(--gold);color:#e4c670;border-radius:10px;padding:8px 26px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.pg-h{margin:6px 0 18px}
+.pg-h .where{font-size:14px;color:var(--muted)}
+.pg-h h2{font-size:clamp(26px,6vw,36px);margin:2px 0 0;color:var(--moss)}
+p{margin:0 0 14px}
+.lead{font-size:19px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin:0 0 18px}
+.verse{background:var(--sheet-2);border-right:4px solid var(--fern);padding:12px 16px;border-radius:10px;margin:0 0 16px;font-weight:600;color:var(--moss)}
+.term{background:linear-gradient(transparent 60%,color-mix(in srgb,var(--spore) 35%,transparent) 60%);font-weight:700;padding:0 2px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 18px}
+.fact{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:12px}
+.fact b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:22px;color:var(--fern)}
+.fact span{font-size:15px;color:var(--muted)}
+
+/* activity blocks */
+.act{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin:0 0 22px;position:relative}
+.act[data-kind="pre"]{border-color:var(--water)}
+.act[data-kind="form"]{border-style:dashed;border-color:var(--fern)}
+.act[data-kind="post"]{border-color:var(--spore)}
+.act[data-kind="lab"]{border-color:var(--leaf)}
+.act-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:8px}
+.act-h h3{margin:0;font-size:20px;flex:1 1 220px}
+.badge{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;padding:3px 10px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.b-pre{color:var(--water)} .b-form{color:var(--fern)} .b-act{color:var(--moss)} .b-lab{color:var(--leaf)} .b-post{color:var(--spore)} .b-think{color:var(--dry)}
+.hint{color:var(--muted);font-size:16px}
+
+.btn{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:12px;padding:8px 16px;font-size:16px;font-weight:600}
+.btn.primary{background:var(--fern);border-color:var(--fern);color:#fff}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+
+/* quiz */
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.q-t{font-weight:600;margin-bottom:8px;display:flex;gap:10px}
+.q-n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--sheet-2);border:1px solid var(--line);display:grid;place-items:center;font-size:14px;margin-top:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.opt{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font-size:16.5px;line-height:1.6}
+.opt:hover:not(:disabled){border-color:var(--sel)}
+.opt.sel{border-color:var(--sel);background:var(--sel-bg)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.why{margin-top:8px;font-size:16px;padding:8px 12px;border-radius:10px;background:var(--sheet-2)}
+.why.ok{color:var(--ok)} .why.bad{color:var(--bad)}
+.score{margin-top:14px;padding:14px;border-radius:12px;background:var(--sheet-2);font-weight:600;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.score .big{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:28px;color:var(--fern)}
+
+/* sort */
+.pool,.zone-body{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:12px}
+.pool{background:var(--sheet-2);border:1.5px dashed var(--line)}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.zone{border:1.5px solid var(--line);border-radius:14px;background:var(--sheet);cursor:pointer}
+.zone.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.zone-h{padding:8px 12px;border-bottom:1px solid var(--line);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.chip{background:var(--sheet);border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:15.5px}
+.chip.sel{border-color:var(--sel);background:var(--sel-bg);transform:translateY(-2px)}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg)}
+.chip.bad{border-color:var(--bad);background:var(--bad-bg)}
+.msg{margin-top:10px;font-weight:600;min-height:1em}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+
+/* order */
+.order{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.order li{display:flex;align-items:center;gap:10px;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px}
+.order li.ok{border-color:var(--ok);background:var(--ok-bg)}
+.order li.bad{border-color:var(--bad);background:var(--bad-bg)}
+.order .k{flex:none;width:30px;height:30px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:14px}
+.order .t{flex:1;font-size:16px;line-height:1.6}
+.order .mv{display:flex;flex-direction:column;gap:4px}
+.order .mv button{width:34px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);font-size:13px;line-height:1}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px;align-content:start}
+.match .col h4{margin:0 0 2px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--muted);font-weight:500}
+.mi{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;font-size:15.5px;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+.mi .tag{flex:none;min-width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:transparent}
+.mi.sel{border-color:var(--sel);background:var(--sel-bg)}
+.mi.ok{border-color:var(--ok);background:var(--ok-bg)}
+.mi.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+.flip{perspective:1100px;background:none;border:0;padding:0;text-align:right;min-height:300px}
+.flip-in{position:relative;width:100%;height:100%;min-height:300px;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--line);border-radius:16px;background:var(--sheet);padding:14px;display:flex;flex-direction:column}
+.face.front{align-items:center;justify-content:center;text-align:center;gap:6px}
+.face.front svg{width:150px;height:120px}
+.face.front h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:20px;color:var(--moss)}
+.face.front small{color:var(--muted);font-size:14px}
+.face.back{transform:rotateY(180deg);background:var(--sheet-2)}
+.face.back h4{margin:0 0 6px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss)}
+.face.back ul{margin:0;padding-right:18px;font-size:15.5px;line-height:1.7}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 14px;font-size:15.5px}
+.tab[aria-selected="true"]{background:var(--fern);border-color:var(--fern);color:#fff}
+.tabpane{display:none}
+.tabpane.on{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:start}
+.tabpane svg{width:150px;height:150px;background:var(--sheet-2);border-radius:14px}
+.tabpane ul{margin:0;padding-right:18px;font-size:16.5px}
+@media (max-width:520px){.tabpane.on{grid-template-columns:1fr}.tabpane svg{width:100%;height:150px}}
+
+/* reveal */
+.reveal{border-top:1px solid var(--line);padding:10px 0}
+.reveal:first-of-type{border-top:0}
+.reveal p{margin:0 0 6px;font-weight:600}
+.model{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--ok-bg);font-size:16px}
+textarea{width:100%;min-height:80px;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:10px;font-size:16px;line-height:1.7;resize:vertical}
+input[type="text"]{border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 10px;width:110px;text-align:center}
+
+/* KWL */
+.kwl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kwl label{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss);margin-bottom:4px}
+@media (max-width:640px){.kwl{grid-template-columns:1fr}}
+
+/* size scale */
+.scale-list{display:grid;gap:8px}
+.sz{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;background:none;border:0;padding:4px 0;text-align:right}
+.sz .nm{font-size:15px}
+.sz .tr{background:var(--sheet-2);border-radius:999px;height:26px;position:relative;overflow:hidden}
+.sz .tr i{position:absolute;inset:0 0 0 auto;background:var(--leaf);border-radius:999px;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;color:#fff;font-style:normal;font-size:13px;white-space:nowrap;transition:width .6s}
+.sz.on .tr i{background:var(--fern)}
+.sz-note{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:48px}
+
+/* lab */
+.lab-svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.lab-svg .glass{fill:none;stroke:var(--muted);stroke-width:3}
+.lab-svg .water{fill:var(--water);opacity:.45;transform-box:fill-box;transform-origin:50% 100%;transition:transform 1s}
+.lab-svg .scale-body{fill:var(--muted)}
+.lab-svg .scale-screen{fill:#0d1f14}
+.lab-svg .scale-txt{fill:#7dfc9f;font-size:12px;font-family:Tahoma,sans-serif}
+.lab-svg .tbl{fill:var(--dry);opacity:.5}
+.lab-svg .lbl{fill:var(--muted);font-size:11px}
+#ball{transition:transform 1s ease,opacity .4s}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.steps button{width:100%;text-align:right;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:16px}
+.steps button .k{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.steps button.done{background:var(--ok-bg);border-color:var(--ok)}
+.steps button.done .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps button.next{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.lab-status{text-align:center;margin-top:8px;font-weight:600;color:var(--water);min-height:1.9em}
+table.data{width:100%;border-collapse:collapse;margin-top:12px;font-size:16px}
+table.data td,table.data th{border:1px solid var(--line);padding:6px 10px;text-align:right}
+table.data th{background:var(--sheet-2);font-weight:600}
+.lab-q{margin-top:12px;display:grid;gap:10px}
+.lab-q label{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* vascular sim */
+.vsim{display:grid;grid-template-columns:1fr;gap:10px}
+.vsim svg{width:100%;max-width:440px;margin:auto;display:block;background:var(--sheet-2);border-radius:14px}
+.vsim input[type="range"]{width:100%;accent-color:var(--fern)}
+.flow{stroke-dasharray:6 10;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+
+/* cover */
+.cover{position:relative;border-radius:20px;overflow:hidden;background:var(--sheet);border:1px solid var(--line);margin-bottom:18px}
+.cover svg.art{display:block;width:100%;height:auto}
+.cover-body{padding:18px 20px 22px}
+.cover h1{font-size:clamp(36px,10vw,58px);margin:0;color:var(--moss);letter-spacing:0}
+.cover .sub{color:var(--muted);margin:2px 0 14px;font-size:17px}
+.specimen{position:absolute;top:14px;left:14px;background:var(--sheet);border:1.5px solid var(--ink);border-radius:4px;padding:6px 12px;font-size:13px;line-height:1.6;transform:rotate(-3deg);box-shadow:2px 3px 0 var(--line)}
+.objs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.objs li{display:flex;gap:10px;align-items:flex-start}
+.objs li b{flex:none;color:var(--fern);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.vocab{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.vocab button{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:999px;padding:4px 14px;font-size:15.5px}
+.vocab-def{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:46px}
+
+/* results */
+.res-bars{display:grid;gap:12px}
+.res-bar .lb{display:flex;justify-content:space-between;font-size:16px}
+.res-bar .tr{height:16px;background:var(--sheet-2);border-radius:999px;overflow:hidden}
+.res-bar .tr i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.res-list{list-style:none;padding:0;margin:0}
+.res-list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:8px 0;font-size:16px}
+
+/* bottom nav */
+.bnav{flex:none;z-index:20;background:var(--bar);padding:8px 14px 10px}
+.bnav .btn{background:transparent;border-color:rgba(255,255,255,.25);color:var(--bar-ink)}
+.bnav .btn.primary{background:var(--gold);border-color:var(--gold);color:#1d2a20}
+.bnav-in{max-width:860px;margin:auto;display:flex;gap:10px;justify-content:space-between}
+.bnav .btn{flex:1;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.opt{font-size:17.5px}.mi{font-size:16.5px}.order .t{font-size:17px}.face.back ul{font-size:16.5px}.why{font-size:16.5px}.tabpane ul{font-size:17.5px}
+.hint{font-size:14px;line-height:1.9}.chip{font-size:14px}.btn{font-size:14.5px}.badge{font-size:12px}.act-h h3{font-size:18px}.fact b{font-size:19px}
+.pg-h h2{font-size:clamp(24px,5.5vw,32px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* cell lesson */
+.simple{background:var(--ok-bg);border-radius:12px;padding:12px 16px;margin:0 0 16px;font-size:17.5px;line-height:1.95}
+.simple b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.sim svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.sim-note{text-align:center;font-weight:600;margin-top:8px;min-height:1.9em;color:var(--water);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.9}
+.st-card{background:var(--sheet-2);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.st-card h4{margin:0 0 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.st-card p{margin:0}
+.st-k{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;color:var(--muted)}
+.st-svg svg{width:100%;max-width:340px;display:block;margin:8px auto;background:var(--sheet);border-radius:10px}
+.st-dots{display:flex;gap:6px;align-items:center}.st-dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.st-dots i.on{background:var(--fern)}
+.st-viz{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0}
+.st-box{border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;text-align:center;min-width:110px;background:var(--sheet)}
+.st-box span{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted)}
+.st-box .dots{color:#d0457a;letter-spacing:2px;font-size:14px;line-height:1.3;min-height:20px}
+.st-arrow{font-size:22px;color:var(--water)}
+.strip{border:1.5px solid var(--line);border-radius:12px;background:var(--sheet);padding:10px 12px;margin-bottom:10px}
+.strip-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.strip-h b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.strip .reveal{display:grid;gap:8px;padding-top:10px;border:0}
+.strip .reveal[hidden]{display:none}
+.strip label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);display:grid;gap:4px}
+.vocab button.rv{border-color:var(--fern);color:var(--fern)}
+.cm-node.fixed{border:2px solid var(--moss);background:var(--sheet);color:var(--ink);font-size:13px}
+.cm-col .cm-slot,.cm-col .cm-link{font-size:12.5px}
+.eq{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;text-align:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px;margin:0 0 16px;font-size:17px;color:var(--moss);overflow-x:auto;white-space:nowrap}
+.eq span{font-size:12.5px;color:var(--muted)}
+.atoms{width:100%;border-collapse:collapse;font-size:16px}
+.atoms th,.atoms td{border:1px solid var(--line);padding:6px;text-align:center}
+.atoms th{background:var(--sheet-2);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px}
+.atoms input[type="text"]{width:64px}
+.carrot{transition:transform 1s ease,opacity .6s}
+.carrot-in{transition:transform 1.2s ease;transform-box:fill-box;transform-origin:50% 0}
+.carrot-in path:first-child{transition:fill 1.2s}
+.carrot-in.limp{transform:rotate(26deg) scale(.86,.92)}
+.carrot-in.limp path:first-child{fill:#b86a2c}
+.water-r{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform 1s}
+.water-r.on{transform:scaleY(1)}
+.cyc-arc{opacity:.25;transition:opacity .4s}
+.cyc-arc.on{opacity:1}
+
+.bt{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;color:#fff;font-family:monospace;font-weight:700;font-size:15px;margin:2px;border:2px solid transparent;text-shadow:0 1px 1px rgba(0,0,0,.35);flex:none}
+.bt.nw{opacity:.55;border-style:dashed;border-color:#555}
+.bt.mut{border-color:#ff2d2d;box-shadow:0 0 0 3px rgba(255,45,45,.35)}
+.bt-in{background:var(--sheet-2);color:var(--ink);border-color:var(--line);cursor:pointer;text-shadow:none}
+.bt-in.ok{border-color:var(--ok)}.bt-in.bad{border-color:var(--bad);box-shadow:0 0 0 3px var(--bad-bg)}
+.lad{display:block;margin:6px auto;padding:8px;background:var(--sheet-2);border-radius:12px;overflow-x:auto}
+.lad-row{display:flex;flex-wrap:nowrap;justify-content:center}
+.lad-mid{display:flex;justify-content:center}.lad-mid i{width:34px;height:10px;display:flex;justify-content:center;flex:none}.lad-mid i::after{content:"";width:3px;height:10px;background:var(--muted)}
+.rep-out{display:grid;gap:10px;margin-top:10px}
+.rep-blk{background:var(--sheet-2);border-radius:12px;padding:8px;overflow-x:auto}
+.rep-blk h5{margin:0 0 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);font-weight:600}
+.rep-blk .bt,.tri .bt,.mut-grid .bt{width:22px;height:24px;font-size:12px;margin:1px}
+.rep-blk .gap{height:10px}
+.tri{display:inline-flex;padding:2px;border-radius:8px;border:2px solid transparent;margin:0 2px;flex:none}
+.tri.cur{border-color:var(--sel);background:var(--sel-bg)}.tri.done{opacity:.4}
+.chain{display:flex;gap:4px;align-items:center;justify-content:center;min-height:30px;flex-wrap:wrap}
+.chain i{width:24px;height:24px;border-radius:50%;display:inline-block;border:2px solid rgba(0,0,0,.15)}
+.chain i.mut{border-radius:4px;border-color:#ff2d2d}
+.tr-box{background:var(--sheet-2);border-radius:12px;padding:10px;overflow-x:auto}
+.tr-l{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);text-align:center;margin:4px 0}
+.tr-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tr-o{display:flex;justify-content:center;padding:6px}
+.tr-o .bt{width:26px;height:26px}
+.mut-grid{background:var(--sheet-2);border-radius:12px;padding:10px;overflow-x:auto}
+.tally{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.tal{background:var(--sheet-2);border-radius:12px;padding:10px;text-align:center}
+.tal span{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px;color:var(--muted)}
+.tal b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:32px;color:var(--fern)}
+.tal .row{justify-content:center;margin-top:4px}
+.trows{display:grid;gap:8px}
+.trow{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.trow input[type="text"]{flex:1;min-width:140px;text-align:right;width:auto}
+
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 16px}
+.c3{background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.c3 b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--moss);margin-bottom:4px}
+.c3 span{font-size:16.5px;line-height:1.85}
+.ps{display:grid;gap:4px}
+.ps-box{background:var(--sheet-2);border-radius:12px;padding:8px 10px}
+.ps-box b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:block;margin-bottom:4px}
+.ps-box textarea{min-height:56px}
+.ps-arr{text-align:center;color:var(--water);font-size:20px;line-height:1}
+.tcomp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 16px}
+.tc{border-radius:12px;padding:10px 12px;border:1.5px solid var(--line)}
+.tc.cold{background:var(--sel-bg)}.tc.hot{background:var(--bad-bg)}
+.tc b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;margin-bottom:4px}
+.dlg{background:var(--sheet-2);border-radius:12px;padding:10px 14px;margin-bottom:10px}
+.dlg p{margin:0 0 4px}
+.fold3{display:grid;gap:10px}
+.fold3 label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:grid;gap:4px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-row">
+    <button class="icon-btn" id="menuBtn" aria-label="فهرس الكتاب">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="top-title" id="topTitle">النباتات اللابذرية</div>
+    <div class="top-count" id="topCount"></div>
+    <button class="icon-btn" id="sndBtn" aria-label="صوت تقليب الصفحات" aria-pressed="true"></button>
+  </div>
+  <div class="prog"><i id="progBar"></i></div>
+</div>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-bg" id="drawerBg"></div>
+  <nav class="drawer-panel" aria-label="فهرس الكتاب">
+    <h2>فهرس الدرس</h2>
+    <ul class="toc" id="toc"></ul>
+  </nav>
+</div>
+
+<main class="desk"><div class="book" id="book">
+
+<!-- ============ COVER ============ -->
+<section class="page" data-page="cover" data-title="الغلاف">
+  <div class="cover-frame">
+    <div class="kick" style="font-size:15px;color:#f2e2a8">مشاركةً من ولي أمر الطالبة لتين أيمن المغذوي</div>
+    <div class="orn">❖ ❖ ❖</div>
+    <div class="kick">العلوم · الصف السادس الابتدائي</div>
+    <div class="cover-win"><svg id="coverArt" viewBox="0 0 800 300" aria-hidden="true"></svg></div>
+    <h1 style="font-size:clamp(28px,7vw,46px)">الهضم والإخراج والتنفس والدوران</h1>
+    <p class="sub">الدرس الأول</p>
+    <div class="orn">❖ ❖ ❖</div>
+    <button class="open" data-go="goals">افتح الكتاب</button>
+    <div class="kick" style="margin-top:8px">تصميم: أيمن الصاعدي</div>
+  </div>
+</section>
+
+<!-- ============ GOALS ============ -->
+<section class="page" data-page="goals" data-title="أقرأ وأتعلم">
+  <header class="pg-h"><div class="where">أقرأ وأتعلم · ص١١٠</div><h2>السؤال الأساسي والمفردات</h2></header>
+  <div class="simple"><b>السؤال الأساسي:</b> كيف تتم عمليات الهضم والإخراج والتنفس والدوران في كل من الإنسان والحيوانات؟</div>
+  <div class="sheet">
+    <h3 style="margin:0 0 10px">ماذا سأتعلم؟</h3>
+    <ul class="objs">
+      <li><b>١</b><span>كيف تهضم الحيوانات والإنسان الغذاء، وكيف تتخلص من الفضلات.</span></li>
+      <li><b>٢</b><span>كيف تتنفس الحيوانات والإنسان، وما أعضاء التنفس.</span></li>
+      <li><b>٣</b><span>ما الدوران، وما أنواع أجهزة الدوران، وكيف يسير الدم في جسمي.</span></li>
+      <li><b>٤</b><span>الفرق بين الحيوانات المتغيرة درجة الحرارة والثابتة درجة الحرارة.</span></li>
+    </ul>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">المفردات</h3>
+    <p class="hint" style="margin:0">اضغط على أي مفردة لترى معناها.</p>
+    <div class="vocab" id="vocab"></div>
+    <div class="vocab-def" id="vocabDef">…</div>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">مهارة القراءة: المشكلة والحل</h3>
+    <p style="margin:0 0 10px">في أثناء القراءة ابحث عن <b>مشكلة</b> تواجه الحيوان، ثم <b>الخطوات</b> التي يقوم بها جسمه، ثم <b>الحل</b>. ستجد منظّمًا لهذه المهارة في صفحة «ما الهضم؟ وما الإخراج؟».</p>
+  </div>
+</section>
+
+<!-- ============ PRE-TEST ============ -->
+<section class="page" data-page="pretest" data-title="التقويم القبلي">
+  <header class="pg-h"><div class="where">قبل أن أبدأ</div><h2>ماذا أعرف؟</h2></header>
+  <p>هذه أسئلة سريعة لا تُحسب عليك. هدفها أن تعرف ما لديك من معلومات الآن، لتقارنه بنتيجتك في آخر الدرس.</p>
+  <div class="act" data-kind="pre">
+    <div class="act-h"><span class="badge b-pre">تقويم قبلي</span><h3>ستة أسئلة</h3></div>
+    <div id="q-pre"></div>
+  </div>
+</section>
+
+<!-- ============ LOOK & WONDER ============ -->
+<section class="page" data-page="look" data-title="أنظر وأتساءل">
+  <header class="pg-h"><div class="where">التهيئة · ص١٠٨</div><h2>أنظر وأتساءل</h2></header>
+  <div class="sim"><svg id="pandaSvg" viewBox="0 0 340 200" aria-label="باندا تأكل"></svg></div>
+  <p class="lead" style="margin-top:12px">تحتاج أجهزة الحاسوب والسيارات والأجهزة الأخرى التي نستعملها في حياتنا إلى الطاقة لتعمل. ما أوجه الشبه بين الحيوانات وهذه الآلات؟ وكيف يحصل الحيوان، كحيوان الباندا، على حاجته من الماء والطاقة؟ وكيف يستخدمهما لكي يتمكن من العيش؟</p>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أتساءل وأفكر</span><h3>اكتب رأيك</h3></div>
+    <div class="reveal" style="border:0;padding:0">
+      <textarea data-save="look" placeholder="الحيوانات تشبه الآلات في…"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض فكرة للإجابة</button></div>
+      <div class="model" hidden>الحيوانات مثل الآلات تحتاج إلى الطاقة لتعمل. الآلات تأخذ طاقتها من الوقود أو الكهرباء، والحيوان يأخذها من الغذاء الذي يأكله (الباندا تأكل نبات الخيزران)، ويشرب الماء، ثم تهضم أجهزة جسمه الغذاء ليستخدم طاقته.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPLORE ============ -->
+<section class="page" data-page="explore" data-title="أستكشف">
+  <header class="pg-h"><div class="where">أستكشف · نشاط استقصائي · ص١٠٩</div><h2>كيف تساعد الأمعاء الغليظة على عملية الهضم؟</h2></header>
+  <div class="act" data-kind="think">
+    <div class="act-h"><span class="badge b-think">أتوقّع</span><h3>أي أنواع الورق أختار ليقوم بامتصاص ماء أكثر؟</h3></div>
+    <p>إذا استخدمتُ الورق لعمل نموذج يبيّن كيف تقوم الأمعاء الغليظة بامتصاص الماء، فأي أنواع الورق أختار؟ كيف يمكن تمثيل نموذج للأمعاء الغليظة؟</p>
+    <textarea data-save="exPredict" placeholder="أتوقع أن…"></textarea>
+  </div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">أختبر توقعي</span><h3>تجربة افتراضية</h3></div>
+    <p class="hint">أحتاج إلى: مقص (أحذر!)، ومناشف ورقية من الألياف، ومناشف ورقية عادية، وورق تجليد، وورق طباعة، ومخبار مدرّج، وماء، وساعة إيقاف. اختر نوع الورق، ثم اضغط «أدخل الشريط». بعد دقيقة يُسجَّل المستوى في الجدول.</p>
+    <div class="row" id="paperBtns" style="justify-content:center"></div>
+    <div class="sim"><svg id="cylSvg" viewBox="0 0 340 220" aria-label="مخبار مدرّج"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="paperGo">أدخل الشريط</button></div>
+    <div class="sim-note" id="paperNote">اختر نوع الورق.</div>
+    <table class="data" id="paperTbl"><tr><th>نوع الورق</th><th>المستوى الأول للماء</th><th>المستوى النهائي</th><th>الكمية الممتصة</th></tr></table>
+    <p class="hint">قيم التجربة الافتراضية تقريبية؛ قِس القيم الحقيقية في تجربتك.</p>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أستخلص النتائج</span><h3>أستنتج</h3></div>
+    <div id="q-explore"></div>
+    <div class="reveal">
+      <p>أفسّر سبب ذلك حسب اعتقادي. ما الخصائص التي يشترك فيها الورق مع الأمعاء الغليظة؟</p>
+      <textarea data-save="exWhy" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>امتصت المناشف الورقية من الألياف أكبر كمية من الماء؛ لأن أليافها تتشرب الماء. والورق يشبه الأمعاء الغليظة في أنها تمتص الماء من بقايا الطعام.</div>
+    </div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">أستكشف أكثر</span><h3>صمّم تجربتك</h3></div>
+    <p>ما العوامل الأخرى التي تؤثر في عملية الهضم ويمكن اختبارها؟ أصمم تجربة وأنفذها، ثم أشارك زملائي في النتائج التي أحصل عليها.</p>
+    <textarea data-save="exMore" placeholder="العامل الذي سأختبره…"></textarea>
+  </div>
+</section>
+
+<!-- ============ WHAT IS DIGESTION ============ -->
+<section class="page" data-page="whatis" data-title="ما الهضم؟ وما الإخراج؟">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١٠</div><h2>ما الهضم؟ وما الإخراج؟</h2></header>
+  <p>من خصائص المخلوقات الحية أنها تستخلص الطاقة من الغذاء. فالنباتات تصنع غذاءها بنفسها بعملية البناء الضوئي، أما معظم المخلوقات الأخرى فتحصل على غذائها من البيئة المحيطة بها. ولكل حيوان طريقته في ابتلاع الغذاء وتفكيكه والتخلص من الفضلات.</p>
+  <div class="simple"><b>ببساطة:</b><br>• <span class="term">الهضم</span>: ابتلاع الغذاء وتفكيكه إلى أجزاء ومركبات بسيطة تستفيد منها الخلايا، ثم تنتقل إلى خلايا الجسم.<br>• <span class="term">الإخراج</span>: تخليص الجسم من الفضلات التي لا قيمة لها، وقد تؤدي إلى تسمم الخلايا والأنسجة إذا بقيت في الجسم.</div>
+  <div class="act" data-kind="think">
+    <div class="act-h"><span class="badge b-think">أقرأ الصورة</span><h3>كيف تكون البيضة مصدر طاقة للأفعى؟</h3></div>
+    <div class="sim"><svg id="snakeSvg" viewBox="0 0 340 150" aria-label="أفعى ابتلعت بيضة"></svg></div>
+    <p class="hint">إرشاد: انظر إلى الأفعى وقد ابتلعت البيضة. ماذا يحدث للبيضة؟</p>
+    <div class="reveal" style="border:0;padding:0">
+      <textarea data-save="snake" placeholder="ماذا يحدث للبيضة؟"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>تبتلع الأفعى البيضة، ثم يهضمها جسمها، أي يفككها إلى مواد بسيطة تنتقل إلى خلايا جسمها، فتحصل منها على الطاقة.</div>
+    </div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">مهارة القراءة</span><h3>المشكلة والحل</h3></div>
+    <p class="hint">أكمل المنظّم، ثم قارن بالنموذج.</p>
+    <div class="ps">
+      <div class="ps-box"><b>المشكلة</b><textarea data-save="ps1" placeholder="ما المشكلة التي تواجه الحيوان؟"></textarea></div>
+      <div class="ps-arr">↓</div>
+      <div class="ps-box"><b>الخطوات نحو الحل</b><textarea data-save="ps2" placeholder="ماذا يفعل جسمه؟"></textarea></div>
+      <div class="ps-arr">↓</div>
+      <div class="ps-box"><b>الحل</b><textarea data-save="ps3" placeholder="ما النتيجة؟"></textarea></div>
+    </div>
+    <div class="reveal" style="border:0;padding:0"><div class="row"><button class="btn" data-reveal>اعرض النموذج</button></div>
+    <div class="model" hidden><b>المشكلة:</b> يحتاج الحيوان إلى الطاقة، والطاقة مخزّنة في الغذاء. <b>الخطوات:</b> يبتلع الغذاء، ثم يفككه إلى مواد بسيطة (الهضم). <b>الحل:</b> تنتقل المواد البسيطة إلى خلايا الجسم فيحصل على الطاقة، ويتخلص من الفضلات بالإخراج.</div></div>
+  </div>
+</section>
+
+<!-- ============ INVERTEBRATES DIGESTION ============ -->
+<section class="page" data-page="invert" data-title="الهضم في اللافقاريات">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١١</div><h2>الهضم في اللافقاريات</h2></header>
+  <p>تستخدم اللافقاريات طرائق عدة لهضم الطعام والتخلص من الفضلات.</p>
+  <div class="cards3">
+    <div class="c3"><b>الإسفنجيات</b><span>تستخلص غذاءها من المواد العالقة في الماء، وتصفّيه مما فيه عند مروره خلال الثقوب في جسمها.</span></div>
+    <div class="c3"><b>اللاسعات والديدان المفلطحة</b><span>يدخل الغذاء إلى تجويف هضمي من فتحة خاصة، تهضمه خلايا متخصصة وتمتص المواد المغذية، ثم تخرج الفضلات من <b>الفتحة نفسها</b>.</span></div>
+    <div class="c3"><b>دودة الأرض</b><span>جهازها الهضمي أنبوب داخل أنبوب، له <b>فتحتان</b>: واحدة لابتلاع الغذاء، والأخرى للتخلص من الفضلات. يمر الغذاء خلاله ويُهضم، وتُمتص المواد الغذائية بواسطة الدم.</span></div>
+  </div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>قارن بين قنديل البحر (فتحة واحدة) ودودة الأرض (فتحتان)، وتابع مسار الغذاء في كل منهما.</p><button class="btn primary" data-ar="invert">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>كيف يهضم كل حيوان غذاءه؟</h3></div>
+    <p class="hint">اضغط البطاقة ثم الصندوق المناسب.</p>
+    <div id="a-invert"></div>
+  </div>
+</section>
+
+<!-- ============ HUMAN DIGESTION ============ -->
+<section class="page" data-page="human" data-title="الهضم في الفقاريات والإنسان">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١١</div><h2>الهضم في الفقاريات والإنسان</h2></header>
+  <p>خلق الله عز وجل للحيوانات الأكثر تعقيدًا أجهزة هضم أكثر تخصصًا. فالأرانب والأبقار والفيلة تتغذى على النباتات، لذا تكون لها أسنان قادرة على طحن الغذاء النباتي جيدًا، كما أن أجهزتها الهضمية تحتوي على بكتيريا تساعد على هضم الأنسجة النباتية.</p>
+  <div class="simple"><b>في الإنسان:</b> يحدث الهضم في <b>الفم والمعدة والأمعاء الدقيقة</b>. يحلل الحمض والإنزيم في المعدة الغذاء إلى دقائق صغيرة، وتحلل العصارة الهضمية البروتين والنشويات والدهون. ثم تمتص <b>الأمعاء الدقيقة</b> المواد الغذائية وتنقلها إلى الدم. ويتم التخلص من الفضلات بعملية الإخراج، وتعمل <b>الكليتان والرئتان والكبد والجلد</b> على تخليص الجسم من الفضلات.</div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>رافق لقمة الطعام في رحلتها داخل الجهاز الهضمي حتى تُمتص في الدم.</p><button class="btn primary" data-ar="digest">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">جهاز الهضم تفاعليًا</span><h3>اضغط على أي عضو</h3></div>
+    <div class="sim"><svg id="gutSvg" viewBox="0 0 340 330" aria-label="جهاز الهضم"></svg></div>
+    <div class="sim-note" id="gutNote">اختر عضوًا لتعرف اسمه.</div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">نشاط تفاعلي</span><h3>رتّب رحلة الطعام</h3></div>
+    <p class="hint">من أول عضو يدخله الطعام إلى آخر عضو.</p>
+    <div id="a-path"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص١١١</span><h3>مشكلة وحل · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px">
+      <p>مشكلة وحل: كيف حلّت أجهزة الهضم في الحيوانات مشكلة هضم الطعام؟</p>
+      <textarea data-save="t111a" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>لكل حيوان طريقة تناسبه: الإسفنج يصفّي الماء من خلال ثقوب جسمه، واللاسعات والديدان المفلطحة لها تجويف هضمي بفتحة واحدة، ودودة الأرض لها أنبوب بفتحتين، والحيوانات آكلة النباتات لها أسنان تطحن وبكتيريا تساعد على الهضم، والإنسان يهضم في الفم والمعدة والأمعاء الدقيقة.</div>
+    </div>
+    <div class="reveal">
+      <p>التفكير الناقد: لماذا تُعد عملية الإخراج عملية مهمة للحيوان؟</p>
+      <textarea data-save="t111b" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>لأنها تخلّص الجسم من الفضلات التي لا قيمة لها، والتي قد تؤدي إلى تسمم الخلايا والأنسجة إذا بقيت في الجسم.</div>
+    </div>
+    <div id="q-digest"></div>
+  </div>
+</section>
+
+<!-- ============ RESPIRATION ============ -->
+<section class="page" data-page="resp" data-title="ما التنفس؟">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١٢–١١٣</div><h2>ما التنفس؟</h2></header>
+  <p>بعد أن تتم عملية الهضم يجب تحرير الطاقة من جزيئات الطعام. وفي الحيوانات تكون جزيئات الطعام الناتجة عن هضم النشويات هي الجلوكوز، وهو سكر بسيط.</p>
+  <div class="simple"><b>ببساطة:</b> <span class="term">التنفس</span> عملية إطلاق الطاقة المختزنة في جزيئات الجلوكوز، وتحدث في الخلايا في وجود الأكسجين. وجميع المخلوقات الحية، ومنها النباتات، تقوم بالتنفس.<br>• <b>الشهيق</b> يزوّد الجسم بالأكسجين اللازم لإطلاق الطاقة.<br>• <b>الزفير</b> يخلّص الجسم من الفضلات، ومنها ثاني أكسيد الكربون والماء.</div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>شاهد الرئتين تتمددان مع الشهيق، وتابع الهواء حتى الحويصلات الهوائية وتبادل الغازات مع الدم.</p><button class="btn primary" data-ar="breath">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">محاكاة</span><h3>شهيق وزفير</h3></div>
+    <div class="sim"><svg id="lungSvg" viewBox="0 0 340 230" aria-label="الرئتان والحجاب الحاجز"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" data-br="in">شهيق</button><button class="btn" data-br="out">زفير</button></div>
+    <div class="sim-note" id="lungNote">اضغط شهيق.</div>
+  </div>
+  <h3 style="margin:18px 0 8px;font-size:19px">كيف تتنفس الحيوانات؟</h3>
+  <p>بعض اللافقاريات ذات الأجسام الطرية، ومنها الديدان المفلطحة، تتنفس بالانتشار؛ ولكي ينتشر الأكسجين يجب أن تكون سطوحها رطبة، لذا تعيش كثير من الديدان في أماكن رطبة. والحيوانات الأكبر حجمًا تحتاج إلى أعضاء متخصصة للتنفس.</p>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">نشاط تفاعلي</span><h3>بماذا يتنفس كل حيوان؟</h3></div>
+    <div id="a-resporg"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أقرأ الصورة · ص١١٣</span><h3>من أين يدخل الهواء إلى جسم الإنسان؟</h3></div>
+    <p class="hint">إرشاد: أتتبع مسار دخول الهواء من الخارج إلى الداخل. رتّب الأجزاء التي يدخل إليها.</p>
+    <div id="a-airway"></div>
+  </div>
+  <div class="simple">عند <b>الحويصلات الهوائية</b> يحدث تبادل الغازات بين الدم والهواء الذي يدخل إلى الحويصلات من خلال جدرانها الرقيقة. وينقبض <b>الحجاب الحاجز</b> وينبسط لينظّم عملية التنفس: الشهيق والزفير.</div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص١١٣</span><h3>مشكلة وحل · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px">
+      <p>مشكلة وحل: لماذا تحتاج الخلايا إلى الأكسجين؟</p>
+      <textarea data-save="t113a" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>لأن الخلايا تحتاج إلى الأكسجين لإطلاق الطاقة المختزنة في جزيئات الجلوكوز في عملية التنفس.</div>
+    </div>
+    <div class="reveal">
+      <p>التفكير الناقد: أعطي مثالًا على عملية انتشار تحدث في المطبخ، وأوضحها.</p>
+      <textarea data-save="t113b" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض مثالًا للإجابة</button></div>
+      <div class="model" hidden>انتشار رائحة الطعام في أثناء طهيه؛ إذ تنتقل جزيئات الرائحة في الهواء من المكان القريب من القدر إلى أرجاء البيت.</div>
+    </div>
+    <div id="q-resp"></div>
+  </div>
+</section>
+
+<!-- ============ CIRCULATION ============ -->
+<section class="page" data-page="circ" data-title="ما الدوران؟">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١٤</div><h2>ما الدوران؟</h2></header>
+  <p>يعمل جهازا الهضم والتنفس معًا للحفاظ على حياة المخلوقات الحية؛ فالهضم يوفر سكر الجلوكوز للخلايا، والتنفس يوفر الأكسجين اللازم لتحويل السكر إلى طاقة.</p>
+  <div class="simple"><b>ببساطة:</b> <span class="term">الدوران</span> هو حركة المواد المهمة، ومنها الأكسجين والجلوكوز والفضلات، في الجسم.<br>• <b>أبسط أشكاله</b> بالانتشار، كما في الإسفنج: يتدفق الماء عبر أنابيب في جسمه فتنتقل المواد.<br>• <b>جهاز دوران مفتوح</b> (المفصليات كالجراد، والرخويات): يدفع القلب الدم مباشرة إلى أنسجة الجسم، ثم يتجمع في فتحات تسمى الجيوب، ويعود إلى القلب.<br>• <b>جهاز دوران مغلق</b> (الفقاريات): يتدفق الدم داخل أوعية دموية لا يغادرها، وتتبادل المواد مع الأنسجة عبر جدرانها. وتعمل صمامات خاصة على تدفق الدم في اتجاه واحد.</div>
+  <div class="cards3">
+    <div class="c3"><b>السمكة</b><span>جهاز دوران مغلق: يتحرك الدم في دورة بسيطة من القلب إلى الخياشيم، ومنها إلى خلايا الجسم، ثم يعود إلى القلب.</span></div>
+    <div class="c3"><b>الثدييات (مثل القط)</b><span>رئات للتنفس، ويمر الدم في دورتين مغلقتين: الأولى بين القلب والرئتين، والثانية من القلب إلى باقي أجزاء الجسم.</span></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>صنّف أجهزة الدوران</h3></div>
+    <div id="a-circ"></div>
+  </div>
+</section>
+
+<!-- ============ TEMPERATURE ============ -->
+<section class="page" data-page="temp" data-title="درجة حرارة الجسم">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١٤–١١٥</div><h2>درجة حرارة الجسم</h2></header>
+  <p>كثير من النشاطات الحيوية في أجسام الحيوانات لا تتم إلا في درجات حرارة محددة.</p>
+  <div class="tcomp">
+    <div class="tc cold"><b>متغيرة درجة الحرارة</b><span>تتغير درجة حرارة جسمها تبعًا لدرجة حرارة الهواء أو الماء المحيط بها. فالثعابين تستدفئ بالشمس، أو تحفر في التربة أو تحت الصخور لتبرد. ومنها: البرمائيات، والزواحف، ومعظم الأسماك.</span></div>
+    <div class="tc hot"><b>ثابتة درجة الحرارة</b><span>تحافظ على ثبات درجة حرارة جسمها حتى لو تغيرت حرارة الوسط المحيط. ومنها: الثدييات والطيور. وإذا ارتفعت حرارتها تخلصت من الزائدة عبر الجلد وإفراز العرق، ولمنع فقدانها تستخدم العزل كالفرو في الدب القطبي، أو طبقات الدهون تحت الجلد في بعض الحيتان.</span></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>صنّف الحيوانات حسب درجة حرارة الجسم</h3></div>
+    <div id="a-temp"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تقويم تكويني</span><h3>تحقق من فهمك</h3></div>
+    <div id="q-temp"></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط أسري · ص١١٥</span><h3>حوار فوّاز ونورة</h3></div>
+    <div class="dlg">
+      <p><b>فوّاز:</b> نورة، أشعر بأن حرارة جسمي مرتفعة.</p>
+      <p><b>نورة:</b> تفضّل يا أخي كمادة الماء، وضعها على رأسك.</p>
+      <p><b>فوّاز:</b> نورة، هل تعلمين أن درجة حرارة الجسم الطبيعي ٣٧° مئوية؟</p>
+      <p><b>نورة مندهشة:</b> ومن أخبرك ذلك؟</p>
+      <p><b>فوّاز:</b> أمي أخبرتني بذلك.</p>
+    </div>
+    <p>حاور ابنك في أسباب ارتفاع درجة حرارة جسمه، واكتبا ما توصلتما إليه.</p>
+    <textarea data-save="family" placeholder="ما توصلنا إليه…"></textarea>
+  </div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">نشاط · ص١١٥</span><h3>نموذج لصمام في الوريد</h3></div>
+    <p class="hint">في النموذج: أنبوب كرتوني فيه شقان، وفي كل شق قطعة ورق: العلوية تغلق الأنبوب ويمكنها الحركة رأسيًا. نُسقط بذور الفاصولياء أو الفول من أعلى الأنبوب، ثم من الطرف الآخر.</p>
+    <div class="sim"><svg id="valveSvg" viewBox="0 0 340 230" aria-label="نموذج صمام"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" data-vl="top">أسقط البذور من الأعلى</button><button class="btn" data-vl="bottom">أسقطها من الطرف الآخر</button></div>
+    <div class="sim-note" id="valveNote">ألاحظ: ماذا يحدث للبذور؟</div>
+    <div class="reveal" style="border:0;padding:6px 0 0">
+      <p>أستنتج: أبيّن أوجه الشبه بين تركيب الأوردة في جسمي وعملها، وبين النموذج الذي عملته.</p>
+      <textarea data-save="valve" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>كما تمر البذور في اتجاه واحد وتُمنع في الاتجاه الآخر، تعمل الصمامات الخاصة على تدفق الدم في اتجاه واحد ومنعه من التدفق في الاتجاه الخاطئ.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOOD CIRCULATION ============ -->
+<section class="page" data-page="blood" data-title="الدورة الدموية">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص١١٦</div><h2>الدورة الدموية</h2></header>
+  <div class="simple"><b>ببساطة:</b> القلب يضخ الدم في رحلتين:<br>• <b>إلى الرئتين:</b> يأخذ الدم الأكسجين ويتخلص من ثاني أكسيد الكربون.<br>• <b>إلى باقي الجسم:</b> يوصل الأكسجين والمواد الغذائية إلى الخلايا عبر <b>الشعيرات الدموية</b>، ويأخذ فضلاتها.<br>اللون <b style="color:#c0392b">الأحمر</b> للدم المؤكسج، واللون <b style="color:#2a6fd0">الأزرق</b> للدم غير المؤكسج.</div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>تابع قطرات الدم وهي تدور بين القلب والرئتين وباقي الجسم، ويتغير لونها.</p><button class="btn primary" data-ar="heart">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">الشكل خطوة بخطوة</span><h3>الدوران والتنفس</h3></div>
+    <div id="bloodSteps"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">نشاط تفاعلي</span><h3>رتّب رحلة الدم</h3></div>
+    <div id="a-blood"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أقرأ الشكل · ص١١٦</span><h3>أين يُضخ الدم غير المؤكسج؟</h3></div>
+    <p class="hint">إرشاد: يشير اللون الأحمر إلى الدم المؤكسج، أما اللون الأزرق فيشير إلى الدم غير المؤكسج.</p>
+    <div id="q-blood"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص١١٦</span><h3>مشكلة وحل · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px">
+      <p>مشكلة وحل: لماذا يشعر متسلقو الجبال الشاهقة بالإرهاق والتعب؟</p>
+      <textarea data-save="t116a" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>لأن الهواء في الأماكن المرتفعة جدًا يحتوي على أكسجين أقل، فيصل إلى خلاياهم أكسجين أقل لإطلاق الطاقة من الغذاء، فيشعرون بالتعب.</div>
+    </div>
+    <div class="reveal">
+      <p>التفكير الناقد: هل جهاز التنفس جزء من جهاز الإخراج؟ وضّح ذلك.</p>
+      <textarea data-save="t116b" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>نعم؛ فالرئتان من الأعضاء التي تخلّص الجسم من الفضلات، إذ يُطرد ثاني أكسيد الكربون والماء الناتجان عن التنفس مع هواء الزفير.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEW ============ -->
+<section class="page" data-page="review" data-title="مراجعة الدرس">
+  <header class="pg-h"><div class="where">التقويم · مراجعة الدرس · ص١١٧</div><h2>مراجعة الدرس</h2></header>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">ملخّص مصوّر</h3>
+    <ul style="margin:0 0 10px;padding-right:20px">
+      <li><b>الجهاز الهضمي</b> يحلل الغذاء إلى مواد يمكن استخدامها، أما <b>الجهاز الإخراجي</b> فيخلّص الجسم من الفضلات.</li>
+      <li><b>الجهاز التنفسي</b> يساعد على إطلاق الطاقة من جزيئات الغذاء في وجود الأكسجين.</li>
+      <li><b>جهاز الدوران</b> يعمل على حركة المواد المهمة (مواد غذائية، غازات، فضلات).</li>
+    </ul>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">المطويات · أنظّم أفكاري</span><h3>أكمل العبارات</h3></div>
+    <div class="fold3">
+      <label>في عملية الهضم…<textarea data-save="fd1"></textarea></label>
+      <label>يُطلق التنفس…<textarea data-save="fd2"></textarea></label>
+      <label>الدوران هو…<textarea data-save="fd3"></textarea></label>
+    </div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">خريطة مفاهيم</span><h3>أجهزة جسم الحيوان</h3></div>
+    <p class="hint">اضغط على مفهوم ثم على خانته. في البنك مفهومان لا مكان لهما.</p>
+    <div id="a-cmap1"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أفكر وأتحدث وأكتب</span><h3>الأسئلة ١–٣ و٦</h3></div>
+    <div id="r-self"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أفكر وأتحدث وأكتب</span><h3>أختار الإجابة الصحيحة (٤ و٥)</h3></div>
+    <div id="q-rev4"></div><div id="q-rev5"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">العلوم والرياضيات</span><h3>آلة الضخ</h3></div>
+    <p>إذا كان القلب يقوم بضخ ٧٥٠٠ لتر من الدم خلال جهاز الدوران في جسم الإنسان في اليوم الواحد، فما كمية الدم التي تدور في الجسم خلال ساعة واحدة؟</p>
+    <div class="row"><input type="text" id="mathIn" inputmode="decimal" placeholder="؟"> لتر <button class="btn primary" id="mathGo">تحقق</button></div>
+    <div class="msg" id="mathMsg"></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">العلوم والفن</span><h3>كتاب أجهزة الجسم</h3></div>
+    <p>أعمل كتابًا للصف يتعلق بأعضاء الحيوانات اللافقارية والفقارية وأجهزتها. أرسم كل عضو أو جهاز، وأكتب اسمه على الرسم، وأذكر أمثلة على حيوانات يوجد فيها الجهاز، والوظائف التي يؤديها.</p>
+    <textarea data-save="art" placeholder="خطتي للكتاب…"></textarea>
+  </div>
+</section>
+
+<!-- ============ POST-TEST ============ -->
+<section class="page" data-page="posttest" data-title="التقويم الختامي">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>التقويم الختامي</h2></header>
+  <p>أجب عن جميع الأسئلة ثم اضغط «صحّح إجاباتي».</p>
+  <div class="act" data-kind="post">
+    <div class="act-h"><span class="badge b-post">تقويم ختامي</span><h3>سبعة عشر سؤالًا</h3></div>
+    <div id="q-post"></div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="page" data-page="results" data-title="تقرير الإنجاز">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تقرير الإنجاز</h2></header>
+  <div class="sheet" id="resTop"></div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">التقويم التكويني والأنشطة</h3>
+    <ul class="res-list" id="resList"></ul>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">أكمل مطويتك</h3>
+    <p>عُد إلى المطوية في صفحة مراجعة الدرس وأكمل العبارات الثلاث.</p>
+    <div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="review">افتح المراجعة</button><button class="btn ghost" id="resetAll">ابدأ الدرس من جديد</button></div>
+  </div>
+</section>
+
+<!-- ============ DIAGNOSIS ============ -->
+<section class="page" data-page="diagnosis" data-title="تشخيص تحقق الأهداف">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تشخيص تحقق أهداف الدرس</h2></header>
+  <p>يُحسب مستوى تحقق كل هدف من إجاباتك في التقويم الختامي (٧٠٪)، ومن الأنشطة المرتبطة به (٣٠٪).</p>
+  <div class="row no-print" style="margin:0 0 14px"><label>اسم الطالبة / الطالب: <input type="text" id="stuName" data-save="stuName" style="width:210px;text-align:right"></label></div>
+  <div id="diagOut"></div>
+  <p class="hint">مستويات الإتقان: متقن ٨٠٪ فأكثر، قريب من الإتقان ٦٠–٧٩٪، يحتاج إلى علاج أقل من ٦٠٪.</p>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section class="page" data-page="plan" data-title="الخطة العلاجية">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>الخطة العلاجية</h2></header>
+  <div id="planOut"></div>
+  <div class="row no-print" style="margin-bottom:12px"><button class="btn" id="printPlan">اطبع التشخيص والخطة</button></div>
+</section>
+
+
+<div class="leaf" id="leaf"></div><div class="shade" id="shade"></div>
+<button class="corner" id="corner" aria-label="اقلب إلى الصفحة التالية"></button><button class="corner-back" id="cornerBack" aria-label="ارجع إلى الصفحة السابقة"></button>
+</div></main>
+
+<div class="ar" id="ar" hidden role="dialog" aria-modal="true" aria-label="عرض مجسّم بالواقع المعزز">
+  <video id="arVideo" playsinline muted></video>
+  <canvas id="arCanvas"></canvas>
+  <div class="ar-hud">
+    <span class="brk b1"></span><span class="brk b2"></span><span class="brk b3"></span><span class="brk b4"></span>
+    <div class="ar-top"><span class="ar-live">واقع معزز</span><div class="ar-title" id="arTitle"></div><button class="ar-x" id="arClose" aria-label="إغلاق العرض">✕</button></div>
+    <div class="ar-scan" id="arScan"><div class="reticle"></div><p>جارٍ التعرّف على الصفحة…</p></div>
+    <div class="ar-mk" id="arMk" hidden>وجّه الكاميرا نحو بطاقة العلامة الوردية<br>ليظهر المشهد فوقها</div>
+    <div class="ar-labels" id="arLabels"></div>
+    <div class="ar-bottom">
+      <div class="ar-toast" id="arToast" hidden></div>
+      <div class="ar-cap" id="arCap" aria-live="polite"></div>
+      <div class="ar-tl" id="arTl"></div>
+      <div class="ar-ctrl"><button id="arPlay">إيقاف مؤقت</button><button id="arReplay">إعادة العرض</button><button id="arCam">الكاميرا</button></div>
+      <div class="ar-hint">اسحب لتدوير المشهد، وقرّب أو بعّد بإصبعين أو بعجلة الفأرة</div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-view" id="mkView" hidden role="dialog" aria-modal="true" aria-label="بطاقة العلامة">
+  <div class="mk-card">
+    <h3>بطاقة العلامة للواقع المعزز</h3>
+    <div class="mk-sq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <p>اطبع هذه البطاقة أو اعرضها على شاشة جهاز آخر. ثم افتح العرض المجسّم واضغط «الكاميرا»، ووجّهها نحو المربع الوردي ليظهر المشهد فوقه.</p>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="mkPrint">اطبع البطاقة</button><button class="btn" id="mkClose">إغلاق</button></div>
+  </div>
+</div>
+
+<div class="bnav">
+  <div class="bnav-in">
+    <button class="btn" id="prevBtn">السابق</button>
+    <button class="btn primary" id="nextBtn">التالي</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const AR="٠١٢٣٤٥٦٧٨٩";
+const ar=n=>String(n).replace(/\d/g,d=>AR[d]).replace(/\./g,"٫");
+const toEn=s=>String(s).trim().replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫,]/g,".");
+const store={
+  get(k,d){try{const v=localStorage.getItem("dg1:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("dg1:"+k,JSON.stringify(v))}catch(e){}},
+  clear(){try{Object.keys(localStorage).filter(k=>k.indexOf("dg1:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function saveScore(key,got,total,detail){const s=store.get("scores",{});s[key]={got:got,total:total,detail:detail||null};store.set("scores",s);renderResults();renderDiag()}
+function praise(p){return p>=90?"ممتاز! فهمك متين.":p>=70?"جيد جدًا، راجع ما أخطأت فيه.":p>=50?"بداية جيدة، أعد قراءة الأجزاء المرتبطة.":"لا بأس، اقرأ الدرس مرة أخرى ثم أعد المحاولة."}
+
+/* ---------- quiz ---------- */
+function quiz(el,qs,o){
+  o=o||{};const instant=o.instant!==false;
+  let picks=qs.map(()=>null),done=false;
+  function draw(){
+    picks=qs.map(()=>null);done=false;
+    el.innerHTML=qs.map((q,i)=>'<div class="q"><div class="q-t"><span class="q-n">'+ar(i+1)+'</span><span>'+q.q+'</span></div><div class="opts">'+q.o.map((t,j)=>'<button class="opt" data-i="'+i+'" data-j="'+j+'">'+t+'</button>').join("")+'</div><div class="why" hidden></div></div>').join("")+
+      (instant?"":'<div class="row"><button class="btn primary" data-act="check">'+(o.checkLabel||"صحّح إجاباتي")+'</button></div><div class="msg"></div>')+'<div class="score" hidden></div>';
+  }
+  function mark(i){
+    const q=qs[i],box=$$(".q",el)[i];
+    $$(".opt",box).forEach((b,j)=>{b.disabled=true;b.classList.remove("sel");if(j===q.a)b.classList.add("ok");else if(j===picks[i])b.classList.add("bad")});
+    const w=$(".why",box);w.hidden=false;const right=picks[i]===q.a;
+    w.className="why "+(right?"ok":"bad");w.innerHTML=(right?"إجابة صحيحة. ":"الإجابة الصحيحة: "+q.o[q.a]+". ")+(q.why||"");
+  }
+  function finish(){
+    done=true;const got=picks.filter((p,i)=>p===qs[i].a).length,p=Math.round(got/qs.length*100);
+    const s=$(".score",el);s.hidden=false;
+    s.innerHTML='<span class="big">'+ar(got)+' / '+ar(qs.length)+'</span><span>'+praise(p)+'</span><button class="btn ghost" data-act="retry">أعد المحاولة</button>';
+    if(o.key)saveScore(o.key,got,qs.length,picks.map((p,i)=>p===qs[i].a));
+  }
+  el.addEventListener("click",e=>{
+    const b=e.target.closest(".opt");
+    if(b&&!b.disabled&&!done){
+      const i=+b.dataset.i,j=+b.dataset.j;
+      if(instant){if(picks[i]!==null)return;picks[i]=j;mark(i);if(picks.every(p=>p!==null))finish()}
+      else{picks[i]=j;$$(".opt",$$(".q",el)[i]).forEach(x=>x.classList.toggle("sel",x===b))}
+      return;
+    }
+    const a=e.target.closest("[data-act]");if(!a)return;
+    if(a.dataset.act==="check"){
+      const m=$(".msg",el);
+      if(picks.some(p=>p===null)){m.className="msg bad";m.textContent="أجب عن جميع الأسئلة أولًا ("+ar(picks.filter(p=>p===null).length)+" بلا إجابة).";return}
+      m.textContent="";qs.forEach((q,i)=>mark(i));a.disabled=true;finish();
+    }
+    if(a.dataset.act==="retry"){draw()}
+  });
+  draw();
+}
+
+/* ---------- sort ---------- */
+function sortAct(el,cfg){
+  let sel=null;
+  function draw(){
+    el.innerHTML='<div class="pool" data-zone="pool">'+shuffle(cfg.items).map(it=>'<button class="chip" data-b="'+it.b+'">'+it.t+'</button>').join("")+'</div><div class="zones">'+cfg.bins.map(b=>'<div class="zone" data-zone="'+b.id+'"><div class="zone-h">'+b.label+'</div><div class="zone-body"></div></div>').join("")+'</div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+    sel=null;
+  }
+  const zoneOf=c=>c.closest("[data-zone]");
+  const bodyOf=z=>z.dataset.zone==="pool"?z:$(".zone-body",z);
+  function arm(on){$$(".zone",el).forEach(z=>z.classList.toggle("armed",on))}
+  el.addEventListener("click",e=>{
+    const a=e.target.closest("[data-act]");
+    if(a){
+      if(a.dataset.act==="reset"){draw();return}
+      const m=$(".msg",el),pool=$(".pool",el);
+      if(pool.querySelector(".chip")){m.className="msg bad";m.textContent="ضع جميع البطاقات في الصناديق أولًا.";return}
+      let got=0;const chips=$$(".zone .chip",el);
+      chips.forEach(c=>{c.classList.remove("sel");const ok=zoneOf(c).dataset.zone===c.dataset.b;c.classList.toggle("ok",ok);c.classList.toggle("bad",!ok);if(ok)got++});
+      m.className="msg "+(got===chips.length?"ok":"bad");
+      m.textContent=got===chips.length?"أحسنت! كل البطاقات في مكانها الصحيح.":"صحيح "+ar(got)+" من "+ar(chips.length)+". انقل البطاقات الحمراء ثم تحقق مرة أخرى.";
+      if(cfg.key)saveScore(cfg.key,got,chips.length);
+      return;
+    }
+    const c=e.target.closest(".chip");
+    if(c){
+      $$(".chip",el).forEach(x=>x.classList.remove("ok","bad"));
+      if(sel&&sel!==c&&zoneOf(sel)!==zoneOf(c)){bodyOf(zoneOf(c)).appendChild(sel);sel.classList.remove("sel");sel=null;arm(false);return}
+      if(sel===c){c.classList.remove("sel");sel=null;arm(false);return}
+      if(sel)sel.classList.remove("sel");sel=c;c.classList.add("sel");arm(true);return;
+    }
+    const z=e.target.closest("[data-zone]");
+    if(z&&sel){bodyOf(z).appendChild(sel);sel.classList.remove("sel");sel=null;arm(false)}
+  });
+  draw();
+}
+
+/* ---------- order ---------- */
+function orderAct(el,cfg){
+  let cur;
+  function draw(){
+    do{cur=shuffle(cfg.steps.map((t,i)=>({t:t,i:i})))}while(cur.every((c,k)=>c.i===k));
+    render();
+  }
+  function render(){
+    el.innerHTML='<ol class="order">'+cur.map((c,k)=>'<li><span class="k">'+ar(k+1)+'</span><span class="t">'+c.t+'</span><span class="mv"><button data-up="'+k+'" aria-label="إلى الأعلى" '+(k===0?"disabled":"")+'>▲</button><button data-dn="'+k+'" aria-label="إلى الأسفل" '+(k===cur.length-1?"disabled":"")+'>▼</button></span></li>').join("")+'</ol><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">رتّب من جديد</button></div><div class="msg"></div>';
+  }
+  el.addEventListener("click",e=>{
+    const u=e.target.closest("[data-up]"),d=e.target.closest("[data-dn]"),a=e.target.closest("[data-act]");
+    if(u){const k=+u.dataset.up;[cur[k-1],cur[k]]=[cur[k],cur[k-1]];render();$$("[data-up]",el)[k-1]&&$$("[data-up]",el)[k-1].focus();return}
+    if(d){const k=+d.dataset.dn;[cur[k+1],cur[k]]=[cur[k],cur[k+1]];render();$$("[data-dn]",el)[k+1]&&$$("[data-dn]",el)[k+1].focus();return}
+    if(!a)return;
+    if(a.dataset.act==="reset"){draw();return}
+    let got=0;$$(".order li",el).forEach((li,k)=>{const ok=cur[k].i===k;li.classList.toggle("ok",ok);li.classList.toggle("bad",!ok);if(ok)got++});
+    const m=$(".msg",el);m.className="msg "+(got===cur.length?"ok":"bad");
+    m.textContent=got===cur.length?"ترتيب صحيح تمامًا!":"في مكانها الصحيح "+ar(got)+" من "+ar(cur.length)+". حرّك المراحل الحمراء.";
+    if(cfg.key)saveScore(cfg.key,got,cur.length);
+  });
+  draw();
+}
+
+/* ---------- match ---------- */
+const COLORS=["#2f6f9a","#b5701a","#5a8f2e","#8a4f9c","#b23f52","#2f8a86","#6b5a2d"];
+function matchAct(el,cfg){
+  let map,rights,selL=null;
+  function draw(){
+    map={};selL=null;rights=shuffle(cfg.pairs.map((p,i)=>({t:p[1],i:i})));
+    el.innerHTML='<div class="match"><div class="col"><h4>'+(cfg.lt||"")+'</h4>'+cfg.pairs.map((p,i)=>'<button class="mi" data-l="'+i+'"><span class="tag"></span><span>'+p[0]+'</span></button>').join("")+'</div><div class="col"><h4>'+(cfg.rt||"")+'</h4>'+rights.map(r=>'<button class="mi" data-r="'+r.i+'"><span class="tag"></span><span>'+r.t+'</span></button>').join("")+'</div></div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  function paint(){
+    $$(".mi",el).forEach(b=>{b.classList.remove("ok","bad");const t=$(".tag",b);t.style.background="transparent";t.textContent=""});
+    Object.keys(map).forEach(l=>{const r=map[l],c=COLORS[l%COLORS.length];
+      const L=$('[data-l="'+l+'"] .tag',el),R=$('[data-r="'+r+'"] .tag',el);
+      L.style.background=c;R.style.background=c;L.textContent=ar(+l+1);R.textContent=ar(+l+1)});
+    $$("[data-l]",el).forEach(b=>b.classList.toggle("sel",selL!==null&&+b.dataset.l===selL));
+  }
+  el.addEventListener("click",e=>{
+    const l=e.target.closest("[data-l]"),r=e.target.closest("[data-r]"),a=e.target.closest("[data-act]");
+    if(l){selL=+l.dataset.l;paint();return}
+    if(r){
+      if(selL===null){const m=$(".msg",el);m.className="msg bad";m.textContent="اختر عنصرًا من العمود الأول أولًا.";return}
+      const ri=+r.dataset.r;Object.keys(map).forEach(k=>{if(map[k]===ri)delete map[k]});map[selL]=ri;
+      const next=cfg.pairs.findIndex((p,i)=>map[i]===undefined);selL=next>=0?next:null;$(".msg",el).textContent="";paint();return;
+    }
+    if(!a)return;
+    if(a.dataset.act==="reset"){draw();return}
+    const m=$(".msg",el);
+    if(Object.keys(map).length<cfg.pairs.length){m.className="msg bad";m.textContent="صِل جميع العناصر أولًا.";return}
+    let got=0;cfg.pairs.forEach((p,i)=>{const ok=map[i]===i;if(ok)got++;$('[data-l="'+i+'"]',el).classList.toggle("ok",ok);$('[data-l="'+i+'"]',el).classList.toggle("bad",!ok);$('[data-r="'+map[i]+'"]',el).classList.toggle("ok",ok);$('[data-r="'+map[i]+'"]',el).classList.toggle("bad",!ok)});
+    m.className="msg "+(got===cfg.pairs.length?"ok":"bad");
+    m.textContent=got===cfg.pairs.length?"توصيل صحيح بالكامل!":"صحيح "+ar(got)+" من "+ar(cfg.pairs.length)+". اختر العنصر الأحمر وأعد توصيله.";
+    if(cfg.key)saveScore(cfg.key,got,cfg.pairs.length);
+  });
+  draw();
+}
+
+/* ---------- multi select ---------- */
+function multiAct(el,cfg){
+  function draw(){
+    el.innerHTML='<div class="opts">'+shuffle(cfg.opts).map(o=>'<button class="opt" data-ok="'+(o.ok?1:0)+'" aria-pressed="false">'+o.t+'</button>').join("")+'</div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  el.addEventListener("click",e=>{
+    const b=e.target.closest(".opt"),a=e.target.closest("[data-act]");
+    if(b&&!b.disabled){const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);b.classList.toggle("sel",on);return}
+    if(!a)return;if(a.dataset.act==="reset"){draw();return}
+    const bs=$$(".opt",el),m=$(".msg",el);
+    if(!bs.some(x=>x.classList.contains("sel"))){m.className="msg bad";m.textContent="اختر عبارة واحدة على الأقل.";return}
+    let got=0;bs.forEach(x=>{const s=x.classList.contains("sel"),ok=x.dataset.ok==="1";x.disabled=true;x.classList.remove("sel");if(s===ok)got++;if(ok)x.classList.add("ok");else if(s)x.classList.add("bad")});
+    m.className="msg "+(got===bs.length?"ok":"bad");
+    m.innerHTML=(got===bs.length?"أحسنت! ":"قراراتك الصحيحة "+ar(got)+" من "+ar(bs.length)+". ")+(cfg.note||"");
+    if(cfg.key)saveScore(cfg.key,got,bs.length);
+  });
+  draw();
+}
+
+/* ---------- reveal + saved text ---------- */
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-reveal]");
+  if(r){const m=r.closest(".reveal").querySelector(".model");m.hidden=!m.hidden;r.textContent=m.hidden?"اعرض الإجابة النموذجية":"أخفِ الإجابة النموذجية"}
+  const g=e.target.closest("[data-go]");if(g)go(g.dataset.go);
+});
+function bindSaves(){$$("[data-save]").forEach(t=>{t.value=store.get("t:"+t.dataset.save,"");t.addEventListener("input",()=>store.set("t:"+t.dataset.save,t.value))})}
+
+/* ---------- illustrations ---------- */
+function frond(x,y,h,ang,col){
+  let s='<g transform="translate('+x+' '+y+') rotate('+ang+')"><path d="M0 0 Q 3 '+(-h/2)+' 0 '+(-h)+'" stroke="'+col+'" stroke-width="2" fill="none"/>';
+  const n=13;for(let i=1;i<n;i++){const yy=-h*i/n,L=h*0.34*(1-i/n)+3,r=Math.max(1.6,L/5);
+    s+='<ellipse cx="'+(-L/2)+'" cy="'+yy+'" rx="'+(L/2)+'" ry="'+r+'" fill="'+col+'" transform="rotate(28 0 '+yy+')"/><ellipse cx="'+(L/2)+'" cy="'+yy+'" rx="'+(L/2)+'" ry="'+r+'" fill="'+col+'" transform="rotate(-28 0 '+yy+')"/>'}
+  return s+'</g>';
+}
+const svgw=(inner,vb)=>'<svg viewBox="'+(vb||"0 0 120 100")+'" aria-hidden="true">'+inner+'</svg>';
+const ICON={
+  moss(){let s='<ellipse cx="60" cy="90" rx="48" ry="7" fill="#7a5a3a"/>';
+    for(let i=0;i<8;i++){const x=24+i*10,h=26+((i*7)%12);s+='<line x1="'+x+'" y1="88" x2="'+x+'" y2="'+(88-h)+'" stroke="#3f7d36" stroke-width="2"/>';
+      for(let k=0;k<5;k++){const y=86-k*h/5;s+='<path d="M'+x+' '+y+' l-4 -4 M'+x+' '+y+' l4 -4" stroke="#69ad4f" stroke-width="2" stroke-linecap="round"/>'}}
+    s+='<path d="M64 56 Q66 30 70 14" stroke="#b07a2a" stroke-width="1.6" fill="none"/><ellipse cx="70" cy="11" rx="3.2" ry="6" fill="#c4871a" transform="rotate(15 70 11)"/>';
+    s+='<path d="M44 58 Q42 36 38 22" stroke="#b07a2a" stroke-width="1.6" fill="none"/><ellipse cx="38" cy="19" rx="3" ry="5.5" fill="#c4871a" transform="rotate(-15 38 19)"/>';
+    return svgw(s)},
+  liver(){let s='<ellipse cx="60" cy="88" rx="50" ry="7" fill="#7a5a3a"/>';
+    s+='<path d="M60 86 C40 80 22 74 14 60 C30 62 44 70 58 78 Z" fill="#4f9440"/><path d="M60 86 C80 80 98 74 106 60 C90 62 76 70 62 78 Z" fill="#4f9440"/><path d="M60 86 C56 70 50 56 52 40 C62 54 64 70 62 84 Z" fill="#5fa44c"/><path d="M60 86 C66 72 76 62 88 52 C84 66 74 78 62 86 Z" fill="#3f8436"/>';
+    s+='<line x1="34" y1="66" x2="34" y2="40" stroke="#6d8f43" stroke-width="2"/><path d="M24 40 Q34 28 44 40 Z" fill="#7fb547"/><line x1="82" y1="64" x2="82" y2="36" stroke="#6d8f43" stroke-width="2"/><path d="M72 36 Q82 24 92 36 Z" fill="#7fb547"/>';
+    return svgw(s)},
+  horn(){let s='<ellipse cx="60" cy="88" rx="50" ry="7" fill="#7a5a3a"/>';
+    for(let i=0;i<7;i++){const a=-70+i*23;s+='<ellipse cx="60" cy="80" rx="30" ry="7" fill="'+(i%2?"#4f9440":"#62a84e")+'" transform="rotate('+a+' 60 80) translate(0 0)" opacity=".9"/>'}
+    [[46,10],[56,4],[66,8],[76,14]].forEach(p=>{s+='<path d="M'+p[0]+' 78 Q'+(p[0]+2)+' 40 '+(p[0]+1)+' '+p[1]+'" stroke="#8a9a2a" stroke-width="3" fill="none" stroke-linecap="round"/>'});
+    return svgw(s)},
+  fern(){return svgw('<ellipse cx="60" cy="94" rx="40" ry="5" fill="#7a5a3a"/>'+frond(60,94,86,0,"#3e7c4a")+frond(52,94,70,-28,"#5a9a52")+frond(68,94,70,28,"#5a9a52"))},
+  club(){let s='<ellipse cx="60" cy="94" rx="46" ry="5" fill="#7a5a3a"/><path d="M14 92 Q60 84 106 92" stroke="#3f7d36" stroke-width="3" fill="none"/>';
+    [[36,50],[56,64],[78,56],[96,40]].forEach(p=>{const x=p[0],h=p[1];s+='<line x1="'+x+'" y1="90" x2="'+x+'" y2="'+(90-h)+'" stroke="#3f7d36" stroke-width="3"/>';
+      for(let y=88;y>90-h+10;y-=4){s+='<path d="M'+x+' '+y+' l-5 -3 M'+x+' '+y+' l5 -3" stroke="#6aa84f" stroke-width="1.6"/>'}
+      s+='<ellipse cx="'+x+'" cy="'+(90-h)+'" rx="4" ry="10" fill="#c9b04a"/>'});
+    return svgw(s)},
+  horse(){let s='<ellipse cx="60" cy="94" rx="40" ry="5" fill="#7a5a3a"/>';
+    [[44,78],[66,88],[86,60]].forEach(p=>{const x=p[0],h=p[1];s+='<line x1="'+x+'" y1="92" x2="'+x+'" y2="'+(92-h)+'" stroke="#4f8a3c" stroke-width="4"/>';
+      for(let y=88;y>92-h+12;y-=11){s+='<line x1="'+(x-3)+'" y1="'+y+'" x2="'+(x+3)+'" y2="'+y+'" stroke="#2f5a26" stroke-width="2"/>';
+        for(let k=-3;k<=3;k++){if(!k)continue;s+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+k*5)+'" y2="'+(y-6-Math.abs(k))+'" stroke="#7fb547" stroke-width="1.2"/>'}}
+      s+='<ellipse cx="'+x+'" cy="'+(92-h)+'" rx="4.5" ry="8" fill="#b08a3a"/>'});
+    return svgw(s)}
+};
+
+/* ---------- helpers ---------- */
+const T11=(x,y,t,a,c)=>'<text x="'+x+'" y="'+y+'" font-size="11" fill="'+(c||"#46554a")+'" text-anchor="'+(a||"middle")+'" font-family="Noto Kufi Arabic,Tahoma,sans-serif">'+t+'</text>';
+function stepper(el,steps){let i=0;
+  function draw(){const s=steps[i];el.innerHTML='<div class="st-card"><div class="st-k">'+ar(i+1)+' / '+ar(steps.length)+'</div><h4>'+s.h+'</h4>'+(s.svg?'<div class="st-svg">'+s.svg+'</div>':'')+'<p>'+s.t+'</p></div><div class="row" style="justify-content:space-between"><button class="btn" data-sp="-1"'+(i===0?" disabled":"")+'>السابق</button><div class="st-dots">'+steps.map((x,k)=>'<i class="'+(k===i?"on":"")+'"></i>').join("")+'</div><button class="btn primary" data-sp="1"'+(i===steps.length-1?" disabled":"")+'>التالي</button></div>'}
+  el.addEventListener("click",e=>{const b=e.target.closest("[data-sp]");if(!b)return;i=Math.max(0,Math.min(steps.length-1,i+(+b.dataset.sp)));draw()});draw()}
+
+/* ---------- cover art ---------- */
+(function(){
+  let s='<rect width="800" height="300" fill="#eaf4ec"/>';
+  s+='<path d="M400 40 C330 40 300 80 300 130 L300 300 L500 300 L500 130 C500 80 470 40 400 40Z" fill="#f3d9c4"/>';
+  s+='<path d="M360 150 C330 150 320 190 340 220 C360 250 340 270 360 280" stroke="#c0392b" stroke-width="10" fill="none"/>';
+  s+='<ellipse cx="350" cy="170" rx="44" ry="50" fill="#f4a3b4"/><ellipse cx="450" cy="170" rx="44" ry="50" fill="#f4a3b4"/>';
+  s+='<path d="M400 90 V140 M400 140 L360 160 M400 140 L440 160" stroke="#d98a9a" stroke-width="8" fill="none" stroke-linecap="round"/>';
+  s+='<path d="M392 186 C380 176 380 160 392 160 C398 160 400 166 400 166 C400 166 402 160 408 160 C420 160 420 176 408 186 L400 194Z" fill="#c0392b"/>';
+  s+='<path d="M370 230 Q400 214 430 230 Q440 250 420 262 Q400 272 380 262 Q360 250 370 230Z" fill="#e8a07c"/>';
+  s+='<g stroke="#5a9a3a" stroke-width="9" stroke-linecap="round"><line x1="140" y1="300" x2="150" y2="70"/><line x1="185" y1="300" x2="178" y2="90"/></g><g fill="#6fb04f"><ellipse cx="170" cy="110" rx="26" ry="8" transform="rotate(-30 170 110)"/><ellipse cx="128" cy="150" rx="26" ry="8" transform="rotate(30 128 150)"/><ellipse cx="200" cy="170" rx="26" ry="8" transform="rotate(-25 200 170)"/></g>';
+  s+='<circle cx="640" cy="150" r="46" fill="#fff" stroke="#2a2a2a" stroke-width="6"/><circle cx="622" cy="140" r="12" fill="#2a2a2a"/><circle cx="658" cy="140" r="12" fill="#2a2a2a"/><circle cx="640" cy="162" r="6" fill="#2a2a2a"/><circle cx="604" cy="112" r="14" fill="#2a2a2a"/><circle cx="676" cy="112" r="14" fill="#2a2a2a"/>';
+  $("#coverArt").innerHTML=s;
+})();
+(function(){
+  $("#pandaSvg").innerHTML='<rect width="340" height="200" fill="#dfeedd" rx="14"/>'+
+   '<g stroke="#5a9a3a" stroke-width="5">'+[30,60,290,315].map(x=>'<line x1="'+x+'" y1="200" x2="'+(x+8)+'" y2="20"/>').join("")+'</g>'+
+   '<ellipse cx="170" cy="150" rx="78" ry="48" fill="#2a2a2a"/><circle cx="170" cy="92" r="52" fill="#fff" stroke="#ddd" stroke-width="2"/>'+
+   '<circle cx="128" cy="50" r="16" fill="#2a2a2a"/><circle cx="212" cy="50" r="16" fill="#2a2a2a"/><ellipse cx="150" cy="88" rx="13" ry="17" fill="#2a2a2a" transform="rotate(-20 150 88)"/><ellipse cx="190" cy="88" rx="13" ry="17" fill="#2a2a2a" transform="rotate(20 190 88)"/>'+
+   '<circle cx="152" cy="88" r="4" fill="#fff"/><circle cx="188" cy="88" r="4" fill="#fff"/><ellipse cx="170" cy="110" rx="9" ry="6" fill="#2a2a2a"/>'+
+   '<g stroke="#4f9a3a" stroke-width="4" stroke-linecap="round"><line x1="150" y1="126" x2="215" y2="118"/><path d="M200 120 l14 -14 M206 120 l16 -4 M196 121 l8 -16" /></g>';
+  $("#snakeSvg").innerHTML='<rect width="340" height="150" fill="#efe6d6" rx="14"/><path d="M20 100 C60 60 100 120 140 90 C160 76 175 70 190 74 C230 84 250 50 290 60" stroke="#7a7a8c" stroke-width="18" fill="none" stroke-linecap="round"/><ellipse cx="185" cy="76" rx="30" ry="20" fill="#8a8aa0"/><ellipse cx="185" cy="76" rx="20" ry="13" fill="#f4efe4" opacity=".5"/><circle cx="296" cy="58" r="13" fill="#6a6a7c"/><circle cx="300" cy="54" r="3" fill="#fff"/>'+T11(185,120,"بيضة داخل جسم الأفعى");
+})();
+
+/* ---------- vocabulary ---------- */
+const VOCAB=[["الهضم","عملية يتم فيها ابتلاع الغذاء وتفكيكه إلى أجزاء ومركبات بسيطة يمكن للخلايا الاستفادة منها."],["الإخراج","عملية يتم فيها تخليص الجسم من الفضلات."],["التنفس","عملية إطلاق الطاقة المختزنة في جزيئات الجلوكوز، وتحدث في الخلايا في وجود الأكسجين."],["الدوران","حركة المواد المهمة، ومنها الأكسجين والجلوكوز والفضلات، في الجسم."],["متغيرة درجة الحرارة","حيوانات تتغير درجة حرارة أجسامها تبعًا للتغير في درجة حرارة الهواء أو الماء المحيط بها."],["ثابتة درجة الحرارة","حيوانات تحافظ على ثبات درجات حرارة أجسامها حتى لو تغيرت درجة حرارة الوسط المحيط بها."]];
+(function(){
+  $("#vocab").innerHTML=VOCAB.map((v,i)=>'<button data-v="'+i+'">'+v[0]+'</button>').join("");
+  $("#vocab").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;const v=VOCAB[+b.dataset.v];$("#vocabDef").innerHTML="<b>"+v[0]+":</b> "+v[1]});
+})();
+
+/* ---------- pretest ---------- */
+quiz($("#q-pre"),[
+  {q:"من أين تحصل الحيوانات على الطاقة؟",o:["من الغذاء","من الضوء مباشرة","من التربة","لا تحتاج إلى طاقة"],a:0},
+  {q:"العضو الذي يمتص المواد الغذائية وينقلها إلى الدم في الإنسان:",o:["القلب","الأمعاء الدقيقة","الرئتان","الجلد"],a:1},
+  {q:"الغاز الذي تحتاج إليه الخلايا لإطلاق الطاقة من الغذاء:",o:["ثاني أكسيد الكربون","النيتروجين","الأكسجين","بخار الماء"],a:2},
+  {q:"العضو الذي يضخ الدم إلى أجزاء الجسم:",o:["المعدة","الكبد","القلب","الكليتان"],a:2},
+  {q:"تتنفس الأسماك بواسطة:",o:["الرئات","الخياشيم","الجلد فقط","القصيبات"],a:1},
+  {q:"درجة حرارة جسم الثعبان:",o:["ثابتة دائمًا","تتغير تبعًا لحرارة الوسط المحيط به"],a:1}
+],{key:"pre",instant:false});
+
+/* ---------- explore: paper lab ---------- */
+(function(){
+  const P=[["مناشف ورقية من الألياف",50,41],["مناشف ورقية عادية",50,44],["ورق تجليد",50,48],["ورق طباعة",50,49]];
+  let sel=-1,busy=false;const done={};
+  $("#paperBtns").innerHTML=P.map((p,i)=>'<button class="btn" data-pp="'+i+'">'+p[0]+'</button>').join("");
+  const svg=$("#cylSvg");
+  function draw(level,strip){let s='<rect x="140" y="20" width="60" height="180" rx="6" fill="none" stroke="#7a8a95" stroke-width="3"/>';
+    for(let v=10;v<=60;v+=10){const y=200-v*3;s+='<line x1="140" y1="'+y+'" x2="152" y2="'+y+'" stroke="#7a8a95" stroke-width="2"/>'+'<text x="134" y="'+(y+4)+'" font-size="10" fill="#46554a" text-anchor="end" style="direction:ltr">'+v+'</text>'}
+    const h=level*3;s+='<rect x="143" y="'+(200-h)+'" width="54" height="'+h+'" fill="#6bb3e6" opacity=".7" style="transition:all 1s"/>';
+    if(strip)s+='<rect x="164" y="40" width="12" height="'+(strip)+'" fill="#f4efe4" stroke="#b8a888"/>';
+    s+=T11(170,215,"مخبار مدرّج (مل)");svg.innerHTML=s}
+  draw(50,0);
+  $("#paperBtns").addEventListener("click",e=>{const b=e.target.closest("[data-pp]");if(!b||busy)return;sel=+b.dataset.pp;$$("#paperBtns .btn").forEach(x=>x.classList.toggle("primary",x===b));draw(50,0);$("#paperNote").textContent="المستوى الأول للماء: "+ar(50)+" مل. اضغط «أدخل الشريط»."});
+  $("#paperGo").addEventListener("click",()=>{if(sel<0||busy){if(sel<0)$("#paperNote").textContent="اختر نوع الورق أولًا.";return}busy=true;const p=P[sel];draw(50,90);const t0=performance.now();
+    (function tick(now){const u=Math.min(1,(now-t0)/2400);$("#paperNote").textContent="الوقت: "+ar(Math.round(u*60))+" ثانية";if(u<1){requestAnimationFrame(tick);return}
+      draw(p[2],0);busy=false;done[sel]=1;$("#paperNote").textContent="أخرجت الشريط. المستوى النهائي: "+ar(p[2])+" مل، فالكمية الممتصة = "+ar(p[1])+" − "+ar(p[2])+" = "+ar(p[1]-p[2])+" مل.";
+      const tb=$("#paperTbl");$$("tr[data-r]",tb).forEach(r=>{if(+r.dataset.r===sel)r.remove()});
+      tb.insertAdjacentHTML("beforeend",'<tr data-r="'+sel+'"><td>'+p[0]+'</td><td>'+ar(p[1])+' مل</td><td>'+ar(p[2])+' مل</td><td><b>'+ar(p[1]-p[2])+' مل</b></td></tr>')})(t0)});
+})();
+quiz($("#q-explore"),[
+  {q:"أستنتج: أي أنواع الورق امتص أكبر كمية من الماء؟",o:["ورق الطباعة","ورق التجليد","المناشف الورقية من الألياف","المناشف الورقية العادية"],a:2},
+  {q:"ماذا يمثل الورق في هذا النموذج؟",o:["الأمعاء الغليظة التي تمتص الماء","القلب","الرئتين","الأسنان"],a:0}
+],{key:"f-explore"});
+
+/* ---------- invertebrates ---------- */
+sortAct($("#a-invert"),{key:"f-invert",bins:[{id:"f",label:"تصفية الماء عبر الثقوب"},{id:"o",label:"تجويف هضمي بفتحة واحدة"},{id:"t",label:"أنبوب داخل أنبوب بفتحتين"}],items:[
+  {t:"الإسفنجيات",b:"f"},{t:"اللاسعات (قنديل البحر)",b:"o"},{t:"الديدان المفلطحة",b:"o"},{t:"دودة الأرض",b:"t"},{t:"يدخل الغذاء ويخرج من الفتحة نفسها",b:"o"},{t:"فتحة للابتلاع وأخرى للفضلات",b:"t"}]});
+
+/* ---------- human digestive system ---------- */
+(function(){
+  const svg=$("#gutSvg"),note=$("#gutNote");
+  const O={mouth:["الفم","يبدأ فيه الهضم؛ فالهضم في الإنسان يحدث في الفم والمعدة والأمعاء الدقيقة."],eso:["المريء","يمر الطعام عبره من الفم إلى المعدة."],liver:["الكبد","من الأعضاء التي تعمل على تخليص الجسم من الفضلات."],gall:["الحويصلة الصفراوية","جزء من جهاز الهضم في الإنسان."],stom:["المعدة","يحلل الحمض والإنزيم فيها الغذاء إلى دقائق صغيرة."],panc:["البنكرياس","جزء من جهاز الهضم في الإنسان."],small:["الأمعاء الدقيقة","يحدث فيها الهضم، وتمتص المواد الغذائية وتنقلها إلى الدم."],large:["الأمعاء الغليظة","تمتص الماء، كما في نموذج الورق في نشاط أستكشف."],app:["الزائدة (المعي)","جزء من جهاز الهضم في الإنسان."]};
+  svg.innerHTML='<rect width="340" height="330" rx="14" fill="#f3efe6"/><path d="M110 330 L110 150 Q110 120 140 112 L200 112 Q230 120 230 150 L230 330" fill="#e9d8c8"/><circle cx="170" cy="56" r="40" fill="#f2d2b8"/>'+
+   '<path data-o="mouth" d="M156 74 Q170 84 184 74" stroke="#c0392b" stroke-width="7" fill="none" stroke-linecap="round" style="cursor:pointer"/>'+
+   '<path data-o="eso" d="M170 82 L170 160" stroke="#d98a7a" stroke-width="9" fill="none" style="cursor:pointer"/>'+
+   '<path data-o="liver" d="M120 160 Q120 140 160 146 L176 150 Q176 182 140 184 Q120 184 120 160Z" fill="#8b4a2b" style="cursor:pointer"/>'+
+   '<ellipse data-o="gall" cx="160" cy="188" rx="7" ry="9" fill="#5aa64a" style="cursor:pointer"/>'+
+   '<path data-o="stom" d="M172 158 Q214 150 216 182 Q216 206 190 206 Q176 204 180 188 Q182 172 172 170Z" fill="#e88a9a" style="cursor:pointer"/>'+
+   '<path data-o="panc" d="M162 210 Q190 202 214 212 Q206 220 166 218Z" fill="#f2c230" style="cursor:pointer"/>'+
+   '<path data-o="large" d="M128 300 L128 230 Q128 222 136 222 L204 222 Q212 222 212 230 L212 300" stroke="#c97a5a" stroke-width="14" fill="none" style="cursor:pointer"/>'+
+   '<path data-o="small" d="M146 240 q12 -8 24 0 t24 0 M146 256 q12 -8 24 0 t24 0 M146 272 q12 -8 24 0 t24 0 M146 288 q12 -8 24 0 t24 0" stroke="#f0a090" stroke-width="7" fill="none" style="cursor:pointer"/>'+
+   '<path data-o="app" d="M128 300 q-4 12 6 14" stroke="#c97a5a" stroke-width="5" fill="none" style="cursor:pointer"/>';
+  svg.addEventListener("click",e=>{const t=e.target.closest("[data-o]");if(!t)return;const o=O[t.dataset.o];$$("[data-o]",svg).forEach(x=>x.style.filter="");t.style.filter="drop-shadow(0 0 4px #1e5a7a)";note.innerHTML="<b>"+o[0]+":</b> "+o[1]});
+})();
+orderAct($("#a-path"),{key:"f-path",steps:["الفم","المريء","المعدة","الأمعاء الدقيقة","الأمعاء الغليظة"]});
+quiz($("#q-digest"),[
+  {q:"تحتوي الأجهزة الهضمية للأبقار والأرانب على بكتيريا تساعد على:",o:["هضم الأنسجة النباتية","ضخ الدم","تبادل الغازات","تنظيم درجة الحرارة"],a:0},
+  {q:"الأعضاء التي تعمل على تخليص جسم الإنسان من الفضلات:",o:["الكليتان والرئتان والكبد والجلد","المعدة والفم فقط","القلب والأسنان","المريء والأمعاء الدقيقة"],a:0}
+],{key:"f-digest"});
+
+/* ---------- breathing ---------- */
+(function(){
+  const svg=$("#lungSvg"),note=$("#lungNote");
+  svg.innerHTML='<defs><marker id="la" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9z" fill="#2a8fd0"/></marker><marker id="lb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9z" fill="#7a7a7a"/></marker></defs>'+
+   '<rect width="340" height="230" rx="14" fill="#f3efe6"/><path d="M170 10 V70 M170 70 L140 90 M170 70 L200 90" stroke="#d98a9a" stroke-width="10" fill="none" stroke-linecap="round"/>'+
+   '<g id="lungL" style="transform-box:fill-box;transform-origin:100% 0;transition:transform 1.2s"><path d="M140 84 Q90 84 86 140 Q84 180 120 186 Q150 188 154 160 L154 96 Z" fill="#f4a3b4" stroke="#d98a9a" stroke-width="3"/></g>'+
+   '<g id="lungR" style="transform-box:fill-box;transform-origin:0 0;transition:transform 1.2s"><path d="M200 84 Q250 84 254 140 Q256 180 220 186 Q190 188 186 160 L186 96 Z" fill="#f4a3b4" stroke="#d98a9a" stroke-width="3"/></g>'+
+   '<path id="dia" d="M80 196 Q170 160 260 196" stroke="#b5701a" stroke-width="7" fill="none" style="transition:d 1.2s"/>'+T11(300,206,"الحجاب الحاجز","middle","#8a5310")+
+   '<g id="arrIn" opacity="0"><line x1="150" y1="0" x2="150" y2="40" stroke="#2a8fd0" stroke-width="4" marker-end="url(#la)"/>'+T11(112,22,"أكسجين","middle","#1e5a7a")+'</g>'+
+   '<g id="arrOut" opacity="0"><line x1="190" y1="40" x2="190" y2="2" stroke="#7a7a7a" stroke-width="4" marker-end="url(#lb)"/>'+T11(250,22,"ثاني أكسيد الكربون والماء","middle","#555")+'</g>';
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-br]");if(!b)return;const inh=b.dataset.br==="in";
+    $$("[data-br]").forEach(x=>x.classList.toggle("primary",x===b));
+    $("#lungL").style.transform=inh?"scale(1.12)":"scale(1)";$("#lungR").style.transform=inh?"scale(1.12)":"scale(1)";
+    $("#dia").setAttribute("d",inh?"M80 206 Q170 196 260 206":"M80 196 Q170 160 260 196");
+    $("#arrIn").setAttribute("opacity",inh?1:0);$("#arrOut").setAttribute("opacity",inh?0:1);
+    note.textContent=inh?"الشهيق: يدخل الهواء وتتمدد الرئتان، فيتزود الجسم بالأكسجين الضروري لإطلاق الطاقة من الغذاء.":"الزفير: يخرج الهواء، فيتخلص الجسم من الفضلات، ومنها ثاني أكسيد الكربون والماء الناتجان عن التنفس. والحجاب الحاجز ينقبض وينبسط لينظم الشهيق والزفير."});
+})();
+matchAct($("#a-resporg"),{key:"f-resporg",lt:"الحيوان",rt:"عضو التنفس",pairs:[
+  ["الديدان المفلطحة","الانتشار عبر سطح الجسم الرطب"],
+  ["الرخويات والقشريات وبعض الديدان","الخياشيم"],
+  ["معظم العناكب","رئات تشبه صفحات الكتاب"],
+  ["الحشرات","القُصيبات"],
+  ["الزواحف والطيور والثدييات","الرئات"]]});
+orderAct($("#a-airway"),{key:"f-airway",steps:["الفم والأنف","البلعوم","الحنجرة","القصبة الهوائية","الشعبتان الهوائيتان","الشعيبات الهوائية","الحويصلات الهوائية"]});
+quiz($("#q-resp"),[
+  {q:"تتبادل صغار البرمائيات الغازات بواسطة:",o:["الرئات فقط","الخياشيم والجلد","القصيبات","رئات تشبه صفحات الكتاب"],a:1},
+  {q:"لماذا تستخدم الزواحف الرئات في تنفسها؟",o:["لأن جلدها المغطى بالحراشف لا يسمح للهواء بالنفاذ منه","لأنها تعيش في الماء","لأنها صغيرة جدًا","لأن لها خياشيم"],a:0},
+  {q:"يحدث تبادل الغازات بين الدم والهواء في:",o:["القصبة الهوائية","الحنجرة","الحويصلات الهوائية","البلعوم"],a:2}
+],{key:"f-resp"});
+
+/* ---------- circulation & temperature ---------- */
+sortAct($("#a-circ"),{key:"f-circ",bins:[{id:"d",label:"بالانتشار"},{id:"o",label:"جهاز دوران مفتوح"},{id:"c",label:"جهاز دوران مغلق"}],items:[
+  {t:"الإسفنج",b:"d"},{t:"الجراد",b:"o"},{t:"الرخويات",b:"o"},{t:"يتجمع الدم في الجيوب",b:"o"},{t:"السمكة",b:"c"},{t:"القط",b:"c"},{t:"الدم لا يغادر الأوعية الدموية",b:"c"}]});
+sortAct($("#a-temp"),{key:"f-temp",bins:[{id:"v",label:"متغيرة درجة الحرارة"},{id:"s",label:"ثابتة درجة الحرارة"}],items:[
+  {t:"الثعابين",b:"v"},{t:"البرمائيات",b:"v"},{t:"معظم الأسماك",b:"v"},{t:"الطيور",b:"s"},{t:"القط",b:"s"},{t:"الدب القطبي",b:"s"},{t:"الحيتان",b:"s"}]});
+quiz($("#q-temp"),[
+  {q:"تستدفئ الثعابين بالشمس، وتحفر في التربة لتبرد، لأنها:",o:["ثابتة درجة الحرارة","متغيرة درجة الحرارة"],a:1},
+  {q:"إذا ارتفعت درجة حرارة الحيوان الثابت درجة الحرارة فإنه يتخلص من الحرارة الزائدة عبر:",o:["الجلد وإفراز العرق","الخياشيم","الفرو","طبقات الدهون"],a:0},
+  {q:"يمنع الدب القطبي فقدان الحرارة بواسطة:",o:["العرق","الفرو","الخياشيم","الحفر تحت الصخور"],a:1}
+],{key:"f-tempq"});
+
+/* ---------- valve model ---------- */
+(function(){
+  const svg=$("#valveSvg"),note=$("#valveNote");let busy=false;
+  function base(open){return '<rect width="340" height="230" rx="14" fill="#f3efe6"/><rect x="140" y="10" width="60" height="210" fill="#c9a77c" stroke="#8a6a45" stroke-width="3"/>'+
+    '<path id="flapA" d="M142 100 L198 100" stroke="#e05a5a" stroke-width="5" style="transition:all .3s"/>'+
+    T11(70,110,"صمام (ورقة)","middle")+T11(70,22,"الأعلى","middle")+T11(70,214,"الطرف الآخر","middle")}
+  function run(fromTop){if(busy)return;busy=true;let t0=performance.now();const beans=[0,1,2].map(i=>({d:i*350}));
+    (function tick(now){const t=now-t0;let s=base();let blocked=false;
+      beans.forEach(b=>{const u=Math.max(0,Math.min(1,(t-b.d)/1600));let y=fromTop?lerp2(4,226,u):lerp2(226,4,u);
+        if(!fromTop&&y<108){y=108;blocked=true}
+        s+='<ellipse cx="'+(160+ (b.d/350)*10)+'" cy="'+y+'" rx="8" ry="5" fill="#7a3e1d"/>'});
+      const open=fromTop&&beans.some(b=>{const u=(t-b.d)/1600;return u>.38&&u<.55});
+      svg.innerHTML=s;if(open)$("#flapA",svg).setAttribute("d","M142 100 L160 128");
+      if(t<2600)requestAnimationFrame(tick);else{busy=false;note.textContent=fromTop?"مرّت البذور: الورقة تتحرك إلى الأسفل وتسمح بالمرور في هذا الاتجاه.":"لم تمر البذور: الورقة تغلق الأنبوب وتمنع المرور في هذا الاتجاه."}})(t0)}
+  function lerp2(a,b,u){return a+(b-a)*u}
+  svg.innerHTML=base();
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-vl]");if(b)run(b.dataset.vl==="top")});
+})();
+
+/* ---------- blood circulation ---------- */
+const HEART='<path d="M170 150 C140 128 130 100 150 92 C162 88 170 100 170 100 C170 100 178 88 190 92 C210 100 200 128 170 150Z" fill="#c0392b"/>';
+const LUNGS='<ellipse cx="80" cy="60" rx="34" ry="26" fill="#f4a3b4"/><ellipse cx="260" cy="60" rx="34" ry="26" fill="#f4a3b4"/>';
+stepper($("#bloodSteps"),[
+  {h:"١. الدم غير المؤكسج يعود إلى القلب",svg:'<svg viewBox="0 0 340 170">'+LUNGS+HEART+'<path d="M170 168 V150" stroke="#2a6fd0" stroke-width="8"/><path d="M30 160 Q100 160 150 130" stroke="#2a6fd0" stroke-width="6" fill="none"/>'+T11(70,150,"من الجسم","middle","#2a6fd0")+'</svg>',t:"يتدفق الدم غير المؤكسج، أي غير المحمّل بالأكسجين، إلى القلب."},
+  {h:"٢. القلب يضخه إلى الرئتين",svg:'<svg viewBox="0 0 340 170">'+LUNGS+HEART+'<path d="M160 96 Q120 40 110 60 M180 96 Q220 40 230 60" stroke="#2a6fd0" stroke-width="6" fill="none"/></svg>',t:"يضخ القلب الدم غير المؤكسج إلى الرئتين."},
+  {h:"٣. تبادل الغازات في الرئتين",svg:'<svg viewBox="0 0 340 170">'+LUNGS+HEART+T11(80,64,"أكسجين ← الدم","middle","#c0392b")+T11(260,64,"ثاني أكسيد الكربون → الهواء","middle","#555")+'</svg>',t:"في الحويصلات الهوائية ينتقل الأكسجين إلى الدم، وينتقل ثاني أكسيد الكربون من الدم إلى الحويصلات، ثم يخرج مع هواء الزفير."},
+  {h:"٤. الدم المؤكسج إلى الجسم",svg:'<svg viewBox="0 0 340 170">'+LUNGS+HEART+'<path d="M170 150 V168 M150 130 Q100 160 30 160" stroke="#c0392b" stroke-width="6" fill="none"/>'+T11(70,150,"إلى الجسم","middle","#c0392b")+'</svg>',t:"يعود الدم المؤكسج إلى القلب فيضخه إلى جميع أجزاء الجسم. وفي الأمعاء الدقيقة يُحمَّل بالمواد الغذائية، ثم تنتقل المواد الغذائية والأكسجين عبر جدران الشعيرات الدموية إلى الخلايا، وتمرّر الخلايا فضلاتها إلى الدم، فيصبح غير مؤكسج ويعود إلى القلب."}
+]);
+orderAct($("#a-blood"),{key:"f-blood",steps:["يتدفق الدم غير المؤكسج إلى القلب","يضخ القلب الدم غير المؤكسج إلى الرئتين","يتخلص الدم في الرئتين من ثاني أكسيد الكربون ويُحمَّل بالأكسجين","يعود الدم المؤكسج إلى القلب فيضخه إلى سائر أجزاء الجسم"]});
+quiz($("#q-blood"),[
+  {q:"أين يُضخ الدم غير المؤكسج؟",o:["إلى الرئتين","إلى الأمعاء الدقيقة","إلى الجلد","إلى المعدة"],a:0},
+  {q:"عبر أي أوعية تنتقل المواد الغذائية والأكسجين إلى الخلايا؟",o:["القصبة الهوائية","الشعيرات الدموية","المريء","الشعب الهوائية"],a:1}
+],{key:"f-readfig"});
+
+/* ---------- review ---------- */
+(function(){
+  const R=[
+    ["المفردات: حركة المواد خلال جسم الحيوان تُسمّى …","الدوران."],
+    ["مشكلة وحل: كيف تحصل الفقاريات على الأكسجين وتوزعه على خلايا الجسم؟","المشكلة: تحتاج الخلايا إلى الأكسجين. الخطوات: يدخل الهواء إلى الرئتين (أو الخياشيم في الأسماك)، فينتقل الأكسجين إلى الدم، ثم يضخ القلب الدم المؤكسج في أوعية دموية. الحل: يصل الأكسجين إلى الخلايا عبر جدران الشعيرات الدموية."],
+    ["التفكير الناقد: ما ميزة أن يكون الحيوان ثابت درجة الحرارة؟","يحافظ على ثبات درجة حرارة جسمه حتى لو تغيرت حرارة الوسط المحيط، فتستمر النشاطات الحيوية في جسمه التي لا تتم إلا في درجات حرارة محددة."],
+    ["السؤال الأساسي: كيف تتم عمليات الهضم والإخراج والتنفس والدوران في كل من الإنسان والحيوانات؟","الجهاز الهضمي يفكك الغذاء إلى مواد بسيطة، والإخراج يخلّص الجسم من الفضلات، والتنفس يطلق الطاقة من الجلوكوز في وجود الأكسجين، والدوران ينقل الأكسجين والمواد الغذائية والفضلات. وتختلف طرائقها من حيوان إلى آخر: كالإسفنج الذي يصفّي الماء، ودودة الأرض ذات الأنبوب بفتحتين، والحشرات ذات القصيبات، والفقاريات ذات جهاز الدوران المغلق."]
+  ];
+  $("#r-self").innerHTML=R.map((r,i)=>'<div class="reveal"><p>'+r[0]+'</p><textarea data-save="self'+i+'" placeholder="اكتب إجابتك"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>'+r[1]+'</div></div>').join("");
+})();
+quiz($("#q-rev4"),[{q:"٤. المخلوقات الحية التي تستخدم الخياشيم والجلد في تنفسها هي:",o:["الطيور","البرمائيات","الثدييات","الأسماك"],a:1}],{key:"f-rev4"});
+quiz($("#q-rev5"),[{q:"٥. جهاز الدوران الذي يدفع الدم مباشرة في أنسجة الحيوان هو:",o:["جهاز الانتشار","جهاز الدوران المغلق","الجهاز الدعامي","جهاز الدوران المفتوح"],a:3}],{key:"f-rev5"});
+$("#mathGo").addEventListener("click",()=>{const v=parseFloat(toEn($("#mathIn").value)),m=$("#mathMsg");
+  const ok=Math.abs(v-312.5)<0.6;m.className="msg "+(ok?"ok":"bad");
+  m.textContent=ok?"صحيح: ٧٥٠٠ ÷ ٢٤ = ٣١٢٫٥ لترًا في الساعة.":"تلميح: في اليوم ٢٤ ساعة، فاقسم ٧٥٠٠ على ٢٤.";saveScore("f-math",ok?1:0,1)});
+
+/* ---------- post-test ---------- */
+quiz($("#q-post"),[
+  {q:"الهضم عملية يتم فيها:",o:["تخليص الجسم من الفضلات","ابتلاع الغذاء وتفكيكه إلى أجزاء ومركبات بسيطة","ضخ الدم إلى الجسم","تبادل الغازات"],a:1},
+  {q:"الإخراج عملية يتم فيها:",o:["تخليص الجسم من الفضلات","إطلاق الطاقة","ابتلاع الغذاء","حركة الدم"],a:0},
+  {q:"تحصل الإسفنجيات على غذائها:",o:["بتصفية الماء عند مروره خلال الثقوب في جسمها","بأنبوب له فتحتان","بالأسنان","بالرئات"],a:0},
+  {q:"الجهاز الهضمي لدودة الأرض:",o:["تجويف بفتحة واحدة","أنبوب داخل أنبوب له فتحتان","لا يوجد لها جهاز هضمي","ثقوب في الجسم"],a:1},
+  {q:"العضو الذي يمتص المواد الغذائية في الإنسان وينقلها إلى الدم:",o:["المعدة","المريء","الأمعاء الدقيقة","الفم"],a:2},
+  {q:"من الأعضاء التي تخلّص جسم الإنسان من الفضلات:",o:["الكليتان","الأسنان","المريء","الحجاب الحاجز"],a:0},
+  {q:"التنفس عملية:",o:["هضم الغذاء في المعدة","إطلاق الطاقة المختزنة في الجلوكوز في وجود الأكسجين","تخزين الدهون تحت الجلد","ضخ الدم"],a:1},
+  {q:"تتنفس الحشرات بواسطة:",o:["الرئات","الخياشيم","القُصيبات","الجلد فقط"],a:2},
+  {q:"يحدث تبادل الغازات في الإنسان داخل:",o:["الحويصلات الهوائية","البلعوم","الحنجرة","المريء"],a:0},
+  {q:"العضلة التي تنقبض وتنبسط لتنظم الشهيق والزفير:",o:["القلب","الحجاب الحاجز","المعدة","الحنجرة"],a:1},
+  {q:"الدوران هو:",o:["حركة المواد المهمة كالأكسجين والجلوكوز والفضلات في الجسم","هضم الغذاء","إفراز العرق","تصفية الماء"],a:0},
+  {q:"جهاز الدوران في الجراد:",o:["مغلق","مفتوح","بالانتشار فقط","لا يوجد"],a:1},
+  {q:"في الثدييات يمر الدم في:",o:["دورة واحدة بسيطة","دورتين مغلقتين","جيوب مفتوحة","أنابيب الماء"],a:1},
+  {q:"تنتقل المواد الغذائية والأكسجين إلى الخلايا عبر جدران:",o:["الشعيرات الدموية","القصبة الهوائية","المعدة","الرئات"],a:0},
+  {q:"من الحيوانات المتغيرة درجة الحرارة:",o:["القط","الطيور","الثعابين","الدب القطبي"],a:2},
+  {q:"يتخلص الحيوان الثابت درجة الحرارة من الحرارة الزائدة عبر:",o:["الخياشيم","الجلد وإفراز العرق","الفرو","الحفر في التربة"],a:1},
+  {q:"تخزن بعض الحيتان التي تعيش في المياه الباردة طبقات من الدهون تحت الجلد لكي:",o:["تمنع فقدان الحرارة","تهضم الغذاء","تتنفس","تضخ الدم"],a:0}
+],{key:"post",instant:false});
+
+/* ---------- results ---------- */
+const LABELS={"f-explore":"أستكشف: الأمعاء الغليظة","f-invert":"الهضم في اللافقاريات","f-path":"رحلة الطعام","f-digest":"تحقق: الهضم والإخراج","f-resporg":"أعضاء التنفس","f-airway":"مسار الهواء","f-resp":"تحقق: التنفس","f-circ":"أجهزة الدوران","f-temp":"تصنيف درجة الحرارة","f-tempq":"تحقق: درجة الحرارة","f-blood":"رحلة الدم","f-readfig":"أقرأ الشكل","f-rev4":"مراجعة: س٤","f-rev5":"مراجعة: س٥","f-math":"العلوم والرياضيات","f-cmap1":"خريطة المفاهيم"};
+function renderResults(){
+  const s=store.get("scores",{});const pct=k=>s[k]?Math.round(s[k].got/s[k].total*100):null;
+  const pre=pct("pre"),post=pct("post");
+  const bar=(lb,p,c)=>'<div class="res-bar"><div class="lb"><span>'+lb+'</span><b>'+(p==null?"لم يُنجز بعد":ar(p)+"٪")+'</b></div><div class="tr"><i style="width:'+(p||0)+'%;background:'+c+'"></i></div></div>';
+  let top='<h3 style="margin:0 0 10px">مقارنة التقويم القبلي بالختامي</h3><div class="res-bars">'+bar("التقويم القبلي",pre,"var(--water)")+bar("التقويم الختامي",post,"var(--spore)")+'</div>';
+  if(pre!=null&&post!=null){const d=post-pre;top+='<p style="margin-top:12px">'+(d>0?"تقدّمت بمقدار "+ar(d)+" نقطة مئوية. "+praise(post):d===0?"نتيجتك ثابتة. راجع الأجزاء التي أخطأت فيها ثم أعد التقويم الختامي.":"راجع الدرس ثم أعد التقويم الختامي.")+'</p>'}
+  else top+='<p class="hint" style="margin-top:12px">أكمل التقويمين لتظهر المقارنة.</p>';
+  $("#resTop").innerHTML=top;
+  $("#resList").innerHTML=Object.keys(LABELS).map(k=>'<li><span>'+LABELS[k]+'</span><b>'+(s[k]?ar(s[k].got)+" / "+ar(s[k].total):"—")+'</b></li>').join("");
+}
+$("#resetAll").addEventListener("click",()=>{if(confirm("سيُمسح تقدّمك وإجاباتك المكتوبة. هل تريد المتابعة؟")){store.clear();location.hash="#cover";location.reload()}});
+
+/* ---------- navigation ---------- */
+const pages=$$(".page"),names=pages.map(p=>p.dataset.page);
+function buildToc(){
+  const seen=store.get("seen",[]),cur=currentName();
+  $("#toc").innerHTML=pages.map((p,i)=>'<li class="'+(seen.indexOf(p.dataset.page)>=0?"seen":"")+'"><button data-go="'+p.dataset.page+'" class="'+(p.dataset.page===cur?"cur":"")+'"><span class="n">'+ar(i+1)+'</span><span>'+p.dataset.title+'</span></button></li>').join("");
+}
+function currentName(){const h=location.hash.replace("#","");return names.indexOf(h)>=0?h:"cover"}
+let curIdx=-1,curSpread=-1,busy=false;
+const reduceMotion=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TURN=850;
+pages.forEach((p,i)=>{if(i===0)return;p.insertAdjacentHTML("afterbegin",'<div class="runhead"><span>العلوم · الصف السادس الابتدائي</span><span>الدرس الأول: الهضم والإخراج والتنفس والدوران</span></div>');p.insertAdjacentHTML("beforeend",'<div class="folio"><span>'+ar(i)+'</span></div>')});
+let snd=store.get("snd",true),actx=null;
+const SPK='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/>';
+function paintSnd(){const b=$("#sndBtn");b.setAttribute("aria-pressed",snd);b.innerHTML=SPK+(snd?'<path d="M13 7.5q2 2.5 0 5M15 5.5q4 4.5 0 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>':'<path d="M13 7l5 6M18 7l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>')+'</svg>'}
+$("#sndBtn").addEventListener("click",()=>{snd=!snd;store.set("snd",snd);paintSnd()});paintSnd();
+function sfx(){if(!snd)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const d=.38,r=actx.sampleRate,buf=actx.createBuffer(1,Math.floor(r*d),r),c=buf.getChannelData(0);
+  for(let k=0;k<c.length;k++){const t=k/c.length;c[k]=(Math.random()*2-1)*Math.pow(1-t,2.2)*Math.min(1,t*8)}
+  const src=actx.createBufferSource();src.buffer=buf;const f=actx.createBiquadFilter();f.type="bandpass";f.frequency.value=2200;f.Q.value=.6;const g=actx.createGain();g.gain.value=.28;
+  src.connect(f);f.connect(g);g.connect(actx.destination);src.start()}catch(e){}}
+const mqSpread=window.matchMedia("(min-width: 1000px) and (min-height: 560px)");
+let spread=mqSpread.matches;
+const SPREADS=[{l:0,r:null}];for(let k=1;k<pages.length;k+=2)SPREADS.push({r:k,l:k+1<pages.length?k+1:null});
+const spreadOf=i=>i===0?0:Math.floor((i+1)/2);
+const bookBox=$("#book");
+const setCls=(i,c)=>{if(i!=null)pages[i].className="page "+c};
+function bookState(sp){bookBox.classList.toggle("spread",spread);bookBox.classList.toggle("closed",spread&&sp===0);bookBox.classList.toggle("endonly",spread&&sp>0&&SPREADS[sp].l==null)}
+function renderStatic(){pages.forEach(p=>p.className="page");if(spread){const S=SPREADS[curSpread];setCls(S.r,"on pos-r");setCls(S.l,"on pos-l")}else pages[curIdx].classList.add("on");bookState(curSpread)}
+function turnSingle(op,np,fwd){
+  busy=true;const leaf=$("#leaf"),shade=$("#shade"),ez=" var(--turn) cubic-bezier(.55,.05,.35,1) forwards";sfx();
+  pages.forEach(p=>{if(p!==op&&p!==np)p.className="page"});
+  if(fwd){op.className="page turn-fwd";np.className="page under";leaf.style.animation="leafFwd"+ez}
+  else{op.className="page under";np.className="page turn-back";leaf.style.animation="leafBack"+ez}
+  leaf.style.display="block";shade.style.display="block";shade.style.animation="shade var(--turn) ease forwards";
+  setTimeout(()=>{renderStatic();leaf.style.display="none";leaf.style.animation="";shade.style.display="none";shade.style.animation="";busy=false},TURN+40);
+}
+function turnSpread(a,b){
+  const A=SPREADS[a],B=SPREADS[b],fwd=b>a;busy=true;sfx();
+  pages.forEach(p=>p.className="page");
+  [B.r,B.l].forEach(i=>{if(i!=null)pages[i].scrollTop=0});
+  if(fwd){setCls(A.r,"pos-r under");setCls(B.l,"pos-l under");setCls(A.l,"pos-l flipL-out");setCls(B.r,"pos-r flipR-in")}
+  else{setCls(A.l,"pos-l under");setCls(B.r,"pos-r under");setCls(A.r,"pos-r flipR-out");setCls(B.l,"pos-l flipL-in")}
+  bookState(b);
+  setTimeout(()=>{renderStatic();busy=false},TURN+40);
+}
+function show(){
+  const i=names.indexOf(currentName());
+  if(spread){const sp=spreadOf(i),prev=curSpread;curIdx=i;if(sp!==prev){curSpread=sp;if(prev<0||reduceMotion||busy)renderStatic();else turnSpread(prev,sp)}}
+  else if(i!==curIdx){const prev=curIdx;curIdx=i;curSpread=spreadOf(i);pages[i].scrollTop=0;if(prev<0||reduceMotion||busy)renderStatic();else turnSingle(pages[prev],pages[i],i>prev)}
+  chrome();
+}
+function visibleIdx(){if(!spread)return [curIdx];const S=SPREADS[curSpread];return [S.r,S.l].filter(x=>x!=null)}
+function target(dd){if(spread){const k=curSpread+dd;if(k<0||k>=SPREADS.length)return null;const S=SPREADS[k];return S.r!=null?S.r:S.l}const i=curIdx+dd;return i>=0&&i<pages.length?i:null}
+function chrome(){
+  const vis=visibleIdx(),first=Math.min.apply(null,vis),last=Math.max.apply(null,vis);
+  $("#topTitle").textContent=vis.map(k=>pages[k].dataset.title).join("  ·  ");
+  $("#topCount").textContent=(first===last?ar(first+1):ar(first+1)+"–"+ar(last+1))+" / "+ar(pages.length);
+  const seen=store.get("seen",[]);vis.forEach(k=>{if(seen.indexOf(names[k])<0)seen.push(names[k])});store.set("seen",seen);
+  $("#progBar").style.width=Math.round(seen.length/pages.length*100)+"%";
+  const pp=target(-1),nn=target(1),pv=$("#prevBtn"),nx=$("#nextBtn");
+  pv.disabled=pp==null;pv.textContent=pp==null?"السابق":"‹ "+pages[pp].dataset.title;
+  nx.disabled=nn==null;nx.textContent=nn==null?"نهاية الدرس":pages[nn].dataset.title+" ›";
+  $("#corner").hidden=nn==null;$("#cornerBack").hidden=pp==null;
+  buildToc();if(vis.some(k=>names[k]==="results"))renderResults();
+}
+function onMQ(){spread=mqSpread.matches;if(curIdx<0)return;curSpread=spreadOf(curIdx);renderStatic();chrome()}
+if(mqSpread.addEventListener)mqSpread.addEventListener("change",onMQ);else if(mqSpread.addListener)mqSpread.addListener(onMQ);
+function go(n){closeDrawer();if(location.hash==="#"+n)show();else location.hash=n}
+$("#prevBtn").addEventListener("click",()=>step(-1));
+$("#nextBtn").addEventListener("click",()=>step(1));
+function openDrawer(){$("#drawer").classList.add("open");$("#drawer").setAttribute("aria-hidden","false")}
+function closeDrawer(){$("#drawer").classList.remove("open");$("#drawer").setAttribute("aria-hidden","true")}
+$("#menuBtn").addEventListener("click",openDrawer);
+const step=dd=>{if(!$("#ar").hidden)return;const k=target(dd);if(k!=null)go(names[k])};
+$("#cornerBack").addEventListener("click",()=>step(-1));
+$("#corner").addEventListener("click",()=>step(1));
+let sx=null,sy=null;const bookEl=$("#book");
+bookEl.addEventListener("touchstart",e=>{if(e.target.closest("input,textarea")){sx=null;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
+bookEl.addEventListener("touchend",e=>{if(sx==null)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6)step(dx>0?1:-1)},{passive:true});
+document.addEventListener("keydown",e=>{if(e.target.closest("input,textarea"))return;if(e.key==="ArrowLeft")step(1);if(e.key==="ArrowRight")step(-1)});$("#drawerBg").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+window.addEventListener("hashchange",show);
+
+/* ================= AR viewer ================= */
+(function(){
+const arEl=$("#ar"),cv=$("#arCanvas"),video=$("#arVideo"),NEON=0x7dffb0;
+let R=null,scene,cam,clock,raf=0,content=null,bookG,shadowPlane,ring,sweep,beam,api=null,H,tmpV;
+let t=0,playing=true,phase="scan",pt=0,theta=.5,phi=1.05,rad=13,baseRad=13,lastInput=0,stream=null,camMode=false,lblEls=[],capLast=-1;
+let mk={x:.5,y:.5,s:.25,ok:false,last:-9999},tcv=null,tcx=null,ray=null,gp=null,hit=null,trTick=0;
+function arTrack(){
+  const now=performance.now();
+  if((trTick++&1)===0&&video.readyState>=2){
+    if(!tcv){tcv=document.createElement("canvas");tcv.width=160;tcv.height=120;tcx=tcv.getContext("2d",{willReadFrequently:true});ray=new THREE.Raycaster();gp=new THREE.Plane(new THREE.Vector3(0,1,0),0);hit=new THREE.Vector3()}
+    tcx.drawImage(video,0,0,160,120);const d=tcx.getImageData(0,0,160,120).data;let n=0,sx=0,sy=0;
+    for(let i=0,q=0;i<d.length;i+=4,q++){const r=d[i],g=d[i+1],b=d[i+2];if(r>130&&b>90&&g<Math.min(r,b)*.62&&r-g>60&&b-g>40){n++;sx+=q%160;sy+=(q/160)|0}}
+    if(n>35){const vx=sx/n/160,vy=sy/n/120,sq=Math.sqrt(n/19200),W=window.innerWidth,Hh=window.innerHeight,vw=video.videoWidth||640,vh=video.videoHeight||480,sc=Math.max(W/vw,Hh/vh),ox=(W-vw*sc)/2,oy=(Hh-vh*sc)/2;
+      const X=(ox+vx*vw*sc)/W,Y=(oy+vy*vh*sc)/Hh,S=sq*vw*sc/W,k=mk.ok?.35:1;mk.x+=(X-mk.x)*k;mk.y+=(Y-mk.y)*k;mk.s+=(S-mk.s)*k;mk.ok=true;mk.last=now}
+  }
+  if(now-mk.last>700)mk.ok=false;
+  $("#arMk").hidden=mk.ok||phase==="scan";
+  content.visible=mk.ok;ring.visible=mk.ok;
+  if(mk.ok&&ray){ray.setFromCamera({x:mk.x*2-1,y:-(mk.y*2-1)},cam);if(ray.ray.intersectPlane(gp,hit)){content.position.lerp(hit,.5);ring.position.set(content.position.x,.02,content.position.z);shadowPlane.position.set(content.position.x,0,content.position.z)}
+    const m=Math.min(2.2,Math.max(.3,mk.s/.25*.7));content.scale.multiplyScalar(m);ring.scale.setScalar(m)}
+  content.rotation.y=theta-.5;
+}
+const ptrs=new Map();
+const clamp01=x=>x<0?0:x>1?1:x,seg=(x,a,b)=>clamp01((x-a)/(b-a)),ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2,lerp=(a,b,x)=>a+(b-a)*x;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function toast(m){const e=$("#arToast");e.textContent=m;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>{e.hidden=true},6000)}
+
+function helpers(){
+  const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+  const M=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.7},o||{}));
+  const mesh=(geo,mat,x,y,z,sh)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);if(sh!==false){m.castShadow=true;m.receiveShadow=true}return m};
+  const canvasTex=(w,h)=>{const c=document.createElement("canvas");c.width=w;c.height=h;return {ctx:c.getContext("2d"),tex:new THREE.CanvasTexture(c),v:null}};
+  const bump=(geo,amp,f)=>{f=f||1;const p=geo.attributes.position,v=new THREE.Vector3();for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);const n=Math.sin(v.x*7*f+1.3)*Math.sin(v.y*9*f+.7)*Math.sin(v.z*8*f+2.1)+.5*Math.sin(v.x*17*f)*Math.sin(v.z*15*f);const l=Math.max(v.length(),.001);v.multiplyScalar(1+amp*n/l);p.setXYZ(i,v.x,v.y,v.z)}geo.computeVertexNormals();return geo};
+  const leafGeo=new THREE.SphereGeometry(1,8,6);
+  function fern(sc,col,n){
+    const G=new THREE.Group(),lm=M(col||0x3e8a45,{roughness:.85}),sm=M(0x4d6b2f);n=n||6;
+    for(let f=0;f<n;f++){
+      const a=f/n*Math.PI*2+.3,lean=.75+((f*7)%5)/10,pts=[];
+      for(let k=0;k<=10;k++){const u=k/10;pts.push(V(Math.cos(a)*u*1.5*sc*lean,sc*(1.5*Math.sin(u*Math.PI*.8)-.35*u),Math.sin(a)*u*1.5*sc*lean))}
+      const cu=new THREE.CatmullRomCurve3(pts);
+      G.add(mesh(new THREE.TubeGeometry(cu,16,.02*sc+.008,5,false),sm));
+      for(let k=1;k<=11;k++){const u=k/12,p=cu.getPoint(u),tg=cu.getTangent(u),side=new THREE.Vector3().crossVectors(tg,V(0,1,0)).normalize(),L=.32*sc*(1-u*.75)+.04;
+        [1,-1].forEach(sg=>{const m=mesh(leafGeo,lm);m.position.copy(p).addScaledVector(side,sg*L*.55);m.scale.set(.075*sc+.01,.018,L*.55);m.lookAt(m.position.clone().addScaledVector(side,sg));G.add(m)})}
+    }
+    return G;
+  }
+  function moss(n,r,h,col){
+    const G=new THREE.Group(),sm=M(col||0x4f8f36,{roughness:.9}),stG=new THREE.CylinderGeometry(.018,.025,1,5),tipG=new THREE.ConeGeometry(.06,.14,6);
+    for(let i=0;i<n;i++){const a=i*2.4,rr=r*Math.sqrt((i+.5)/n),x=Math.cos(a)*rr,z=Math.sin(a)*rr,hh=h*(.75+((i*13)%7)/20);
+      const st=mesh(stG,sm,x,hh/2,z);st.scale.y=hh;G.add(st);G.add(mesh(tipG,sm,x,hh+.05,z))}
+    const cap=M(0xb07a2a);
+    [[.2,.1],[-.25,-.15]].forEach(q=>{G.add(mesh(new THREE.CylinderGeometry(.008,.008,h*1.3,4),cap,q[0],h*.9+h*.65,q[1]));G.add(mesh(new THREE.SphereGeometry(.05,8,6),cap,q[0],h*.9+h*1.32,q[1]))});
+    return G;
+  }
+  return {V,M,mesh,canvasTex,bump,fern,moss,seg,ease,lerp,back};
+}
+
+function bookTexture(title){
+  const W=2048,Hh=1340,c=document.createElement("canvas");c.width=W;c.height=Hh;const x=c.getContext("2d");
+  x.fillStyle="#f7f3e8";x.fillRect(0,0,W,Hh);
+  const g=x.createLinearGradient(W/2-110,0,W/2+110,0);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.5,"rgba(0,0,0,.25)");g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.fillRect(W/2-110,0,220,Hh);
+  const rr=(X,Y,w,h)=>{x.beginPath();x.moveTo(X+h/2,Y);x.lineTo(X+w-h/2,Y);x.arc(X+w-h/2,Y+h/2,h/2,-Math.PI/2,Math.PI/2);x.lineTo(X+h/2,Y+h);x.arc(X+h/2,Y+h/2,h/2,Math.PI/2,Math.PI*1.5);x.fill()};
+  x.fillStyle="#d8d2c2";
+  for(let i=0;i<19;i++){const w=i%6===5?420:780-((i*37)%90);rr(W/2-120-w,150+i*58,w,15)}
+  for(let i=0;i<3;i++){const w=780-((i*53)%120);rr(W-120-w,Hh-230+i*58,w,15)}
+  x.direction="rtl";x.textAlign="right";x.fillStyle="#2f5f3c";x.font='700 58px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillText(title,W-120,150);
+  x.font='400 30px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillStyle="#7a8a7f";x.fillText("العلوم · الصف السادس · الدرس الأول",W-120,212);
+  const cx=W*.75,cy=Hh*.52,bw=640,bh=600,L=70;x.strokeStyle="#22a565";x.lineWidth=9;x.lineCap="round";
+  [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(q=>{const X=cx+q[0]*bw/2,Y=cy+q[1]*bh/2;x.beginPath();x.moveTo(X-q[0]*L,Y);x.lineTo(X,Y);x.lineTo(X,Y-q[1]*L);x.stroke()});
+  const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;tx.anisotropy=R.capabilities.getMaxAnisotropy();return tx;
+}
+
+function init(){
+  H=helpers();tmpV=new THREE.Vector3();
+  R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.outputEncoding=THREE.sRGBEncoding;R.setClearColor(0x000000,0);
+  scene=new THREE.Scene();cam=new THREE.PerspectiveCamera(38,1,.1,200);clock=new THREE.Clock();
+  scene.add(new THREE.HemisphereLight(0xf2fbff,0x40362a,.85));
+  const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(-6,11,7);dl.castShadow=true;dl.shadow.mapSize.set(2048,2048);
+  Object.assign(dl.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:1,far:40});dl.shadow.bias=-.0004;scene.add(dl);
+  bookG=new THREE.Group();bookG.position.x=-4.15;scene.add(bookG);
+  const cover=new THREE.Mesh(new THREE.BoxGeometry(17.4,.3,11.5),new THREE.MeshStandardMaterial({color:0x1d4530,roughness:.75}));cover.position.y=-.38;cover.receiveShadow=true;bookG.add(cover);
+  const block=new THREE.Mesh(new THREE.BoxGeometry(16.9,.24,11.1),new THREE.MeshStandardMaterial({color:0xeee8d8,roughness:.95}));block.position.y=-.12;block.receiveShadow=true;bookG.add(block);
+  const pg=new THREE.Mesh(new THREE.PlaneGeometry(16.8,11),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.95}));pg.rotation.x=-Math.PI/2;pg.position.y=.001;pg.receiveShadow=true;pg.name="page";bookG.add(pg);
+  shadowPlane=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.35}));shadowPlane.rotation.x=-Math.PI/2;shadowPlane.receiveShadow=true;shadowPlane.visible=false;scene.add(shadowPlane);
+  ring=new THREE.Mesh(new THREE.RingGeometry(2.9,3.05,72),new THREE.MeshBasicMaterial({color:NEON,transparent:true,opacity:.8,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.02;scene.add(ring);
+  sweep=new THREE.Mesh(new THREE.PlaneGeometry(8.3,.12),new THREE.MeshBasicMaterial({color:NEON,transparent:true,opacity:.9}));sweep.rotation.x=-Math.PI/2;sweep.position.y=.03;scene.add(sweep);
+  const bg=new THREE.BufferGeometry();bg.setAttribute("position",new THREE.BufferAttribute(new Float32Array(90*3),3));
+  beam=new THREE.Points(bg,new THREE.PointsMaterial({color:NEON,size:.09,transparent:true,opacity:0}));
+  beam.userData.seed=Array.from({length:90},()=>[Math.random()*Math.PI*2,2.4+Math.random()*.6,Math.random()]);scene.add(beam);
+  cv.addEventListener("pointerdown",e=>{ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});try{cv.setPointerCapture(e.pointerId)}catch(_){}lastInput=performance.now()});
+  cv.addEventListener("pointermove",e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);
+    if(ptrs.size===1){theta-=(e.clientX-p.x)*.006;phi=Math.min(1.38,Math.max(.3,phi-(e.clientY-p.y)*.005))}
+    else if(ptrs.size===2){let o=null;ptrs.forEach((v,k)=>{if(k!==e.pointerId)o=v});if(o){const d0=Math.hypot(p.x-o.x,p.y-o.y),d1=Math.hypot(e.clientX-o.x,e.clientY-o.y);rad=Math.min(28,Math.max(6,rad*d0/Math.max(1,d1)))}}
+    p.x=e.clientX;p.y=e.clientY;lastInput=performance.now()});
+  const up=e=>ptrs.delete(e.pointerId);cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);
+  cv.addEventListener("wheel",e=>{e.preventDefault();rad=Math.min(28,Math.max(6,rad*(1+e.deltaY*.001)));lastInput=performance.now()},{passive:false});
+  window.addEventListener("resize",()=>{if(!arEl.hidden)resize()});
+}
+function resize(){const w=window.innerWidth,h=window.innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();baseRad=w<h?20:13.5}
+function dispose(o){o.traverse(m=>{if(m.geometry)m.geometry.dispose();if(m.material)(Array.isArray(m.material)?m.material:[m.material]).forEach(mt=>{if(mt.map)mt.map.dispose();mt.dispose()})})}
+
+/* ---------- scenes ---------- */
+function pathOf(H,pts){return new THREE.CatmullRomCurve3(pts.map(p=>H.V(p[0],p[1],p[2]||0)))}
+const SCENES={
+invert(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
+  const jel=new THREE.Group();jel.position.set(-2.2,2.6,0);g.add(jel);
+  const bellM=new THREE.MeshPhysicalMaterial({color:0xd8a8f0,transparent:true,opacity:.55,roughness:.2,side:THREE.DoubleSide,depthWrite:false});
+  jel.add(mesh(new THREE.SphereGeometry(1.2,32,20,0,Math.PI*2,0,Math.PI/2),bellM,0,0,0,false));
+  const cav=mesh(new THREE.SphereGeometry(.6,24,16),M(0xf2c0e0,{transparent:true,opacity:.8}),0,.25,0,false);jel.add(cav);
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2,pts=[];for(let k=0;k<=8;k++)pts.push(V(Math.cos(a)*1.05,-k*.25,Math.sin(a)*1.05+Math.sin(k)*.05));jel.add(mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),12,.03,4),M(0xc58ae0),0,0,0,false))}
+  const worm=new THREE.Group();worm.position.set(2.2,.6,0);g.add(worm);
+  const wc=pathOf(H,[[-1.6,0,1],[-1.2,0,0],[-.4,0,-.6],[.4,0,-.2],[1.1,0,.6],[1.6,0,1.2]]);
+  const segM=M(0xc98a7a,{roughness:.7});for(let i=0;i<=26;i++){const p=wc.getPoint(i/26);worm.add(mesh(new THREE.SphereGeometry(.32,16,12),segM,p.x,p.y+.3,p.z))}
+  const food=[0,1,2].map(i=>{const m=mesh(new THREE.SphereGeometry(.13,12,10),M(0x5aa64a),0,0,0,false);g.add(m);return m});
+  const waste=[0,1].map(i=>{const m=mesh(new THREE.SphereGeometry(.11,12,10),M(0x7a5a3a),0,0,0,false);g.add(m);return m});
+  const wf=mesh(new THREE.SphereGeometry(.14,12,10),M(0x5aa64a),0,0,0,false);g.add(wf);
+  return {title:"الهضم في اللافقاريات",dur:16,
+    steps:[[0,"قنديل البحر (من اللاسعات) له تجويف هضمي بفتحة واحدة"],[2,"يدخل الغذاء من الفتحة إلى التجويف الهضمي"],[4.5,"تهضم خلايا متخصصة الغذاء وتمتص المواد المغذية"],[6.5,"ثم تخرج الفضلات من الفتحة نفسها"],[9,"دودة الأرض: أنبوب داخل أنبوب له فتحتان"],[10.5,"يدخل الغذاء من فتحة، ويمر خلال الأنبوب ويُهضم، وتمتص المواد الغذائية بواسطة الدم"],[13.5,"وتخرج الفضلات من الفتحة الأخرى"]],
+    labels:[{pos:V(-2.2,4.2,0),show:()=>true,text:"قنديل البحر: فتحة واحدة"},{pos:V(2.2,2.1,0),show:()=>true,text:"دودة الأرض: فتحتان"},{pos:V(.6,1.4,1.4),show:x=>x>=10&&x<12,text:"فتحة الابتلاع"},{pos:V(3.8,1.4,1.4),show:x=>x>=13.5,text:"فتحة الفضلات"}],
+    update(x,rt){
+      jel.position.y=2.6+Math.sin(rt*1.5)*.1;
+      food.forEach((f,i)=>{const u=ease(seg(x,2+i*.3,4+i*.3)),d=seg(x,4.5,6);f.visible=x>=2&&d<1;f.position.set(-2.2+(i-1)*.25,lerp(.6,2.75,u)+jel.position.y-2.6,0);f.scale.setScalar(Math.max(.001,1-d))});
+      waste.forEach((w,i)=>{const u=ease(seg(x,6.5+i*.4,8.5+i*.4));w.visible=x>=6.5&&u<1;w.position.set(-2.2+(i-.5)*.3,lerp(2.75,.6,u)+jel.position.y-2.6,0)});
+      const u=seg(x,10.5,13.5),p=wc.getPoint(Math.min(1,u));wf.visible=x>=10&&x<14.5;wf.position.set(p.x+2.2,p.y+.9,p.z);
+      wf.material.color.setHex(u>.8?0x7a5a3a:0x5aa64a);if(x>=13.5){const k=seg(x,13.5,14.5);wf.position.x+=k*.8;wf.position.z+=k*.6}
+    }};
+},
+digest(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
+  const tube=(c,r,col,op)=>mesh(new THREE.TubeGeometry(c,80,r,10,false),M(col,{transparent:op<1,opacity:op,roughness:.6}),0,0,0,false);
+  const head=mesh(new THREE.SphereGeometry(.7,24,18),M(0xf2d2b8),0,6.1,0);g.add(head);
+  const eso=pathOf(H,[[0,5.5],[0,4.8],[.05,4]]);g.add(tube(eso,.13,0xd98a7a,1));
+  const stom=mesh(new THREE.SphereGeometry(.75,24,18),M(0xe88a9a,{transparent:true,opacity:.75}),.45,3.5,0,false);stom.scale.set(1.1,.85,.8);g.add(stom);
+  const liver=mesh(new THREE.SphereGeometry(.8,24,18),M(0x8b4a2b),-.65,3.75,-.3);liver.scale.set(1.2,.55,.6);g.add(liver);
+  const sm=[];for(let i=0;i<=60;i++){const t=i/60,y=2.6-t*1.4,a=t*Math.PI*8;sm.push([Math.cos(a)*.55,y,Math.sin(a)*.35])}
+  const smC=pathOf(H,sm);g.add(tube(smC,.12,0xf0a090,.9));
+  const lgC=pathOf(H,[[-.9,1.2],[-.9,2.5],[0,2.75],[.9,2.5],[.9,.6],[.2,.3]]);g.add(tube(lgC,.2,0xc97a5a,.75));
+  const blood=pathOf(H,[[-1.6,2.6,.6],[-.6,2.2,.6],[.6,1.8,.6],[1.6,1.4,.6]]);const bl=tube(blood,.07,0xc0392b,1);g.add(bl);
+  const kid=[-.7,.7].map(x=>{const k=mesh(new THREE.SphereGeometry(.28,16,12),M(0x9b3b3b,{emissive:0xff5a5a,emissiveIntensity:0}),x,1.6,-.7);k.scale.set(.7,1,.5);g.add(k);return k});
+  const full=pathOf(H,[[0,5.8],[0,5],[.05,4.1],[.4,3.6],[.5,3.1]]);
+  const bol=mesh(new THREE.SphereGeometry(.2,16,12),M(0xd9b06a),0,5.8,0);g.add(bol);
+  const parts=[];for(let i=0;i<7;i++){const p=mesh(new THREE.SphereGeometry(.07,10,8),M(0xf2c230),0,0,0,false);g.add(p);parts.push([p,i/7])}
+  const bubbles=[];for(let i=0;i<6;i++){const b=mesh(new THREE.SphereGeometry(.05,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.7}),0,0,0,false);g.add(b);bubbles.push([b,i/6])}
+  const rest=mesh(new THREE.SphereGeometry(.12,12,10),M(0x7a5a3a),0,0,0,false);g.add(rest);
+  return {title:"رحلة الطعام في الجهاز الهضمي",dur:20,
+    steps:[[0,"يبدأ الهضم في الفم"],[2,"تمر لقمة الطعام عبر المريء إلى المعدة"],[4.5,"في المعدة يحلل الحمض والإنزيم الغذاء إلى دقائق صغيرة"],[8,"في الأمعاء الدقيقة تحلل العصارة الهضمية البروتين والنشويات والدهون"],[10.5,"وتمتص الأمعاء الدقيقة المواد الغذائية وتنقلها إلى الدم"],[13.5,"تمتص الأمعاء الغليظة الماء من بقايا الطعام"],[16.5,"الإخراج: تعمل الكليتان والرئتان والكبد والجلد على تخليص الجسم من الفضلات"]],
+    labels:[{pos:V(.9,6.2,0),show:x=>x<2.5,text:"الفم"},{pos:V(.6,4.9,0),show:x=>x>=2&&x<4.5,text:"المريء"},{pos:V(1.5,3.9,0),show:x=>x>=4.5&&x<8,text:"المعدة"},{pos:V(-1.6,3.9,0),show:x=>x>=4.5&&x<8,text:"الكبد"},{pos:V(0,1.1,.9),show:x=>x>=8&&x<13.5,text:"الأمعاء الدقيقة"},{pos:V(1.8,1.6,.6),show:x=>x>=10.5&&x<13.5,text:"إلى الدم"},{pos:V(1.4,2.9,0),show:x=>x>=13.5&&x<16.5,text:"الأمعاء الغليظة"},{pos:V(0,1.2,-1.2),show:x=>x>=16.5,text:"الكليتان"}],
+    update(x,rt){
+      const u=ease(seg(x,1.5,4.5));bol.visible=x<6.5;bol.position.copy(full.getPoint(u));const br=seg(x,5,6.5);bol.scale.setScalar(Math.max(.001,1-br));
+      stom.scale.set(1.1+.05*Math.sin(rt*4)*(x>=4.5&&x<8?1:0),.85,.8);
+      bubbles.forEach(q=>{const on=x>=4.5&&x<8;q[0].visible=on;if(on){const k=(rt*.5+q[1])%1;q[0].position.set(.45+Math.cos(q[1]*9)*.4,3.2+k*.6,Math.sin(q[1]*9)*.3)}});
+      parts.forEach(q=>{const a=seg(x,5,6.5),b=seg(x,8,10.5+q[1]),c=seg(x,10.5+q[1]*2,12+q[1]*2);q[0].visible=x>=5&&c<1;
+        if(x<8){q[0].position.set(.45+Math.cos(q[1]*9)*.35*a,3.4+Math.sin(q[1]*7)*.2*a,Math.sin(q[1]*9)*.25*a)}
+        else if(c<=0){q[0].position.copy(smC.getPoint(Math.min(1,b*.8+q[1]*.2)))}
+        else{const from=smC.getPoint(Math.min(1,.8+q[1]*.2)),to=blood.getPoint(.3+q[1]*.6);q[0].position.lerpVectors(from,to,ease(c));q[0].material.color.setHex(0xff6a6a)}});
+      const r=seg(x,13,16.5);rest.visible=x>=13&&x<17;rest.position.copy(lgC.getPoint(r));
+      kid.forEach(k=>k.material.emissiveIntensity=x>=16.5?.4+.3*Math.sin(rt*5):0);liver.material.emissive=liver.material.emissive||new THREE.Color();
+    }};
+},
+breath(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
+  const tr=pathOf(H,[[0,5.6],[0,4.4]]);g.add(mesh(new THREE.TubeGeometry(tr,10,.16,10,false),M(0xd98a9a),0,0,0,false));
+  [[-1,0],[1,0]].forEach(s=>{g.add(mesh(new THREE.TubeGeometry(pathOf(H,[[0,4.4],[s[0]*.5,4.1],[s[0]*.9,3.7]]),10,.11,8,false),M(0xd98a9a),0,0,0,false))});
+  const lungM=new THREE.MeshPhysicalMaterial({color:0xf4a3b4,transparent:true,opacity:.75,roughness:.5,depthWrite:false});
+  const lungs=[-1.15,1.15].map(x=>{const l=mesh(new THREE.SphereGeometry(1,28,20),lungM,x,3,0,false);l.scale.set(.85,1.35,.7);g.add(l);return l});
+  const dia=mesh(new THREE.SphereGeometry(2.1,32,16,0,Math.PI*2,0,Math.PI/3),M(0xb5701a,{side:THREE.DoubleSide,roughness:.6}),0,.7,0);g.add(dia);
+  const alv=new THREE.Group();alv.position.set(3.4,3.2,0);g.add(alv);
+  const aM=new THREE.MeshPhysicalMaterial({color:0xf7c4cf,transparent:true,opacity:.6,depthWrite:false});
+  [[0,0],[.45,.3],[-.4,.35],[.1,.7],[.5,-.3],[-.4,-.3]].forEach(p=>alv.add(mesh(new THREE.SphereGeometry(.38,18,14),aM,p[0],p[1],0,false)));
+  alv.add(mesh(new THREE.TubeGeometry(pathOf(H,[[-1.2,-.9,.4],[0,-.6,.5],[1.2,-.9,.4]]),20,.09,8,false),M(0xc0392b),0,0,0,false));
+  const air=[];for(let i=0;i<10;i++){const m=mesh(new THREE.SphereGeometry(.07,10,8),M(0x4fb0ff,{emissive:0x1b6fb0,emissiveIntensity:.6}),0,0,0,false);g.add(m);air.push([m,i/10])}
+  const co2=[];for(let i=0;i<8;i++){const m=mesh(new THREE.SphereGeometry(.07,10,8),M(0x888888),0,0,0,false);g.add(m);co2.push([m,i/8])}
+  const ox=[0,1,2].map(i=>{const m=mesh(new THREE.SphereGeometry(.08,10,8),M(0x4fb0ff,{emissive:0x1b6fb0,emissiveIntensity:.6}),0,0,0,false);alv.add(m);return m});
+  const cx=[0,1,2].map(i=>{const m=mesh(new THREE.SphereGeometry(.08,10,8),M(0x888888),0,0,0,false);alv.add(m);return m});
+  alv.scale.setScalar(.001);
+  return {title:"التنفس في الإنسان",dur:18,
+    steps:[[0,"الجهاز التنفسي: القصبة الهوائية، والشعبتان، والرئتان، والحجاب الحاجز"],[2,"الشهيق: يدخل الهواء فتتمدد الرئتان، ويتزود الجسم بالأكسجين"],[5,"الزفير: يخرج الهواء ومعه ثاني أكسيد الكربون والماء"],[8,"ينقبض الحجاب الحاجز وينبسط لينظم الشهيق والزفير"],[11,"تنتهي الشعيبات الهوائية بأكياس صغيرة هي الحويصلات الهوائية"],[13,"عندها يحدث تبادل الغازات: الأكسجين إلى الدم، وثاني أكسيد الكربون من الدم إلى الحويصلات"]],
+    labels:[{pos:V(.7,5.6,0),show:x=>x<11,text:"القصبة الهوائية"},{pos:V(-2.2,3,0),show:x=>x<11,text:"الرئة"},{pos:V(0,.2,1.8),show:x=>x>=8&&x<11,text:"الحجاب الحاجز"},{pos:V(3.4,4.5,0),show:x=>x>=11,text:"الحويصلات الهوائية"},{pos:V(3.4,1.9,.6),show:x=>x>=13,text:"شعيرات دموية"},{pos:V(0,6.4,0),show:x=>x>=2&&x<11,text:x=>Math.sin((x-2)*Math.PI/3)>0?"شهيق":"زفير"}],
+    update(x,rt){
+      const ph=x>=2?Math.sin((x-2)*Math.PI/3):0,inh=ph>0;
+      lungs.forEach(l=>{const k=1+.12*Math.max(0,ph);l.scale.set(.85*k,1.35*k,.7*k)});
+      dia.position.y=.7-.25*Math.max(0,ph);
+      air.forEach(q=>{const u=((rt*.35)+q[1])%1;q[0].visible=x>=2&&x<11&&inh;const side=q[1]<.5?-1:1;q[0].position.set(lerp(0,side*1.1,Math.max(0,u*2-1)),lerp(6,3.3,Math.min(1,u*1.6)),0)});
+      co2.forEach(q=>{const u=((rt*.35)+q[1])%1;q[0].visible=x>=2&&x<11&&!inh&&x>=4;const side=q[1]<.5?-1:1;q[0].position.set(lerp(side*1.1,0,Math.min(1,u*1.6)),lerp(3.3,6,u),0)});
+      alv.scale.setScalar(Math.max(.001,back(seg(x,11,12))));
+      ox.forEach((m,i)=>{const u=((rt*.4)+i/3)%1;m.visible=x>=13;m.position.set((i-1)*.35,lerp(.4,-.75,u),.45)});
+      cx.forEach((m,i)=>{const u=((rt*.4)+i/3+.5)%1;m.visible=x>=13;m.position.set((i-1)*.35+.15,lerp(-.75,.4,u),.45)});
+    }};
+},
+heart(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
+  const heart=new THREE.Group();heart.position.set(0,2.4,0);g.add(heart);
+  const hR=mesh(new THREE.SphereGeometry(.55,24,18),M(0x2a6fd0),-.32,.1,0),hL=mesh(new THREE.SphereGeometry(.55,24,18),M(0xc0392b),.32,.1,0);heart.add(hR,hL);
+  const tip=mesh(new THREE.ConeGeometry(.6,.9,24),M(0xa8322a),0,-.45,0);tip.rotation.x=Math.PI;heart.add(tip);
+  const lungL=mesh(new THREE.SphereGeometry(.7,20,16),M(0xf4a3b4,{transparent:true,opacity:.8}),-2.4,4.6,0,false),lungR=mesh(new THREE.SphereGeometry(.7,20,16),M(0xf4a3b4,{transparent:true,opacity:.8}),2.4,4.6,0,false);g.add(lungL,lungR);
+  const body=mesh(new THREE.BoxGeometry(3.4,.7,1.2),M(0xe9d8c8,{transparent:true,opacity:.75}),0,.4,0,false);g.add(body);
+  const pulm=pathOf(H,[[-.3,2.6],[-1.2,3.8],[-2.4,4.6],[-1.2,4.9],[0,4.3],[1.2,4.9],[2.4,4.6],[1.2,3.8],[.3,2.6]]);
+  const sys=pathOf(H,[[.3,2.2],[1.8,1.6],[1.4,.4],[0,.2],[-1.4,.4],[-1.8,1.6],[-.3,2.2]]);
+  const tb=(c,col)=>mesh(new THREE.TubeGeometry(c,80,.06,8,false),M(col,{transparent:true,opacity:.4}),0,0,0,false);g.add(tb(pulm,0x9b59b6),tb(sys,0x9b59b6));
+  const N=10,cells=[];for(let i=0;i<N;i++){const m=mesh(new THREE.SphereGeometry(.12,12,10),M(0x2a6fd0),0,0,0,false);g.add(m);cells.push([m,i/N])}
+  const blue=new THREE.Color(0x2a6fd0),red=new THREE.Color(0xc0392b);
+  return {title:"الدورة الدموية",dur:18,
+    steps:[[0,"١. يتدفق الدم غير المؤكسج (الأزرق) إلى القلب"],[2.5,"٢. يضخ القلب الدم غير المؤكسج إلى الرئتين"],[5,"٣. في الرئتين يتخلص الدم من ثاني أكسيد الكربون ويُحمَّل بالأكسجين فيصبح أحمر"],[8,"٤. يعود الدم المؤكسج إلى القلب، فيضخه إلى سائر أجزاء الجسم"],[11,"في الشعيرات الدموية تنتقل المواد الغذائية والأكسجين إلى الخلايا، وتعطي الخلايا فضلاتها للدم"],[14,"فيعود الدم غير مؤكسج إلى القلب، وتستمر هذه العملية: دورتان مغلقتان"]],
+    labels:[{pos:V(0,3.4,0),show:()=>true,text:"القلب"},{pos:V(-2.4,5.5,0),show:()=>true,text:"الرئتان"},{pos:V(0,-.2,.8),show:()=>true,text:"أجزاء الجسم"},{pos:V(-2.6,2.4,0),show:x=>x>=5&&x<11,text:"أزرق ← أحمر"},{pos:V(2.6,1.2,0),show:x=>x>=11,text:"أحمر ← أزرق"}],
+    update(x,rt){
+      const beat=1+.06*Math.max(0,Math.sin(rt*6));heart.scale.setScalar(beat);
+      cells.forEach(q=>{const on=x>=1;q[0].visible=on;if(!on)return;const u=((rt-1)*.09+q[1])%1;let p,col;
+        if(u<.5){const v=u/.5;p=pulm.getPoint(v);col=v<.5?blue:red}else{const v=(u-.5)/.5;p=sys.getPoint(v);col=v<.5?red:blue}
+        q[0].position.copy(p);q[0].material.color.copy(col)});
+    }};
+}
+};
+
+/* ---------- loop ---------- */
+function caption(){let k=-1;api.steps.forEach((st,i)=>{if(t>=st[0])k=i});if(k!==capLast){capLast=k;$("#arCap").textContent=k>=0?api.steps[k][1]:"";$$("#arTl i").forEach((d,i)=>d.classList.toggle("on",i<=k))}}
+function labels(){
+  if(phase==="scan"){lblEls.forEach(l=>{l.style.opacity=0});return}
+  const w=window.innerWidth,h=window.innerHeight,tt=Math.min(t,api.dur);
+  api.labels.forEach((L,i)=>{const el=lblEls[i],sh=L.show(tt);el.style.opacity=sh?1:0;if(!sh)return;
+    const txt=typeof L.text==="function"?L.text(tt):L.text;if(el.textContent!==txt)el.textContent=txt;
+    tmpV.copy(L.pos);content.localToWorld(tmpV);tmpV.project(cam);
+    el.style.left=((tmpV.x+1)/2*w)+"px";el.style.top=((1-tmpV.y)/2*h)+"px";el.style.visibility=tmpV.z<1?"visible":"hidden"});
+}
+function frame(){
+  raf=requestAnimationFrame(frame);
+  const dt=Math.min(.05,clock.getDelta());let camR=rad,camPhi=phi;
+  if(phase==="scan"){pt+=dt;const k=ease(seg(pt,0,2));camR=rad*(1.55-.55*k);camPhi=lerp(.45,phi,k);
+    ring.material.opacity=.45+.35*Math.sin(pt*8);ring.scale.setScalar(1+.06*Math.sin(pt*6));
+    sweep.visible=!camMode;sweep.position.z=lerp(-5.2,5.2,(pt*.9)%1);
+    if(pt>2.1){phase="pop";pt=0;$("#arScan").style.opacity=0;sweep.visible=false}}
+  else{pt+=dt;content.scale.setScalar(Math.max(.001,back(seg(pt,0,1.1))));
+    ring.material.opacity=lerp(.8,.22,seg(pt,0,1.2));ring.scale.setScalar(1);ring.rotation.z+=dt*.2;
+    const bp=beam.geometry.attributes.position,bk=seg(pt,0,1.6);beam.material.opacity=bk<1?(1-bk):0;
+    beam.userData.seed.forEach((sd,i)=>bp.setXYZ(i,Math.cos(sd[0])*sd[1],bk*4*(.5+sd[2]),Math.sin(sd[0])*sd[1]));bp.needsUpdate=true;
+    if(playing&&(!camMode||mk.ok))t+=dt;api.update(Math.min(t,api.dur),t);caption()}
+  if(camMode){cam.position.set(0,9,11);cam.lookAt(0,0,0);cam.updateMatrixWorld();arTrack()}
+  else{if(phase!=="scan"&&performance.now()-lastInput>3000&&ptrs.size===0)theta+=dt*.06;
+  cam.position.set(Math.sin(theta)*Math.sin(camPhi)*camR,1.2+Math.cos(camPhi)*camR,Math.cos(theta)*Math.sin(camPhi)*camR);cam.lookAt(0,1.2,0)}
+  labels();R.render(scene,cam);
+}
+function open(name){
+  arEl.hidden=false;requestAnimationFrame(()=>arEl.classList.add("on"));$("#arClose").focus();
+  if(typeof THREE==="undefined"){$("#arScan").style.opacity=0;$("#arCap").textContent="تعذّر تحميل محرك العرض المجسّم. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.";return}
+  try{
+    if(!R)init();
+    if(content){scene.remove(content);dispose(content)}
+    content=new THREE.Group();scene.add(content);api=SCENES[name](content,H);
+    const pg=bookG.getObjectByName("page");if(pg.material.map)pg.material.map.dispose();pg.material.map=bookTexture(api.title);pg.material.needsUpdate=true;
+    $("#arTitle").textContent=api.title;
+    $("#arLabels").innerHTML=api.labels.map(()=>'<div class="ar-lbl"></div>').join("");lblEls=$$(".ar-lbl",$("#arLabels"));
+    $("#arTl").innerHTML=api.steps.map(()=>"<i></i>").join("");capLast=-1;$("#arCap").textContent="";
+    t=0;playing=true;$("#arPlay").textContent="إيقاف مؤقت";phase="scan";pt=0;content.scale.setScalar(.001);$("#arScan").style.opacity=1;
+    resize();rad=baseRad;theta=.5;phi=1.05;lastInput=0;
+    clock.getDelta();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
+  }catch(err){$("#arScan").style.opacity=0;$("#arCap").textContent="لا يدعم هذا الجهاز العرض المجسّم (WebGL).";}
+}
+function camOff(){if(stream){stream.getTracks().forEach(k=>k.stop());stream=null}camMode=false;mk.ok=false;if(content){content.position.set(0,0,0);content.rotation.y=0;content.visible=true}if(ring){ring.position.set(0,.02,0);ring.visible=true}if(shadowPlane)shadowPlane.position.set(0,0,0);$("#arMk").hidden=true;arEl.classList.remove("cam");if(bookG){bookG.visible=true;shadowPlane.visible=false}$("#arCam").textContent="الكاميرا"}
+async function camOn(){
+  try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+    video.srcObject=stream;await video.play();camMode=true;arEl.classList.add("cam");if(bookG){bookG.visible=false;shadowPlane.visible=true}$("#arCam").textContent="إيقاف الكاميرا";
+  }catch(e){camOff();toast("لم يُسمح بتشغيل الكاميرا في هذا العرض. جرّب فتح الكتاب في صفحته المستقلة واسمح بالوصول إلى الكاميرا.")}
+}
+function close(){cancelAnimationFrame(raf);raf=0;camOff();arEl.classList.remove("on");setTimeout(()=>{arEl.hidden=true},320)}
+$("#arClose").addEventListener("click",close);
+$("#arPlay").addEventListener("click",()=>{playing=!playing;$("#arPlay").textContent=playing?"إيقاف مؤقت":"تشغيل"});
+$("#arReplay").addEventListener("click",()=>{t=0;capLast=-1;playing=true;$("#arPlay").textContent="إيقاف مؤقت"});
+$("#arCam").addEventListener("click",()=>{camMode?camOff():camOn()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!arEl.hidden)close()});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ar]");if(b)open(b.dataset.ar)});
+$$(".ar-marker").forEach((m,idx)=>{let sd=idx*97+13,h='<svg viewBox="0 0 8 8" aria-hidden="true"><rect width="8" height="8" style="fill:currentColor"/><rect x="1" y="1" width="6" height="6" style="fill:var(--sheet)"/>';
+  for(let y=0;y<6;y++)for(let x=0;x<6;x++){sd=(sd*1103515245+12345)&0x7fffffff;if((sd>>8)%3===0||(x===0&&y===0))h+='<rect x="'+(1+x)+'" y="'+(1+y)+'" width="1.02" height="1.02" style="fill:currentColor"/>'}
+  m.innerHTML=h+'</svg>'});
+})();
+
+/* ---------- concept maps ---------- */
+function cmapAct(el,cfg){
+  if(!el)return;let sel=null;
+  const slot=g=>'<button class="cm-slot" data-g="'+g+'" data-v="" aria-label="خانة فارغة"></button>';
+  const link=x=>'<div class="cm-link">'+x+'</div>';
+  function draw(){sel=null;
+    el.innerHTML='<div class="cm-bank">'+shuffle(cfg.chips).map(c=>'<button class="chip" data-c="'+c+'">'+c+'</button>').join("")+'</div>'+
+      '<div class="cmap"><div class="cm-top"><div class="cm-node root">'+cfg.root+'</div>'+link(cfg.top[0])+slot(cfg.top[1])+'</div>'+link(cfg.mid)+'<div class="cm-split" style="margin:0 14%"></div>'+
+      '<div class="cm-cols" style="grid-template-columns:repeat('+cfg.cols.length+',minmax(0,1fr));gap:8px">'+cfg.cols.map(c=>'<div class="cm-col" style="padding:8px">'+c.map(it=>it.s?slot(it.s):it.l?link(it.l):'<div class="cm-node fixed">'+it.n+'</div>').join("")+'</div>').join("")+'</div></div>'+
+      '<div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>'}
+  const arm=()=>$$(".cm-slot",el).forEach(x=>x.classList.toggle("armed",!!sel));
+  const showChip=v=>{const ch=$$(".chip",el).find(x=>x.dataset.c===v);if(ch)ch.hidden=false};
+  el.addEventListener("click",e=>{
+    const a=e.target.closest("[data-act]");
+    if(a){if(a.dataset.act==="reset"){draw();return}
+      const sl=$$(".cm-slot",el),m=$(".msg",el);
+      if(sl.some(x=>!x.dataset.v)){m.className="msg bad";m.textContent="املأ جميع الخانات أولًا.";return}
+      let got=0;sl.forEach(x=>{const ok=cfg.groups[x.dataset.g].indexOf(x.dataset.v)>=0;x.classList.toggle("ok",ok);x.classList.toggle("bad",!ok);if(ok)got++});
+      m.className="msg "+(got===sl.length?"ok":"bad");
+      m.textContent=got===sl.length?"خريطة صحيحة بالكامل!":"صحيح "+ar(got)+" من "+ar(sl.length)+". اضغط على الخانات الحمراء لإفراغها ثم أعد المحاولة.";
+      saveScore(cfg.key,got,sl.length);return}
+    $$(".cm-slot",el).forEach(x=>x.classList.remove("ok","bad"));
+    const c=e.target.closest(".chip");
+    if(c){if(sel===c){c.classList.remove("sel");sel=null}else{if(sel)sel.classList.remove("sel");sel=c;c.classList.add("sel")}arm();return}
+    const sl=e.target.closest(".cm-slot");if(!sl)return;const cur=sl.dataset.v;
+    if(sel){if(cur)showChip(cur);sl.dataset.v=sel.dataset.c;sl.textContent=sel.dataset.c;sl.classList.add("filled");sl.setAttribute("aria-label",sel.dataset.c);sel.hidden=true;sel.classList.remove("sel");sel=null}
+    else if(cur){showChip(cur);sl.dataset.v="";sl.textContent="";sl.classList.remove("filled");sl.setAttribute("aria-label","خانة فارغة")}
+    arm()});
+  draw();
+}
+cmapAct($("#a-cmap1"),{key:"f-cmap1",root:"جسم الحيوان",top:["يحصل على الطاقة من ◀","food"],mid:"وتعمل معًا أجهزة",
+  cols:[[{s:"dig"},{l:"يفكك"},{s:"digx"},{l:"ويتخلص من الفضلات بـ"},{s:"exc"}],[{s:"res"},{l:"يطلق الطاقة من"},{s:"resx"}],[{s:"cir"},{l:"ينقل"},{s:"cirx"}]],
+  groups:{food:["الغذاء"],dig:["الهضم"],digx:["الغذاء إلى مواد بسيطة"],exc:["الإخراج"],res:["التنفس"],resx:["الجلوكوز بوجود الأكسجين"],cir:["الدوران"],cirx:["الأكسجين والجلوكوز والفضلات"]},
+  chips:["الغذاء","الهضم","الغذاء إلى مواد بسيطة","الإخراج","التنفس","الجلوكوز بوجود الأكسجين","الدوران","الأكسجين والجلوكوز والفضلات","متغيرة درجة الحرارة","الخياشيم"]});
+
+
+/* ---------- marker card ---------- */
+document.addEventListener("click",e=>{if(e.target.closest("[data-marker]"))$("#mkView").hidden=false});
+$("#mkClose").addEventListener("click",()=>{$("#mkView").hidden=true});
+$("#mkPrint").addEventListener("click",()=>{document.body.classList.add("pm");try{window.print()}catch(e){}setTimeout(()=>document.body.classList.remove("pm"),1500)});
+
+/* ================= diagnosis & remedial plan ================= */
+const OBJS=[
+  {t:"توضيح الهضم والإخراج في الحيوانات والإنسان",pages:[["whatis","ما الهضم؟ وما الإخراج؟"],["invert","الهضم في اللافقاريات"],["human","الهضم في الإنسان"]],ar:[["digest","رحلة الطعام"],["invert","الهضم في اللافقاريات"]],
+   concept:"<b>الهضم</b>: تفكيك الغذاء إلى مواد بسيطة تستفيد منها الخلايا. في الإنسان يحدث في <b>الفم والمعدة والأمعاء الدقيقة</b>، وتمتص الأمعاء الدقيقة المواد الغذائية إلى الدم. <b>الإخراج</b>: تخليص الجسم من الفضلات، وتقوم به الكليتان والرئتان والكبد والجلد.",
+   enrich:"أختبر نفسي (ص١١١): كيف حلّت أجهزة الهضم في الحيوانات مشكلة هضم الطعام؟",
+   rq:[{q:"أين يحدث الهضم في الإنسان؟",o:["في الرئتين","في الفم والمعدة والأمعاء الدقيقة","في القلب","في الجلد"],a:1},
+       {q:"لماذا يجب أن يتخلص الجسم من الفضلات؟",o:["لأنها قد تسمم الخلايا والأنسجة إذا بقيت","لأنها تعطيه طاقة","لأنها تبني العضلات","لا يجب ذلك"],a:0},
+       {q:"تخرج فضلات قنديل البحر:",o:["من فتحة أخرى","من الخياشيم","من الفتحة نفسها التي يدخل منها الغذاء","لا يخرج فضلات"],a:2}]},
+  {t:"توضيح التنفس وأعضائه في الحيوانات والإنسان",pages:[["resp","ما التنفس؟"]],ar:[["breath","التنفس في الإنسان"]],
+   concept:"<b>التنفس</b>: إطلاق الطاقة المختزنة في الجلوكوز داخل الخلايا في وجود الأكسجين. <b>الشهيق</b> يزوّد الجسم بالأكسجين، و<b>الزفير</b> يخلّصه من ثاني أكسيد الكربون والماء. يمر الهواء: الأنف أو الفم ← البلعوم ← الحنجرة ← القصبة الهوائية ← الشعبتان ← الشعيبات ← الحويصلات الهوائية.",
+   enrich:"أختبر نفسي (ص١١٣): أعطي مثالًا على عملية انتشار تحدث في المطبخ، وأوضحها.",
+   rq:[{q:"يحدث التنفس في الخلايا في وجود:",o:["الأكسجين","ثاني أكسيد الكربون","النيتروجين","الضوء"],a:0},
+       {q:"تتنفس معظم العناكب بواسطة:",o:["القصيبات","رئات تشبه صفحات الكتاب","الخياشيم","الجلد فقط"],a:1},
+       {q:"بعد الحنجرة يدخل الهواء إلى:",o:["الحويصلات الهوائية","البلعوم","القصبة الهوائية","الأنف"],a:2}]},
+  {t:"توضيح الدوران وأنواع أجهزته ومسار الدم",pages:[["circ","ما الدوران؟"],["blood","الدورة الدموية"],["temp","نموذج الصمام"]],ar:[["heart","الدورة الدموية"]],
+   concept:"<b>الدوران</b>: حركة الأكسجين والجلوكوز والفضلات في الجسم. في الجهاز <b>المفتوح</b> (الجراد) يُدفع الدم مباشرة إلى الأنسجة، وفي <b>المغلق</b> (الفقاريات) يبقى الدم داخل الأوعية. يضخ القلب الدم غير المؤكسج إلى الرئتين، ثم يضخ الدم المؤكسج إلى سائر الجسم.",
+   enrich:"العلوم والرياضيات (ص١١٧): احسب كمية الدم التي تدور في الجسم خلال ساعة واحدة.",
+   rq:[{q:"في جهاز الدوران المفتوح:",o:["لا يغادر الدم الأوعية الدموية","يدفع القلب الدم مباشرة إلى الأنسجة ثم يتجمع في الجيوب","لا يوجد قلب","يتحرك الماء فقط"],a:1},
+       {q:"يضخ القلب الدم غير المؤكسج إلى:",o:["الرئتين","المعدة","الكليتين","الجلد"],a:0},
+       {q:"تعمل الصمامات الخاصة على:",o:["هضم الغذاء","نقل الهواء","تدفق الدم في اتجاه واحد","إنتاج العرق"],a:2}]},
+  {t:"التمييز بين الحيوانات المتغيرة والثابتة درجة الحرارة",pages:[["temp","درجة حرارة الجسم"]],ar:[],
+   concept:"<b>متغيرة درجة الحرارة</b> (البرمائيات والزواحف ومعظم الأسماك): تتغير حرارة جسمها مع حرارة الوسط المحيط. <b>ثابتة درجة الحرارة</b> (الثدييات والطيور): تحافظ على ثبات حرارة جسمها؛ تتخلص من الحرارة الزائدة بالجلد والعرق، وتمنع فقدانها بالفرو أو طبقات الدهون.",
+   enrich:"التفكير الناقد (ص١١٧): ما ميزة أن يكون الحيوان ثابت درجة الحرارة؟",
+   rq:[{q:"الزواحف حيوانات:",o:["متغيرة درجة الحرارة","ثابتة درجة الحرارة"],a:0},
+       {q:"الطيور والثدييات حيوانات:",o:["متغيرة درجة الحرارة","ثابتة درجة الحرارة"],a:1},
+       {q:"من وسائل منع فقدان الحرارة:",o:["إفراز العرق","الفرو وطبقات الدهون تحت الجلد","الاستدفاء بالشمس","الخياشيم"],a:1}]}
+];
+const POSTMAP=[0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3];
+const FORMMAP={"f-explore":0,"f-invert":0,"f-path":0,"f-digest":0,"f-cmap1":0,"f-resporg":1,"f-airway":1,"f-resp":1,"f-rev4":1,"f-circ":2,"f-blood":2,"f-readfig":2,"f-rev5":2,"f-math":2,"f-temp":3,"f-tempq":3};
+const esc=x=>String(x).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function diagnose(){
+  const s=store.get("scores",{}),post=s.post;
+  if(!post||!post.detail||post.detail.length!==POSTMAP.length)return null;
+  return OBJS.map((o,k)=>{let pg=0,pt=0,fg=0,ft=0;
+    post.detail.forEach((ok,i)=>{if(POSTMAP[i]===k){pt++;if(ok)pg++}});
+    Object.keys(FORMMAP).forEach(key=>{if(FORMMAP[key]===k&&s[key]){fg+=s[key].got;ft+=s[key].total}});
+    const pp=pt?pg/pt:0,pct=Math.round((ft?pp*.7+fg/ft*.3:pp)*100),rem=s["rem-"+k];
+    return {k:k,pg:pg,pt:pt,fg:fg,ft:ft,pct:pct,lvl:pct>=80?"m":pct>=60?"n":"w",healed:!!(rem&&rem.got>=2)}});
+}
+let planSig=null;
+const LVN={m:"متقن",n:"قريب من الإتقان",w:"يحتاج إلى علاج"},LVC={m:"var(--ok)",n:"var(--spore)",w:"var(--bad)"};
+function renderDiag(){
+  const out=$("#diagOut"),plan=$("#planOut");if(!out)return;
+  const D=diagnose(),name=store.get("t:stuName","");
+  if(!D){out.innerHTML='<div class="sheet"><p>أكمل التقويم الختامي أولًا ليظهر تشخيص تحقق الأهداف.</p><div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="posttest">اذهب إلى التقويم الختامي</button></div></div>';plan.innerHTML='<div class="sheet"><p>تُبنى الخطة العلاجية تلقائيًا بعد التشخيص.</p></div>';planSig=null;return}
+  const mastered=D.filter(d=>d.lvl==="m").length,avg=Math.round(D.reduce((a,d)=>a+d.pct,0)/D.length);
+  out.innerHTML=(name?'<p class="kufi" style="margin:0 0 8px;font-weight:600">الطالب: '+esc(name)+'</p>':'')+
+    '<div class="diag-sum"><span class="big">'+ar(avg)+'٪</span><span>متوسط تحقق أهداف الدرس<br>تحقق '+ar(mastered)+' من '+ar(D.length)+' أهداف بإتقان</span></div>'+
+    D.map(d=>{const st=d.healed&&d.lvl!=="m"?"r":d.lvl;return '<div class="obj-row"><div class="top-l"><h4>الهدف '+ar(d.k+1)+': '+OBJS[d.k].t+'</h4><span class="lvl '+st+'">'+(st==="r"?"تم العلاج":LVN[d.lvl])+'</span></div><div class="obj-bar"><i style="width:'+d.pct+'%;background:'+LVC[d.lvl]+'"></i></div><div class="evid">'+ar(d.pct)+'٪ · التقويم الختامي '+ar(d.pg)+' من '+ar(d.pt)+(d.ft?' · الأنشطة '+ar(d.fg)+' من '+ar(d.ft):'')+'</div></div>'}).join("");
+  const weak=D.filter(d=>d.lvl!=="m").sort((a,b)=>a.pct-b.pct),sig=D.map(d=>d.lvl).join("");
+  if(sig!==planSig){planSig=sig;buildPlan(D,weak)}
+  $$(".plan-card").forEach(c=>{const d=D[+c.dataset.obj],b=$(".pb",c);c.classList.toggle("healed",d.healed);b.className="lvl pb "+(d.healed?"r":d.lvl);b.textContent=d.healed?"تم العلاج":LVN[d.lvl]});
+}
+function buildPlan(D,weak){
+  let h=weak.length?'<p>رُتّبت الأهداف من الأكثر حاجة إلى العلاج. نفّذ الخطوات بالترتيب، ثم أجب عن نشاط العلاج ليتحدّث التشخيص.</p>':'<div class="sheet"><p><b>أحسنت!</b> حققت جميع أهداف الدرس بإتقان، فلا تحتاج إلى خطة علاجية.</p></div>';
+  weak.forEach(d=>{const o=OBJS[d.k];let n=1;
+    h+='<div class="plan-card" data-obj="'+d.k+'"><div class="top-l"><h4>الهدف '+ar(d.k+1)+': '+o.t+'</h4><span class="lvl pb"></span></div><ol class="plan-steps">'+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>راجع المفهوم باختصار</b><div class="concept">'+o.concept+'</div></div></li>'+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>أعد قراءة الصفحات</b><div class="row no-print" style="margin-top:6px">'+o.pages.map(p=>'<button class="btn" data-go="'+p[0]+'">'+p[1]+'</button>').join("")+'</div><div class="print-only">'+o.pages.map(p=>p[1]).join("، ")+'</div></div></li>'+
+      (o.ar.length?'<li><span class="k">'+ar(n++)+'</span><div><b>شاهد المشهد المجسّم</b><div class="row no-print" style="margin-top:6px">'+o.ar.map(a=>'<button class="btn" data-ar="'+a[0]+'">'+a[1]+'</button>').join("")+'</div><div class="print-only">'+o.ar.map(a=>a[1]).join("، ")+'</div></div></li>':'')+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>نشاط العلاج</b> <span class="hint">(يُعد الهدف متحققًا بإجابتين صحيحتين من ثلاث)</span><div id="rq'+d.k+'"></div></div></li></ol></div>'});
+  const ok=D.filter(d=>d.lvl==="m");
+  if(ok.length)h+='<div class="sheet"><h3 style="margin:0 0 6px;font-size:17px">أنشطة إثرائية للأهداف المتقنة</h3><ul style="margin:0 0 10px;padding-right:20px">'+ok.map(d=>'<li>'+OBJS[d.k].enrich+'</li>').join("")+'</ul></div>';
+  $("#planOut").innerHTML=h;
+  weak.forEach(d=>quiz($("#rq"+d.k),OBJS[d.k].rq,{key:"rem-"+d.k}));
+}
+$("#printPlan").addEventListener("click",()=>{try{window.print()}catch(e){}});
+$("#stuName").addEventListener("input",()=>{store.set("t:stuName",$("#stuName").value);renderDiag()});
+
+bindSaves();renderResults();renderDiag();show();
+})();
+</script>
+</body>
+</html>
