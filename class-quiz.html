@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الاختبار العام في الحصة · نافس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f1e8;--card:#fffdf7;--ink:#1d2a21;--muted:#5d6b61;--line:#ddd6c3;--brand:#2f5f3c;--gold:#b8902c;--ok:#24804f;--bad:#b9412d;--mid:#c4871a;--soft:#f0ede2;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10170f;--card:#1a241c;--ink:#ecf0e6;--muted:#a9b8a8;--line:#2f3d31;--brand:#8cc79a;--gold:#e3c06a;--ok:#6fd39a;--bad:#f08a76;--mid:#e3a843;--soft:#223025;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10170f;--card:#1a241c;--ink:#ecf0e6;--muted:#a9b8a8;--line:#2f3d31;--brand:#8cc79a;--gold:#e3c06a;--ok:#6fd39a;--bad:#f08a76;--mid:#e3a843;--soft:#223025;color-scheme:dark}
+*{box-sizing:border-box}html{background:var(--bg);height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;line-height:1.7}
+.wrap{max-width:1200px;margin:0 auto;padding:16px 22px 30px}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+header h1{margin:0;font-size:clamp(20px,2.4vw,28px);flex:1;color:var(--brand)}
+header h1 small{display:block;font-size:.55em;color:var(--muted);font-weight:400}
+.btn{font:inherit;font-weight:600;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:8px 18px;cursor:pointer}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 22px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;background:var(--soft);border-right:5px solid #7a3e9a;border-radius:10px;padding:8px 14px;font-size:15px;color:var(--muted);margin-bottom:12px}
+.meta b{color:var(--ink)}
+.lvb{display:inline-block;border-radius:999px;padding:0 10px;color:#fff;font-size:14px}.l0{background:#2a6c8c}.l1{background:#2f8a52}.l2{background:#7a3e9a}
+.qn{font-size:15px;color:var(--muted);margin-bottom:4px}
+.qt{font-size:clamp(24px,3.2vw,40px);font-weight:800;line-height:1.6;margin:0 0 14px}
+.qt svg{width:auto!important;max-width:100%;height:auto;max-height:30vh;background:#fff;border-radius:12px;padding:6px;margin:10px 0!important;display:block}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.opts{grid-template-columns:1fr}}
+.op{display:flex;gap:14px;align-items:center;font-size:clamp(20px,2.4vw,30px);font-weight:600;background:var(--soft);border:2px solid var(--line);border-radius:16px;padding:14px 18px;line-height:1.5}
+.op .k{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font-weight:800}
+.op.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}.op.ok .k{background:var(--ok)}
+.op.dim{opacity:.45}
+.ctl{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:16px}
+.cnt{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600}
+.cnt button{width:52px;height:52px;border-radius:50%;font-size:26px}
+.cnt button[data-all]{width:auto;border-radius:12px;font-size:17px;padding:0 16px}
+.cnt input{width:90px;text-align:center;font:inherit;font-size:30px;font-weight:800;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:2px}
+.cnt small{color:var(--muted);font-weight:400}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}.dots i{width:14px;height:14px;border-radius:50%;background:var(--line)}.dots i.d{background:var(--brand)}.dots i.c{outline:3px solid var(--gold)}
+.setup{max-width:520px;margin:30px auto;display:grid;gap:14px}
+.setup label{display:grid;gap:4px;font-weight:600}
+.setup select,.setup input{font:inherit;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card);color:var(--ink)}
+.big{font-size:64px;font-weight:800;color:var(--brand);text-align:center;line-height:1.1}
+.tbl{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:17px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}th{background:var(--soft)}
+td.m{background:color-mix(in srgb,var(--ok) 20%,var(--card))}td.n{background:color-mix(in srgb,var(--mid) 22%,var(--card))}td.w{background:color-mix(in srgb,var(--bad) 20%,var(--card))}td.na{color:var(--muted)}
+.code{direction:ltr;unicode-bidi:isolate;font-family:Tahoma,sans-serif}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px}
+.bar{display:flex;justify-content:space-between;font-size:17px;margin-top:8px}.track{height:14px;border-radius:99px;background:var(--soft);overflow:hidden}.track i{display:block;height:100%;background:var(--brand)}
+.msg{color:var(--bad);min-height:1.4em}.hint{color:var(--muted);font-size:14px}
+.demo{background:#fff4d6;color:#6e5110;border:1px solid #e9cf86;border-radius:10px;padding:6px 12px;margin-bottom:10px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="hint" style="text-align:center">جارٍ التحميل…</p></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(function(){
+"use strict";
+const NUM=(x,y,n)=>'<circle cx="'+x+'" cy="'+y+'" r="11" fill="#1e5a7a"/><text x="'+x+'" y="'+(y+4)+'" font-size="12" fill="#fff" text-anchor="middle" font-family="Tahoma">'+n+'</text>';
+const SV={
+  mito:'<svg viewBox="0 0 170 80" style="width:170px;display:block;margin:6px 0"><ellipse cx="85" cy="40" rx="72" ry="30" fill="#e9a25a" stroke="#b5701a" stroke-width="3"/><path d="M22 40 q10 -22 20 0 t20 0 t20 0 t20 0 t20 0 t18 0" stroke="#fff3d6" stroke-width="5" fill="none"/></svg>',
+  catUni:'<svg viewBox="0 0 300 110" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="2" y="2" width="140" height="106" rx="10" fill="#fff" stroke="#ccc"/>'+NUM(20,20,"١")+'<circle cx="72" cy="62" r="30" fill="#f4f4f4" stroke="#555" stroke-width="2"/><path d="M48 42 l6 -20 l12 14 M96 42 l-6 -20 l-12 14" fill="#f4f4f4" stroke="#555" stroke-width="2"/><circle cx="62" cy="58" r="3"/><circle cx="82" cy="58" r="3"/><path d="M68 70 q4 4 8 0" stroke="#555" fill="none"/><rect x="158" y="2" width="140" height="106" rx="10" fill="#fff" stroke="#ccc"/>'+NUM(176,20,"٢")+'<path d="M200 60 q10 -24 26 -8 q16 -14 18 8 q14 10 -4 22 q-14 14 -28 2 q-22 -2 -12 -24z" fill="#9fd4d8" stroke="#3a8a8f" stroke-width="2"/><circle cx="222" cy="62" r="6" fill="#c0507a"/><ellipse cx="268" cy="50" rx="18" ry="8" fill="#9fd48a" stroke="#4a8a3a" stroke-width="2" transform="rotate(-30 268 50)"/><ellipse cx="262" cy="86" rx="16" ry="7" fill="#d8c48a" stroke="#8a7a3a" stroke-width="2"/></svg>',
+  arrows:'<svg viewBox="0 0 300 120" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="160" y="14" width="120" height="86" rx="10" fill="#bfe6a8" stroke="#3e8a3a" stroke-width="7"/><ellipse cx="236" cy="62" rx="30" ry="22" fill="#8fc6ef"/><circle cx="190" cy="40" r="10" fill="#7a5bc8"/><line x1="296" y1="4" x2="278" y2="20" stroke="#e05a3a" stroke-width="3"/>'+NUM(220,112,"١")+'<ellipse cx="70" cy="58" rx="58" ry="44" fill="#9fd4e0" stroke="#3a8a8f" stroke-width="3"/><circle cx="76" cy="54" r="16" fill="#e05a8a"/><circle cx="76" cy="54" r="6" fill="#f2e26a"/><line x1="120" y1="20" x2="88" y2="46" stroke="#e05a3a" stroke-width="3"/>'+NUM(70,112,"٢")+'</svg>',
+  fig12:'<svg viewBox="0 0 300 120" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="160" y="10" width="124" height="90" rx="4" fill="#fff" stroke="#555" stroke-width="2"/><rect x="166" y="16" width="112" height="78" rx="4" fill="none" stroke="#555"/><rect x="214" y="44" width="56" height="44" rx="14" fill="#fff" stroke="#555"/><circle cx="196" cy="40" r="14" fill="#fff" stroke="#555"/><ellipse cx="190" cy="76" rx="9" ry="5" fill="none" stroke="#555"/>'+NUM(222,112,"١")+'<ellipse cx="72" cy="56" rx="60" ry="44" fill="#fff" stroke="#555" stroke-width="2"/><circle cx="72" cy="52" r="18" fill="#fff" stroke="#555"/><ellipse cx="38" cy="72" rx="10" ry="5" fill="none" stroke="#555"/><ellipse cx="104" cy="40" rx="10" ry="5" fill="none" stroke="#555"/>'+NUM(72,112,"٢")+'</svg>',
+  plantOnly:'<svg viewBox="0 0 170 100" style="width:170px;display:block;margin:6px 0"><rect x="6" y="6" width="158" height="88" rx="8" fill="#d6efc4" stroke="#3e8a3a" stroke-width="7"/><ellipse cx="100" cy="52" rx="44" ry="28" fill="#8fc6ef"/><circle cx="34" cy="34" r="9" fill="#7a5bc8"/><ellipse cx="30" cy="70" rx="9" ry="5" fill="#2f8a2f"/><ellipse cx="60" cy="24" rx="9" ry="5" fill="#2f8a2f"/><ellipse cx="150" cy="80" rx="8" ry="5" fill="#2f8a2f"/></svg>'
+};
+const NAFES_Q=[
+  {lv:0,std:0,q:"المخلوق الحي الوحيد الذي لا يحتوي على نواة:",o:["البكتيريا","الفطريات","الحيوانات","النباتات"],a:0},
+  {lv:0,std:0,q:"أصغر الوحدات البنائية في المخلوقات الحية التي يمكن أن تقوم بالعمليات الحيوية هي:",o:["الخلايا","العناصر","المركبات","الجراثيم"],a:0},
+  {lv:1,std:0,q:"أي التراكيب التالية توجد في خلايا جسمك؟",o:["جدار خلوي","بلاستيدات خضراء","كلوروفيل","سيتوبلازم"],a:3},
+  {lv:1,std:0,q:"توضح الصورة جزءًا من أجزاء الخلية، وهو مسؤول عن:"+SV.mito,o:["إنتاج الطاقة","البناء الضوئي","إخراج الفضلات","التحكم بالوظائف الحيوية"],a:0},
+  {lv:2,std:0,q:"من خلال ملاحظة الصورتين، ما الذي يميز الصورة (١) عن الصورة (٢)؟"+SV.catUni,o:["خلايا بدائية النوى","عديدة الخلايا","الخلايا من نوع واحد","وحيدة الخلية"],a:1},
+  {lv:0,std:1,q:"تركيب يتحكم في جميع أنشطة الخلية:",o:["الميتوكندريا","النواة","البلاستيدات","الغشاء الخلوي"],a:1},
+  {lv:0,std:1,q:"أي أجزاء الخلية التالية يوجد في الخلية النباتية ولا يوجد في الخلية الحيوانية؟",o:["جدار خلوي","الميتوكندريا","السيتوبلازم","النواة"],a:0},
+  {lv:1,std:1,q:"تحتاج المخلوقات الحية (الحيوان والنبات) إلى عمليتي البناء الضوئي والتنفس الخلوي. فيمَ تختلف هاتان العمليتان؟",o:["البناء الضوئي يطلق طاقة<br>التنفس الخلوي يستهلك طاقة","البناء الضوئي ينتج غذاء<br>التنفس الخلوي يستهلك غذاء","البناء الضوئي ينتج ماء<br>التنفس الخلوي يستعمل ماء","البناء الضوئي يتم في وجود الأكسجين<br>التنفس الخلوي يتم في وجود ثاني أكسيد الكربون"],a:1},
+  {lv:1,std:1,q:"أي المخلوقات الحية التالية قادر على عملية التنفس، وقادر أيضًا على عملية البناء الضوئي؟",o:["الفراشة","الصبّار","البكتيريا","الثعلب"],a:1},
+  {lv:2,std:1,q:"تشير الأسهم في الصورتين إلى:"+SV.arrows,o:["١- السيتوبلازم ٢- بلاستيدات خضراء","١- الفجوة ٢- النواة","١- الجدار الخلوي ٢- النواة","١- السيتوبلازم ٢- الميتوكندريا"],a:2},
+  {lv:2,std:1,q:"أي العبارات التالية صحيحة للتمييز بين الشكل ١ والشكل ٢؟"+SV.fig12,o:["الفجوة الكبيرة للشكل ١","الجدار الخلوي للشكل ٢","عدم وجود نواة للشكل ١","البلاستيدات الخضراء للشكل ٢"],a:0},
+  {lv:1,std:2,q:"عملية يتم فيها استعمال طاقة الضوء لصنع الغذاء:",o:["الهضم","التنفس الخلوي","التنفس اللاهوائي","البناء الضوئي"],a:3}
+];
+const LVT=["معرفة","تطبيق","استدلال"];
+const NF_DOM=["١- علوم الحياة"];
+const NF_SUB=["١-١ التركيب والوظيفة في المخلوقات الحية","١-٣ الأنظمة البيئية وتفاعلاتها"];
+const NF_STDS=[
+  {code:"٦-٥-١-١-١",dom:0,sub:0,t:"وصف تراكيب الخلية، وربطها بوظائفها الحيوية"},
+  {code:"٦-٥-١-١-٢",dom:0,sub:0,t:"تحديد الاختلافات من حيث التركيب والوظيفة بين الخلية النباتية والخلية الحيوانية"},
+  {code:"٦-٥-١-٣-٣",dom:0,sub:1,t:"تمثيل العلاقات بين المخلوقات الحية التي تؤدي إلى تدوير المادة في النظام البيئي، وتحديد العلاقة بين النباتات وطاقة الشمس لإنتاج الغذاء"}];
+const P=new URLSearchParams(location.search),lesson=P.get("l")||"cells6",demo=P.get("demo")==="1",app=document.getElementById("app");
+const AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v).replace(/\d/g,d=>AR[d]),KEYS=["أ","ب","ج","د"];
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const TITLE="الخلية النباتية والخلية الحيوانية";
+let db=null,auth=null,classes=[],ST=null;
+const N=NAFES_Q.length;
+// ترتيب ثابت مخلوط للخيارات حتى لا تكون الإجابة الصحيحة في الموضع نفسه دائمًا
+const POS=[1,3,0,2,3,1,2,0,1,3,2,0],ORD=NAFES_Q.map((x,i)=>{const idx=x.o.map((_,j)=>j),t=POS[i%POS.length]%idx.length;idx[x.a]=t;idx[t]=x.a;return idx});
+
+function setup(){
+  const pre=P.get("cls")||"";
+  app.innerHTML=(demo?'<div class="demo">نسخة تجريبية: لا تُحفظ النتائج</div>':'')+'<header><h1>🖥 الاختبار العام في الحصة<small>أسئلة «نافس» · '+TITLE+' · الصف السادس</small></h1></header>'+
+   '<div class="card setup"><p style="margin:0">تُعرض الأسئلة على السبورة واحدًا تلو الآخر، ويجيب الطلاب معًا برفع الأيدي أو بطاقات (أ، ب، ج، د). بعد كشف الإجابة اكتب عدد من أجاب صحيحًا.</p>'+
+   '<label>الفصل<select id="cls">'+(classes.length?classes.map(c=>'<option'+(c===pre?' selected':'')+'>'+esc(c)+'</option>').join(""):'<option value="">لا يوجد كشف</option>')+'</select></label>'+
+   '<label>عدد الطلاب الحاضرين<input type="number" id="pres" min="1" max="60" inputmode="numeric"></label>'+
+   '<div class="msg" id="sm"></div><button class="btn primary" id="go">ابدأ</button></div>';
+  const fill=()=>{const c=document.getElementById("cls").value;document.getElementById("pres").value=window.__ros?window.__ros.filter(x=>x.cls===c).length||"":""};
+  document.getElementById("cls").onchange=fill;fill();
+  document.getElementById("go").onclick=()=>{const c=document.getElementById("cls").value,n=+document.getElementById("pres").value;
+    if(!c){document.getElementById("sm").textContent="ارفع كشف الطلاب من لوحة المعلم أولًا.";return}
+    if(!(n>=1&&n<=60)){document.getElementById("sm").textContent="اكتب عدد الحاضرين.";return}
+    ST={cls:c,present:n,i:0,shown:false,correct:NAFES_Q.map(()=>null)};q()}}
+
+function meta(x){const S=NF_STDS[x.std];return '<div class="meta"><span><b>المجال الرئيسي:</b> '+NF_DOM[S.dom]+'</span><span><b>المجال الفرعي:</b> '+NF_SUB[S.sub]+'</span><span><b>المعيار:</b> <span class="code">'+S.code+'</span> '+S.t+'</span><span><b>المستوى:</b> <span class="lvb l'+x.lv+'">'+LVT[x.lv]+'</span></span></div>'}
+
+function q(){const x=NAFES_Q[ST.i],sh=ST.shown,v=ST.correct[ST.i];
+  app.innerHTML='<header><h1>فصل '+esc(ST.cls)+' · الاختبار العام<small>الحاضرون: '+ar(ST.present)+'</small></h1><button class="btn" id="fs">ملء الشاشة</button></header>'+
+   '<div class="dots">'+NAFES_Q.map((_,k)=>'<i class="'+(ST.correct[k]!=null?'d ':'')+(k===ST.i?'c':'')+'"></i>').join("")+'</div>'+
+   '<div class="card">'+meta(x)+'<div class="qn">السؤال '+ar(ST.i+1)+' من '+ar(N)+'</div><div class="qt">'+x.q+'</div>'+
+   '<div class="opts">'+ORD[ST.i].map((oj,j)=>'<div class="op'+(sh?(oj===x.a?' ok':' dim'):'')+'"><span class="k">'+KEYS[j]+'</span><span>'+x.o[oj]+'</span></div>').join("")+'</div>'+
+   '<div class="ctl">'+(sh?'<div class="cnt">أجاب صحيحًا: <button class="btn" data-d="-1">−</button><input id="cn" type="number" min="0" max="'+ST.present+'" value="'+(v==null?0:v)+'"><button class="btn" data-d="1">+</button><small>من '+ar(ST.present)+'</small><button class="btn" data-all="1">الكل</button></div>':'<span class="hint">اطلب من الطلاب رفع بطاقة الإجابة، ثم اكشفها.</span>')+
+   '<div style="display:flex;gap:10px"><button class="btn" id="prev" '+(ST.i===0?'disabled':'')+'>السابق</button>'+(sh?'<button class="btn primary" id="next">'+(ST.i===N-1?'النتيجة':'التالي')+'</button>':'<button class="btn primary" id="show">اكشف الإجابة</button>')+'</div></div></div>';
+  const cn=document.getElementById("cn"),clamp=v=>Math.max(0,Math.min(ST.present,v|0));
+  if(cn){cn.oninput=()=>{ST.correct[ST.i]=clamp(+cn.value)};ST.correct[ST.i]=clamp(+cn.value)}
+  app.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{cn.value=clamp(+cn.value+ +b.dataset.d);ST.correct[ST.i]=+cn.value});
+  const al=app.querySelector("[data-all]");if(al)al.onclick=()=>{cn.value=ST.present;ST.correct[ST.i]=ST.present};
+  const go=k=>{ST.i=k;ST.shown=ST.correct[k]!=null;q()};
+  document.getElementById("prev").onclick=()=>go(ST.i-1);
+  const sb=document.getElementById("show");if(sb)sb.onclick=()=>{ST.shown=true;q()};
+  const nb=document.getElementById("next");if(nb)nb.onclick=()=>{if(ST.i===N-1)result();else go(ST.i+1)};
+  document.getElementById("fs").onclick=()=>{const d=document.documentElement;if(document.fullscreenElement)document.exitFullscreen();else if(d.requestFullscreen)d.requestFullscreen()};
+}
+document.addEventListener("keydown",e=>{if(!ST||!document.getElementById("cn")&&!document.getElementById("show"))return;if(e.target.tagName==="INPUT"&&e.key!=="Enter")return;
+  if(e.key===" "||e.key==="Enter"||e.key==="ArrowLeft"){e.preventDefault();const b=document.getElementById("show")||document.getElementById("next");if(b)b.click()}
+  if(e.key==="ArrowRight"){const b=document.getElementById("prev");if(b&&!b.disabled)b.click()}});
+
+function stats(){const pc=(f)=>{let g=0,t=0;NAFES_Q.forEach((x,i)=>{if(f(x)){g+=ST.correct[i]||0;t+=ST.present}});return t?Math.round(g/t*100):null};
+  return {pct:pc(()=>true),lv:[0,1,2].map(k=>pc(x=>x.lv===k)),std:NF_STDS.map((_,k)=>pc(x=>x.std===k)),
+    mx:NF_STDS.map((_,s)=>[0,1,2].map(l=>pc(x=>x.std===s&&x.lv===l)))}}
+function result(){const S=stats(),cls=v=>v==null?"na":v>=80?"m":v>=60?"n":"w",cell=v=>'<td class="'+cls(v)+'">'+(v==null?'—':ar(v)+'٪')+'</td>';
+  const weak=NF_STDS.map((s,k)=>({s:s,v:S.std[k]})).sort((a,b)=>a.v-b.v)[0],wl=[0,1,2].sort((a,b)=>S.lv[a]-S.lv[b])[0];
+  app.innerHTML='<header><h1>نتيجة فصل '+esc(ST.cls)+' في الاختبار العام<small>'+ar(ST.present)+' طالبًا حاضرًا · '+ar(N)+' سؤالًا</small></h1><button class="btn" id="back">مراجعة الأسئلة</button></header>'+
+   '<div class="grid2"><div class="card"><div class="big">'+ar(S.pct)+'٪</div><p style="text-align:center;margin:4px 0 0">نسبة الإجابات الصحيحة للفصل</p>'+
+     [0,1,2].map(k=>'<div class="bar"><span>'+LVT[k]+'</span><b>'+ar(S.lv[k])+'٪</b></div><div class="track"><i style="width:'+S.lv[k]+'%"></i></div>').join("")+'</div>'+
+   '<div class="card"><h3 style="margin-top:0">التشخيص: المعيار × المستوى</h3><div class="tbl"><table><tr><th>المعيار</th>'+LVT.map(l=>'<th>'+l+'</th>').join("")+'<th>المجموع</th></tr>'+
+     NF_STDS.map((s,k)=>'<tr><td class="code">'+s.code+'</td>'+S.mx[k].map(cell).join("")+cell(S.std[k])+'</tr>').join("")+'</table></div>'+
+     '<p class="hint">يحتاج الفصل إلى تركيز أكبر على المعيار <span class="code">'+weak.s.code+'</span> ('+weak.s.t+')، وعلى أسئلة مستوى <b>'+LVT[wl]+'</b>.</p></div></div>'+
+   '<div class="ctl"><span class="msg" id="rm"></span><div style="display:flex;gap:10px"><button class="btn" onclick="print()">طباعة</button><button class="btn primary" id="save">حفظ النتيجة في لوحة المعلم</button></div></div>';
+  document.getElementById("back").onclick=()=>{ST.i=0;ST.shown=true;q()};
+  document.getElementById("save").onclick=e=>{const b=e.target,m=document.getElementById("rm");
+    if(demo||!db){m.textContent="النسخة التجريبية لا تحفظ.";return}
+    b.disabled=true;m.textContent="جارٍ الحفظ…";
+    db.collection("durus_classquiz").add({lesson:lesson,cls:ST.cls,present:ST.present,correct:ST.correct.map(v=>v||0),pct:S.pct,lv:S.lv,std:S.std,at:firebase.firestore.FieldValue.serverTimestamp(),by:auth.currentUser.email})
+      .then(()=>{m.style.color="var(--ok)";m.textContent="✓ حُفظت النتيجة، وتظهر في لوحة المعلم."}).catch(()=>{b.disabled=false;m.textContent="تعذّر الحفظ: تحقّق من قواعد Firestore."})}}
+
+if(demo){classes=["6/1","6/2","6/3"];window.__ros=[];classes.forEach(c=>{for(let i=0;i<40;i++)window.__ros.push({cls:c})});setup();return}
+if(!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase)){app.innerHTML='<p class="msg" style="text-align:center">إعدادات Firebase غير موجودة. افتح الصفحة مع ‎?demo=1 للمعاينة.</p>';return}
+firebase.initializeApp(window.DURUS_FB);auth=firebase.auth();db=firebase.firestore();
+auth.onAuthStateChanged(u=>{
+  if(!u){app.innerHTML='<div class="card setup"><h2 style="margin:0;color:var(--brand)">دخول المعلم</h2><input type="email" id="em" placeholder="البريد الإلكتروني"><input type="password" id="pw" placeholder="كلمة المرور"><button class="btn primary" id="li">دخول</button><div class="msg" id="lm"></div></div>';
+    const go=()=>auth.signInWithEmailAndPassword(document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(()=>document.getElementById("lm").textContent="البريد أو كلمة المرور غير صحيحة.");
+    document.getElementById("li").onclick=go;document.getElementById("pw").onkeydown=e=>{if(e.key==="Enter")go()};return}
+  db.collection("durus_roster").get().then(s=>{window.__ros=s.docs.map(d=>d.data());classes=[...new Set(window.__ros.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));if(!ST)setup()}).catch(()=>{classes=[];if(!ST)setup()});
+});
+})();
+</script>
+</body>
+</html>

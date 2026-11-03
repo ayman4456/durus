@@ -2029,15 +2029,18 @@ function nfRecord(g,t){if(!STU||!STU.code)return;const N=nafesStats();if(!N.post
   if(NFMODE==="class"&&!store.get("nfClass",null))store.set("nfClass",{got:g,total:t,pct:N.post.pct,lv:N.post.lv,std:N.post.std,sess:(LIVE&&LIVE.sid)||"",at:Date.now()});
   else if(NFMODE==="home"){const H=store.get("nfHome",null)||{n:0,best:0,first:null};H.n++;H.last=N.post.pct;H.best=Math.max(H.best,N.post.pct);if(H.first==null)H.first=N.post.pct;H.at=Date.now();store.set("nfHome",H)}
   nfMode()}
-function curMode(){if(!fdb||!STU||STU.skip||!STU.code)return "free";const C=store.get("nfClass",null),live=!!(LIVE&&LIVE.open&&LIVE.cls===STU.cls);
+const untilMs=()=>LIVE&&LIVE.until?(LIVE.until.toMillis?LIVE.until.toMillis():+LIVE.until):0;
+const whenTxt=ms=>{try{return new Date(ms).toLocaleString("ar-SA",{weekday:"long",hour:"numeric",minute:"2-digit"})}catch(e){return ""}};
+function curMode(){if(!fdb||!STU||STU.skip||!STU.code)return "free";const C=store.get("nfClass",null),u=untilMs(),inWin=!!(LIVE&&(LIVE.classes||[LIVE.cls]).indexOf(STU.cls)>=0),live=!!(LIVE&&LIVE.open&&inWin&&Date.now()<u);
   if(C)return live&&C.sess===LIVE.sid?"done":"home";if(live)return "class";
-  if(LIVE&&(LIVE.homeOpen||[]).indexOf(STU.cls)>=0)return "home";return "wait"}
+  if(LIVE&&((LIVE.homeOpen||[]).indexOf(STU.cls)>=0||(inWin&&Date.now()>=u)))return "home";return "wait"}
+setInterval(()=>{if(LIVE)nfMode()},30000);
 function nfMode(){const box=$("#nfMode");if(!box)return;const m=curMode(),C=store.get("nfClass",null),H=store.get("nfHome",null);
   const msg={free:"",
-    wait:'🔒 يبدأ اختبار «نافس» عندما يفتحه معلمك في الحصة.<small>بعد الحصة يُفتح لك التدريب في المنزل، وتُحسب محاولاتك في «أبطال التدريب المنزلي».</small>',
-    class:'🟢 اختبار الحصة · فصل '+esc(STU&&STU.cls)+'<small>لك محاولة واحدة تُحسب في لوحة الشرف. أجب عن كل الأسئلة بهدوء ثم اضغط «سلّم إجاباتي».</small>',
-    done:'✓ سلّمت إجابتك في الحصة'+(C?': '+ar(C.got)+' من '+ar(C.total):'')+'<small>تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد أن يُنهي معلمك الجلسة.</small>',
-    home:'🏠 التدريب المنزلي'+'<small>'+(C?'نتيجتك في اختبار الحصة: '+ar(C.got)+' من '+ar(C.total)+'. ':'')+(H?'أفضل نتيجة لك في المنزل: '+ar(H.best)+'٪ (عدد المحاولات: '+ar(H.n)+'). ':'')+'كل محاولة تُحسب في «أبطال التدريب المنزلي».</small>'}[m];
+    wait:'🔒 يبدأ اختبار «نافس» الرسمي عندما يفتحه معلمك.<small>بعده يُفتح لك التدريب في المنزل، وتُحسب محاولاتك في «أبطال التدريب المنزلي».</small>',
+    class:'🟢 الاختبار الرسمي · فصل '+esc(STU&&STU.cls)+'<small>لك محاولة واحدة تُحسب في لوحة الشرف'+(untilMs()?'، ويُغلق الاختبار '+whenTxt(untilMs()):'')+'. أجب عن كل الأسئلة بهدوء ثم اضغط «سلّم إجاباتي».</small>',
+    done:'✓ سلّمت إجابتك في الاختبار الرسمي'+(C?': '+ar(C.got)+' من '+ar(C.total):'')+'<small>تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء الاختبار'+(untilMs()?' ('+whenTxt(untilMs())+')':'')+'.</small>',
+    home:'🏠 التدريب المنزلي'+'<small>'+(C?'نتيجتك في الاختبار الرسمي: '+ar(C.got)+' من '+ar(C.total)+'. ':'')+(H?'أفضل نتيجة لك في المنزل: '+ar(H.best)+'٪ (عدد المحاولات: '+ar(H.n)+'). ':'')+'كل محاولة تُحسب في «أبطال التدريب المنزلي».</small>'}[m];
   box.hidden=!msg;box.className="nf-mode m-"+m;box.innerHTML=msg;
   if(m===NFMODE)return;const prev=NFMODE;NFMODE=m;if(prev==="class"&&m==="done")return;nfBuild(m)}
 function nfBuild(m){const old=$("#q-nafes"),el=old.cloneNode(false);old.replaceWith(el);

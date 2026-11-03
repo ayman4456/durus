@@ -85,10 +85,16 @@ input[type=text]{border:1.5px solid var(--line);background:var(--card);border-ra
       <p class="hint" style="margin:6px 0 0">تتحدث البيانات مباشرة كلما أنهى طالب نشاطًا.</p>
     </section>
 
-    <section class="card noprint" id="sessCard" hidden><h2>🟢 جلسة اختبار «نافس» في الحصة</h2>
-      <p class="hint">اختر الفصل ثم اضغط «ابدأ»: تُفتح أسئلة «نافس» لطلاب هذا الفصل فقط، بمحاولة واحدة تُحسب في «لوحة الحصة»، ولا تظهر الإجابات الصحيحة حتى تُنهي الجلسة. عند الإنهاء يُفتح لطلاب الفصل التدريب المنزلي.</p>
-      <div class="row"><label>الفصل <select id="sessCls"></select></label><button class="btn primary" id="sessStart">ابدأ اختبار الحصة</button><button class="btn" id="sessEnd" hidden>إنهاء الجلسة</button><button class="btn" id="sessScreen">شاشة العرض للفصل</button></div>
+    <section class="card noprint" id="sessCard" hidden><h2>🟢 الاختبار الرسمي لـ«نافس»</h2>
+      <p class="hint">افتح الاختبار لفصل أو أكثر لمدة تحددها: يحلّه كل طالب مرة واحدة من جهازه (في المنزل أو بأجهزة المدرسة)، وتُحسب محاولته في لوحة الشرف والمنافسة بين الفصول، ولا تظهر الإجابات الصحيحة حتى تنتهي المدة. بعد انتهائها يُفتح التدريب المنزلي تلقائيًا.</p>
+      <div class="row"><b>الفصول:</b><span id="sessCls" class="row"></span></div>
+      <div class="row" style="margin-top:8px"><label>المدة <select id="sessDur"><option value="1">ساعة واحدة (في الحصة)</option><option value="24" selected>٢٤ ساعة</option><option value="72">٣ أيام</option></select></label><button class="btn primary" id="sessStart">افتح الاختبار الرسمي</button><button class="btn" id="sessEnd" hidden>إنهاء الآن</button><button class="btn" id="sessScreen">شاشة المتابعة</button></div>
       <div id="sessState" class="sess-state">—</div>
+    </section>
+    <section class="card noprint" id="cqCard" hidden><h2>🖥 الاختبار العام في الحصة</h2>
+      <p class="hint">تُعرض أسئلة «نافس» على السبورة سؤالًا سؤالًا، ويجيب الفصل كله معًا برفع الأيدي أو البطاقات، ثم تكتب عدد من أجاب صحيحًا، فيخرج تشخيص للفصل حسب المعيار والمستوى الإدراكي. لا يحتاج الطلاب إلى أجهزة.</p>
+      <div class="row"><label>الفصل <select id="cqCls"></select></label><button class="btn primary" id="cqGo">ابدأ على السبورة</button></div>
+      <div id="cqRes" class="hn-prev"></div>
     </section>
     <section class="card noprint" id="rosCard"><h2>👥 كشف الطلاب ورموز الدخول</h2>
       <p class="hint">ارفع ملف Excel فيه عمود «الاسم» وعمود «الفصل» (أو ملفًا لفصل واحد واكتب اسم الفصل). يُولَّد لكل طالب رمز من ٤ أرقام يدخل به الكتاب، ومن ليس في الكشف لا يستطيع حفظ نتيجة ولا دخول المنافسة.</p>
@@ -188,14 +194,16 @@ function honorData(){const L=LESSONS[lesson],per=+$("#hnPer").value,top=+$("#hnT
 function renderHonor(){const L=LESSONS[lesson];$("#hnCard").hidden=!L.nafes;if(!L.nafes)return;HB=honorData();
   const nm=(a,g)=>a.length?a.map(x=>ar(x.rank)+". "+esc(x.name)+(g?" ("+esc(x.cls)+")":"")+(x.pct!=null?" — "+ar(x.pct)+"٪":"")+(x.tries?" · المحاولات: "+ar(x.tries):"")).join("<br>"):"لا يوجد بعد";
   $("#hnPrev").innerHTML='<div><b>🏫 المنافسة بين الفصول</b><br>'+(HB.cmp.length?HB.cmp.map(c=>ar(c.rank)+". فصل "+esc(c.cls)+" — المؤشر "+ar(c.index)+" (متوسط "+ar(c.avg)+"٪"+(c.part!=null?"، مشاركة "+ar(c.part)+"٪":"")+")").join("<br>"):"لا يوجد بعد")+'</div>'+
-    '<div><b>أبطال اختبار الحصة ('+ar(HB.n)+' طالبًا)</b><br>'+nm(HB.grade,1)+'</div>'+
+    '<div><b>أبطال الاختبار الرسمي ('+ar(HB.n)+' طالبًا)</b><br>'+nm(HB.grade,1)+'</div>'+
     '<div><b>🏠 أبطال التدريب المنزلي</b><br>'+nm(HB.home,1)+'</div>'+
     HB.classes.map(c=>'<div><b>فصل '+esc(c.cls)+' ('+ar(c.n)+')</b><br>'+nm(c.top)+(c.imp?'<br>🚀 الأكثر تقدّمًا: '+esc(c.imp.name):'')+'</div>').join("")}
 
 /* ---------- كشف الطلاب ---------- */
 let XL=null;
 function rosRender(){const cl=[...new Set(ROSTER.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
-  const cur=$("#sessCls").value;$("#sessCls").innerHTML=cl.length?cl.map(c=>'<option'+(c===cur?" selected":"")+'>'+esc(c)+'</option>').join(""):'<option value="">ارفع الكشف أولًا</option>';
+  const chk=new Set([...document.querySelectorAll("#sessCls input:checked")].map(i=>i.value)),first=!document.querySelector("#sessCls input");
+  $("#sessCls").innerHTML=cl.length?cl.map(c=>'<label><input type="checkbox" value="'+esc(c)+'"'+(first||chk.has(c)?" checked":"")+'> '+esc(c)+'</label>').join(""):'<span class="hint">ارفع الكشف أولًا</span>';
+  const cq=$("#cqCls").value;$("#cqCls").innerHTML=cl.length?cl.map(c=>'<option'+(c===cq?" selected":"")+'>'+esc(c)+'</option>').join(""):'<option value="">ارفع الكشف أولًا</option>';
   const seen={},dups=[];ROSTER.slice().sort((a,b)=>((a.at&&a.at.toMillis?a.at.toMillis():0)-(b.at&&b.at.toMillis?b.at.toMillis():0))||a.code.localeCompare(b.code)).forEach(x=>{const k=x.cls+"|"+x.name;if(seen[k])dups.push(x);else seen[k]=1});
   $("#rosList").innerHTML=(dups.length?'<div class="sess-state" style="border-color:var(--bad)"><b style="color:var(--bad)">⚠ يوجد '+ar(dups.length)+' اسمًا مكررًا في الكشف</b> (غالبًا من الضغط على زر الحفظ مرتين). يُبقى لكل طالب رمزه الأول ويُحذف المكرر.<div class="row" style="margin-top:6px"><button class="btn primary" id="dupDel">حذف المكرر ('+ar(dups.length)+')</button></div></div>':'')+(cl.length?cl.map(c=>{const st=ROSTER.filter(x=>x.cls===c).sort((a,b)=>a.name.localeCompare(b.name,"ar"));
     return '<details class="ros-cls"><summary><span class="sp">فصل '+esc(c)+' ('+ar(st.length)+' طالبًا)</span><button class="btn" data-print="'+esc(c)+'">طباعة البطاقات</button></summary><div class="tbl"><table><tr><th>الاسم</th><th>الرمز</th><th></th></tr>'+
@@ -227,14 +235,22 @@ function printCards(c){const st=ROSTER.filter(x=>x.cls===c).sort((a,b)=>a.name.l
     '</div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>(function(){var u='+JSON.stringify(url)+';try{var d=document.createElement("div");new QRCode(d,{text:u,width:148,height:148,correctLevel:QRCode.CorrectLevel.M});setTimeout(function(){var cv=d.querySelector("canvas"),src=cv?cv.toDataURL():(d.querySelector("img")||{}).src;document.querySelectorAll(".q").forEach(function(q){q.innerHTML=\'<img src="\'+src+\'">\'});setTimeout(print,300)},300)}catch(e){setTimeout(print,300)}})();<\/script></body></html>');w.document.close()}
 
 /* ---------- جلسة الحصة ---------- */
-function sessRender(){const L=LESSONS[lesson];$("#sessCard").hidden=!L.nafes;if(!L.nafes)return;
-  const open=LIVE&&LIVE.open,R=rows.filter(r=>r.lesson===lesson);$("#sessStart").hidden=!!open;$("#sessEnd").hidden=!open;$("#sessCls").disabled=!!open;
-  const done=c=>R.filter(r=>r.cls===c&&r.nafesClass);
-  if(open){const sub=R.filter(r=>r.cls===LIVE.cls&&r.nafesClass&&r.nafesClass.sess===LIVE.sid),all=done(LIVE.cls),codes=new Set(all.map(r=>r.code)),miss=ROSTER.filter(x=>x.cls===LIVE.cls&&!codes.has(x.code)),a=sub.length?Math.round(sub.reduce((s,r)=>s+r.nafesClass.pct,0)/sub.length):null;
-    $("#sessState").innerHTML='<span class="on">● الجلسة مفتوحة لفصل '+esc(LIVE.cls)+'</span> — سلّم '+ar(all.length)+' من '+ar(rosCount(LIVE.cls)||"؟")+(a!=null?' · متوسط من سلّم الآن '+ar(a)+'٪':'')+
-      (miss.length?'<br><span class="miss">لم يسلّموا بعد: '+miss.map(x=>esc(x.name)).join("، ")+'</span>':'')}
-  else{const cl=[...new Set(ROSTER.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
-    $("#sessState").innerHTML='لا توجد جلسة مفتوحة الآن.'+(cl.length?'<br>'+cl.map(c=>{const d=done(c),a=d.length?Math.round(d.reduce((s,r)=>s+r.nafesClass.pct,0)/d.length):null;return 'فصل '+esc(c)+': سلّم '+ar(d.length)+' من '+ar(rosCount(c))+(a!=null?' · متوسط '+ar(a)+'٪':'')}).join("<br>"):'')}}
+const untilMs=()=>LIVE&&LIVE.until?(LIVE.until.toMillis?LIVE.until.toMillis():+LIVE.until):0;
+const liveCls=()=>LIVE?(LIVE.classes||(LIVE.cls?[LIVE.cls]:[])):[];
+const fmtT=ms=>{try{return new Date(ms).toLocaleString("ar-SA",{weekday:"long",hour:"numeric",minute:"2-digit"})}catch(e){return ""}};
+function sessRender(){const L=LESSONS[lesson];$("#sessCard").hidden=!L.nafes;$("#cqCard").hidden=!L.nafes;if(!L.nafes)return;
+  const u=untilMs(),open=!!(LIVE&&LIVE.open&&Date.now()<u),CL=liveCls(),R=rows.filter(r=>r.lesson===lesson);
+  $("#sessStart").hidden=open;$("#sessEnd").hidden=!open;document.querySelectorAll("#sessCls input").forEach(i=>{i.disabled=open;if(open)i.checked=CL.indexOf(i.value)>=0});$("#sessDur").disabled=open;
+  const cl=[...new Set(ROSTER.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
+  const line=c=>{const d=R.filter(r=>r.cls===c&&r.nafesClass),codes=new Set(d.map(r=>r.code)),miss=ROSTER.filter(x=>x.cls===c&&!codes.has(x.code)),a=d.length?Math.round(d.reduce((s,r)=>s+r.nafesClass.pct,0)/d.length):null;
+    return '<div><b>فصل '+esc(c)+'</b>: سلّم '+ar(d.length)+' من '+ar(rosCount(c))+(a!=null?' · متوسط '+ar(a)+'٪':'')+(open&&CL.indexOf(c)>=0&&miss.length?'<details><summary class="miss">لم يسلّموا بعد ('+ar(miss.length)+')</summary><span class="miss">'+miss.map(x=>esc(x.name)).join("، ")+'</span></details>':'')+'</div>'};
+  $("#sessState").innerHTML=(open?'<span class="on">● الاختبار الرسمي مفتوح لـ '+CL.map(c=>"فصل "+esc(c)).join("، ")+'</span> — ينتهي '+fmtT(u):(LIVE&&CL.length&&u?'انتهى آخر اختبار رسمي ('+CL.map(esc).join("، ")+') '+fmtT(LIVE.endedAt&&LIVE.endedAt.toMillis?LIVE.endedAt.toMillis():LIVE.endedAt||u)+'.':'لا يوجد اختبار رسمي مفتوح الآن.'))+(cl.length?cl.map(line).join(""):'');
+  cqRender()}
+let CQ=[],cqUnsub=null;
+function cqRender(){const by={};CQ.filter(x=>x.lesson===lesson).forEach(x=>{const t=x.at&&x.at.toMillis?x.at.toMillis():0;if(!by[x.cls]||by[x.cls]._t<t)by[x.cls]=Object.assign({_t:t},x)});
+  const L=["معرفة","تطبيق","استدلال"],ks=Object.keys(by).sort((a,b)=>a.localeCompare(b,"ar"));
+  $("#cqRes").innerHTML=ks.length?ks.map(c=>{const x=by[c];return '<div><b>فصل '+esc(c)+': '+ar(x.pct)+'٪</b> ('+ar(x.present)+' حاضرًا)<br>'+L.map((l,i)=>l+' '+(x.lv[i]==null?'—':ar(x.lv[i])+'٪')).join(" · ")+'<br><span class="miss">'+(x._t?fmtT(x._t):'')+'</span></div>'}).join(""):''}
+setInterval(()=>{if(LIVE)sessRender()},60000);
 function liveWatch(){if(liveUnsub){liveUnsub();liveUnsub=null}if(demo||!db)return;liveUnsub=db.collection("durus_live").doc(lesson).onSnapshot(d=>{LIVE=d.exists?d.data():null;sessRender()},()=>{})}
 function render(){
   const cls=$("#clsSel").value,R=rows.filter(r=>r.lesson===lesson&&(!cls||r.cls===cls));
@@ -283,7 +299,7 @@ function startDemo(){$("#demoNote").hidden=false;$("#dash").hidden=false;
     return {lesson:"digestion6",name:n+" (تجريبي)",cls:i%2?"6أ":"6ب",pre:{got:pre,total:17},post:{got:post,total:17},objectives:o,healed:o.map(p=>p<80&&Math.random()>.4),seen:10+i%7,survey:{a:[5,4,5,4,5].map(v=>Math.max(1,v-Math.floor(Math.random()*2))),c:i%5===0?"أعجبتني المشاهد المجسّمة كثيرًا":""}}}));
   ROSTER=[];const cl=["6أ","6ب","6ج"];names.forEach((n,i)=>ROSTER.push({code:String(2000+i*37),name:n+" (تجريبي)",cls:cl[i%3]}));["ياسمين","رغد","سلمى"].forEach((n,i)=>ROSTER.push({code:String(7000+i),name:n+" (تجريبي)",cls:cl[i]}));
   rows.forEach(r=>{if(r.lesson!=="cells6")return;const R=ROSTER.find(x=>x.name===r.name);if(R){r.code=R.code;r.cls=R.cls}r.nafesClass={pct:r.nafes.pct,lv:r.nafes.lv,std:r.nafes.std,sess:"demo"};const b=Math.min(100,r.nafes.pct+Math.floor(Math.random()*25));if(Math.random()>.3)r.nafesHome={n:1+Math.floor(Math.random()*5),best:b,last:b}});
-  tSurvey();rosRender();render()}
+  CQ=[{lesson:"cells6",cls:"6ب",present:38,pct:71,lv:[82,70,58]}];tSurvey();rosRender();render()}
 
 $("#xlFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;if(!window.XLSX){$("#xlPrev").innerHTML='<p class="msg">تعذّر تحميل قارئ Excel؛ تحقّق من الاتصال.</p>';return}
   const rd=new FileReader();rd.onload=()=>{try{const wb=XLSX.read(new Uint8Array(rd.result),{type:"array"});XL=[];wb.SheetNames.forEach(n=>{XL=XL.concat(XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:""}))});xlPreview()}catch(err){$("#xlPrev").innerHTML='<p class="msg">تعذّرت قراءة الملف.</p>'}};rd.readAsArrayBuffer(f)});
@@ -292,13 +308,16 @@ $("#addBtn").addEventListener("click",()=>{const n=$("#addNm").value.trim().repl
 $("#rosList").addEventListener("click",e=>{const p=e.target.closest("[data-print]");if(p){e.preventDefault();printCards(p.dataset.print);return}
   const d=e.target.closest("[data-del]");if(!d)return;const x=ROSTER.find(y=>y.code===d.dataset.del);if(!x||!confirm("حذف "+x.name+" من الكشف؟ لن يستطيع الدخول برمزه."))return;
   if(demo||!db){ROSTER=ROSTER.filter(y=>y!==x);rosRender();return}db.collection("durus_roster").doc(x.code).delete()});
-$("#sessStart").addEventListener("click",()=>{const c=$("#sessCls").value;if(!c){$("#sessState").textContent="ارفع كشف الطلاب أولًا.";return}
-  const H=(LIVE&&LIVE.homeOpen)||[];
-  if(demo||!db){LIVE={open:true,cls:c,sid:Date.now().toString(36),homeOpen:H};sessRender();return}
-  db.collection("durus_live").doc(lesson).set({open:true,cls:c,sid:Date.now().toString(36),homeOpen:H,startedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+3*3600e3),by:auth.currentUser.email}).catch(()=>$("#sessState").textContent="تعذّر بدء الجلسة: تحقّق من قواعد Firestore.")});
-$("#sessEnd").addEventListener("click",()=>{if(!LIVE||!confirm("إنهاء جلسة فصل "+LIVE.cls+"؟ لن يستطيع من لم يسلّم أن يحلّ ضمن لوحة الحصة."))return;
-  if(demo||!db){LIVE.open=false;LIVE.homeOpen=(LIVE.homeOpen||[]).concat(LIVE.cls);sessRender();return}
-  db.collection("durus_live").doc(lesson).update({open:false,until:firebase.firestore.Timestamp.fromMillis(Date.now()+10*60e3),homeOpen:firebase.firestore.FieldValue.arrayUnion(LIVE.cls)})});
+$("#sessStart").addEventListener("click",()=>{const cls=[...document.querySelectorAll("#sessCls input:checked")].map(i=>i.value);if(!cls.length){$("#sessState").textContent="اختر فصلًا واحدًا على الأقل.";return}
+  const h=+$("#sessDur").value,lab=h===1?"ساعة واحدة":h===24?"٢٤ ساعة":"٣ أيام";
+  if(!confirm("فتح الاختبار الرسمي لـ "+cls.map(c=>"فصل "+c).join("، ")+" لمدة "+lab+"؟\nلكل طالب محاولة واحدة تُحسب في لوحة الشرف."))return;
+  const prev=liveCls(),H=[...new Set(((LIVE&&LIVE.homeOpen)||[]).concat(prev))].filter(c=>cls.indexOf(c)<0),data={open:true,classes:cls,cls:cls[0],sid:Date.now().toString(36),homeOpen:H};
+  if(demo||!db){LIVE=Object.assign(data,{until:Date.now()+h*3600e3});sessRender();return}
+  db.collection("durus_live").doc(lesson).set(Object.assign(data,{startedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+h*3600e3),by:auth.currentUser.email})).catch(()=>$("#sessState").textContent="تعذّر فتح الاختبار: تحقّق من قواعد Firestore.")});
+$("#sessEnd").addEventListener("click",()=>{const CL=liveCls();if(!LIVE||!confirm("إنهاء الاختبار الرسمي الآن لـ "+CL.join("، ")+"؟ من لم يسلّم لن تُحسب له محاولة رسمية."))return;
+  if(demo||!db){LIVE.open=false;LIVE.endedAt=Date.now();LIVE.homeOpen=[...new Set((LIVE.homeOpen||[]).concat(CL))];sessRender();return}
+  db.collection("durus_live").doc(lesson).update({open:false,endedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+10*60e3),homeOpen:firebase.firestore.FieldValue.arrayUnion(...CL)})});
+$("#cqGo").addEventListener("click",()=>{const c=$("#cqCls").value;window.open("class-quiz.html?l="+lesson+"&cls="+encodeURIComponent(c)+(demo?"&demo=1":""),"_blank")});
 $("#sessScreen").addEventListener("click",()=>window.open("live.html?l="+lesson+(demo?"&demo=1":""),"_blank"));
 ["hnPer","hnTop","hnMin","hnPct"].forEach(id=>$("#"+id).addEventListener("change",renderHonor));
 const honorURL=()=>new URL("honor.html?l="+lesson,location.href).href;
@@ -317,6 +336,7 @@ firebase.initializeApp(window.DURUS_FB);auth=firebase.auth();db=firebase.firesto
 auth.onAuthStateChanged(u=>{if(unsub){unsub();unsub=null}
   if(!u){$("#loginCard").hidden=false;$("#dash").hidden=true;$("#logout").hidden=true;$("#who").textContent="";return}
   $("#loginCard").hidden=true;$("#dash").hidden=false;$("#logout").hidden=false;$("#who").textContent=u.email;
+  if(cqUnsub)cqUnsub();cqUnsub=db.collection("durus_classquiz").onSnapshot(sn=>{CQ=sn.docs.map(d=>d.data());cqRender()},()=>{});
   if(rosUnsub)rosUnsub();rosUnsub=db.collection("durus_roster").onSnapshot(sn=>{ROSTER=sn.docs.map(d=>Object.assign({code:d.id},d.data()));rosRender()},()=>{});liveWatch();
   unsub=db.collection("durus_results").onSnapshot(snap=>{rows=snap.docs.map(d=>d.data());render()},err=>{$("#kpis").innerHTML='<div class="kpi"><b>!</b><span>تعذّر قراءة البيانات: تحقق من قواعد Firestore.</span></div>'})});
 $("#loginBtn").addEventListener("click",()=>{$("#loginMsg").textContent="";auth.signInWithEmailAndPassword($("#em").value.trim(),$("#pw").value).catch(()=>$("#loginMsg").textContent="البريد أو كلمة المرور غير صحيحة.")});

@@ -31,7 +31,7 @@ service cloud.firestore {
             || (resource != null && ('nafesClass' in resource.data) && request.resource.data.nafesClass == resource.data.nafesClass)
             || ((resource == null || !('nafesClass' in resource.data))
                 && exists(/databases/$(database)/documents/durus_live/$(request.resource.data.lesson))
-                && live(request.resource.data.lesson).cls == request.resource.data.cls
+                && request.resource.data.cls in live(request.resource.data.lesson).classes
                 && request.time < live(request.resource.data.lesson).until));
     }
 
@@ -45,6 +45,11 @@ service cloud.firestore {
     match /durus_live/{lesson} {
       allow read: if true;
       allow write: if request.auth != null;
+    }
+
+    // نتائج الاختبار العام في الحصة (للمعلم فقط)
+    match /durus_classquiz/{id} {
+      allow read, write: if request.auth != null;
     }
 
     // لوحة الشرف: يقرؤها الجميع، ولا ينشرها إلا معلم مسجّل

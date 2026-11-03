@@ -99,10 +99,10 @@ function draw(B,demo){
   let when="";try{const d=B.at&&B.at.toDate?B.at.toDate():B.at?new Date(B.at):null;if(d)when=d.toLocaleDateString("ar-SA-u-ca-islamic-umalqura",{day:"numeric",month:"long",year:"numeric"})}catch(e){}
   app.innerHTML=(demo?'<div class="demo">نسخة تجريبية بأسماء مولّدة للعرض فقط</div>':'')+
    '<header><div class="trophy">🏆</div><h1>لوحة الشرف</h1><div class="sub">المتميزون في تدريب «نافس» · العلوم · الصف السادس</div><div class="lesson">'+esc(B.title||"")+(when?' · '+when:'')+'</div></header>'+
-   '<nav class="tabs"><a href="#classes">🏫 بين الفصول</a><a href="#lesson">🟢 اختبار الحصة</a><a href="#home">🏠 التدريب المنزلي</a></nav>'+
+   '<nav class="tabs"><a href="#classes">🏫 بين الفصول</a><a href="#lesson">🟢 الاختبار الرسمي</a><a href="#home">🏠 التدريب المنزلي</a></nav>'+
    '<div class="rule" id="classes">🏫 المنافسة بين الفصول</div>'+
    ((B.cmp||[]).length?'<div class="cmp">'+B.cmp.map(c=>'<div class="cc"><span class="m">'+medal(c.rank)+'</span><span class="nm">'+clsName(c.cls)+'</span><span class="ix">'+ar(c.index)+'</span><span class="det">متوسط الدرجة '+pc(c.avg)+(c.part!=null?' · نسبة المشاركة '+pc(c.part)+' ('+ar(c.n)+' من '+ar(c.total)+')':'')+'</span><span class="bar"><i style="width:'+Math.max(3,c.index)+'%"></i></span></div>').join("")+'</div><p style="text-align:center;color:var(--muted);font-size:13px;margin:8px 0 0">مؤشر الفصل = متوسط درجات الفصل × نسبة مشاركة طلابه</p>':'<div class="empty">لم تكتمل نتائج الفصول بعد.</div>')+
-   '<div class="rule" id="lesson">🟢 أبطال اختبار الحصة</div>'+
+   '<div class="rule" id="lesson">🟢 أبطال الاختبار الرسمي</div>'+
    (g.length?'<div class="podium">'+place(second,2)+place(first,1)+place(third,3)+'</div>'+
      (rest.length?'<div class="more">'+rest.map(x=>'<div class="row"><span class="rk">'+ar(x.rank)+'</span><span class="nm">'+esc(x.name)+' <span class="cl">· '+clsName(x.cls)+'</span></span>'+(B.showPct&&x.pct!=null?'<span class="sc">'+pc(x.pct)+'</span>':'')+'</div>').join("")+'</div>':'')
     :'<div class="empty">لم تكتمل النتائج بعد.</div>')+
@@ -113,7 +113,7 @@ function draw(B,demo){
      '</section>').join("")+'</div>'+
    '<div class="rule" id="home">🏠 أبطال التدريب المنزلي</div>'+
    ((B.home||[]).length?'<div class="more">'+B.home.map(x=>'<div class="row"><span class="rk">'+(x.rank<=3?medal(x.rank):ar(x.rank))+'</span><span class="nm">'+esc(x.name)+' <span class="cl">· '+clsName(x.cls)+(x.tries?' · المحاولات: '+ar(x.tries):'')+'</span></span>'+(B.showPct&&x.pct!=null?'<span class="sc">'+pc(x.pct)+'</span>':'')+'</div>').join("")+'</div>':'<div class="empty">لم يبدأ التدريب المنزلي بعد.</div>')+
-   '<footer><div class="proud">نفخر بكم، ونرجو لكم دوام التميز 🌟</div>لوحة الحصة: محاولة واحدة لكل طالب أثناء الحصة · التدريب المنزلي: أفضل نتيجة في المنزل<br>عند التساوي يتقدّم الأكثر إتقانًا للمستويات الإدراكية.<br>تصميم: أيمن الصاعدي'+
+   '<footer><div class="proud">نفخر بكم، ونرجو لكم دوام التميز 🌟</div>الاختبار الرسمي: محاولة واحدة لكل طالب خلال المدة التي يحددها المعلم · التدريب المنزلي: أفضل نتيجة في المنزل<br>عند التساوي يتقدّم الأكثر إتقانًا للمستويات الإدراكية.<br>تصميم: أيمن الصاعدي'+
    '<div class="tools"><button class="btn" id="shareBtn">مشاركة اللوحة</button><button class="btn ghost" onclick="print()">طباعة / حفظ PDF</button></div></footer>';
   document.getElementById("shareBtn").onclick=()=>{const u=location.href.split("#")[0].replace(/[?&](preview|demo)=1/,"");if(navigator.share)navigator.share({title:"لوحة الشرف · تدريب نافس",url:u}).catch(()=>{});else{navigator.clipboard&&navigator.clipboard.writeText(u);document.getElementById("shareBtn").textContent="✓ نُسخ الرابط"}};
   confetti();

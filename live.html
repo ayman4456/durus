@@ -61,31 +61,31 @@ const medal=r=>r===1?"🥇":r===2?"🥈":r===3?"🥉":"⭐";
 let LIVE=null,ROS=[],RES=[],showNames=true;
 
 function draw(){
-  const cls=LIVE&&LIVE.cls,open=!!(LIVE&&LIVE.open);
+  const CL=LIVE?(LIVE.classes||(LIVE.cls?[LIVE.cls]:[])):[],u=LIVE&&LIVE.until?(LIVE.until.toMillis?LIVE.until.toMillis():+LIVE.until):0,open=!!(LIVE&&LIVE.open&&(!u||Date.now()<u)),cls=CL.join('، ');
   const classes=[...new Set(ROS.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
   const att=RES.filter(r=>r.lesson===lesson&&r.nafesClass);
-  const mine=att.filter(r=>r.cls===cls),tot=ROS.filter(x=>x.cls===cls).length,n=mine.length,pct=tot?Math.min(100,Math.round(n/tot*100)):0;
+  const mine=att.filter(r=>CL.indexOf(r.cls)>=0),tot=ROS.filter(x=>CL.indexOf(x.cls)>=0).length,n=mine.length,pct=tot?Math.min(100,Math.round(n/tot*100)):0;
   const avg=n?Math.round(mine.reduce((s,r)=>s+r.nafesClass.pct,0)/n):null;
   const top=mine.slice().sort((a,b)=>b.nafesClass.pct-a.nafesClass.pct||((b.nafesClass.lv||[]).filter(v=>v>=80).length-(a.nafesClass.lv||[]).filter(v=>v>=80).length)||(a.nafesClass.at||0)-(b.nafesClass.at||0)).slice(0,5);
   let rk=0,pv=null;top.forEach(r=>{if(r.nafesClass.pct!==pv)rk++;pv=r.nafesClass.pct;r._rk=rk});
   const cmp=classes.map(c=>{const a=att.filter(r=>r.cls===c),t=ROS.filter(x=>x.cls===c).length,av=a.length?Math.round(a.reduce((s,r)=>s+r.nafesClass.pct,0)/a.length):null,pa=t?Math.min(100,Math.round(a.length/t*100)):0;return {c:c,n:a.length,t:t,av:av,pa:pa,ix:av==null?0:Math.round(av*pa/100)}}).sort((a,b)=>b.ix-a.ix);
   const R=100,C=2*Math.PI*R;
   app.innerHTML=(demo?'<div class="demo">عرض تجريبي ببيانات مولّدة</div>':'')+
-   '<header><h1>اختبار «نافس» في الحصة'+(cls?' · فصل '+esc(cls):'')+'<small>'+esc(TITLES[lesson]||"")+' · العلوم · الصف السادس</small></h1>'+
-   '<span class="pill'+(open?' on':'')+'">'+(open?'● الاختبار جارٍ':cls?'انتهت الجلسة':'لا توجد جلسة')+'</span>'+
+   '<header><h1>اختبار «نافس» الرسمي'+(cls?' · '+esc(cls):'')+'<small>'+esc(TITLES[lesson]||"")+' · العلوم · الصف السادس</small></h1>'+
+   '<span class="pill'+(open?' on':'')+'">'+(open?'● الاختبار مفتوح':cls?'انتهى الاختبار':'لا يوجد اختبار')+'</span>'+
    '<div class="tools"><button class="btn" id="tgN">'+(showNames?'إخفاء الأسماء':'إظهار الأسماء')+'</button><button class="btn" id="fs">ملء الشاشة</button></div></header>'+
    '<div class="grid">'+
     '<section class="card"><h2>التسليم</h2><div class="ring"><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="'+R+'" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="20"/><circle cx="120" cy="120" r="'+R+'" fill="none" stroke="#5fd394" stroke-width="20" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100))+'" transform="rotate(-90 120 120)" style="transition:stroke-dashoffset .8s"/><text x="120" y="118" text-anchor="middle" font-size="54" font-weight="800" fill="#f6f3e8" font-family="Noto Kufi Arabic,Tahoma">'+ar(n)+'</text><text x="120" y="156" text-anchor="middle" font-size="20" fill="#a9c4b4" font-family="Noto Kufi Arabic,Tahoma">من '+ar(tot||0)+' طالبًا</text></svg></div>'+
       '<div class="avg">متوسط درجات من سلّم<b>'+(avg==null?'—':ar(avg)+'٪')+'</b></div></section>'+
-    '<section class="card"><h2>🏆 أوائل الفصل الآن</h2>'+(top.length?'<ol class="top">'+top.map(r=>'<li><span class="m">'+medal(r._rk)+'</span><span class="n">'+(showNames?esc(r.name):'طالب متميز')+'</span><span class="s">'+ar(r.nafesClass.pct)+'٪</span></li>').join("")+'</ol>':'<div class="empty">بانتظار أول تسليم…</div>')+'</section>'+
-    '<section class="card"><h2>🏫 المنافسة بين الفصول</h2>'+(cmp.length?'<div class="bars">'+cmp.map((x,i)=>'<div class="br'+(x.c===cls?' cur':'')+'"><div class="h"><span>'+(x.ix?medal(i+1)+' ':'')+'فصل '+esc(x.c)+'</span><b>'+ar(x.ix)+'</b></div><div class="t"><i style="width:'+x.ix+'%"></i></div><small>متوسط '+(x.av==null?'—':ar(x.av)+'٪')+' · مشاركة '+ar(x.pa)+'٪ ('+ar(x.n)+' من '+ar(x.t)+')</small></div>').join("")+'</div><p class="sub" style="font-size:13px;margin:10px 0 0">المؤشر = متوسط الفصل × نسبة المشاركة</p>':'<div class="empty">لا يوجد كشف طلاب بعد.</div>')+'</section>'+
+    '<section class="card"><h2>🏆 الأوائل الآن</h2>'+(top.length?'<ol class="top">'+top.map(r=>'<li><span class="m">'+medal(r._rk)+'</span><span class="n">'+(showNames?esc(r.name)+(CL.length>1?' <small style="color:var(--muted)">'+esc(r.cls)+'</small>':''):'طالب متميز')+'</span><span class="s">'+ar(r.nafesClass.pct)+'٪</span></li>').join("")+'</ol>':'<div class="empty">بانتظار أول تسليم…</div>')+'</section>'+
+    '<section class="card"><h2>🏫 المنافسة بين الفصول</h2>'+(cmp.length?'<div class="bars">'+cmp.map((x,i)=>'<div class="br'+(CL.indexOf(x.c)>=0?' cur':'')+'"><div class="h"><span>'+(x.ix?medal(i+1)+' ':'')+'فصل '+esc(x.c)+'</span><b>'+ar(x.ix)+'</b></div><div class="t"><i style="width:'+x.ix+'%"></i></div><small>متوسط '+(x.av==null?'—':ar(x.av)+'٪')+' · مشاركة '+ar(x.pa)+'٪ ('+ar(x.n)+' من '+ar(x.t)+')</small></div>').join("")+'</div><p class="sub" style="font-size:13px;margin:10px 0 0">المؤشر = متوسط الفصل × نسبة المشاركة</p>':'<div class="empty">لا يوجد كشف طلاب بعد.</div>')+'</section>'+
    '</div>';
   document.getElementById("tgN").onclick=()=>{showNames=!showNames;draw()};
   document.getElementById("fs").onclick=()=>{const d=document.documentElement;if(document.fullscreenElement)document.exitFullscreen();else if(d.requestFullscreen)d.requestFullscreen()};
 }
 
 if(demo){const cl=["6أ","6ب","6ج"],nm=["سارة","نورة","ريم","لتين","جود","هيا","لمى","رهف","شهد","دانة","غلا","وعد","مها","أروى","تالا","بيان","ياسمين","رغد","سلمى","ليان","جنى"];
-  ROS=nm.map((n,i)=>({code:String(1000+i),name:n,cls:cl[i%3]}));LIVE={open:true,cls:"6ب",sid:"d"};
+  ROS=nm.map((n,i)=>({code:String(1000+i),name:n,cls:cl[i%3]}));LIVE={open:true,classes:["6ب"],cls:"6ب",sid:"d",until:Date.now()+3600e3};
   RES=ROS.filter((x,i)=>x.cls!=="6ب"||i<12).map((x,i)=>({lesson:lesson,name:x.name,cls:x.cls,code:x.code,nafesClass:{pct:[58,67,75,83,92,100][(i*7)%6],lv:[80,70,90],at:i}}));
   draw();let k=12;const t=setInterval(()=>{const x=ROS.filter(r=>r.cls==="6ب"&&!RES.some(q=>q.code===r.code))[0];if(!x){clearInterval(t);return}RES.push({lesson:lesson,name:x.name,cls:x.cls,code:x.code,nafesClass:{pct:[67,83,92,75][k++%4],lv:[80,80,80],at:k}});draw()},2500);return}
 
