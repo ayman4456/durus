@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>الخلية النباتية والخلية الحيوانية — كتاب تفاعلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#edf1e7; --sheet:#fbfcf8; --sheet-2:#f2f5ec; --ink:#1d3428; --muted:#55685b; --line:#d5ddcc;
+  --moss:#2f5f3c; --fern:#3e7c4a; --leaf:#7aa84a; --spore:#c4871a; --water:#2a6c8c; --dry:#8b6a45;
+  --ok:#24804f; --ok-bg:#e1f2e6; --bad:#b9412d; --bad-bg:#f8e4df; --sel:#2a6c8c; --sel-bg:#e0edf3;
+  --bar:#1f2a24; --bar-ink:#f1f5ec; --desk:#2c3832; --edge:#d9d4c4; --page:#fdfcf7; --gold:#c9a24a;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+    --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+    --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+    --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+  --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+  --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+  --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+  color-scheme:dark;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;background:var(--desk)}
+body{margin:0;height:100%;overflow:hidden;display:flex;flex-direction:column;background:var(--desk);color:var(--ink);font-family:"Amiri","Traditional Arabic","Times New Roman",serif;font-size:19px;line-height:2}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+h1,h2,h3,.kufi{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;line-height:1.5;font-weight:700}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.btn,.tab,.toc button,.badge,.top-title,.top-count,.zone-h,.chip,.steps button,.vocab button,.lab-status,.msg,.hint,.where,.fact b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+:focus-visible{outline:3px solid var(--spore);outline-offset:2px;border-radius:6px}
+img,svg{max-width:100%}
+
+/* top bar */
+.top{flex:none;position:relative;z-index:20;background:var(--bar);color:var(--bar-ink)}
+.top-row{display:flex;align-items:center;gap:10px;max-width:860px;margin:auto;padding:10px 14px}
+.top-title{flex:1;min-width:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-count{font-size:14px;opacity:.8}
+.icon-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:10px;width:40px;height:40px;display:grid;place-items:center}
+.prog{height:4px;background:rgba(255,255,255,.12)}
+.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:40;display:none}
+.drawer.open{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.drawer-panel{position:absolute;top:0;bottom:0;right:0;width:min(340px,88vw);background:var(--sheet);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 14px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.drawer-panel h2{font-size:20px;margin:0 6px 10px}
+.toc{list-style:none;margin:0;padding:0}
+.toc button{width:100%;text-align:right;background:none;border:0;padding:10px 10px;border-radius:10px;display:flex;gap:10px;align-items:center;font-size:16px}
+.toc button:hover{background:var(--sheet-2)}
+.toc button.cur{background:var(--sel-bg);color:var(--sel);font-weight:700}
+.toc .n{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;flex:none}
+.toc .seen .n{background:var(--fern);border-color:var(--fern);color:#fff}
+
+/* book */
+.desk{flex:1;min-height:0;display:flex;justify-content:center;padding:14px 18px 12px 26px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,rgba(255,255,255,.07),transparent 70%)}
+.book{--turn:850ms;position:relative;width:100%;max-width:780px;height:100%;perspective:2400px}
+.book::before{content:"";position:absolute;top:8px;bottom:8px;left:-12px;width:16px;border-radius:10px 0 0 10px;background:repeating-linear-gradient(90deg,var(--edge) 0 1px,var(--page) 1px 3px);box-shadow:-3px 6px 12px rgba(0,0,0,.4)}
+.book::after{content:"";position:absolute;top:-5px;bottom:-5px;right:-8px;width:14px;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#163223,#2c5a3c 55%,#163223);box-shadow:3px 6px 12px rgba(0,0,0,.4)}
+.page{position:absolute;inset:0;display:none;overflow-y:auto;overscroll-behavior:contain;
+  background:linear-gradient(270deg,rgba(0,0,0,.13),rgba(0,0,0,0) 30px),linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,0) 16px),var(--page);
+  border-radius:14px 3px 3px 14px;box-shadow:0 12px 30px rgba(0,0,0,.35);padding:16px clamp(18px,4.5vw,44px) 16px;
+  transform-origin:right center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.page.on{display:block;z-index:2}
+.page.under{display:block;z-index:1}
+.page.turn-fwd,.page.turn-back{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+.page.turn-fwd{animation:turnFwd var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.turn-back{animation:turnBack var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes turnFwd{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes turnBack{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
+.leaf{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;transform-origin:right center;border-radius:3px 14px 14px 3px;background:linear-gradient(90deg,var(--page) 0,var(--page) 70%,var(--edge) 100%);box-shadow:0 14px 44px rgba(0,0,0,.45)}
+@keyframes leafFwd{0%{transform:rotateY(0);opacity:0}49.9%{opacity:0}50%{opacity:1}82%{opacity:1}100%{transform:rotateY(180deg);opacity:0}}
+@keyframes leafBack{0%{transform:rotateY(180deg);opacity:0}18%{opacity:1}49.9%{opacity:1}50%{opacity:0}100%{transform:rotateY(0);opacity:0}}
+.shade{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;border-radius:14px 3px 3px 14px;background:linear-gradient(90deg,rgba(0,0,0,.4),rgba(0,0,0,0) 75%)}
+@keyframes shade{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
+.corner{position:absolute;left:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 0 14px;
+  background:linear-gradient(45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.corner:hover{width:56px;height:56px}
+.runhead{display:flex;justify-content:space-between;gap:10px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:14px}
+.folio{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);margin-top:24px;padding-bottom:4px}
+.folio span{display:inline-block;min-width:40px;border-top:1px solid var(--line);padding-top:4px}
+
+/* two-page spread */
+.book.spread{max-width:1320px;transition:transform var(--turn) cubic-bezier(.55,.05,.35,1)}
+.book.spread::before,.book.spread::after{display:none}
+.book.spread.closed{transform:translateX(25%)}
+.book.spread.endonly{transform:translateX(-25%)}
+.book.spread .page{width:50%}
+.book.spread .page.pos-r{left:auto;right:0;border-radius:3px 14px 14px 3px;transform-origin:left center;background:linear-gradient(90deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l{right:auto;left:0;border-radius:14px 3px 3px 14px;transform-origin:right center;background:linear-gradient(270deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;border-radius:14px 4px 4px 14px}
+.page.flipL-out,.page.flipR-in,.page.flipR-out,.page.flipL-in{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.page.flipL-out{animation:fLout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-in{animation:fRin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-out{animation:fRout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipL-in{animation:fLin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes fLout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(180deg)}}
+@keyframes fRin{0%{transform:rotateY(-180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+@keyframes fRout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(-180deg)}}
+@keyframes fLin{0%{transform:rotateY(180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+.corner-back{display:none}
+.book.spread .corner-back{display:block;position:absolute;right:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 14px 0;background:linear-gradient(-45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:-3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.book.spread .corner-back:hover{width:56px;height:56px}
+.book.spread .corner-back[hidden]{display:none}
+
+/* AR card on page */
+.ar-card{display:flex;gap:14px;align-items:center;border:1.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:0 0 20px;background:var(--sheet)}
+.ar-card h3{margin:0;font-size:17px}
+.ar-card p{margin:2px 0 8px;font-size:16px;color:var(--muted);line-height:1.8}
+.ar-marker{flex:none;width:84px;height:84px;color:var(--ink);position:relative;overflow:hidden;border-radius:4px}
+.ar-marker svg{display:block;width:100%;height:100%}
+.ar-marker::after{content:"";position:absolute;left:0;right:0;height:30%;background:linear-gradient(transparent,rgba(42,168,101,.55),transparent);animation:scanl 2.6s linear infinite}
+@keyframes scanl{from{top:-30%}to{top:100%}}
+
+/* AR overlay */
+.ar{position:fixed;inset:0;z-index:60;background:radial-gradient(ellipse at 50% 38%,#24392d 0%,#0a120d 70%,#050806 100%);color:#eaf6ee;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;opacity:0;transition:opacity .35s}
+.ar.on{opacity:1}
+.ar.cam{background:#000}
+.ar video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.ar.cam video{display:block}
+.ar canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;display:block}
+.ar canvas:active{cursor:grabbing}
+.ar-hud{position:absolute;inset:0;pointer-events:none;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;flex-direction:column}
+.ar-hud button{pointer-events:auto}
+.ar-top{display:flex;align-items:center;gap:10px;position:relative;z-index:2}
+.ar-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid rgba(125,255,176,.6);color:#7dffb0;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ar-live::before{content:"";width:7px;height:7px;border-radius:50%;background:#7dffb0;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.ar-title{flex:1;min-width:0;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-x{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.4);color:#fff;font-size:17px}
+.brk{position:absolute;width:30px;height:30px;border:3px solid rgba(125,255,176,.75)}
+.b1{top:calc(env(safe-area-inset-top,0px) + 66px);right:14px;border-left:0;border-bottom:0}
+.b2{top:calc(env(safe-area-inset-top,0px) + 66px);left:14px;border-right:0;border-bottom:0}
+.b3{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);right:14px;border-left:0;border-top:0}
+.b4{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);left:14px;border-right:0;border-top:0}
+.ar-scan{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:14px;transition:opacity .5s;font-size:15px}
+.reticle{width:130px;height:130px;border-radius:50%;border:2px dashed #7dffb0;position:relative;animation:spin 4s linear infinite}
+.reticle::after{content:"";position:absolute;inset:44%;border-radius:50%;background:#7dffb0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ar-labels{position:absolute;inset:0;overflow:hidden}
+.ar-lbl{position:absolute;transform:translate(-50%,calc(-100% - 16px));background:rgba(6,18,11,.84);border:1px solid #7dffb0;color:#eaf6ee;font-size:13px;padding:3px 10px;border-radius:8px;white-space:nowrap;transition:opacity .3s;opacity:0}
+.ar-lbl::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:16px;background:#7dffb0}
+.ar-bottom{margin-top:auto;display:grid;gap:10px;justify-items:center;position:relative;z-index:2}
+.ar-cap{background:rgba(6,18,11,.86);border:1px solid rgba(125,255,176,.5);border-radius:14px;padding:10px 18px;font-size:15.5px;line-height:1.9;max-width:680px;text-align:center;min-height:52px}
+.ar-tl{display:flex;gap:6px}
+.ar-tl i{width:20px;height:5px;border-radius:3px;background:rgba(255,255,255,.25)}
+.ar-tl i.on{background:#7dffb0}
+.ar-ctrl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ar-ctrl button{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px}
+.ar-hint{font-size:11.5px;opacity:.65;text-align:center}
+.ar-toast{background:#3a1f1a;border:1px solid #f08a76;border-radius:10px;padding:8px 14px;font-size:13.5px;max-width:560px;text-align:center}
+
+/* launch steps */
+.lsteps{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:ls}
+.lsteps li{counter-increment:ls;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:8px}
+.lsteps label{display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.8}
+.lsteps label::before{content:counter(ls,arabic-indic);flex:none;width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;margin-top:3px}
+.lsteps input[type="checkbox"]{width:20px;height:20px;accent-color:var(--fern);margin-top:6px;flex:none}
+
+/* concept map */
+.cm-bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border:1.5px dashed var(--line);border-radius:12px;background:var(--sheet-2);margin-bottom:14px;min-height:52px}
+.cmap{display:grid;gap:6px}
+.cm-top{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.cm-node,.cm-slot{min-height:44px;border-radius:12px;padding:6px 12px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.5}
+.cm-node.root{background:var(--fern);color:#fff;font-size:15.5px;padding:8px 18px}
+.cm-slot{border:2px dashed var(--line);background:var(--sheet-2);width:100%;color:var(--ink)}
+.cm-top .cm-slot{width:auto;min-width:130px}
+.cm-slot:not(.filled)::before{content:"؟";color:var(--muted)}
+.cm-slot.filled{border-style:solid;border-color:var(--moss);background:var(--sheet)}
+.cm-slot.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.cm-slot.ok{border-color:var(--ok);background:var(--ok-bg)}
+.cm-slot.bad{border-color:var(--bad);background:var(--bad-bg)}
+.cm-link{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.6}
+.cm-split{height:16px;border:2px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;margin:0 22%}
+.cm-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-col{display:grid;gap:6px;align-content:start;border:1.5px solid var(--line);border-radius:14px;padding:10px;background:var(--sheet)}
+
+/* AR marker card */
+.ar-mk{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);background:rgba(6,18,11,.86);border:1px dashed #ff5cb8;color:#fff;border-radius:14px;padding:12px 18px;font-size:14.5px;text-align:center;max-width:320px;line-height:1.9}
+.mk-view{position:fixed;inset:0;z-index:70;background:#fff;color:#1d3428;display:flex;align-items:center;justify-content:center;padding:20px}
+.mk-view[hidden]{display:none}
+.mk-card{display:grid;justify-items:center;gap:14px;text-align:center;max-width:520px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.mk-sq{width:min(70vw,58vh,340px);aspect-ratio:1;background:#E6007E;border-radius:18px;display:grid;place-items:center}
+.mk-sq svg{width:34%;height:34%}
+.mk-card h3{margin:0;font-size:19px}
+.mk-card p{margin:0;font-size:14.5px;line-height:1.9}
+@media print{
+  body.pm .page{display:none!important}
+  body.pm .mk-view{display:flex!important;position:static;height:100vh}
+  body.pm .mk-card .row{display:none}
+}
+
+/* diagnosis & remedial plan */
+.diag-sum{display:flex;gap:14px;align-items:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.8}
+.diag-sum .big{font-size:34px;color:var(--fern);font-weight:700}
+.obj-row,.plan-card{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;background:var(--sheet)}
+.plan-card{border-color:var(--bad)}
+.plan-card.healed{border-color:var(--water)}
+.top-l{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.top-l h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15.5px;font-weight:600;line-height:1.7}
+.lvl{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;padding:2px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid currentColor}
+.lvl.m{color:var(--ok)}.lvl.n{color:var(--spore)}.lvl.w{color:var(--bad)}.lvl.r{color:var(--water)}
+.obj-bar{height:12px;background:var(--sheet-2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.obj-bar i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.evid{font-size:13px;color:var(--muted);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:12px}
+.plan-steps>li{display:grid;grid-template-columns:30px 1fr;gap:10px}
+.plan-steps .k{width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:13px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;font-weight:600}
+.concept{background:var(--sheet-2);border-radius:10px;padding:10px 12px;font-size:16.5px;margin-top:6px}
+.print-only{display:none}
+@media print{
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  .top,.bnav,.drawer,.corner,.corner-back,.leaf,.shade,.ar,.no-print,.runhead,.folio{display:none!important}
+  .desk{display:block;padding:0;overflow:visible}
+  .book{height:auto;max-width:none;transform:none!important;perspective:none}
+  .page{display:none!important}
+  .page[data-page="diagnosis"],.page[data-page="plan"]{display:block!important;position:static!important;width:auto!important;height:auto;overflow:visible;box-shadow:none;background:#fff!important;transform:none!important;animation:none!important;break-after:page}
+  .print-only{display:block}
+}
+
+/* hardcover */
+.page[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;color:#f2ead2;padding:14px}
+.cover-frame{min-height:100%;border:2px solid var(--gold);outline:1px solid var(--gold);outline-offset:-9px;border-radius:8px;padding:30px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.cover-frame .kick{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:#dcc78c}
+.cover-frame h1{color:#e4c670;font-size:clamp(34px,8.5vw,56px);margin:0}
+.cover-frame .sub{color:#efe6cc;font-size:19px;margin:0}
+.cover-win{width:min(100%,440px);border:2px solid var(--gold);border-radius:220px 220px 10px 10px;overflow:hidden;background:#f1eddf}
+.cover-win svg{display:block;width:100%;height:auto}
+.orn{color:var(--gold);font-size:18px;letter-spacing:8px;line-height:1}
+.cover-frame .open{margin-top:4px;background:transparent;border:1.5px solid var(--gold);color:#e4c670;border-radius:10px;padding:8px 26px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.pg-h{margin:6px 0 18px}
+.pg-h .where{font-size:14px;color:var(--muted)}
+.pg-h h2{font-size:clamp(26px,6vw,36px);margin:2px 0 0;color:var(--moss)}
+p{margin:0 0 14px}
+.lead{font-size:19px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin:0 0 18px}
+.verse{background:var(--sheet-2);border-right:4px solid var(--fern);padding:12px 16px;border-radius:10px;margin:0 0 16px;font-weight:600;color:var(--moss)}
+.term{background:linear-gradient(transparent 60%,color-mix(in srgb,var(--spore) 35%,transparent) 60%);font-weight:700;padding:0 2px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 18px}
+.fact{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:12px}
+.fact b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:22px;color:var(--fern)}
+.fact span{font-size:15px;color:var(--muted)}
+
+/* activity blocks */
+.act{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin:0 0 22px;position:relative}
+.act[data-kind="pre"]{border-color:var(--water)}
+.act[data-kind="form"]{border-style:dashed;border-color:var(--fern)}
+.act[data-kind="post"]{border-color:var(--spore)}
+.act[data-kind="lab"]{border-color:var(--leaf)}
+.act-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:8px}
+.act-h h3{margin:0;font-size:20px;flex:1 1 220px}
+.badge{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;padding:3px 10px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.b-pre{color:var(--water)} .b-form{color:var(--fern)} .b-act{color:var(--moss)} .b-lab{color:var(--leaf)} .b-post{color:var(--spore)} .b-think{color:var(--dry)}
+.hint{color:var(--muted);font-size:16px}
+
+.btn{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:12px;padding:8px 16px;font-size:16px;font-weight:600}
+.btn.primary{background:var(--fern);border-color:var(--fern);color:#fff}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+
+/* quiz */
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.q-t{font-weight:600;margin-bottom:8px;display:flex;gap:10px}
+.q-n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--sheet-2);border:1px solid var(--line);display:grid;place-items:center;font-size:14px;margin-top:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.opt{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font-size:16.5px;line-height:1.6}
+.opt:hover:not(:disabled){border-color:var(--sel)}
+.opt.sel{border-color:var(--sel);background:var(--sel-bg)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.why{margin-top:8px;font-size:16px;padding:8px 12px;border-radius:10px;background:var(--sheet-2)}
+.why.ok{color:var(--ok)} .why.bad{color:var(--bad)}
+.score{margin-top:14px;padding:14px;border-radius:12px;background:var(--sheet-2);font-weight:600;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.score .big{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:28px;color:var(--fern)}
+
+/* sort */
+.pool,.zone-body{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:12px}
+.pool{background:var(--sheet-2);border:1.5px dashed var(--line)}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.zone{border:1.5px solid var(--line);border-radius:14px;background:var(--sheet);cursor:pointer}
+.zone.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.zone-h{padding:8px 12px;border-bottom:1px solid var(--line);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.chip{background:var(--sheet);border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:15.5px}
+.chip.sel{border-color:var(--sel);background:var(--sel-bg);transform:translateY(-2px)}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg)}
+.chip.bad{border-color:var(--bad);background:var(--bad-bg)}
+.msg{margin-top:10px;font-weight:600;min-height:1em}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+
+/* order */
+.order{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.order li{display:flex;align-items:center;gap:10px;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px}
+.order li.ok{border-color:var(--ok);background:var(--ok-bg)}
+.order li.bad{border-color:var(--bad);background:var(--bad-bg)}
+.order .k{flex:none;width:30px;height:30px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:14px}
+.order .t{flex:1;font-size:16px;line-height:1.6}
+.order .mv{display:flex;flex-direction:column;gap:4px}
+.order .mv button{width:34px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);font-size:13px;line-height:1}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px;align-content:start}
+.match .col h4{margin:0 0 2px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--muted);font-weight:500}
+.mi{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;font-size:15.5px;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+.mi .tag{flex:none;min-width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:transparent}
+.mi.sel{border-color:var(--sel);background:var(--sel-bg)}
+.mi.ok{border-color:var(--ok);background:var(--ok-bg)}
+.mi.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+.flip{perspective:1100px;background:none;border:0;padding:0;text-align:right;min-height:300px}
+.flip-in{position:relative;width:100%;height:100%;min-height:300px;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--line);border-radius:16px;background:var(--sheet);padding:14px;display:flex;flex-direction:column}
+.face.front{align-items:center;justify-content:center;text-align:center;gap:6px}
+.face.front svg{width:150px;height:120px}
+.face.front h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:20px;color:var(--moss)}
+.face.front small{color:var(--muted);font-size:14px}
+.face.back{transform:rotateY(180deg);background:var(--sheet-2)}
+.face.back h4{margin:0 0 6px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss)}
+.face.back ul{margin:0;padding-right:18px;font-size:15.5px;line-height:1.7}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 14px;font-size:15.5px}
+.tab[aria-selected="true"]{background:var(--fern);border-color:var(--fern);color:#fff}
+.tabpane{display:none}
+.tabpane.on{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:start}
+.tabpane svg{width:150px;height:150px;background:var(--sheet-2);border-radius:14px}
+.tabpane ul{margin:0;padding-right:18px;font-size:16.5px}
+@media (max-width:520px){.tabpane.on{grid-template-columns:1fr}.tabpane svg{width:100%;height:150px}}
+
+/* reveal */
+.reveal{border-top:1px solid var(--line);padding:10px 0}
+.reveal:first-of-type{border-top:0}
+.reveal p{margin:0 0 6px;font-weight:600}
+.model{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--ok-bg);font-size:16px}
+textarea{width:100%;min-height:80px;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:10px;font-size:16px;line-height:1.7;resize:vertical}
+input[type="text"]{border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 10px;width:110px;text-align:center}
+
+/* KWL */
+.kwl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kwl label{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss);margin-bottom:4px}
+@media (max-width:640px){.kwl{grid-template-columns:1fr}}
+
+/* size scale */
+.scale-list{display:grid;gap:8px}
+.sz{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;background:none;border:0;padding:4px 0;text-align:right}
+.sz .nm{font-size:15px}
+.sz .tr{background:var(--sheet-2);border-radius:999px;height:26px;position:relative;overflow:hidden}
+.sz .tr i{position:absolute;inset:0 0 0 auto;background:var(--leaf);border-radius:999px;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;color:#fff;font-style:normal;font-size:13px;white-space:nowrap;transition:width .6s}
+.sz.on .tr i{background:var(--fern)}
+.sz-note{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:48px}
+
+/* lab */
+.lab-svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.lab-svg .glass{fill:none;stroke:var(--muted);stroke-width:3}
+.lab-svg .water{fill:var(--water);opacity:.45;transform-box:fill-box;transform-origin:50% 100%;transition:transform 1s}
+.lab-svg .scale-body{fill:var(--muted)}
+.lab-svg .scale-screen{fill:#0d1f14}
+.lab-svg .scale-txt{fill:#7dfc9f;font-size:12px;font-family:Tahoma,sans-serif}
+.lab-svg .tbl{fill:var(--dry);opacity:.5}
+.lab-svg .lbl{fill:var(--muted);font-size:11px}
+#ball{transition:transform 1s ease,opacity .4s}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.steps button{width:100%;text-align:right;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:16px}
+.steps button .k{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.steps button.done{background:var(--ok-bg);border-color:var(--ok)}
+.steps button.done .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps button.next{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.lab-status{text-align:center;margin-top:8px;font-weight:600;color:var(--water);min-height:1.9em}
+table.data{width:100%;border-collapse:collapse;margin-top:12px;font-size:16px}
+table.data td,table.data th{border:1px solid var(--line);padding:6px 10px;text-align:right}
+table.data th{background:var(--sheet-2);font-weight:600}
+.lab-q{margin-top:12px;display:grid;gap:10px}
+.lab-q label{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* vascular sim */
+.vsim{display:grid;grid-template-columns:1fr;gap:10px}
+.vsim svg{width:100%;max-width:440px;margin:auto;display:block;background:var(--sheet-2);border-radius:14px}
+.vsim input[type="range"]{width:100%;accent-color:var(--fern)}
+.flow{stroke-dasharray:6 10;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+
+/* cover */
+.cover{position:relative;border-radius:20px;overflow:hidden;background:var(--sheet);border:1px solid var(--line);margin-bottom:18px}
+.cover svg.art{display:block;width:100%;height:auto}
+.cover-body{padding:18px 20px 22px}
+.cover h1{font-size:clamp(36px,10vw,58px);margin:0;color:var(--moss);letter-spacing:0}
+.cover .sub{color:var(--muted);margin:2px 0 14px;font-size:17px}
+.specimen{position:absolute;top:14px;left:14px;background:var(--sheet);border:1.5px solid var(--ink);border-radius:4px;padding:6px 12px;font-size:13px;line-height:1.6;transform:rotate(-3deg);box-shadow:2px 3px 0 var(--line)}
+.objs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.objs li{display:flex;gap:10px;align-items:flex-start}
+.objs li b{flex:none;color:var(--fern);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.vocab{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.vocab button{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:999px;padding:4px 14px;font-size:15.5px}
+.vocab-def{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:46px}
+
+/* results */
+.res-bars{display:grid;gap:12px}
+.res-bar .lb{display:flex;justify-content:space-between;font-size:16px}
+.res-bar .tr{height:16px;background:var(--sheet-2);border-radius:999px;overflow:hidden}
+.res-bar .tr i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.res-list{list-style:none;padding:0;margin:0}
+.res-list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:8px 0;font-size:16px}
+
+/* bottom nav */
+.bnav{flex:none;z-index:20;background:var(--bar);padding:8px 14px 10px}
+.bnav .btn{background:transparent;border-color:rgba(255,255,255,.25);color:var(--bar-ink)}
+.bnav .btn.primary{background:var(--gold);border-color:var(--gold);color:#1d2a20}
+.bnav-in{max-width:860px;margin:auto;display:flex;gap:10px;justify-content:space-between}
+.bnav .btn{flex:1;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.opt{font-size:17.5px}.mi{font-size:16.5px}.order .t{font-size:17px}.face.back ul{font-size:16.5px}.why{font-size:16.5px}.tabpane ul{font-size:17.5px}
+.hint{font-size:14px;line-height:1.9}.chip{font-size:14px}.btn{font-size:14.5px}.badge{font-size:12px}.act-h h3{font-size:18px}.fact b{font-size:19px}
+.pg-h h2{font-size:clamp(24px,5.5vw,32px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* cell lesson */
+.simple{background:var(--ok-bg);border-radius:12px;padding:12px 16px;margin:0 0 16px;font-size:17.5px;line-height:1.95}
+.simple b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.sim svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.sim-note{text-align:center;font-weight:600;margin-top:8px;min-height:1.9em;color:var(--water);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.9}
+.st-card{background:var(--sheet-2);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.st-card h4{margin:0 0 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.st-card p{margin:0}
+.st-k{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;color:var(--muted)}
+.st-svg svg{width:100%;max-width:340px;display:block;margin:8px auto;background:var(--sheet);border-radius:10px}
+.st-dots{display:flex;gap:6px;align-items:center}.st-dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.st-dots i.on{background:var(--fern)}
+.st-viz{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0}
+.st-box{border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;text-align:center;min-width:110px;background:var(--sheet)}
+.st-box span{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted)}
+.st-box .dots{color:#d0457a;letter-spacing:2px;font-size:14px;line-height:1.3;min-height:20px}
+.st-arrow{font-size:22px;color:var(--water)}
+.strip{border:1.5px solid var(--line);border-radius:12px;background:var(--sheet);padding:10px 12px;margin-bottom:10px}
+.strip-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.strip-h b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.strip .reveal{display:grid;gap:8px;padding-top:10px;border:0}
+.strip .reveal[hidden]{display:none}
+.strip label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);display:grid;gap:4px}
+.vocab button.rv{border-color:var(--fern);color:var(--fern)}
+.cm-node.fixed{border:2px solid var(--moss);background:var(--sheet);color:var(--ink);font-size:13px}
+.cm-col .cm-slot,.cm-col .cm-link{font-size:12.5px}
+.eq{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;text-align:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px;margin:0 0 16px;font-size:17px;color:var(--moss);overflow-x:auto;white-space:nowrap}
+.eq span{font-size:12.5px;color:var(--muted)}
+.atoms{width:100%;border-collapse:collapse;font-size:16px}
+.atoms th,.atoms td{border:1px solid var(--line);padding:6px;text-align:center}
+.atoms th{background:var(--sheet-2);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px}
+.atoms input[type="text"]{width:64px}
+.carrot{transition:transform 1s ease,opacity .6s}
+.carrot-in{transition:transform 1.2s ease;transform-box:fill-box;transform-origin:50% 0}
+.carrot-in path:first-child{transition:fill 1.2s}
+.carrot-in.limp{transform:rotate(26deg) scale(.86,.92)}
+.carrot-in.limp path:first-child{fill:#b86a2c}
+.water-r{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform 1s}
+.water-r.on{transform:scaleY(1)}
+.cyc-arc{opacity:.25;transition:opacity .4s}
+.cyc-arc.on{opacity:1}
+
+.bt{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;color:#fff;font-family:monospace;font-weight:700;font-size:15px;margin:2px;border:2px solid transparent;text-shadow:0 1px 1px rgba(0,0,0,.35);flex:none}
+.bt.nw{opacity:.55;border-style:dashed;border-color:#555}
+.bt.mut{border-color:#ff2d2d;box-shadow:0 0 0 3px rgba(255,45,45,.35)}
+.bt-in{background:var(--sheet-2);color:var(--ink);border-color:var(--line);cursor:pointer;text-shadow:none}
+.bt-in.ok{border-color:var(--ok)}.bt-in.bad{border-color:var(--bad);box-shadow:0 0 0 3px var(--bad-bg)}
+.lad{display:block;margin:6px auto;padding:8px;background:var(--sheet-2);border-radius:12px;overflow-x:auto}
+.lad-row{display:flex;flex-wrap:nowrap;justify-content:center}
+.lad-mid{display:flex;justify-content:center}.lad-mid i{width:34px;height:10px;display:flex;justify-content:center;flex:none}.lad-mid i::after{content:"";width:3px;height:10px;background:var(--muted)}
+.rep-out{display:grid;gap:10px;margin-top:10px}
+.rep-blk{background:var(--sheet-2);border-radius:12px;padding:8px;overflow-x:auto}
+.rep-blk h5{margin:0 0 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);font-weight:600}
+.rep-blk .bt,.tri .bt,.mut-grid .bt{width:22px;height:24px;font-size:12px;margin:1px}
+.rep-blk .gap{height:10px}
+.tri{display:inline-flex;padding:2px;border-radius:8px;border:2px solid transparent;margin:0 2px;flex:none}
+.tri.cur{border-color:var(--sel);background:var(--sel-bg)}.tri.done{opacity:.4}
+.chain{display:flex;gap:4px;align-items:center;justify-content:center;min-height:30px;flex-wrap:wrap}
+.chain i{width:24px;height:24px;border-radius:50%;display:inline-block;border:2px solid rgba(0,0,0,.15)}
+.chain i.mut{border-radius:4px;border-color:#ff2d2d}
+.tr-box{background:var(--sheet-2);border-radius:12px;padding:10px;overflow-x:auto}
+.tr-l{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);text-align:center;margin:4px 0}
+.tr-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tr-o{display:flex;justify-content:center;padding:6px}
+.tr-o .bt{width:26px;height:26px}
+.mut-grid{background:var(--sheet-2);border-radius:12px;padding:10px;overflow-x:auto}
+.tally{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.tal{background:var(--sheet-2);border-radius:12px;padding:10px;text-align:center}
+.tal span{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px;color:var(--muted)}
+.tal b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:32px;color:var(--fern)}
+.tal .row{justify-content:center;margin-top:4px}
+.trows{display:grid;gap:8px}
+.trow{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.trow input[type="text"]{flex:1;min-width:140px;text-align:right;width:auto}
+
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 16px}
+.c3{background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.c3 b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--moss);margin-bottom:4px}
+.c3 span{font-size:16.5px;line-height:1.85}
+.ps{display:grid;gap:4px}
+.ps-box{background:var(--sheet-2);border-radius:12px;padding:8px 10px}
+.ps-box b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:block;margin-bottom:4px}
+.ps-box textarea{min-height:56px}
+.ps-arr{text-align:center;color:var(--water);font-size:20px;line-height:1}
+.tcomp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 16px}
+.tc{border-radius:12px;padding:10px 12px;border:1.5px solid var(--line)}
+.tc.cold{background:var(--sel-bg)}.tc.hot{background:var(--bad-bg)}
+.tc b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;margin-bottom:4px}
+.dlg{background:var(--sheet-2);border-radius:12px;padding:10px 14px;margin-bottom:10px}
+.dlg p{margin:0 0 4px}
+.fold3{display:grid;gap:10px}
+
+.stu-modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:20px}
+.stu-modal[hidden]{display:none}
+.stu-card{background:var(--sheet);color:var(--ink);border-radius:18px;padding:22px;max-width:400px;width:100%;display:grid;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.stu-card h3{margin:0;font-size:20px;color:var(--moss)}
+.stu-card label{display:grid;gap:4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--muted)}
+.stu-card input[type="text"]{width:100%;text-align:right;padding:10px 12px;font-size:17px}
+.stu-err{color:var(--bad);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px;min-height:1.2em}
+.lik{display:grid;gap:12px}
+.lik-q{background:var(--sheet-2);border-radius:12px;padding:10px 12px}
+.lik-q p{margin:0 0 8px;font-weight:600}
+.lik-o{display:flex;gap:6px;flex-wrap:wrap}
+.lik-o button{flex:1;min-width:44px;border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px}
+.lik-o button.on{background:var(--fern);border-color:var(--fern);color:#fff}
+.nlv{display:inline-block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;font-weight:600;border-radius:999px;padding:0 9px;margin-left:4px;color:#fff;vertical-align:2px}
+.nlv.l0{background:#2a6c8c}.nlv.l1{background:#b5701a}.nlv.l2{background:#7a3e9a}
+.stu-code{font-size:30px!important;letter-spacing:14px;text-align:center;font-family:Tahoma,monospace}
+.nf-mode{border-radius:12px;padding:10px 14px;margin:0 0 12px;font-weight:600;line-height:1.85;background:var(--sheet-2);border-right:5px solid #8a8a8a}
+.nf-mode.m-wait{border-color:#c79a2c}.nf-mode.m-class{border-color:#2f8a52}.nf-mode.m-done{border-color:#2f8a52}.nf-mode.m-home{border-color:#2a6c8c}
+.nf-mode small{display:block;font-weight:400;color:var(--muted)}
+.nf-meta{display:grid;gap:1px;background:var(--sheet-2);border-right:4px solid #7a3e9a;border-radius:8px;padding:6px 10px;margin:0 0 8px;font-size:13px;font-weight:400;line-height:1.7;color:var(--muted)}
+.nf-meta b{color:var(--ink);font-weight:600}
+.nf-code{font-family:Tahoma,sans-serif;unicode-bidi:isolate}
+.nf-tbl{overflow-x:auto}.nf-tbl table{width:100%;border-collapse:collapse;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px}
+.nf-tbl th,.nf-tbl td{border:1px solid var(--line);padding:6px 8px;text-align:center}.nf-tbl th{background:var(--sheet-2)}
+.nf-tbl td.m{background:#dff2e4;color:#1d6b3e}.nf-tbl td.n{background:#fbefd6;color:#8a5a10}.nf-tbl td.w{background:#f8dcd6;color:#9a2f1f}.nf-tbl td.na{color:var(--muted)}.nf-tbl td.sd{white-space:nowrap}
+.nf-h{margin:12px 0 6px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--muted)}
+.q-t svg{max-width:100%;height:auto;background:#fff;border-radius:8px}
+.fold3 label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:grid;gap:4px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-row">
+    <button class="icon-btn" id="menuBtn" aria-label="فهرس الكتاب">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="top-title" id="topTitle">النباتات اللابذرية</div>
+    <div class="top-count" id="topCount"></div>
+    <button class="icon-btn" id="sndBtn" aria-label="صوت تقليب الصفحات" aria-pressed="true"></button>
+  </div>
+  <div class="prog"><i id="progBar"></i></div>
+</div>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-bg" id="drawerBg"></div>
+  <nav class="drawer-panel" aria-label="فهرس الكتاب">
+    <h2>فهرس الدرس</h2>
+    <ul class="toc" id="toc"></ul>
+  </nav>
+</div>
+
+<main class="desk"><div class="book" id="book">
+
+<!-- ============ COVER ============ -->
+<section class="page" data-page="cover" data-title="الغلاف">
+  <div class="cover-frame">
+    <div class="kick" style="font-size:15px;color:#f2e2a8">مشاركةً من ولي أمر الطالبة لتين أيمن المغذوي</div>
+    <div class="orn">❖ ❖ ❖</div>
+    <div class="kick">العلوم · الصف السادس الابتدائي</div>
+    <div class="cover-win"><svg id="coverArt" viewBox="0 0 800 300" aria-hidden="true"></svg></div>
+    <h1 style="font-size:clamp(28px,7vw,46px)">الخلية النباتية والخلية الحيوانية</h1>
+    <p class="sub">الدرس الثاني · مع تدريب على أسئلة «نافس»</p>
+    <div class="orn">❖ ❖ ❖</div>
+    <button class="open" data-go="goals">افتح الكتاب</button>
+    <div class="kick" style="margin-top:8px">تصميم: أيمن الصاعدي</div>
+  </div>
+</section>
+
+<!-- ============ GOALS ============ -->
+<section class="page" data-page="goals" data-title="أقرأ وأتعلم">
+  <header class="pg-h"><div class="where">أقرأ وأتعلم · ص٣٤</div><h2>السؤال الأساسي والمفردات</h2></header>
+  <div class="simple"><b>السؤال الأساسي:</b> كيف تقوم الخلايا بالعمليات الحيوية؟</div>
+  <div class="sheet">
+    <h3 style="margin:0 0 10px">ماذا سأتعلم؟</h3>
+    <ul class="objs">
+      <li><b>١</b><span>أصف أجزاء الخلية ووظيفة كل جزء.</span></li>
+      <li><b>٢</b><span>أقارن بين الخلية النباتية والخلية الحيوانية.</span></li>
+      <li><b>٣</b><span>أوضح كيف تنتقل المواد من الخلية وإليها: النقل السلبي والنقل النشط.</span></li>
+      <li><b>٤</b><span>أوضح عمليتي البناء الضوئي والتنفس الخلوي.</span></li>
+    </ul>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">المفردات</h3>
+    <p class="hint" style="margin:0">اضغط على أي مفردة لترى معناها.</p>
+    <div class="vocab" id="vocab"></div>
+    <div class="vocab-def" id="vocabDef">…</div>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">مهارة القراءة: التلخيص</h3>
+    <p style="margin:0 0 10px">في أثناء القراءة اختر <b>ثلاث أفكار مهمة</b>، ثم اجمعها في <b>خلاصة</b> قصيرة. ستطبق هذه المهارة في أسئلة «ألخّص» في صفحات الدرس.</p>
+  </div>
+</section>
+
+<!-- ============ PRE-TEST ============ -->
+<section class="page" data-page="pretest" data-title="التقويم القبلي">
+  <header class="pg-h"><div class="where">قبل أن أبدأ</div><h2>تقويم قبلي بأسئلة «نافس»</h2></header>
+  <p>ستة أسئلة من بنك «نافس»: سؤالان في المعرفة، وسؤالان في التطبيق، وسؤالان في الاستدلال. لا تُحسب عليك، وستقارن نتيجتك بها بعد الدرس.</p>
+  <div class="act" data-kind="pre">
+    <div class="act-h"><span class="badge b-pre">تقويم قبلي</span><h3>أسئلة نافس</h3></div>
+    <div id="q-pre"></div>
+  </div>
+</section>
+
+<!-- ============ LOOK ============ -->
+<section class="page" data-page="look" data-title="أنظر وأتساءل">
+  <header class="pg-h"><div class="where">التهيئة · ص٣٢</div><h2>أنظر وأتساءل</h2></header>
+  <div class="sim"><svg id="frogSvg" viewBox="0 0 340 190" aria-label="ضفدع بين نبات عدس الماء"></svg></div>
+  <p class="lead" style="margin-top:12px">الخلايا هي الوحدات البنائية الأساسية للحياة، وتقوم بوظائف محددة لمساعدة المخلوقات الحية على العيش، مثل هذا الضفدع أو نبات عدس الماء. كيف يمكن المقارنة بين تركيب الخلية النباتية والخلية الحيوانية؟</p>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أتساءل وأتوقع</span><h3>ما الذي تتوقع أنه يختلف بين الخليتين؟</h3></div>
+    <textarea data-save="look" placeholder="أتوقع أن…"></textarea>
+  </div>
+</section>
+
+<!-- ============ EXPLORE ============ -->
+<section class="page" data-page="explore" data-title="أستكشف">
+  <header class="pg-h"><div class="where">أستكشف · نشاط استقصائي · ص٣٣</div><h2>فيمَ تختلف الخلايا النباتية عن الخلايا الحيوانية؟</h2></header>
+  <p><b>الهدف:</b> أفحص خلايا من حيوانات ونباتات، وأحدد أوجه التشابه وأوجه الاختلاف بين النوعين.</p>
+  <p class="hint">أحتاج إلى: شريحة مجهرية، وقطارة، وملقط، وورقة نبات كالإلوديا أو البصل، وغطاء شريحة، وماء، ومجهر مركب، وشريحة محضرة لخلايا باطن خد الإنسان.</p>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">مجهر افتراضي</span><h3>افحص الشريحتين</h3></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" data-sl="elodea">ورقة الإلوديا</button><button class="btn" data-sl="cheek">باطن الخد</button><span style="width:12px"></span><button class="btn primary" data-mg="low">القوة الصغرى</button><button class="btn" data-mg="high">القوة الكبرى</button></div>
+    <div class="sim"><svg id="micSvg" viewBox="0 0 340 260" aria-label="منظر المجهر"></svg></div>
+    <div class="sim-note" id="micNote"></div>
+    <ol class="lsteps">
+      <li><label><input type="checkbox"> أحضّر شريحة رطبة لورقة الإلوديا: قطرة ماء على الشريحة، ثم ورقة من قمة النبات، ثم الغطاء.</label></li>
+      <li><label><input type="checkbox"> ألاحظ الورقة بالقوة الصغرى، وأدوّن ملاحظاتي حول خلية واحدة، ثم أفحص مركز الخلية بالقوة الكبرى وأرسم ما أشاهد.</label><textarea data-save="micE" placeholder="ملاحظاتي على خلايا الإلوديا…"></textarea></li>
+      <li><label><input type="checkbox"> ألاحظ: أعيد الخطوة الثانية مستخدمًا شريحة محضرة لخلايا باطن الخد.</label><textarea data-save="micC" placeholder="ملاحظاتي على خلايا باطن الخد…"></textarea></li>
+    </ol>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أستخلص النتائج</span><h3>أقارن وأفسّر البيانات</h3></div>
+    <div id="q-micro"></div>
+    <div class="reveal">
+      <p>أفسّر البيانات: كيف أفسّر بعض أوجه التشابه والاختلاف بين هذه الخلايا؟</p>
+      <textarea data-save="micWhy" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>تتشابه الخليتان في وجود النواة والغشاء البلازمي والسيتوبلازم؛ لأنها أجزاء مشتركة في الخلايا. وتختلفان في أن خلايا الإلوديا لها جدار خلوي يعطيها شكلًا منتظمًا، وبلاستيدات خضراء؛ لأنها خلايا نباتية تصنع غذاءها.</div>
+    </div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">أستكشف أكثر</span><h3>شرائح أخرى</h3></div>
+    <p>أفحص شرائح محضرة لعينات خلايا أخرى. هل تتشابه الخلايا الجديدة مع خلايا نبات الإلوديا أو مع خلايا باطن الخد عند الإنسان؟ ولماذا؟</p>
+    <textarea data-save="micMore" placeholder="ما وجدته…"></textarea>
+  </div>
+</section>
+
+<!-- ============ ANIMAL CELL ============ -->
+<section class="page" data-page="animal" data-title="الخلية الحيوانية">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص٣٤</div><h2>كيف أقارن بين الخلايا النباتية والخلايا الحيوانية؟</h2></header>
+  <p>تتكون كل خلية من مجموعة من الأجزاء تعمل معًا بوصفها وحدة واحدة. وعلى الرغم من أن للخلايا النباتية والحيوانية أجزاء مشتركة، إلا أن بينهما بعض الاختلافات. أبحث أولًا في الأشياء المشتركة بينهما.</p>
+  <div class="simple"><b>ببساطة: الخلية مثل مصنع صغير</b><br>• <b>الغشاء البلازمي</b>: مثل جدار المصنع؛ يحيط بالخلية ويعطيها شكلها، ويسمح بدخول المواد وخروجها.<br>• <b>النواة</b>: مركز التحكم؛ تنظم التفاعلات الكيميائية، وتخزن المعلومات الضرورية لانقسام الخلية. ويسهل رؤيتها بالمجهر لأنها كبيرة وداكنة.<br>• <b>الكروموسومات</b>: أشرطة طويلة من الأحماض النووية في النواة، تخزن المعلومات وتنقلها إلى خلايا النسل الجديد.</div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>دوّر خلية حيوانية وخلية نباتية بين يديك، وشاهد كل جزء يضيء ويُشرح.</p><button class="btn primary" data-ar="cell3d">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">الخلية الحيوانية تفاعليًا</span><h3>اضغط على أي جزء</h3></div>
+    <p class="hint">كل خلية في جسم طائر الببغاء تحتوي على هذه التراكيب.</p>
+    <div class="sim"><svg id="animSvg" viewBox="0 0 340 240" aria-label="الخلية الحيوانية"></svg></div>
+    <div class="sim-note" id="animNote">اختر جزءًا لتعرف اسمه ووظيفته.</div>
+  </div>
+</section>
+
+<!-- ============ PLANT CELL ============ -->
+<section class="page" data-page="plant" data-title="الخلية النباتية">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص٣٥</div><h2>الخلية النباتية وتراكيبها</h2></header>
+  <div class="simple"><b>أجزاء موجودة في الخليتين:</b><br>• <b>السيتوبلازم</b>: مادة تشبه الهلام بين النواة والغشاء البلازمي، فيها كمية كبيرة من الماء، وفيها أجزاء الخلية الداخلية. ويمتد فيه نظام النقل في الخلية.<br>• <b>الميتوكندريا</b>: مصدر طاقة الخلية؛ أجسام عصوية تتم فيها عملية التنفس الهوائي. وخلايا عضلات القلب تحتوي على ألوف منها.<br>• <b>الفجوات</b>: تراكيب تشبه الكيس، تخزن الماء والغذاء وبعض الفضلات. وهي في الخلية النباتية <b>أكبر</b> منها في الحيوانية.</div>
+  <div class="simple" style="background:var(--sel-bg)"><b>تراكيب في الخلية النباتية فقط:</b><br>• <b>الجدار الخلوي</b>: طبقة صلبة تحيط بالغشاء البلازمي، تدعم الخلية وتعطيها شكلها وتحميها.<br>• <b>البلاستيدات الخضراء</b>: تصنع الغذاء؛ تمتص طاقة الضوء بصبغة خضراء هي <b>الكلوروفيل</b>، التي تكسب النبات لونه الأخضر.</div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">الخلية النباتية تفاعليًا</span><h3>اضغط على أي جزء</h3></div>
+    <div class="sim"><svg id="plantSvg" viewBox="0 0 340 240" aria-label="الخلية النباتية"></svg></div>
+    <div class="sim-note" id="plantNote">اختر جزءًا لتعرف اسمه ووظيفته.</div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أقرأ الشكل · ص٣٥</span><h3>ما التراكيب التي توجد خارج النواة في الخلية النباتية؟</h3></div>
+    <p class="hint">إرشاد: أحدد موقع النواة، وأتفحص التراكيب من حولها.</p>
+    <div class="reveal" style="border:0;padding:0"><textarea data-save="rf35" placeholder="اكتب التراكيب"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة</button></div>
+    <div class="model" hidden>السيتوبلازم، والميتوكندريا، والفجوة، والبلاستيدات الخضراء، والشبكة الإندوبلازمية، وأجسام جولجي، والرايبوسومات، والأجسام المحللة، والغشاء البلازمي، والجدار الخلوي.</div></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">شكل «ڤن»</span><h3>قارن بين الخليتين</h3></div>
+    <p class="hint">اضغط البطاقة ثم الصندوق المناسب.</p>
+    <div id="a-venn"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص٣٥</span><h3>ألخّص · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px"><p>ألخّص: ما وظيفة الفجوات في الخلية؟</p><textarea data-save="t35a"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>تخزن الماء والغذاء، وتخزن بعض الفضلات قبل أن تتخلص الخلية منها.</div></div>
+    <div class="reveal"><p>التفكير الناقد: أقارن بين وظائف الغشاء البلازمي والجدار الخلوي في الخلية النباتية.</p><textarea data-save="t35b"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>الغشاء البلازمي يحيط بالخلية ويسمح بدخول المواد وخروجها. والجدار الخلوي طبقة صلبة خارج الغشاء البلازمي تدعم الخلية وتعطيها شكلها وتحميها من الظروف البيئية.</div></div>
+    <div id="q-cell"></div>
+  </div>
+</section>
+
+<!-- ============ PASSIVE ============ -->
+<section class="page" data-page="passive" data-title="ما النقل السلبي؟">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص٣٦–٣٧</div><h2>ما النقل السلبي؟</h2></header>
+  <p>يدخل المخبز كل يوم مواد مختلفة، فتُخلط وتُعجن وتُخبز، ثم يُغلّف المنتج ويوزّع، ويُتخلّص من النفايات. وجسمك يعمل بطريقة مشابهة؛ فالدم يزوّد خلاياك بالغذاء والأكسجين، وينقل الفضلات مثل ثاني أكسيد الكربون بعيدًا عنها، مع أن الدم لا يدخل الخلايا. فكيف تنتقل المواد إليها؟</p>
+  <div class="simple"><b>ببساطة:</b> <span class="term">النقل السلبي</span> حركة المواد عبر الأغشية دون أن تستخدم الخلية طاقة. وله نوعان:<br>• <span class="term">الانتشار</span>: انتقال المواد، كالسكر والأكسجين وثاني أكسيد الكربون، من منطقة التركيز المرتفع إلى منطقة التركيز المنخفض، مثل انتشار نقطة حبر في كأس ماء.<br>• <span class="term">الخاصية الأسموزية</span>: انتقال جزيئات الماء عبر الغشاء البلازمي من حيث يكون تركيزه أكبر إلى حيث يكون أقل، أي إنها انتشار للماء فقط.<br>وتستمر العمليتان حتى يتساوى التركيز على جانبي الغشاء، فيحدث <b>الاتزان</b>.</div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">الانتشار تفاعليًا</span><h3>الأكسجين قبل الانتشار وبعده</h3></div>
+    <div class="sim"><svg id="diffSvg" viewBox="0 0 340 180" aria-label="محاكاة الانتشار"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="diffGo">ابدأ</button><button class="btn ghost" id="diffReset">أعد</button></div>
+    <div class="sim-note" id="diffNote"></div>
+  </div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>شاهد نباتًا يذبل حين يفقد الماء، ثم يعود سليمًا عند الاتزان.</p><button class="btn primary" data-ar="wilt">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">الخاصية الأسموزية تفاعليًا</span><h3>لماذا يذبل النبات؟</h3></div>
+    <div class="sim"><svg id="osmSvg" viewBox="0 0 340 200" aria-label="خلية نباتية"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" data-os="eq">اتزان</button><button class="btn" data-os="loss">يفقد ماء أكثر مما يحصل عليه</button></div>
+    <div class="sim-note" id="osmNote"></div>
+  </div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">نشاط · ص٣٧</span><h3>الانتشار والخاصية الأسموزية</h3></div>
+    <p class="hint">أجرّب: أملأ كأسًا بماء دافئ، وأضع فيه كيس شاي صغيرًا، وأضيف إليه ملعقة من الرمل.</p>
+    <div class="sim"><svg id="teaSvg" viewBox="0 0 340 200" aria-label="كأس فيه كيس شاي"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="teaGo">ألاحظ: أحرّك ثم أترك ١٥ دقيقة</button><button class="btn" id="teaLift">أرفع الكيس وأفتحه</button><button class="btn ghost" id="teaReset">أعد</button></div>
+    <div class="sim-note" id="teaNote"></div>
+    <div id="q-tea"></div>
+    <div class="reveal"><p>أستنتج: ما الذي حدّد حركة الجزيئات إلى داخل الكيس وإلى خارجه؟ ماذا أتوقع أن يحدث للماء لو بقي كيس الشاي داخله مدة طويلة؟</p><textarea data-save="teaWhy"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>تحركت جزيئات الشاي من داخل الكيس، حيث تركيزها مرتفع، إلى الماء حيث تركيزها منخفض (انتشار)، ودخل الماء إلى الكيس. أما الرمل فبقي في الكيس لأن حبيباته لا تمر من خلاله. ولو بقي الكيس مدة طويلة لاستمر الانتشار حتى يتوزع لون الشاي بالتساوي في الكأس، فيحدث الاتزان.</div></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص٣٧</span><h3>ألخّص · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px"><p>ألخّص: ماذا يحدث خلال الخاصية الأسموزية؟</p><textarea data-save="t37a"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>تنتقل جزيئات الماء عبر الغشاء البلازمي من المنطقة التي يكون تركيز الماء فيها أكبر إلى المنطقة التي يكون تركيزه فيها أقل، دون أن تستهلك الخلية طاقة، حتى يحدث الاتزان.</div></div>
+    <div class="reveal"><p>التفكير الناقد: كيف يوضح العنب والزبيب حالة الاتزان؟</p><textarea data-save="t37b"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>حبة العنب ممتلئة؛ لأن خلاياها في حالة اتزان: يدخلها الماء ويخرج منها بكميات متساوية. أما الزبيب فقد خرج من خلاياه ماء أكثر مما دخلها، فانكمشت.</div></div>
+    <div id="q-passive"></div>
+  </div>
+</section>
+
+<!-- ============ PHOTOSYNTHESIS ============ -->
+<section class="page" data-page="photo" data-title="البناء الضوئي">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص٣٨</div><h2>ما البناء الضوئي؟</h2></header>
+  <p>عند إعداد الكعك تُخلط مكوناته، ثم تسبب حرارة الفرن تفاعلات تحوّلها إلى كعك. وبطريقة مشابهة تحدث عملية البناء الضوئي.</p>
+  <div class="simple"><b>ببساطة:</b> <span class="term">البناء الضوئي</span> عملية تحدث في النباتات وبعض المخلوقات الحية الأخرى، تستخدم طاقة الشمس لإنتاج غذاء على شكل سكر الجلوكوز.<br>• <b>المواد المتفاعلة:</b> ثاني أكسيد الكربون والماء.<br>• <b>النواتج:</b> سكر الجلوكوز والأكسجين.<br>• <b>أين تتم؟</b> داخل البلاستيدات الخضراء التي تحتوي على الكلوروفيل، فتلتقط الطاقة الشمسية. ويُخزن الجلوكوز داخل المخلوق الحي، ويُطرد الأكسجين إلى الغلاف الجوي.</div>
+  <div class="eq">ثاني أكسيد الكربون + ماء <span>— ضوء →</span> سكر الجلوكوز + الأكسجين</div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>شاهد ضوء الشمس وثاني أكسيد الكربون والماء تدخل الورقة، ويخرج منها الأكسجين ويُخزن السكر.</p><button class="btn primary" data-ar="photo">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أقرأ الشكل · ص٣٨</span><h3>ما المواد التي يحتاج إليها النبات للقيام بعملية البناء الضوئي؟</h3></div>
+    <p class="hint">إرشاد: أشعة الشمس ليست مادة. صنّف كل مكوّن.</p>
+    <div id="a-photoeq"></div>
+  </div>
+</section>
+
+<!-- ============ RESPIRATION ============ -->
+<section class="page" data-page="resp" data-title="التنفس والتخمر">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص٣٩</div><h2>التنفس الخلوي والتخمّر</h2></header>
+  <div class="simple"><b>ببساطة:</b><br>• <span class="term">التنفس الخلوي</span>: تستخلص به النباتات والحيوانات الطاقة من سكر الجلوكوز. يتطلب الأكسجين، لذا يسمى <b>التنفس الهوائي</b>. وينتج عنه الماء وثاني أكسيد الكربون فضلاتٍ، تستخدمها النباتات مرة أخرى في البناء الضوئي.<br>• <b>التنفس اللاهوائي</b>: لا يستعمل الأكسجين، وأشهر أنواعه <b>التخمّر</b>؛ ومنه إنتاج اللبن الرائب. ويحدث في العضلات عند التمارين المجهدة حين لا يصل الأكسجين إلى جميع الخلايا، فينتج حمض اللاكتيك الذي يسبب ألم العضلات أو الإعياء.</div>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>تابع سكر الجلوكوز حتى الميتوكندريا، ثم شاهد ما يحدث في العضلات عندما لا يكفي الأكسجين.</p><button class="btn primary" data-ar="resp">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">جدول المقارنة · ص٣٩</span><h3>البناء الضوئي أم التنفس؟</h3></div>
+    <p class="hint">صنّف كل عبارة من جدول الكتاب.</p>
+    <div id="a-compare"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص٣٩</span><h3>ألخّص · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px"><p>ألخّص: فيمَ يختلف النقل النشط عن النقل السلبي؟</p><textarea data-save="t39a"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>النقل السلبي ينقل المواد من منطقة التركيز المرتفع إلى المنخفض دون أن تستخدم الخلية طاقة، أما النقل النشط فينقلها من التركيز المنخفض إلى المرتفع، ويحتاج إلى الطاقة.</div></div>
+    <div class="reveal"><p>التفكير الناقد: ما أثر التمارين الرياضية المجهدة في الجسم؟</p><textarea data-save="t39b"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>يتنفس الشخص بسرعة، لكن الأكسجين لا يصل إلى جميع الخلايا، فتطلق الطاقة بالتخمّر، وينتج حمض اللاكتيك الذي يسبب ارتفاع تركيزه في العضلات الإحساس بألم فيها أو بالإعياء.</div></div>
+    <div id="q-resp"></div>
+  </div>
+</section>
+
+<!-- ============ ACTIVE ============ -->
+<section class="page" data-page="active" data-title="ما النقل النشط؟">
+  <header class="pg-h"><div class="where">الشرح والتفسير · ص٤٠</div><h2>ما النقل النشط؟</h2></header>
+  <div class="simple"><b>ببساطة:</b> أحيانًا تنتقل المواد من منطقة التركيز المنخفض إلى منطقة التركيز المرتفع، وعندها تحتاج الخلية إلى طاقة، ويسمى ذلك <span class="term">النقل النشط</span>. ومنه نقل الأملاح المعدنية والمواد الغذائية إلى داخل الخلية وخارجها؛ فالخلية العصبية تضخّ البوتاسيوم إلى داخلها، والصوديوم إلى خارجها.<br><b>حقيقة:</b> يحدث النقل النشط عبر أغشية متلاصقة سليمة.</div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">محاكاة</span><h3>الخلية العصبية تضخّ البوتاسيوم</h3></div>
+    <p class="hint">داخل الخلية بوتاسيوم أكثر من خارجها. جرّب الانتشار، ثم النقل النشط، وراقب الطاقة.</p>
+    <div class="sim"><svg id="pumpSvg" viewBox="0 0 340 190" aria-label="محاكاة النقل النشط"></svg></div>
+    <div class="row" style="justify-content:center"><button class="btn" id="pumpDiff">جرّب الانتشار</button><button class="btn primary" id="pumpGo">نقل نشط</button><button class="btn ghost" id="pumpReset">أعد</button></div>
+    <div class="sim-note" id="pumpNote"></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">خطوة بخطوة</span><h3>كيف تبتلع الأميبا غذاءها؟ (البلعمة)</h3></div>
+    <div id="amSteps"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أختبر نفسي · ص٤٠</span><h3>ألخّص · التفكير الناقد</h3></div>
+    <div class="reveal" style="border:0;padding:0 0 8px"><p>ألخّص: كيف تتخلص الخلية من الفضلات؟</p><textarea data-save="t40a"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>تخزن الفجوات بعض الفضلات قبل التخلص منها، وتنتقل الفضلات مثل ثاني أكسيد الكربون من الخلية عبر غشائها البلازمي، فيحملها الدم بعيدًا عنها.</div></div>
+    <div class="reveal"><p>التفكير الناقد: لماذا قد يكون النقل النشط مهمًا للخلية؟</p><textarea data-save="t40b"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>لأنه يمكّنها من إدخال ما تحتاج إليه من أملاح معدنية ومواد غذائية حتى لو كان تركيزها داخل الخلية أكبر، كما تضخ الخلية العصبية البوتاسيوم إلى داخلها والصوديوم إلى خارجها.</div></div>
+    <div id="q-active"></div>
+  </div>
+</section>
+
+<!-- ============ REVIEW ============ -->
+<section class="page" data-page="review" data-title="مراجعة الدرس">
+  <header class="pg-h"><div class="where">التقويم · مراجعة الدرس · ص٤١</div><h2>مراجعة الدرس</h2></header>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">ملخّص مصوّر</h3>
+    <ul style="margin:0 0 10px;padding-right:20px">
+      <li>تتكوّن <b>الخلايا</b> من أجزاء عديدة، لكل منها دوره ووظيفته في النشاطات التي تحافظ على الحياة.</li>
+      <li>تنتقل المواد من الخلية وإليها عن طريق <b>الانتشار</b>، وتنتقل جزيئات الماء عبر الأغشية البلازمية عن طريق <b>الخاصية الأسموزية</b>.</li>
+      <li><b>البناء الضوئي</b> عملية تقوم فيها النباتات بصنع الغذاء، و<b>التنفس الخلوي</b> عملية تستعمل فيها الخلية الطاقة.</li>
+    </ul>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">المطويات · أنظّم أفكاري</span><h3>أكمل العبارات</h3></div>
+    <div class="fold3">
+      <label>تتكوّن الخلايا من…<textarea data-save="fd1"></textarea></label>
+      <label>انتقال المواد من وإلى…<textarea data-save="fd2"></textarea></label>
+      <label>البناء الضوئي عملية…<textarea data-save="fd3"></textarea></label>
+    </div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">خريطة مفاهيم</span><h3>الخلية وعملياتها الحيوية</h3></div>
+    <p class="hint">اضغط على مفهوم ثم على خانته. في البنك مفهومان لا مكان لهما.</p>
+    <div id="a-cmap1"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أفكر وأتحدث وأكتب</span><h3>الأسئلة ١–٣ و٦</h3></div>
+    <div id="r-self"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">أفكر وأتحدث وأكتب</span><h3>أختار الإجابة الصحيحة (٤ و٥)</h3></div>
+    <div id="q-rev4"></div><div id="q-rev5"></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">العلوم والكتابة</span><h3>الخيال العلمي</h3></div>
+    <p>لو طُلب إليّ أن أكون مديرًا لعمليات خلية حيوانية أو خلية نباتية مدة يوم، فكيف أنظّم دخول المواد إلى الخلية والتخلص من الفضلات؟ أكتب وصفًا مختصرًا لعملي في هذا اليوم.</p>
+    <textarea data-save="story" placeholder="في الصباح…"></textarea>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">العلوم والفن</span><h3>رسم الخلية</h3></div>
+    <p>أرسم مخططًا للخلية الحيوانية بثلاثة أبعاد، وأكتب أسماء تراكيبها ووصفًا مختصرًا لدورها. وقبل الرسم، تدرّب: صِل كل رقم على الرسم باسم الجزء.</p>
+    <div class="sim"><svg id="labSvg" viewBox="0 0 340 200" aria-label="خلية حيوانية مرقّمة"></svg></div>
+    <div id="a-label"></div>
+  </div>
+</section>
+
+<!-- ============ POST-TEST ============ -->
+<section class="page" data-page="posttest" data-title="التقويم الختامي">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>التقويم الختامي</h2></header>
+  <p>أجب عن جميع الأسئلة ثم اضغط «صحّح إجاباتي».</p>
+  <div class="act" data-kind="post">
+    <div class="act-h"><span class="badge b-post">تقويم ختامي</span><h3>ثمانية عشر سؤالًا</h3></div>
+    <div id="q-post"></div>
+  </div>
+</section>
+
+<!-- ============ NAFES ============ -->
+<section class="page" data-page="nafes" data-title="تدرّب على نافس">
+  <header class="pg-h"><div class="where">بنك «نافس» · المرحلة الابتدائية</div><h2>تدرّب على «نافس»</h2></header>
+  <p>أسئلة «نافس» كما وردت في بنك الأسئلة، ومعها مستوى كل سؤال: <b>معرفة</b> أو <b>تطبيق</b> أو <b>استدلال</b>. أجب عنها جميعًا ثم اضغط «صحّح إجاباتي»، فيظهر تشخيص مهاراتك في صفحة التشخيص.</p><p style="margin:6px 0 10px"><a class="btn" href="honor.html?l=cells6" target="_blank" rel="noopener" style="text-decoration:none">🏆 لوحة الشرف: المتميزون في تدريب نافس</a></p>
+  <div class="act" data-kind="post">
+    <div class="act-h"><span class="badge b-post">نافس</span><h3>اثنا عشر سؤالًا</h3></div>
+    <div id="nfMode" class="nf-mode" hidden></div>
+    <div id="q-nafes"></div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="page" data-page="results" data-title="تقرير الإنجاز">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تقرير الإنجاز</h2></header>
+  <div class="sheet"><p id="stuLine" style="margin:0 0 4px"></p><p class="hint" id="syncState" style="margin:0 0 8px"></p><div class="row" style="margin:0 0 10px"><button class="btn ghost" id="stuEdit">تعديل بياناتي</button></div></div>
+  <div class="sheet" id="resTop"></div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">التقويم التكويني والأنشطة</h3>
+    <ul class="res-list" id="resList"></ul>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">أكمل مطويتك</h3>
+    <p>عُد إلى المطوية في صفحة مراجعة الدرس وأكمل العبارات الثلاث.</p>
+    <div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="review">افتح المراجعة</button><button class="btn ghost" id="resetAll">ابدأ الدرس من جديد</button></div>
+  </div>
+</section>
+
+<!-- ============ DIAGNOSIS ============ -->
+<section class="page" data-page="diagnosis" data-title="تشخيص الأهداف ومهارات نافس">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>التشخيص</h2></header>
+  <div class="row no-print" style="margin:0 0 14px"><label>اسم الطالبة / الطالب: <input type="text" id="stuName" data-save="stuName" style="width:210px;text-align:right"></label></div>
+  <h3 style="margin:0 0 8px;font-size:19px">١. تحقق أهداف الدرس</h3>
+  <p class="hint">من التقويم الختامي (٧٠٪) والأنشطة المرتبطة بكل هدف (٣٠٪).</p>
+  <div id="diagOut"></div>
+  <h3 style="margin:18px 0 8px;font-size:19px">٢. مهارات «نافس»</h3>
+  <div id="nafesDiag"></div>
+  <p class="hint">مستويات الإتقان: متقن ٨٠٪ فأكثر، قريب من الإتقان ٦٠–٧٩٪، يحتاج إلى علاج أقل من ٦٠٪.</p>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section class="page" data-page="plan" data-title="الخطة العلاجية">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>الخطة العلاجية</h2></header>
+  <h3 style="margin:0 0 8px;font-size:19px">١. علاج أهداف الدرس</h3>
+  <div id="planOut"></div>
+  <h3 style="margin:18px 0 8px;font-size:19px">٢. علاج مهارات «نافس»</h3>
+  <div id="nafesPlan"></div>
+  <div class="row no-print" style="margin-bottom:12px"><button class="btn" id="printPlan">اطبع التشخيص والخطة</button></div>
+</section>
+
+<!-- ============ SURVEY ============ -->
+<section class="page" data-page="survey" data-title="رأيك يهمنا">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>رأيك يهمنا</h2></header>
+  <p>اختر رقمًا لكل عبارة: ١ = لا أوافق أبدًا، ٥ = أوافق تمامًا.</p>
+  <div class="lik" id="likert"></div>
+  <label style="display:grid;gap:6px;margin-top:12px">ماذا أعجبك؟ وماذا نحسّن؟<textarea id="svComment" maxlength="400"></textarea></label>
+  <div class="row"><button class="btn primary" id="svSend">أرسل رأيي</button></div>
+  <div class="msg" id="svMsg"></div>
+</section>
+
+
+<div class="leaf" id="leaf"></div><div class="shade" id="shade"></div>
+<button class="corner" id="corner" aria-label="اقلب إلى الصفحة التالية"></button><button class="corner-back" id="cornerBack" aria-label="ارجع إلى الصفحة السابقة"></button>
+</div></main>
+
+<div class="ar" id="ar" hidden role="dialog" aria-modal="true" aria-label="عرض مجسّم بالواقع المعزز">
+  <video id="arVideo" playsinline muted></video>
+  <canvas id="arCanvas"></canvas>
+  <div class="ar-hud">
+    <span class="brk b1"></span><span class="brk b2"></span><span class="brk b3"></span><span class="brk b4"></span>
+    <div class="ar-top"><span class="ar-live">واقع معزز</span><div class="ar-title" id="arTitle"></div><button class="ar-x" id="arClose" aria-label="إغلاق العرض">✕</button></div>
+    <div class="ar-scan" id="arScan"><div class="reticle"></div><p>جارٍ التعرّف على الصفحة…</p></div>
+    <div class="ar-mk" id="arMk" hidden>وجّه الكاميرا نحو بطاقة العلامة الوردية<br>ليظهر المشهد فوقها</div>
+    <div class="ar-labels" id="arLabels"></div>
+    <div class="ar-bottom">
+      <div class="ar-toast" id="arToast" hidden></div>
+      <div class="ar-cap" id="arCap" aria-live="polite"></div>
+      <div class="ar-tl" id="arTl"></div>
+      <div class="ar-ctrl"><button id="arPlay">إيقاف مؤقت</button><button id="arReplay">إعادة العرض</button><button id="arCam">الكاميرا</button></div>
+      <div class="ar-hint">اسحب لتدوير المشهد، وقرّب أو بعّد بإصبعين أو بعجلة الفأرة</div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-view" id="mkView" hidden role="dialog" aria-modal="true" aria-label="بطاقة العلامة">
+  <div class="mk-card">
+    <h3>بطاقة العلامة للواقع المعزز</h3>
+    <div class="mk-sq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <p>اطبع هذه البطاقة أو اعرضها على شاشة جهاز آخر. ثم افتح العرض المجسّم واضغط «الكاميرا»، ووجّهها نحو المربع الوردي ليظهر المشهد فوقه.</p>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="mkPrint">اطبع البطاقة</button><button class="btn" id="mkClose">إغلاق</button></div>
+  </div>
+</div>
+
+<div class="stu-modal" id="stuModal" hidden role="dialog" aria-modal="true" aria-labelledby="stuTitle">
+  <div class="stu-card">
+    <h3 id="stuTitle">مرحبًا بك في الكتاب التفاعلي</h3>
+    <div id="stuCodeBox" hidden>
+      <p style="margin:0">اكتب رمز الدخول المكوّن من ٤ أرقام، تجده في البطاقة التي أعطاك إياها معلمك.</p>
+      <label>رمز الدخول<input type="text" id="stuCode" inputmode="numeric" maxlength="4" dir="ltr" autocomplete="off" class="stu-code"></label>
+    </div>
+    <div id="stuNameBox">
+      <p style="margin:0">اكتب اسمك ورمز فصلك ليعرف معلمك نتائجك ويساعدك.</p>
+      <label>الاسم الثلاثي<input type="text" id="stuNm" maxlength="60" autocomplete="name"></label>
+      <label>رمز الفصل (يعطيك إياه المعلم)<input type="text" id="stuCls" maxlength="20" placeholder="مثال: 6أ"></label>
+    </div>
+    <div class="stu-err" id="stuErr"></div>
+    <div class="row" style="margin:0"><button class="btn primary" id="stuSave">ابدأ</button><button class="btn ghost" id="stuSkip">تصفح فقط دون حفظ</button></div>
+  </div>
+</div>
+
+<div class="bnav">
+  <div class="bnav-in">
+    <button class="btn" id="prevBtn">السابق</button>
+    <button class="btn primary" id="nextBtn">التالي</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const AR="٠١٢٣٤٥٦٧٨٩";
+const ar=n=>String(n).replace(/\d/g,d=>AR[d]).replace(/\./g,"٫");
+const toEn=s=>String(s).trim().replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫,]/g,".");
+const store={
+  get(k,d){try{const v=localStorage.getItem("c6l2:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("c6l2:"+k,JSON.stringify(v))}catch(e){}},
+  clear(){try{Object.keys(localStorage).filter(k=>k.indexOf("c6l2:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function saveScore(key,got,total,detail){const s=store.get("scores",{});s[key]={got:got,total:total,detail:detail||null};store.set("scores",s);renderResults();renderDiag()}
+function praise(p){return p>=90?"ممتاز! فهمك متين.":p>=70?"جيد جدًا، راجع ما أخطأت فيه.":p>=50?"بداية جيدة، أعد قراءة الأجزاء المرتبطة.":"لا بأس، اقرأ الدرس مرة أخرى ثم أعد المحاولة."}
+
+/* ---------- quiz ---------- */
+function quiz(el,qs,o){
+  o=o||{};const instant=o.instant!==false;
+  let picks=qs.map(()=>null),done=false;
+  function draw(){
+    picks=qs.map(()=>null);done=false;
+    el.innerHTML=qs.map((q,i)=>'<div class="q"><div class="q-t"><span class="q-n">'+ar(i+1)+'</span><span>'+q.q+'</span></div><div class="opts">'+q.o.map((t,j)=>'<button class="opt" data-i="'+i+'" data-j="'+j+'">'+t+'</button>').join("")+'</div><div class="why" hidden></div></div>').join("")+
+      (instant?"":'<div class="row"><button class="btn primary" data-act="check">'+(o.checkLabel||"صحّح إجاباتي")+'</button></div><div class="msg"></div>')+'<div class="score" hidden></div>';
+  }
+  function mark(i){
+    const q=qs[i],box=$$(".q",el)[i];
+    $$(".opt",box).forEach((b,j)=>{b.disabled=true;b.classList.remove("sel");if(j===q.a)b.classList.add("ok");else if(j===picks[i])b.classList.add("bad")});
+    const w=$(".why",box);w.hidden=false;const right=picks[i]===q.a;
+    w.className="why "+(right?"ok":"bad");w.innerHTML=(right?"إجابة صحيحة. ":"الإجابة الصحيحة: "+q.o[q.a]+". ")+(q.why||"");
+  }
+  function finish(){
+    done=true;const got=picks.filter((p,i)=>p===qs[i].a).length,p=Math.round(got/qs.length*100);
+    const s=$(".score",el);s.hidden=false;
+    s.innerHTML='<span class="big">'+ar(got)+' / '+ar(qs.length)+'</span><span>'+praise(p)+'</span>'+(o.noRetry?'':'<button class="btn ghost" data-act="retry">أعد المحاولة</button>');
+    if(o.key)saveScore(o.key,got,qs.length,picks.map((p,i)=>p===qs[i].a));
+  }
+  el.addEventListener("click",e=>{
+    const b=e.target.closest(".opt");
+    if(b&&!b.disabled&&!done){
+      const i=+b.dataset.i,j=+b.dataset.j;
+      if(instant){if(picks[i]!==null)return;picks[i]=j;mark(i);if(picks.every(p=>p!==null))finish()}
+      else{picks[i]=j;$$(".opt",$$(".q",el)[i]).forEach(x=>x.classList.toggle("sel",x===b))}
+      return;
+    }
+    const a=e.target.closest("[data-act]");if(!a)return;
+    if(a.dataset.act==="check"){
+      const m=$(".msg",el);
+      if(picks.some(p=>p===null)){m.className="msg bad";m.textContent="أجب عن جميع الأسئلة أولًا ("+ar(picks.filter(p=>p===null).length)+" بلا إجابة).";return}
+      m.textContent="";if(o.noReveal)$$(".opt",el).forEach(x=>{x.disabled=true});else qs.forEach((q,i)=>mark(i));a.disabled=true;finish();
+    }
+    if(a.dataset.act==="retry"){draw()}
+  });
+  draw();
+}
+
+/* ---------- sort ---------- */
+function sortAct(el,cfg){
+  let sel=null;
+  function draw(){
+    el.innerHTML='<div class="pool" data-zone="pool">'+shuffle(cfg.items).map(it=>'<button class="chip" data-b="'+it.b+'">'+it.t+'</button>').join("")+'</div><div class="zones">'+cfg.bins.map(b=>'<div class="zone" data-zone="'+b.id+'"><div class="zone-h">'+b.label+'</div><div class="zone-body"></div></div>').join("")+'</div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+    sel=null;
+  }
+  const zoneOf=c=>c.closest("[data-zone]");
+  const bodyOf=z=>z.dataset.zone==="pool"?z:$(".zone-body",z);
+  function arm(on){$$(".zone",el).forEach(z=>z.classList.toggle("armed",on))}
+  el.addEventListener("click",e=>{
+    const a=e.target.closest("[data-act]");
+    if(a){
+      if(a.dataset.act==="reset"){draw();return}
+      const m=$(".msg",el),pool=$(".pool",el);
+      if(pool.querySelector(".chip")){m.className="msg bad";m.textContent="ضع جميع البطاقات في الصناديق أولًا.";return}
+      let got=0;const chips=$$(".zone .chip",el);
+      chips.forEach(c=>{c.classList.remove("sel");const ok=zoneOf(c).dataset.zone===c.dataset.b;c.classList.toggle("ok",ok);c.classList.toggle("bad",!ok);if(ok)got++});
+      m.className="msg "+(got===chips.length?"ok":"bad");
+      m.textContent=got===chips.length?"أحسنت! كل البطاقات في مكانها الصحيح.":"صحيح "+ar(got)+" من "+ar(chips.length)+". انقل البطاقات الحمراء ثم تحقق مرة أخرى.";
+      if(cfg.key)saveScore(cfg.key,got,chips.length);
+      return;
+    }
+    const c=e.target.closest(".chip");
+    if(c){
+      $$(".chip",el).forEach(x=>x.classList.remove("ok","bad"));
+      if(sel&&sel!==c&&zoneOf(sel)!==zoneOf(c)){bodyOf(zoneOf(c)).appendChild(sel);sel.classList.remove("sel");sel=null;arm(false);return}
+      if(sel===c){c.classList.remove("sel");sel=null;arm(false);return}
+      if(sel)sel.classList.remove("sel");sel=c;c.classList.add("sel");arm(true);return;
+    }
+    const z=e.target.closest("[data-zone]");
+    if(z&&sel){bodyOf(z).appendChild(sel);sel.classList.remove("sel");sel=null;arm(false)}
+  });
+  draw();
+}
+
+/* ---------- order ---------- */
+function orderAct(el,cfg){
+  let cur;
+  function draw(){
+    do{cur=shuffle(cfg.steps.map((t,i)=>({t:t,i:i})))}while(cur.every((c,k)=>c.i===k));
+    render();
+  }
+  function render(){
+    el.innerHTML='<ol class="order">'+cur.map((c,k)=>'<li><span class="k">'+ar(k+1)+'</span><span class="t">'+c.t+'</span><span class="mv"><button data-up="'+k+'" aria-label="إلى الأعلى" '+(k===0?"disabled":"")+'>▲</button><button data-dn="'+k+'" aria-label="إلى الأسفل" '+(k===cur.length-1?"disabled":"")+'>▼</button></span></li>').join("")+'</ol><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">رتّب من جديد</button></div><div class="msg"></div>';
+  }
+  el.addEventListener("click",e=>{
+    const u=e.target.closest("[data-up]"),d=e.target.closest("[data-dn]"),a=e.target.closest("[data-act]");
+    if(u){const k=+u.dataset.up;[cur[k-1],cur[k]]=[cur[k],cur[k-1]];render();$$("[data-up]",el)[k-1]&&$$("[data-up]",el)[k-1].focus();return}
+    if(d){const k=+d.dataset.dn;[cur[k+1],cur[k]]=[cur[k],cur[k+1]];render();$$("[data-dn]",el)[k+1]&&$$("[data-dn]",el)[k+1].focus();return}
+    if(!a)return;
+    if(a.dataset.act==="reset"){draw();return}
+    let got=0;$$(".order li",el).forEach((li,k)=>{const ok=cur[k].i===k;li.classList.toggle("ok",ok);li.classList.toggle("bad",!ok);if(ok)got++});
+    const m=$(".msg",el);m.className="msg "+(got===cur.length?"ok":"bad");
+    m.textContent=got===cur.length?"ترتيب صحيح تمامًا!":"في مكانها الصحيح "+ar(got)+" من "+ar(cur.length)+". حرّك المراحل الحمراء.";
+    if(cfg.key)saveScore(cfg.key,got,cur.length);
+  });
+  draw();
+}
+
+/* ---------- match ---------- */
+const COLORS=["#2f6f9a","#b5701a","#5a8f2e","#8a4f9c","#b23f52","#2f8a86","#6b5a2d"];
+function matchAct(el,cfg){
+  let map,rights,selL=null;
+  function draw(){
+    map={};selL=null;rights=shuffle(cfg.pairs.map((p,i)=>({t:p[1],i:i})));
+    el.innerHTML='<div class="match"><div class="col"><h4>'+(cfg.lt||"")+'</h4>'+cfg.pairs.map((p,i)=>'<button class="mi" data-l="'+i+'"><span class="tag"></span><span>'+p[0]+'</span></button>').join("")+'</div><div class="col"><h4>'+(cfg.rt||"")+'</h4>'+rights.map(r=>'<button class="mi" data-r="'+r.i+'"><span class="tag"></span><span>'+r.t+'</span></button>').join("")+'</div></div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  function paint(){
+    $$(".mi",el).forEach(b=>{b.classList.remove("ok","bad");const t=$(".tag",b);t.style.background="transparent";t.textContent=""});
+    Object.keys(map).forEach(l=>{const r=map[l],c=COLORS[l%COLORS.length];
+      const L=$('[data-l="'+l+'"] .tag',el),R=$('[data-r="'+r+'"] .tag',el);
+      L.style.background=c;R.style.background=c;L.textContent=ar(+l+1);R.textContent=ar(+l+1)});
+    $$("[data-l]",el).forEach(b=>b.classList.toggle("sel",selL!==null&&+b.dataset.l===selL));
+  }
+  el.addEventListener("click",e=>{
+    const l=e.target.closest("[data-l]"),r=e.target.closest("[data-r]"),a=e.target.closest("[data-act]");
+    if(l){selL=+l.dataset.l;paint();return}
+    if(r){
+      if(selL===null){const m=$(".msg",el);m.className="msg bad";m.textContent="اختر عنصرًا من العمود الأول أولًا.";return}
+      const ri=+r.dataset.r;Object.keys(map).forEach(k=>{if(map[k]===ri)delete map[k]});map[selL]=ri;
+      const next=cfg.pairs.findIndex((p,i)=>map[i]===undefined);selL=next>=0?next:null;$(".msg",el).textContent="";paint();return;
+    }
+    if(!a)return;
+    if(a.dataset.act==="reset"){draw();return}
+    const m=$(".msg",el);
+    if(Object.keys(map).length<cfg.pairs.length){m.className="msg bad";m.textContent="صِل جميع العناصر أولًا.";return}
+    let got=0;cfg.pairs.forEach((p,i)=>{const ok=map[i]===i;if(ok)got++;$('[data-l="'+i+'"]',el).classList.toggle("ok",ok);$('[data-l="'+i+'"]',el).classList.toggle("bad",!ok);$('[data-r="'+map[i]+'"]',el).classList.toggle("ok",ok);$('[data-r="'+map[i]+'"]',el).classList.toggle("bad",!ok)});
+    m.className="msg "+(got===cfg.pairs.length?"ok":"bad");
+    m.textContent=got===cfg.pairs.length?"توصيل صحيح بالكامل!":"صحيح "+ar(got)+" من "+ar(cfg.pairs.length)+". اختر العنصر الأحمر وأعد توصيله.";
+    if(cfg.key)saveScore(cfg.key,got,cfg.pairs.length);
+  });
+  draw();
+}
+
+/* ---------- multi select ---------- */
+function multiAct(el,cfg){
+  function draw(){
+    el.innerHTML='<div class="opts">'+shuffle(cfg.opts).map(o=>'<button class="opt" data-ok="'+(o.ok?1:0)+'" aria-pressed="false">'+o.t+'</button>').join("")+'</div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  el.addEventListener("click",e=>{
+    const b=e.target.closest(".opt"),a=e.target.closest("[data-act]");
+    if(b&&!b.disabled){const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);b.classList.toggle("sel",on);return}
+    if(!a)return;if(a.dataset.act==="reset"){draw();return}
+    const bs=$$(".opt",el),m=$(".msg",el);
+    if(!bs.some(x=>x.classList.contains("sel"))){m.className="msg bad";m.textContent="اختر عبارة واحدة على الأقل.";return}
+    let got=0;bs.forEach(x=>{const s=x.classList.contains("sel"),ok=x.dataset.ok==="1";x.disabled=true;x.classList.remove("sel");if(s===ok)got++;if(ok)x.classList.add("ok");else if(s)x.classList.add("bad")});
+    m.className="msg "+(got===bs.length?"ok":"bad");
+    m.innerHTML=(got===bs.length?"أحسنت! ":"قراراتك الصحيحة "+ar(got)+" من "+ar(bs.length)+". ")+(cfg.note||"");
+    if(cfg.key)saveScore(cfg.key,got,bs.length);
+  });
+  draw();
+}
+
+/* ---------- reveal + saved text ---------- */
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-reveal]");
+  if(r){const m=r.closest(".reveal").querySelector(".model");m.hidden=!m.hidden;r.textContent=m.hidden?"اعرض الإجابة النموذجية":"أخفِ الإجابة النموذجية"}
+  const g=e.target.closest("[data-go]");if(g)go(g.dataset.go);
+});
+function bindSaves(){$$("[data-save]").forEach(t=>{t.value=store.get("t:"+t.dataset.save,"");t.addEventListener("input",()=>store.set("t:"+t.dataset.save,t.value))})}
+
+/* ---------- illustrations ---------- */
+function frond(x,y,h,ang,col){
+  let s='<g transform="translate('+x+' '+y+') rotate('+ang+')"><path d="M0 0 Q 3 '+(-h/2)+' 0 '+(-h)+'" stroke="'+col+'" stroke-width="2" fill="none"/>';
+  const n=13;for(let i=1;i<n;i++){const yy=-h*i/n,L=h*0.34*(1-i/n)+3,r=Math.max(1.6,L/5);
+    s+='<ellipse cx="'+(-L/2)+'" cy="'+yy+'" rx="'+(L/2)+'" ry="'+r+'" fill="'+col+'" transform="rotate(28 0 '+yy+')"/><ellipse cx="'+(L/2)+'" cy="'+yy+'" rx="'+(L/2)+'" ry="'+r+'" fill="'+col+'" transform="rotate(-28 0 '+yy+')"/>'}
+  return s+'</g>';
+}
+const svgw=(inner,vb)=>'<svg viewBox="'+(vb||"0 0 120 100")+'" aria-hidden="true">'+inner+'</svg>';
+const ICON={
+  moss(){let s='<ellipse cx="60" cy="90" rx="48" ry="7" fill="#7a5a3a"/>';
+    for(let i=0;i<8;i++){const x=24+i*10,h=26+((i*7)%12);s+='<line x1="'+x+'" y1="88" x2="'+x+'" y2="'+(88-h)+'" stroke="#3f7d36" stroke-width="2"/>';
+      for(let k=0;k<5;k++){const y=86-k*h/5;s+='<path d="M'+x+' '+y+' l-4 -4 M'+x+' '+y+' l4 -4" stroke="#69ad4f" stroke-width="2" stroke-linecap="round"/>'}}
+    s+='<path d="M64 56 Q66 30 70 14" stroke="#b07a2a" stroke-width="1.6" fill="none"/><ellipse cx="70" cy="11" rx="3.2" ry="6" fill="#c4871a" transform="rotate(15 70 11)"/>';
+    s+='<path d="M44 58 Q42 36 38 22" stroke="#b07a2a" stroke-width="1.6" fill="none"/><ellipse cx="38" cy="19" rx="3" ry="5.5" fill="#c4871a" transform="rotate(-15 38 19)"/>';
+    return svgw(s)},
+  liver(){let s='<ellipse cx="60" cy="88" rx="50" ry="7" fill="#7a5a3a"/>';
+    s+='<path d="M60 86 C40 80 22 74 14 60 C30 62 44 70 58 78 Z" fill="#4f9440"/><path d="M60 86 C80 80 98 74 106 60 C90 62 76 70 62 78 Z" fill="#4f9440"/><path d="M60 86 C56 70 50 56 52 40 C62 54 64 70 62 84 Z" fill="#5fa44c"/><path d="M60 86 C66 72 76 62 88 52 C84 66 74 78 62 86 Z" fill="#3f8436"/>';
+    s+='<line x1="34" y1="66" x2="34" y2="40" stroke="#6d8f43" stroke-width="2"/><path d="M24 40 Q34 28 44 40 Z" fill="#7fb547"/><line x1="82" y1="64" x2="82" y2="36" stroke="#6d8f43" stroke-width="2"/><path d="M72 36 Q82 24 92 36 Z" fill="#7fb547"/>';
+    return svgw(s)},
+  horn(){let s='<ellipse cx="60" cy="88" rx="50" ry="7" fill="#7a5a3a"/>';
+    for(let i=0;i<7;i++){const a=-70+i*23;s+='<ellipse cx="60" cy="80" rx="30" ry="7" fill="'+(i%2?"#4f9440":"#62a84e")+'" transform="rotate('+a+' 60 80) translate(0 0)" opacity=".9"/>'}
+    [[46,10],[56,4],[66,8],[76,14]].forEach(p=>{s+='<path d="M'+p[0]+' 78 Q'+(p[0]+2)+' 40 '+(p[0]+1)+' '+p[1]+'" stroke="#8a9a2a" stroke-width="3" fill="none" stroke-linecap="round"/>'});
+    return svgw(s)},
+  fern(){return svgw('<ellipse cx="60" cy="94" rx="40" ry="5" fill="#7a5a3a"/>'+frond(60,94,86,0,"#3e7c4a")+frond(52,94,70,-28,"#5a9a52")+frond(68,94,70,28,"#5a9a52"))},
+  club(){let s='<ellipse cx="60" cy="94" rx="46" ry="5" fill="#7a5a3a"/><path d="M14 92 Q60 84 106 92" stroke="#3f7d36" stroke-width="3" fill="none"/>';
+    [[36,50],[56,64],[78,56],[96,40]].forEach(p=>{const x=p[0],h=p[1];s+='<line x1="'+x+'" y1="90" x2="'+x+'" y2="'+(90-h)+'" stroke="#3f7d36" stroke-width="3"/>';
+      for(let y=88;y>90-h+10;y-=4){s+='<path d="M'+x+' '+y+' l-5 -3 M'+x+' '+y+' l5 -3" stroke="#6aa84f" stroke-width="1.6"/>'}
+      s+='<ellipse cx="'+x+'" cy="'+(90-h)+'" rx="4" ry="10" fill="#c9b04a"/>'});
+    return svgw(s)},
+  horse(){let s='<ellipse cx="60" cy="94" rx="40" ry="5" fill="#7a5a3a"/>';
+    [[44,78],[66,88],[86,60]].forEach(p=>{const x=p[0],h=p[1];s+='<line x1="'+x+'" y1="92" x2="'+x+'" y2="'+(92-h)+'" stroke="#4f8a3c" stroke-width="4"/>';
+      for(let y=88;y>92-h+12;y-=11){s+='<line x1="'+(x-3)+'" y1="'+y+'" x2="'+(x+3)+'" y2="'+y+'" stroke="#2f5a26" stroke-width="2"/>';
+        for(let k=-3;k<=3;k++){if(!k)continue;s+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+k*5)+'" y2="'+(y-6-Math.abs(k))+'" stroke="#7fb547" stroke-width="1.2"/>'}}
+      s+='<ellipse cx="'+x+'" cy="'+(92-h)+'" rx="4.5" ry="8" fill="#b08a3a"/>'});
+    return svgw(s)}
+};
+
+/* ---------- helpers ---------- */
+const T11=(x,y,t,a,c)=>'<text x="'+x+'" y="'+y+'" font-size="11" fill="'+(c||"#46554a")+'" text-anchor="'+(a||"middle")+'" font-family="Noto Kufi Arabic,Tahoma,sans-serif">'+t+'</text>';
+function stepper(el,steps){let i=0;
+  function draw(){const s=steps[i];el.innerHTML='<div class="st-card"><div class="st-k">'+ar(i+1)+' / '+ar(steps.length)+'</div><h4>'+s.h+'</h4>'+(s.svg?'<div class="st-svg">'+s.svg+'</div>':'')+'<p>'+s.t+'</p></div><div class="row" style="justify-content:space-between"><button class="btn" data-sp="-1"'+(i===0?" disabled":"")+'>السابق</button><div class="st-dots">'+steps.map((x,k)=>'<i class="'+(k===i?"on":"")+'"></i>').join("")+'</div><button class="btn primary" data-sp="1"'+(i===steps.length-1?" disabled":"")+'>التالي</button></div>'}
+  el.addEventListener("click",e=>{const b=e.target.closest("[data-sp]");if(!b)return;i=Math.max(0,Math.min(steps.length-1,i+(+b.dataset.sp)));draw()});draw()}
+const NUM=(x,y,n)=>'<circle cx="'+x+'" cy="'+y+'" r="11" fill="#1e5a7a"/><text x="'+x+'" y="'+(y+4)+'" font-size="12" fill="#fff" text-anchor="middle" font-family="Tahoma">'+n+'</text>';
+const SV={
+  mito:'<svg viewBox="0 0 170 80" style="width:170px;display:block;margin:6px 0"><ellipse cx="85" cy="40" rx="72" ry="30" fill="#e9a25a" stroke="#b5701a" stroke-width="3"/><path d="M22 40 q10 -22 20 0 t20 0 t20 0 t20 0 t20 0 t18 0" stroke="#fff3d6" stroke-width="5" fill="none"/></svg>',
+  catUni:'<svg viewBox="0 0 300 110" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="2" y="2" width="140" height="106" rx="10" fill="#fff" stroke="#ccc"/>'+NUM(20,20,"١")+'<circle cx="72" cy="62" r="30" fill="#f4f4f4" stroke="#555" stroke-width="2"/><path d="M48 42 l6 -20 l12 14 M96 42 l-6 -20 l-12 14" fill="#f4f4f4" stroke="#555" stroke-width="2"/><circle cx="62" cy="58" r="3"/><circle cx="82" cy="58" r="3"/><path d="M68 70 q4 4 8 0" stroke="#555" fill="none"/><rect x="158" y="2" width="140" height="106" rx="10" fill="#fff" stroke="#ccc"/>'+NUM(176,20,"٢")+'<path d="M200 60 q10 -24 26 -8 q16 -14 18 8 q14 10 -4 22 q-14 14 -28 2 q-22 -2 -12 -24z" fill="#9fd4d8" stroke="#3a8a8f" stroke-width="2"/><circle cx="222" cy="62" r="6" fill="#c0507a"/><ellipse cx="268" cy="50" rx="18" ry="8" fill="#9fd48a" stroke="#4a8a3a" stroke-width="2" transform="rotate(-30 268 50)"/><ellipse cx="262" cy="86" rx="16" ry="7" fill="#d8c48a" stroke="#8a7a3a" stroke-width="2"/></svg>',
+  arrows:'<svg viewBox="0 0 300 120" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="160" y="14" width="120" height="86" rx="10" fill="#bfe6a8" stroke="#3e8a3a" stroke-width="7"/><ellipse cx="236" cy="62" rx="30" ry="22" fill="#8fc6ef"/><circle cx="190" cy="40" r="10" fill="#7a5bc8"/><line x1="296" y1="4" x2="278" y2="20" stroke="#e05a3a" stroke-width="3"/>'+NUM(220,112,"١")+'<ellipse cx="70" cy="58" rx="58" ry="44" fill="#9fd4e0" stroke="#3a8a8f" stroke-width="3"/><circle cx="76" cy="54" r="16" fill="#e05a8a"/><circle cx="76" cy="54" r="6" fill="#f2e26a"/><line x1="120" y1="20" x2="88" y2="46" stroke="#e05a3a" stroke-width="3"/>'+NUM(70,112,"٢")+'</svg>',
+  fig12:'<svg viewBox="0 0 300 120" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="160" y="10" width="124" height="90" rx="4" fill="#fff" stroke="#555" stroke-width="2"/><rect x="166" y="16" width="112" height="78" rx="4" fill="none" stroke="#555"/><rect x="214" y="44" width="56" height="44" rx="14" fill="#fff" stroke="#555"/><circle cx="196" cy="40" r="14" fill="#fff" stroke="#555"/><ellipse cx="190" cy="76" rx="9" ry="5" fill="none" stroke="#555"/>'+NUM(222,112,"١")+'<ellipse cx="72" cy="56" rx="60" ry="44" fill="#fff" stroke="#555" stroke-width="2"/><circle cx="72" cy="52" r="18" fill="#fff" stroke="#555"/><ellipse cx="38" cy="72" rx="10" ry="5" fill="none" stroke="#555"/><ellipse cx="104" cy="40" rx="10" ry="5" fill="none" stroke="#555"/>'+NUM(72,112,"٢")+'</svg>',
+  plantOnly:'<svg viewBox="0 0 170 100" style="width:170px;display:block;margin:6px 0"><rect x="6" y="6" width="158" height="88" rx="8" fill="#d6efc4" stroke="#3e8a3a" stroke-width="7"/><ellipse cx="100" cy="52" rx="44" ry="28" fill="#8fc6ef"/><circle cx="34" cy="34" r="9" fill="#7a5bc8"/><ellipse cx="30" cy="70" rx="9" ry="5" fill="#2f8a2f"/><ellipse cx="60" cy="24" rx="9" ry="5" fill="#2f8a2f"/><ellipse cx="150" cy="80" rx="8" ry="5" fill="#2f8a2f"/></svg>'
+};
+
+/* ---------- cover + look ---------- */
+(function(){
+  let s='<rect width="800" height="300" fill="#eaf4ec"/>';
+  s+='<ellipse cx="250" cy="155" rx="170" ry="110" fill="#f6d0d4" stroke="#d98a9a" stroke-width="6"/><circle cx="255" cy="150" r="42" fill="#8a6bc8"/><circle cx="262" cy="142" r="14" fill="#f2e26a"/>';
+  [[160,110],[330,200],[170,210]].forEach(p=>{s+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="30" ry="12" fill="#e9824a"/>'});
+  s+='<rect x="440" y="50" width="300" height="210" rx="18" fill="#cfeab8" stroke="#3e8a3a" stroke-width="12"/><rect x="540" y="90" width="170" height="130" rx="40" fill="#8fc6ef"/><circle cx="490" cy="100" r="24" fill="#8a6bc8"/>';
+  [[480,170],[500,230],[600,75],[700,240],[470,220]].forEach(p=>{s+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="18" ry="9" fill="#2f8a2f"/>'});
+  $("#coverArt").innerHTML=s;
+  let f='<rect width="340" height="190" rx="14" fill="#cfe8a8"/>';for(let i=0;i<46;i++){const x=(i*53)%340,y=(i*37)%190;f+='<ellipse cx="'+x+'" cy="'+y+'" rx="14" ry="11" fill="'+(i%3?"#8cc860":"#a8d878")+'"/>'}
+  f+='<ellipse cx="170" cy="112" rx="88" ry="48" fill="#8a6a45"/><ellipse cx="150" cy="96" rx="34" ry="26" fill="#9c7a52"/><circle cx="150" cy="96" r="18" fill="#2a1e10"/><circle cx="150" cy="96" r="12" fill="#c49a30"/><circle cx="150" cy="96" r="7" fill="#111"/>';
+  [[210,90],[240,120],[120,130],[200,140]].forEach(p=>{f+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="13" ry="10" fill="#9fd468"/>'});
+  $("#frogSvg").innerHTML=f;
+})();
+
+/* ---------- vocabulary ---------- */
+const VOCAB=[["النقل السلبي","حركة المواد عبر الأغشية دون أن تستخدم الخلية طاقة."],["الانتشار","انتقال المواد، ومنها السكر والأكسجين وثاني أكسيد الكربون، عبر الغشاء البلازمي من منطقة التركيز المرتفع إلى منطقة التركيز المنخفض دون الحاجة إلى طاقة."],["الخاصية الأسموزية","انتقال جزيئات الماء عبر الغشاء البلازمي من المناطق التي يكون تركيزه فيها أكبر إلى المناطق التي يكون تركيزه فيها أقل؛ أي انتشار للماء فقط."],["البناء الضوئي","عملية تحدث في النباتات وبعض المخلوقات الحية الأخرى، تستخدم طاقة الشمس لإنتاج غذاء على شكل سكر الجلوكوز."],["التنفس الخلوي","عملية تستخلص بها النباتات والحيوانات الطاقة من سكر الجلوكوز، فتقوم الخلايا بتحليل السكر وإطلاق الطاقة."],["النقل النشط","انتقال المواد عبر الأغشية من منطقة التركيز المنخفض إلى منطقة التركيز المرتفع، ويحتاج إلى طاقة."]];
+(function(){
+  $("#vocab").innerHTML=VOCAB.map((v,i)=>'<button data-v="'+i+'">'+v[0]+'</button>').join("");
+  $("#vocab").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;const v=VOCAB[+b.dataset.v];$("#vocabDef").innerHTML="<b>"+v[0]+":</b> "+v[1]});
+})();
+
+/* ---------- NAFES bank items ---------- */
+const LVT=["معرفة","تطبيق","استدلال"];
+const NF_DOM=["١- علوم الحياة"];
+const NF_SUB=["١-١ التركيب والوظيفة في المخلوقات الحية","١-٣ الأنظمة البيئية وتفاعلاتها"];
+const NF_STDS=[
+  {code:"٦-٥-١-١-١",dom:0,sub:0,t:"وصف تراكيب الخلية، وربطها بوظائفها الحيوية"},
+  {code:"٦-٥-١-١-٢",dom:0,sub:0,t:"تحديد الاختلافات من حيث التركيب والوظيفة بين الخلية النباتية والخلية الحيوانية"},
+  {code:"٦-٥-١-٣-٣",dom:0,sub:1,t:"تمثيل العلاقات بين المخلوقات الحية التي تؤدي إلى تدوير المادة في النظام البيئي، وتحديد العلاقة بين النباتات وطاقة الشمس لإنتاج الغذاء"}];
+const CODE=c=>'<span dir="ltr" class="nf-code">'+c+'</span>';
+const nq=x=>{const S=NF_STDS[x.std];return '<div class="nf-meta"><span><b>المجال الرئيسي:</b> '+NF_DOM[S.dom]+'</span><span><b>المجال الفرعي:</b> '+NF_SUB[S.sub]+'</span><span><b>المعيار:</b> '+CODE(S.code)+' '+S.t+'</span><span><b>المستوى الإدراكي:</b> <span class="nlv l'+x.lv+'">'+LVT[x.lv]+'</span></span></div>'+x.q};
+const NAFES_Q=[
+  {lv:0,std:0,q:"المخلوق الحي الوحيد الذي لا يحتوي على نواة:",o:["البكتيريا","الفطريات","الحيوانات","النباتات"],a:0},
+  {lv:0,std:0,q:"أصغر الوحدات البنائية في المخلوقات الحية التي يمكن أن تقوم بالعمليات الحيوية هي:",o:["الخلايا","العناصر","المركبات","الجراثيم"],a:0},
+  {lv:1,std:0,q:"أي التراكيب التالية توجد في خلايا جسمك؟",o:["جدار خلوي","بلاستيدات خضراء","كلوروفيل","سيتوبلازم"],a:3},
+  {lv:1,std:0,q:"توضح الصورة جزءًا من أجزاء الخلية، وهو مسؤول عن:"+SV.mito,o:["إنتاج الطاقة","البناء الضوئي","إخراج الفضلات","التحكم بالوظائف الحيوية"],a:0},
+  {lv:2,std:0,q:"من خلال ملاحظة الصورتين، ما الذي يميز الصورة (١) عن الصورة (٢)؟"+SV.catUni,o:["خلايا بدائية النوى","عديدة الخلايا","الخلايا من نوع واحد","وحيدة الخلية"],a:1},
+  {lv:0,std:1,q:"تركيب يتحكم في جميع أنشطة الخلية:",o:["الميتوكندريا","النواة","البلاستيدات","الغشاء الخلوي"],a:1},
+  {lv:0,std:1,q:"أي أجزاء الخلية التالية يوجد في الخلية النباتية ولا يوجد في الخلية الحيوانية؟",o:["جدار خلوي","الميتوكندريا","السيتوبلازم","النواة"],a:0},
+  {lv:1,std:1,q:"تحتاج المخلوقات الحية (الحيوان والنبات) إلى عمليتي البناء الضوئي والتنفس الخلوي. فيمَ تختلف هاتان العمليتان؟",o:["البناء الضوئي يطلق طاقة<br>التنفس الخلوي يستهلك طاقة","البناء الضوئي ينتج غذاء<br>التنفس الخلوي يستهلك غذاء","البناء الضوئي ينتج ماء<br>التنفس الخلوي يستعمل ماء","البناء الضوئي يتم في وجود الأكسجين<br>التنفس الخلوي يتم في وجود ثاني أكسيد الكربون"],a:1},
+  {lv:1,std:1,q:"أي المخلوقات الحية التالية قادر على عملية التنفس، وقادر أيضًا على عملية البناء الضوئي؟",o:["الفراشة","الصبّار","البكتيريا","الثعلب"],a:1},
+  {lv:2,std:1,q:"تشير الأسهم في الصورتين إلى:"+SV.arrows,o:["١- السيتوبلازم ٢- بلاستيدات خضراء","١- الفجوة ٢- النواة","١- الجدار الخلوي ٢- النواة","١- السيتوبلازم ٢- الميتوكندريا"],a:2},
+  {lv:2,std:1,q:"أي العبارات التالية صحيحة للتمييز بين الشكل ١ والشكل ٢؟"+SV.fig12,o:["الفجوة الكبيرة للشكل ١","الجدار الخلوي للشكل ٢","عدم وجود نواة للشكل ١","البلاستيدات الخضراء للشكل ٢"],a:0},
+  {lv:1,std:2,q:"عملية يتم فيها استعمال طاقة الضوء لصنع الغذاء:",o:["الهضم","التنفس الخلوي","التنفس اللاهوائي","البناء الضوئي"],a:3}
+];
+const PRE_IDX=[5,1,2,3,9,10];
+
+/* ---------- pretest (6 Nafes) ---------- */
+quiz($("#q-pre"),PRE_IDX.map(i=>{const x=NAFES_Q[i];return {q:nq(x),o:x.o,a:x.a}}),{key:"pre",instant:false});
+
+/* ---------- microscope ---------- */
+(function(){
+  const svg=$("#micSvg"),note=$("#micNote");let sl="elodea",mg="low";
+  const N={elodea:{low:"خلايا متراصة منتظمة الشكل، يحيط بكل منها جدار، وفيها حبيبات خضراء.",high:"تظهر البلاستيدات الخضراء بوضوح، ويحيط الجدار الخلوي بالخلية."},cheek:{low:"خلايا متفرقة غير منتظمة الشكل، ولا يوجد فيها لون أخضر.",high:"في الخلية نواة داكنة، ويحيط بها الغشاء البلازمي، ولا يوجد جدار خلوي."}};
+  function draw(){let s='<defs><clipPath id="mc"><circle cx="170" cy="128" r="118"/></clipPath></defs><circle cx="170" cy="128" r="124" fill="#222"/><g clip-path="url(#mc)"><rect x="40" y="0" width="260" height="260" fill="'+(sl==="elodea"?"#eef7e2":"#f6ece8")+'"/>';
+    if(sl==="elodea"){const w=mg==="low"?44:120,h=mg==="low"?26:72;
+      for(let y=4,r=0;y<260;y+=h,r++)for(let x=40-(r%2)*w/2;x<300;x+=w){s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="#d8efc0" stroke="#5a9a3a" stroke-width="'+(mg==="low"?2:4)+'"/>';
+        const n=mg==="low"?4:12;for(let k=0;k<n;k++){const cx=x+6+((k*37+r*13)%(w-12)),cy=y+5+((k*19+r*7)%(h-10));s+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(mg==="low"?2.6:6)+'" ry="'+(mg==="low"?1.8:4)+'" fill="#2f8a2f"/>'}
+        if(mg==="high")s+='<circle cx="'+(x+w*.3)+'" cy="'+(y+h*.5)+'" r="9" fill="#c8d8b0" stroke="#7a9a6a"/>'}}
+    else{const pts=mg==="low"?[[110,80],[200,60],[250,140],[150,170],[90,200],[220,220],[170,110]]:[[170,128]],sc=mg==="low"?1:3.2;
+      pts.forEach((p,i)=>{const r=22*sc;s+='<path d="M'+(p[0]-r)+' '+p[1]+' q'+(r*.4)+' '+(-r*1.1)+' '+(r*1.1)+' '+(-r*.8)+' q'+(r*.9)+' '+(r*.2)+' '+(r*.9)+' '+(r*1.1)+' q'+(-r*.2)+' '+(r*.9)+' '+(-r*1.2)+' '+(r*.8)+' q'+(-r*.9)+' '+(-r*.1)+' '+(-r*.8)+' '+(-r*1.1)+'z" fill="#f2d4d0" stroke="#b88a8a" stroke-width="'+(mg==="low"?1.5:3)+'"/><circle cx="'+(p[0]+r*.15)+'" cy="'+(p[1]-r*.05)+'" r="'+(4*sc)+'" fill="#6a4a8a"/>'})}
+    s+='</g><circle cx="170" cy="128" r="118" fill="none" stroke="#111" stroke-width="6"/>'+T11(170,256,(sl==="elodea"?"ورقة الإلوديا":"خلايا باطن الخد")+" · "+(mg==="low"?"القوة الصغرى":"القوة الكبرى"),"middle","#ddd");
+    svg.innerHTML=s;note.textContent=N[sl][mg];
+    $$("[data-sl]").forEach(b=>b.classList.toggle("primary",b.dataset.sl===sl));$$("[data-mg]").forEach(b=>b.classList.toggle("primary",b.dataset.mg===mg))}
+  document.addEventListener("click",e=>{const a=e.target.closest("[data-sl]"),b=e.target.closest("[data-mg]");if(a){sl=a.dataset.sl;draw()}if(b){mg=b.dataset.mg;draw()}});
+  draw();
+})();
+quiz($("#q-micro"),[
+  {q:"أقارن: ما الذي ظهر في خلايا الإلوديا ولم يظهر في خلايا باطن الخد؟",o:["النواة","الجدار الخلوي والبلاستيدات الخضراء","الغشاء البلازمي","السيتوبلازم"],a:1},
+  {q:"ما الذي ظهر في الخليتين كلتيهما؟",o:["البلاستيدات الخضراء","النواة","الجدار الخلوي","الكلوروفيل"],a:1}
+],{key:"f-micro"});
+
+/* ---------- cell hotspots ---------- */
+const PART={
+  mem:["الغشاء البلازمي","يحيط بالخلية ويعطيها شكلها المميز، ويسمح بدخول المواد وخروجها، ويشبه الجدار الذي يحيط بمصنع ليحميه."],
+  nuc:["النواة","مركز التحكم في الخلية؛ تنظم التفاعلات الكيميائية فيها، وتخزن المعلومات الضرورية لانقسام الخلية. ويسهل رؤيتها بالمجهر لأنها كبيرة وداكنة."],
+  chr:["الكروموسومات","أشرطة طويلة من الأحماض النووية داخل النواة، تخزن المعلومات اللازمة لتنفيذ كافة الأنشطة، وتنقلها إلى خلايا النسل الجديد."],
+  cyt:["السيتوبلازم","مادة تشبه الهلام بين النواة والغشاء البلازمي، فيها كمية كبيرة من الماء، وفيها أجزاء الخلية الداخلية. ويمتد فيه نظام النقل في الخلية."],
+  mit:["الميتوكندريا","مصدر طاقة الخلية؛ أجسام عصوية تتم فيها عملية التنفس الهوائي، فتتحول المواد الكيميائية في الغذاء إلى طاقة."],
+  vac:["الفجوة","تراكيب تشبه الكيس تخزن الماء والغذاء، وتخزن بعض الفضلات قبل التخلص منها. وهي في الخلية الحيوانية صغيرة."],
+  vacP:["الفجوة","تخزن الماء والغذاء وبعض الفضلات. والفجوات في الخلية النباتية أكبر منها في الخلية الحيوانية."],
+  er:["الشبكة الإندوبلازمية","من أجزاء الخلية الداخلية في السيتوبلازم، ولكل منها وظيفة محددة."],
+  gol:["أجسام جولجي","من أجزاء الخلية الداخلية، ولكل منها وظيفة محددة."],
+  lys:["الأجسام المحللة","من أجزاء الخلية الداخلية، ولكل منها وظيفة محددة."],
+  rib:["الرايبوسومات","من أجزاء الخلية الداخلية، ولكل منها وظيفة محددة."],
+  wall:["الجدار الخلوي (في النباتية فقط)","طبقة صلبة تحيط بالغشاء البلازمي، تدعم الخلية النباتية وتعطيها شكلها، وتحميها من الظروف البيئية."],
+  chl:["البلاستيدات الخضراء (في النباتية فقط)","توجد في أوراق النباتات وسيقانها، وتصنع الغذاء؛ إذ تمتص طاقة الضوء بصبغة خضراء تُسمى الكلوروفيل."]
+};
+function hotspot(svg,note,html){svg.innerHTML=html;svg.addEventListener("click",e=>{const t=e.target.closest("[data-p]");if(!t)return;const p=PART[t.dataset.p];$$("[data-p]",svg).forEach(x=>x.style.filter="");$$('[data-p="'+t.dataset.p+'"]',svg).forEach(x=>x.style.filter="drop-shadow(0 0 4px #1e5a7a) brightness(1.15)");note.innerHTML="<b>"+p[0]+":</b> "+p[1]})}
+const C="style=\"cursor:pointer\"";
+const ANIMAL='<ellipse data-p="cyt" cx="170" cy="120" rx="150" ry="100" fill="#fbe3d8" '+C+'/>'+
+  '<path data-p="er" d="M120 70 q20 -14 40 0 t40 0 M118 152 q20 14 40 0 t40 0" stroke="#d98a9a" stroke-width="5" fill="none" '+C+'/>'+
+  '<circle data-p="nuc" cx="170" cy="110" r="36" fill="#8a6bc8" '+C+'/><path data-p="chr" d="M152 102 q6 -10 12 0 t12 0 M158 120 q6 -8 12 0 t12 0" stroke="#f2e26a" stroke-width="4" fill="none" '+C+'/>'+
+  [[70,95,20],[255,165,-15],[110,180,10]].map(p=>'<g data-p="mit" '+C+' transform="translate('+p[0]+' '+p[1]+') rotate('+p[2]+')"><ellipse rx="26" ry="11" fill="#e9824a"/><path d="M-18 0 q4 -8 8 0 t8 0 t8 0 t8 0" stroke="#ffd8b0" stroke-width="2.5" fill="none"/></g>').join("")+
+  '<circle data-p="vac" cx="250" cy="72" r="14" fill="#b9a6ef" '+C+'/><circle data-p="vac" cx="60" cy="148" r="10" fill="#b9a6ef" '+C+'/>'+
+  '<g data-p="gol" '+C+'><path d="M222 110 q22 -8 44 0 M222 120 q22 -8 44 0 M222 130 q22 -8 44 0" stroke="#e0a030" stroke-width="5" fill="none"/></g>'+
+  '<circle data-p="lys" cx="210" cy="190" r="7" fill="#7aa84a" '+C+'/><circle data-p="lys" cx="95" cy="60" r="7" fill="#7aa84a" '+C+'/>'+
+  [[140,60],[200,62],[130,165],[215,158],[90,125],[255,110]].map(p=>'<circle data-p="rib" cx="'+p[0]+'" cy="'+p[1]+'" r="3.2" fill="#555" '+C+'/>').join("")+
+  '<ellipse data-p="mem" cx="170" cy="120" rx="150" ry="100" fill="none" stroke="#d98a9a" stroke-width="9" '+C+'/>';
+const PLANT='<rect data-p="wall" x="10" y="12" width="320" height="216" rx="16" fill="#cfe6b0" stroke="#3e8a3a" stroke-width="12" '+C+'/>'+
+  '<rect data-p="cyt" x="26" y="28" width="288" height="184" rx="12" fill="#f0f6dc" '+C+'/>'+
+  '<rect data-p="mem" x="26" y="28" width="288" height="184" rx="12" fill="none" stroke="#c8a040" stroke-width="5" '+C+'/>'+
+  '<rect data-p="vacP" x="130" y="58" width="160" height="124" rx="44" fill="#9fd0f0" '+C+'/>'+
+  '<circle data-p="nuc" cx="78" cy="78" r="26" fill="#8a6bc8" '+C+'/><path data-p="chr" d="M66 74 q5 -8 10 0 t10 0" stroke="#f2e26a" stroke-width="3.5" fill="none" '+C+'/>'+
+  [[60,140],[100,190],[300,200],[180,40],[300,48],[60,195]].map((p,i)=>'<g data-p="chl" '+C+' transform="translate('+p[0]+' '+p[1]+') rotate('+(i*30)+')"><ellipse rx="17" ry="8" fill="#2f8a2f"/><path d="M-10 0 h20 M-10 -3 h20 M-10 3 h20" stroke="#8ad870" stroke-width="1.2"/></g>').join("")+
+  [[110,120],[250,205]].map(p=>'<g data-p="mit" '+C+' transform="translate('+p[0]+' '+p[1]+')"><ellipse rx="18" ry="8" fill="#e9824a"/></g>').join("")+
+  '<path data-p="er" d="M108 70 q10 -10 20 0 t20 0" stroke="#d98a9a" stroke-width="4" fill="none" '+C+'/><g data-p="gol" '+C+'><path d="M46 110 q16 -6 32 0 M46 118 q16 -6 32 0" stroke="#e0a030" stroke-width="4" fill="none"/></g>';
+hotspot($("#animSvg"),$("#animNote"),ANIMAL);
+hotspot($("#plantSvg"),$("#plantNote"),PLANT);
+sortAct($("#a-venn"),{key:"f-venn",bins:[{id:"p",label:"النباتية فقط"},{id:"b",label:"الخليتان كلتاهما"},{id:"a",label:"الحيوانية"}],items:[
+  {t:"الجدار الخلوي",b:"p"},{t:"البلاستيدات الخضراء",b:"p"},{t:"الكلوروفيل",b:"p"},{t:"فجوة كبيرة",b:"p"},{t:"فجوات صغيرة",b:"a"},
+  {t:"النواة",b:"b"},{t:"الغشاء البلازمي",b:"b"},{t:"السيتوبلازم",b:"b"},{t:"الميتوكندريا",b:"b"},{t:"الكروموسومات",b:"b"}]});
+quiz($("#q-cell"),[
+  {q:"مركز التحكم في الخلية:",o:["الفجوة","النواة","السيتوبلازم","الجدار الخلوي"],a:1},
+  {q:"تتم فيها عملية التنفس الهوائي، وهي مصدر طاقة الخلية:",o:["الميتوكندريا","الفجوة","الكروموسومات","الغشاء البلازمي"],a:0},
+  {q:"يحيط بالخلية ويسمح بدخول المواد وخروجها:",o:["الجدار الخلوي","البلاستيدات الخضراء","الغشاء البلازمي","النواة"],a:2}
+],{key:"f-cell"});
+
+/* ---------- diffusion ---------- */
+(function(){
+  const svg=$("#diffSvg");let P=[],raf=0,t0=0,done=false;
+  function init(){cancelAnimationFrame(raf);P=[];for(let i=0;i<40;i++)P.push({x:185+Math.random()*135,y:30+Math.random()*135,vx:(Math.random()-.5)*2.4,vy:(Math.random()-.5)*2.4});done=false;draw();$("#diffNote").textContent="قبل: الأكسجين كله خارج الخلية (التركيز مرتفع هناك)."}
+  function draw(){const L=P.filter(p=>p.x<170).length,R=P.length-L;
+    let s='<rect x="10" y="22" width="160" height="150" rx="40" fill="#f6e7b0" stroke="#d9a640" stroke-width="3"></rect><rect x="170" y="22" width="160" height="150" rx="10" fill="#eef5f9"></rect>';
+    s+='<text x="90" y="15" text-anchor="middle" font-size="12" fill="#8a5a10" font-family="Noto Kufi Arabic,Tahoma,sans-serif">داخل الخلية: '+ar(L)+'</text><text x="250" y="15" text-anchor="middle" font-size="12" fill="#1e5a7a" font-family="Noto Kufi Arabic,Tahoma,sans-serif">خارج الخلية: '+ar(R)+'</text>';
+    P.forEach(p=>{s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4" fill="#3a8fd0"></circle>'});svg.innerHTML=s;return [L,R]}
+  function step(now){P.forEach(p=>{p.vx=Math.max(-2.2,Math.min(2.2,p.vx+(Math.random()-.5)*.7));p.vy=Math.max(-2.2,Math.min(2.2,p.vy+(Math.random()-.5)*.7));p.x+=p.vx;p.y+=p.vy;if(p.x<16){p.x=16;p.vx*=-1}if(p.x>324){p.x=324;p.vx*=-1}if(p.y<28){p.y=28;p.vy*=-1}if(p.y>166){p.y=166;p.vy*=-1}});
+    const c=draw();if(!done&&now-t0>1500&&Math.abs(c[0]-c[1])<=4){done=true;$("#diffNote").textContent="بعد: تساوى التركيز على جانبي الغشاء، فتوقف الانتشار وحدث الاتزان، دون أن تستخدم الخلية طاقة."}
+    else if(!done)$("#diffNote").textContent="ينتشر الأكسجين من التركيز المرتفع (خارج الخلية) إلى التركيز المنخفض (داخلها)…";
+    if(now-t0<16000)raf=requestAnimationFrame(step)}
+  $("#diffGo").addEventListener("click",()=>{init();t0=performance.now();raf=requestAnimationFrame(step)});$("#diffReset").addEventListener("click",init);init();
+})();
+
+/* ---------- osmosis / wilting ---------- */
+(function(){
+  const svg=$("#osmSvg"),note=$("#osmNote");
+  svg.innerHTML='<defs><marker id="oa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9z" fill="#2a8fd0"></path></marker></defs><rect width="340" height="200" rx="14" fill="#eef5f9"></rect>'+
+    '<g transform="translate(18 0)"><rect x="40" y="40" width="130" height="120" rx="12" fill="none" stroke="#3e8a3a" stroke-width="7"></rect><g id="oIn" style="transform-box:fill-box;transform-origin:50% 50%;transition:transform 1.2s"><rect x="48" y="48" width="114" height="104" rx="10" fill="#f6e7b0" stroke="#d9a640" stroke-width="3"></rect><ellipse cx="118" cy="100" rx="30" ry="26" fill="#8fc6ef"></ellipse><circle cx="72" cy="72" r="10" fill="#8b6fc8"></circle></g><g id="oArr"></g></g>'+
+    '<g id="oPlant" transform="translate(265 175)"><rect x="-22" y="-14" width="44" height="22" fill="#b5701a"></rect><g id="oStem" style="transition:transform 1.2s;transform-origin:0 -14px"><path d="M0 -14 V-110" stroke="#4d7a2f" stroke-width="5"></path><ellipse cx="-18" cy="-70" rx="18" ry="7" fill="#3e9a3e"></ellipse><ellipse cx="18" cy="-90" rx="18" ry="7" fill="#3e9a3e"></ellipse><ellipse cx="0" cy="-114" rx="12" ry="8" fill="#5aae4a"></ellipse></g></g>';
+  function arrows(both){let s='';[[105,40,105,14,1],[105,160,105,186,1],[40,100,14,100,0],[170,100,196,100,0]].forEach(p=>{const o=both?8:0,ox=p[4]?o:0,oy=p[4]?0:o;
+    s+='<line x1="'+(p[0]-ox)+'" y1="'+(p[1]-oy)+'" x2="'+(p[2]-ox)+'" y2="'+(p[3]-oy)+'" stroke="#2a8fd0" stroke-width="3" marker-end="url(#oa)"></line>';
+    if(both)s+='<line x1="'+(p[2]+ox)+'" y1="'+(p[3]+oy)+'" x2="'+(p[0]+ox)+'" y2="'+(p[1]+oy)+'" stroke="#2a8fd0" stroke-width="3" marker-end="url(#oa)"></line>'});$("#oArr").innerHTML=s}
+  function set(m){$$("[data-os]").forEach(b=>b.classList.toggle("primary",b.dataset.os===m));
+    if(m==="eq"){$("#oIn").style.transform="scale(1)";$("#oStem").style.transform="rotate(0)";arrows(true);note.textContent="يكون النبات سليمًا إذا كان في حالة اتزان؛ أي يدخل الماء إلى خلاياه ويخرج منها بكميات متساوية."}
+    else{$("#oIn").style.transform="scale(.72)";$("#oStem").style.transform="rotate(28deg)";arrows(false);note.textContent="إذا كان خروج الماء من الخلايا أكثر من دخوله إليها، تنكمش أجزاء الخلية الداخلية، وينكمش الغشاء البلازمي مبتعدًا عن الجدار الخلوي، فيذبل النبات."}}
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-os]");if(b)set(b.dataset.os)});set("eq");
+})();
+
+/* ---------- tea bag activity ---------- */
+(function(){
+  const svg=$("#teaSvg"),note=$("#teaNote");let t=0,raf=0,lifted=false;
+  function draw(k,lift){let s='<rect width="340" height="200" rx="14" fill="#f3efe6"></rect><path d="M110 40 L120 180 H220 L230 40" fill="none" stroke="#7a8a95" stroke-width="4"></path>';
+    s+='<path d="M114 60 L122 178 H218 L226 60Z" fill="#d6ecf6"></path>';
+    s+='<path d="M114 60 L122 178 H218 L226 60Z" fill="#a0622a" opacity="'+(0.7*k).toFixed(2)+'"></path>';
+    if(k<1)s+='<ellipse cx="170" cy="'+(lift?80:115)+'" rx="'+(30+50*k)+'" ry="'+(26+40*k)+'" fill="#8a4a1a" opacity="'+(0.45*(1-k)).toFixed(2)+'"></ellipse>';
+    const by=lift?16:96;s+='<line x1="170" y1="'+(by-4)+'" x2="'+(lift?170:236)+'" y2="'+(lift?0:30)+'" stroke="#888"></line><rect x="150" y="'+by+'" width="40" height="40" rx="4" fill="#f4ead8" stroke="#b8a070"></rect>';
+    for(let i=0;i<10;i++)s+='<circle cx="'+(156+(i*7)%30)+'" cy="'+(by+28+(i%3)*3)+'" r="2" fill="#c9a46a"></circle>';
+    if(lift)s+=T11(260,40,"الرمل بقي داخل الكيس","middle","#8a5a10");
+    svg.innerHTML=s}
+  draw(0,false);
+  $("#teaGo").addEventListener("click",()=>{cancelAnimationFrame(raf);const t0=performance.now();lifted=false;
+    (function tick(now){const u=Math.min(1,(now-t0)/4000);draw(u,false);note.textContent="الوقت: "+ar(Math.round(u*15))+" دقيقة";if(u<1)raf=requestAnimationFrame(tick);else note.textContent="مرت ١٥ دقيقة. ألاحظ لون الماء: هل توزع بالتساوي في الكأس؟"})(t0)});
+  $("#teaLift").addEventListener("click",()=>{cancelAnimationFrame(raf);draw(1,true);note.textContent="أدوّن البيانات: لا توجد أوراق شاي طافية في الماء، وعند فتح الكيس وُجد الرمل داخله."});
+  $("#teaReset").addEventListener("click",()=>{cancelAnimationFrame(raf);draw(0,false);note.textContent=""});
+})();
+quiz($("#q-tea"),[
+  {q:"ألاحظ: ما لون الماء بعد ١٥ دقيقة؟",o:["بقي شفافًا","صار بلون الشاي وتوزع اللون في الكأس","صار بلون الرمل","صار أخضر"],a:1},
+  {q:"أفسّر البيانات: ما الذي انتقل من كيس الشاي وإليه؟",o:["خرجت جزيئات الشاي ودخل الماء، وبقي الرمل في الكيس","خرج الرمل من الكيس","خرجت أوراق الشاي كلها","لم ينتقل شيء"],a:0}
+],{key:"f-tea"});
+quiz($("#q-passive"),[
+  {q:"حركة المواد عبر الأغشية دون أن تستخدم الخلية طاقة:",o:["النقل النشط","النقل السلبي","البلعمة","البناء الضوئي"],a:1},
+  {q:"الخاصية الأسموزية هي انتقال:",o:["الأكسجين","السكر","جزيئات الماء","ثاني أكسيد الكربون"],a:2},
+  {q:"يذبل النبات عندما:",o:["يفقد جزيئات ماء أكثر مما يحصل عليه","يكون في حالة اتزان","يحصل على ماء كافٍ","يصنع غذاءه"],a:0}
+],{key:"f-passive"});
+
+/* ---------- photosynthesis & respiration ---------- */
+sortAct($("#a-photoeq"),{key:"f-photo",bins:[{id:"r",label:"مواد متفاعلة"},{id:"p",label:"نواتج"},{id:"n",label:"ليس مادة، لكنه يتحكم في العملية"}],items:[
+  {t:"ثاني أكسيد الكربون",b:"r"},{t:"الماء",b:"r"},{t:"سكر الجلوكوز",b:"p"},{t:"الأكسجين",b:"p"},{t:"ضوء الشمس",b:"n"}]});
+sortAct($("#a-compare"),{key:"f-compare",bins:[{id:"p",label:"البناء الضوئي"},{id:"r",label:"عملية التنفس"}],items:[
+  {t:"يحدث فقط في الخلايا التي فيها بلاستيدات خضراء",b:"p"},{t:"يحتاج إلى الضوء",b:"p"},{t:"يخزّن الطاقة في صورة جلوكوز",b:"p"},{t:"ينتج الأكسجين",b:"p"},{t:"يستعمل الماء لإنتاج الغذاء",b:"p"},{t:"يستعمل ثاني أكسيد الكربون",b:"p"},
+  {t:"تحدث في معظم الخلايا",b:"r"},{t:"تحدث في الضوء أو في الظلام",b:"r"},{t:"تحرر الطاقة من الغذاء",b:"r"},{t:"تستهلك الأكسجين",b:"r"},{t:"ينتج عنها الماء",b:"r"},{t:"ينتج عنها ثاني أكسيد الكربون",b:"r"}]});
+quiz($("#q-resp"),[
+  {q:"التنفس الخلوي الذي يتطلب الأكسجين يسمى:",o:["التنفس اللاهوائي","التنفس الهوائي","التخمّر","البناء الضوئي"],a:1},
+  {q:"ينتج عن التنفس الخلوي فضلاتٍ تستخدمها النباتات مرة أخرى في البناء الضوئي، وهي:",o:["الماء وثاني أكسيد الكربون","الأكسجين والجلوكوز","حمض اللاكتيك","الكلوروفيل"],a:0},
+  {q:"أشهر عمليات التنفس اللاهوائي شيوعًا:",o:["البناء الضوئي","الانتشار","التخمّر","الخاصية الأسموزية"],a:2}
+],{key:"f-resp"});
+
+/* ---------- active transport ---------- */
+(function(){
+  const svg=$("#pumpSvg"),note=$("#pumpNote");let IN,OUT,E,busy=false;const rnd=(a,b)=>a+Math.random()*(b-a);
+  function reset(){IN=[];OUT=[];for(let i=0;i<14;i++)IN.push([rnd(20,150),rnd(62,170)]);for(let i=0;i<5;i++)OUT.push([rnd(190,320),rnd(62,170)]);E=5;busy=false;draw();note.textContent=""}
+  function draw(extra){let s='<rect x="8" y="38" width="160" height="142" rx="12" fill="#f3e1f2"></rect><rect x="172" y="38" width="160" height="142" rx="12" fill="#e6f0f7"></rect>';
+    s+='<text x="88" y="56" text-anchor="middle" font-size="11" fill="#6a2a6a" font-family="Noto Kufi Arabic,Tahoma,sans-serif">داخل الخلية العصبية: '+ar(IN.length)+'</text><text x="252" y="56" text-anchor="middle" font-size="11" fill="#1e5a7a" font-family="Noto Kufi Arabic,Tahoma,sans-serif">خارج الخلية: '+ar(OUT.length)+'</text>';
+    s+='<line x1="170" y1="38" x2="170" y2="180" stroke="#e08a3c" stroke-width="5"></line><rect x="161" y="92" width="18" height="40" rx="6" fill="#8b5fbf"></rect>';
+    s+='<text x="8" y="22" font-size="11" fill="#33443a" font-family="Noto Kufi Arabic,Tahoma,sans-serif">طاقة الخلية:</text>';for(let i=0;i<5;i++)s+='<rect x="'+(76+i*18)+'" y="12" width="14" height="12" rx="3" fill="'+(i<E?"#f2b632":"#d5ddcc")+'"></rect>';
+    IN.concat(OUT).forEach(p=>{s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="#9b59b6"></circle>'});
+    s+=T11(300,196,"● بوتاسيوم","middle","#6a2a6a");if(extra)s+=extra;svg.innerHTML=s}
+  $("#pumpDiff").addEventListener("click",()=>{note.textContent="لا يحدث: البوتاسيوم داخل الخلية أكثر منه خارجها، والانتشار لا ينقل المواد إلى منطقة التركيز المرتفع."});
+  $("#pumpGo").addEventListener("click",()=>{if(busy)return;if(!OUT.length){note.textContent="لم يبق بوتاسيوم خارج الخلية.";return}if(E<=0){note.textContent="نفدت الطاقة: لا يحدث النقل النشط دون طاقة.";return}
+    busy=true;const p=OUT.pop();E--;const t0=performance.now(),path=[[p[0],p[1]],[184,112],[156,112],[rnd(30,140),rnd(70,165)]];
+    (function anim(now){const u=Math.min(1,(now-t0)/1100),sg=Math.min(2,Math.floor(u*3)),f=u*3-sg,a=path[sg],b=path[sg+1],x=a[0]+(b[0]-a[0])*f,y=a[1]+(b[1]-a[1])*f;
+      draw('<circle cx="'+x+'" cy="'+y+'" r="6" fill="#9b59b6" stroke="#fff" stroke-width="2"></circle>'+(sg===1?'<circle cx="170" cy="112" r="16" fill="#ffe066" opacity=".7"></circle>':''));
+      if(u<1)requestAnimationFrame(anim);else{IN.push(path[3]);busy=false;draw();note.textContent="استهلكت الخلية طاقة لتضخ البوتاسيوم إلى داخلها، من التركيز المنخفض إلى التركيز المرتفع: هذا نقل نشط."}})(t0)});
+  $("#pumpReset").addEventListener("click",reset);reset();
+})();
+const MEMB='stroke="#e08a3c" stroke-width="6" fill="none" stroke-linecap="round"';
+stepper($("#amSteps"),[
+  {h:"الأميبا تقترب من الغذاء",svg:'<svg viewBox="0 0 300 130"><path d="M40 70 q20 -50 70 -40 q50 -20 70 20 q30 40 -10 60 q-40 20 -90 0 q-50 -10 -40 -40z" fill="#e8e2d0" stroke="#a89a70" stroke-width="3"/><circle cx="110" cy="70" r="10" fill="#8a6bc8"/><circle cx="240" cy="60" r="14" fill="#8a5a2b"/>'+T11(240,92,"غذاء")+'</svg>',t:"بعض المواد حجمها كبير جدًا، مثل البروتينات والبكتيريا، فلا تستطيع أن تمر خلال الغشاء البلازمي بالنقل النشط أو النقل السلبي."},
+  {h:"إحاطة الغذاء",svg:'<svg viewBox="0 0 300 130"><path d="M40 70 q20 -50 70 -40 q50 -20 80 0 q40 -10 60 20 q10 30 -30 40 q10 -30 -30 -30 q-30 0 -20 30 q-50 20 -90 0 q-50 -10 -40 -20z" fill="#e8e2d0" stroke="#a89a70" stroke-width="3"/><circle cx="110" cy="70" r="10" fill="#8a6bc8"/><circle cx="212" cy="72" r="14" fill="#8a5a2b"/></svg>',t:"تحيط الخلية بالمادة الكبيرة بغشائها البلازمي."},
+  {h:"ابتلاع الغذاء داخل جيب",svg:'<svg viewBox="0 0 300 130"><path d="M40 70 q20 -50 90 -40 q70 -10 90 30 q20 40 -30 50 q-60 20 -110 0 q-50 -10 -40 -40z" fill="#e8e2d0" stroke="#a89a70" stroke-width="3"/><circle cx="100" cy="70" r="10" fill="#8a6bc8"/><circle cx="190" cy="72" r="22" fill="none" stroke="#e08a3c" stroke-width="3"/><circle cx="190" cy="72" r="13" fill="#8a5a2b"/></svg>',t:"تتكوّن حول المادة جيب، وتسمى هذه العملية البلعمة، كما في طريقة ابتلاع الأميبا لغذائها، ومخلوقات حية أخرى وحيدة الخلية كذلك."}
+]);
+quiz($("#q-active"),[
+  {q:"انتقال المواد من منطقة التركيز المنخفض إلى المرتفع ويحتاج إلى طاقة:",o:["الانتشار","الخاصية الأسموزية","النقل النشط","الاتزان"],a:2},
+  {q:"تضخ الخلية العصبية البوتاسيوم إلى داخلها والصوديوم إلى خارجها عن طريق:",o:["النقل النشط","النقل السلبي","الانتشار","التخمّر"],a:0},
+  {q:"تبتلع الأميبا غذاءها بإحاطته بجيب من الغشاء البلازمي، وتسمى هذه العملية:",o:["الخاصية الأسموزية","البلعمة","التنفس","البناء الضوئي"],a:1}
+],{key:"f-active"});
+
+/* ---------- review ---------- */
+(function(){
+  const R=[
+    ["١. المفردات: العملية التي تسبب انتقال المواد من منطقة التركيز المنخفض إلى منطقة التركيز العالي، ولكي تحدث تحتاج إلى طاقة، تسمى ……","النقل النشط."],
+    ["٢. ألخّص: أصف كيف تقوم الخلايا النباتية بصنع الغذاء.","تلتقط البلاستيدات الخضراء بصبغة الكلوروفيل الطاقة الشمسية، فيستخدم النبات ثاني أكسيد الكربون والماء لإنتاج سكر الجلوكوز، ويخزن الجلوكوز، ويطرد الأكسجين إلى الغلاف الجوي. (البناء الضوئي)"],
+    ["٣. التفكير الناقد: لماذا يعاني شخص ما من ألم في عضلات الساق بعد أن يركض مدة طويلة؟","لأن الأكسجين لا يصل إلى جميع خلايا العضلات في أثناء التمرين المجهد، فتطلق الطاقة بالتخمّر، وينتج حمض اللاكتيك الذي يسبب ارتفاع تركيزه في العضلات الإحساس بالألم."],
+    ["٦. السؤال الأساسي: كيف تقوم الخلايا بالعمليات الحيوية؟","تعمل أجزاء الخلية معًا بوصفها وحدة واحدة: تتحكم النواة في أنشطتها، وتدخل المواد وتخرج عبر الغشاء البلازمي بالنقل السلبي (الانتشار والخاصية الأسموزية) أو بالنقل النشط، وتصنع الخلايا النباتية الغذاء بالبناء الضوئي في البلاستيدات الخضراء، وتطلق الخلايا الطاقة من الجلوكوز بالتنفس الخلوي في الميتوكندريا."]
+  ];
+  $("#r-self").innerHTML=R.map((r,i)=>'<div class="reveal"><p>'+r[0]+'</p><textarea data-save="self'+i+'" placeholder="اكتب إجابتك"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>'+r[1]+'</div></div>').join("");
+})();
+quiz($("#q-rev4"),[{q:"٤. عندما يكون تركيز المادة متساويًا على جانبي الغشاء البلازمي فإن المادة تكون في حالة:",o:["تخمّر","أسموزية","انتشار","اتزان"],a:3}],{key:"f-rev4"});
+quiz($("#q-rev5"),[{q:"٥. أي مما يلي يعدّ مركز الطاقة في الخلية؟",o:["الميتوكندريا","نظام النقل","جدار الخلية","الفجوات"],a:0}],{key:"f-rev5"});
+$("#labSvg").innerHTML='<ellipse cx="170" cy="100" rx="150" ry="88" fill="#fbe3d8" stroke="#d98a9a" stroke-width="8"/><circle cx="170" cy="95" r="30" fill="#8a6bc8"/><ellipse cx="80" cy="80" rx="24" ry="10" fill="#e9824a"/><circle cx="250" cy="60" r="13" fill="#b9a6ef"/>'+
+  '<line x1="170" y1="95" x2="170" y2="30" stroke="#333" stroke-width="1.5"/>'+NUM(170,24,"١")+'<line x1="80" y1="80" x2="40" y2="40" stroke="#333" stroke-width="1.5"/>'+NUM(36,34,"٢")+'<line x1="300" y1="130" x2="322" y2="170" stroke="#333" stroke-width="1.5"/>'+NUM(322,178,"٣")+'<line x1="120" y1="140" x2="100" y2="178" stroke="#333" stroke-width="1.5"/>'+NUM(96,184,"٤")+'<line x1="250" y1="60" x2="300" y2="24" stroke="#333" stroke-width="1.5"/>'+NUM(306,20,"٥");
+matchAct($("#a-label"),{key:"f-label",lt:"الرقم",rt:"اسم الجزء",pairs:[["الجزء ١","النواة"],["الجزء ٢","الميتوكندريا"],["الجزء ٣","الغشاء البلازمي"],["الجزء ٤","السيتوبلازم"],["الجزء ٥","الفجوة"]]});
+
+/* ---------- post-test ---------- */
+quiz($("#q-post"),[
+  {q:"يحيط بالخلية ويعطيها شكلها المميز ويسمح بدخول المواد وخروجها:",o:["الغشاء البلازمي","النواة","الفجوة","الميتوكندريا"],a:0},
+  {q:"مركز التحكم في الخلية الذي ينظم التفاعلات الكيميائية فيها:",o:["السيتوبلازم","النواة","الجدار الخلوي","الفجوة"],a:1},
+  {q:"أشرطة طويلة من الأحماض النووية في النواة تخزن المعلومات:",o:["الكروموسومات","البلاستيدات","الفجوات","الرايبوسومات"],a:0},
+  {q:"مصدر طاقة الخلية الذي تتم فيه عملية التنفس الهوائي:",o:["الفجوة","النواة","الميتوكندريا","الغشاء البلازمي"],a:2},
+  {q:"تراكيب تشبه الكيس تخزن الماء والغذاء وبعض الفضلات:",o:["الفجوات","الكروموسومات","البلاستيدات الخضراء","النواة"],a:0},
+  {q:"يوجد في الخلية النباتية ولا يوجد في الخلية الحيوانية:",o:["النواة","الغشاء البلازمي","الجدار الخلوي","السيتوبلازم"],a:2},
+  {q:"الصبغة الخضراء في البلاستيدات الخضراء تسمى:",o:["الكلوروفيل","الجلوكوز","السيتوبلازم","حمض اللاكتيك"],a:0},
+  {q:"الفجوات في الخلية النباتية:",o:["أصغر منها في الخلية الحيوانية","أكبر منها في الخلية الحيوانية","غير موجودة","مساوية لها دائمًا"],a:1},
+  {q:"وظيفة الجدار الخلوي:",o:["يصنع الغذاء","يدعم الخلية النباتية ويعطيها شكلها ويحميها","يطلق الطاقة","يخزن المعلومات الوراثية"],a:1},
+  {q:"حركة المواد عبر الأغشية دون أن تستخدم الخلية طاقة:",o:["النقل النشط","البلعمة","النقل السلبي","التخمّر"],a:2},
+  {q:"انتشار الماء فقط عبر الغشاء البلازمي يسمى:",o:["الخاصية الأسموزية","البناء الضوئي","النقل النشط","التنفس"],a:0},
+  {q:"تتوقف عمليتا الانتشار والخاصية الأسموزية عندما يتساوى التركيز على جانبي الغشاء، وتسمى هذه الحالة:",o:["الذبول","الاتزان","التخمّر","البلعمة"],a:1},
+  {q:"النقل الذي يحتاج إلى طاقة لنقل المواد من التركيز المنخفض إلى المرتفع:",o:["الانتشار","الخاصية الأسموزية","النقل النشط","الاتزان"],a:2},
+  {q:"تبتلع الأميبا غذاءها بعملية:",o:["البلعمة","الانتشار","البناء الضوئي","الخاصية الأسموزية"],a:0},
+  {q:"المواد المتفاعلة في عملية البناء الضوئي:",o:["الجلوكوز والأكسجين","ثاني أكسيد الكربون والماء","حمض اللاكتيك والماء","الأكسجين والماء"],a:1},
+  {q:"تتم عملية البناء الضوئي داخل:",o:["الميتوكندريا","النواة","البلاستيدات الخضراء","الفجوات"],a:2},
+  {q:"ينتج عن التنفس الهوائي:",o:["الماء وثاني أكسيد الكربون","الجلوكوز والأكسجين","الكلوروفيل","الضوء"],a:0},
+  {q:"في التمارين المجهدة ينتج عن التخمّر في العضلات:",o:["الأكسجين","الجلوكوز","حمض اللاكتيك","الكلوروفيل"],a:2}
+],{key:"post",instant:false});
+
+/* ---------- NAFES practice ---------- */
+quiz($("#q-nafes"),NAFES_Q.map(x=>({q:nq(x),o:x.o,a:x.a})),{key:"nafes",instant:false});
+
+/* ---------- results ---------- */
+const LABELS={"f-micro":"أستكشف: المجهر","f-cell":"أجزاء الخلية","f-venn":"المقارنة بين الخليتين","f-passive":"النقل السلبي","f-tea":"نشاط كيس الشاي","f-photo":"المواد اللازمة للبناء الضوئي","f-compare":"البناء الضوئي والتنفس","f-resp":"التنفس والتخمّر","f-active":"النقل النشط","f-rev4":"مراجعة: س٤","f-rev5":"مراجعة: س٥","f-cmap1":"خريطة المفاهيم","f-label":"العلوم والفن: أجزاء الخلية","nafes":"تدرّب على نافس"};
+function renderResults(){
+  const s=store.get("scores",{});const pct=k=>s[k]?Math.round(s[k].got/s[k].total*100):null;
+  const pre=pct("pre"),post=pct("post");
+  const bar=(lb,p,c)=>'<div class="res-bar"><div class="lb"><span>'+lb+'</span><b>'+(p==null?"لم يُنجز بعد":ar(p)+"٪")+'</b></div><div class="tr"><i style="width:'+(p||0)+'%;background:'+c+'"></i></div></div>';
+  let top='<h3 style="margin:0 0 10px">مقارنة التقويم القبلي بالختامي</h3><div class="res-bars">'+bar("التقويم القبلي",pre,"var(--water)")+bar("التقويم الختامي",post,"var(--spore)")+'</div>';
+  if(pre!=null&&post!=null){const d=post-pre;top+='<p style="margin-top:12px">'+(d>0?"تقدّمت بمقدار "+ar(d)+" نقطة مئوية. "+praise(post):d===0?"نتيجتك ثابتة. راجع الأجزاء التي أخطأت فيها ثم أعد التقويم الختامي.":"راجع الدرس ثم أعد التقويم الختامي.")+'</p>'}
+  else top+='<p class="hint" style="margin-top:12px">أكمل التقويمين لتظهر المقارنة.</p>';
+  $("#resTop").innerHTML=top;
+  $("#resList").innerHTML=Object.keys(LABELS).map(k=>'<li><span>'+LABELS[k]+'</span><b>'+(s[k]?ar(s[k].got)+" / "+ar(s[k].total):"—")+'</b></li>').join("");
+}
+$("#resetAll").addEventListener("click",()=>{if(confirm("سيُمسح تقدّمك وإجاباتك المكتوبة. هل تريد المتابعة؟")){store.clear();location.hash="#cover";location.reload()}});
+
+/* ---------- navigation ---------- */
+const pages=$$(".page"),names=pages.map(p=>p.dataset.page);
+function buildToc(){
+  const seen=store.get("seen",[]),cur=currentName();
+  $("#toc").innerHTML=pages.map((p,i)=>'<li class="'+(seen.indexOf(p.dataset.page)>=0?"seen":"")+'"><button data-go="'+p.dataset.page+'" class="'+(p.dataset.page===cur?"cur":"")+'"><span class="n">'+ar(i+1)+'</span><span>'+p.dataset.title+'</span></button></li>').join("");
+}
+function currentName(){const h=location.hash.replace("#","");return names.indexOf(h)>=0?h:"cover"}
+let curIdx=-1,curSpread=-1,busy=false;
+const reduceMotion=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TURN=850;
+pages.forEach((p,i)=>{if(i===0)return;p.insertAdjacentHTML("afterbegin",'<div class="runhead"><span>العلوم · الصف السادس الابتدائي</span><span>الدرس الثاني: الخلية النباتية والخلية الحيوانية</span></div>');p.insertAdjacentHTML("beforeend",'<div class="folio"><span>'+ar(i)+'</span></div>')});
+let snd=store.get("snd",true),actx=null;
+const SPK='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/>';
+function paintSnd(){const b=$("#sndBtn");b.setAttribute("aria-pressed",snd);b.innerHTML=SPK+(snd?'<path d="M13 7.5q2 2.5 0 5M15 5.5q4 4.5 0 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>':'<path d="M13 7l5 6M18 7l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>')+'</svg>'}
+$("#sndBtn").addEventListener("click",()=>{snd=!snd;store.set("snd",snd);paintSnd()});paintSnd();
+function sfx(){if(!snd)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const d=.38,r=actx.sampleRate,buf=actx.createBuffer(1,Math.floor(r*d),r),c=buf.getChannelData(0);
+  for(let k=0;k<c.length;k++){const t=k/c.length;c[k]=(Math.random()*2-1)*Math.pow(1-t,2.2)*Math.min(1,t*8)}
+  const src=actx.createBufferSource();src.buffer=buf;const f=actx.createBiquadFilter();f.type="bandpass";f.frequency.value=2200;f.Q.value=.6;const g=actx.createGain();g.gain.value=.28;
+  src.connect(f);f.connect(g);g.connect(actx.destination);src.start()}catch(e){}}
+const mqSpread=window.matchMedia("(min-width: 1000px) and (min-height: 560px)");
+let spread=mqSpread.matches;
+const SPREADS=[{l:0,r:null}];for(let k=1;k<pages.length;k+=2)SPREADS.push({r:k,l:k+1<pages.length?k+1:null});
+const spreadOf=i=>i===0?0:Math.floor((i+1)/2);
+const bookBox=$("#book");
+const setCls=(i,c)=>{if(i!=null)pages[i].className="page "+c};
+function bookState(sp){bookBox.classList.toggle("spread",spread);bookBox.classList.toggle("closed",spread&&sp===0);bookBox.classList.toggle("endonly",spread&&sp>0&&SPREADS[sp].l==null)}
+function renderStatic(){pages.forEach(p=>p.className="page");if(spread){const S=SPREADS[curSpread];setCls(S.r,"on pos-r");setCls(S.l,"on pos-l")}else pages[curIdx].classList.add("on");bookState(curSpread)}
+function turnSingle(op,np,fwd){
+  busy=true;const leaf=$("#leaf"),shade=$("#shade"),ez=" var(--turn) cubic-bezier(.55,.05,.35,1) forwards";sfx();
+  pages.forEach(p=>{if(p!==op&&p!==np)p.className="page"});
+  if(fwd){op.className="page turn-fwd";np.className="page under";leaf.style.animation="leafFwd"+ez}
+  else{op.className="page under";np.className="page turn-back";leaf.style.animation="leafBack"+ez}
+  leaf.style.display="block";shade.style.display="block";shade.style.animation="shade var(--turn) ease forwards";
+  setTimeout(()=>{renderStatic();leaf.style.display="none";leaf.style.animation="";shade.style.display="none";shade.style.animation="";busy=false},TURN+40);
+}
+function turnSpread(a,b){
+  const A=SPREADS[a],B=SPREADS[b],fwd=b>a;busy=true;sfx();
+  pages.forEach(p=>p.className="page");
+  [B.r,B.l].forEach(i=>{if(i!=null)pages[i].scrollTop=0});
+  if(fwd){setCls(A.r,"pos-r under");setCls(B.l,"pos-l under");setCls(A.l,"pos-l flipL-out");setCls(B.r,"pos-r flipR-in")}
+  else{setCls(A.l,"pos-l under");setCls(B.r,"pos-r under");setCls(A.r,"pos-r flipR-out");setCls(B.l,"pos-l flipL-in")}
+  bookState(b);
+  setTimeout(()=>{renderStatic();busy=false},TURN+40);
+}
+function show(){
+  const i=names.indexOf(currentName());
+  if(spread){const sp=spreadOf(i),prev=curSpread;curIdx=i;if(sp!==prev){curSpread=sp;if(prev<0||reduceMotion||busy)renderStatic();else turnSpread(prev,sp)}}
+  else if(i!==curIdx){const prev=curIdx;curIdx=i;curSpread=spreadOf(i);pages[i].scrollTop=0;if(prev<0||reduceMotion||busy)renderStatic();else turnSingle(pages[prev],pages[i],i>prev)}
+  chrome();
+}
+function visibleIdx(){if(!spread)return [curIdx];const S=SPREADS[curSpread];return [S.r,S.l].filter(x=>x!=null)}
+function target(dd){if(spread){const k=curSpread+dd;if(k<0||k>=SPREADS.length)return null;const S=SPREADS[k];return S.r!=null?S.r:S.l}const i=curIdx+dd;return i>=0&&i<pages.length?i:null}
+function chrome(){
+  const vis=visibleIdx(),first=Math.min.apply(null,vis),last=Math.max.apply(null,vis);
+  $("#topTitle").textContent=vis.map(k=>pages[k].dataset.title).join("  ·  ");
+  $("#topCount").textContent=(first===last?ar(first+1):ar(first+1)+"–"+ar(last+1))+" / "+ar(pages.length);
+  const seen=store.get("seen",[]);vis.forEach(k=>{if(seen.indexOf(names[k])<0)seen.push(names[k])});store.set("seen",seen);
+  $("#progBar").style.width=Math.round(seen.length/pages.length*100)+"%";
+  const pp=target(-1),nn=target(1),pv=$("#prevBtn"),nx=$("#nextBtn");
+  pv.disabled=pp==null;pv.textContent=pp==null?"السابق":"‹ "+pages[pp].dataset.title;
+  nx.disabled=nn==null;nx.textContent=nn==null?"نهاية الدرس":pages[nn].dataset.title+" ›";
+  $("#corner").hidden=nn==null;$("#cornerBack").hidden=pp==null;
+  buildToc();if(vis.some(k=>names[k]==="results"))renderResults();
+}
+function onMQ(){spread=mqSpread.matches;if(curIdx<0)return;curSpread=spreadOf(curIdx);renderStatic();chrome()}
+if(mqSpread.addEventListener)mqSpread.addEventListener("change",onMQ);else if(mqSpread.addListener)mqSpread.addListener(onMQ);
+function go(n){closeDrawer();if(location.hash==="#"+n)show();else location.hash=n}
+$("#prevBtn").addEventListener("click",()=>step(-1));
+$("#nextBtn").addEventListener("click",()=>step(1));
+function openDrawer(){$("#drawer").classList.add("open");$("#drawer").setAttribute("aria-hidden","false")}
+function closeDrawer(){$("#drawer").classList.remove("open");$("#drawer").setAttribute("aria-hidden","true")}
+$("#menuBtn").addEventListener("click",openDrawer);
+const step=dd=>{if(!$("#ar").hidden)return;const k=target(dd);if(k!=null)go(names[k])};
+$("#cornerBack").addEventListener("click",()=>step(-1));
+$("#corner").addEventListener("click",()=>step(1));
+let sx=null,sy=null;const bookEl=$("#book");
+bookEl.addEventListener("touchstart",e=>{if(e.target.closest("input,textarea")){sx=null;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
+bookEl.addEventListener("touchend",e=>{if(sx==null)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6)step(dx>0?1:-1)},{passive:true});
+document.addEventListener("keydown",e=>{if(e.target.closest("input,textarea"))return;if(e.key==="ArrowLeft")step(1);if(e.key==="ArrowRight")step(-1)});$("#drawerBg").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+window.addEventListener("hashchange",show);
+
+/* ================= AR viewer ================= */
+(function(){
+const arEl=$("#ar"),cv=$("#arCanvas"),video=$("#arVideo"),NEON=0x7dffb0;
+let R=null,scene,cam,clock,raf=0,content=null,bookG,shadowPlane,ring,sweep,beam,api=null,H,tmpV;
+let t=0,playing=true,phase="scan",pt=0,theta=.5,phi=1.05,rad=13,baseRad=13,lastInput=0,stream=null,camMode=false,lblEls=[],capLast=-1;
+let mk={x:.5,y:.5,s:.25,ok:false,last:-9999},tcv=null,tcx=null,ray=null,gp=null,hit=null,trTick=0;
+function arTrack(){
+  const now=performance.now();
+  if((trTick++&1)===0&&video.readyState>=2){
+    if(!tcv){tcv=document.createElement("canvas");tcv.width=160;tcv.height=120;tcx=tcv.getContext("2d",{willReadFrequently:true});ray=new THREE.Raycaster();gp=new THREE.Plane(new THREE.Vector3(0,1,0),0);hit=new THREE.Vector3()}
+    tcx.drawImage(video,0,0,160,120);const d=tcx.getImageData(0,0,160,120).data;let n=0,sx=0,sy=0;
+    for(let i=0,q=0;i<d.length;i+=4,q++){const r=d[i],g=d[i+1],b=d[i+2];if(r>130&&b>90&&g<Math.min(r,b)*.62&&r-g>60&&b-g>40){n++;sx+=q%160;sy+=(q/160)|0}}
+    if(n>35){const vx=sx/n/160,vy=sy/n/120,sq=Math.sqrt(n/19200),W=window.innerWidth,Hh=window.innerHeight,vw=video.videoWidth||640,vh=video.videoHeight||480,sc=Math.max(W/vw,Hh/vh),ox=(W-vw*sc)/2,oy=(Hh-vh*sc)/2;
+      const X=(ox+vx*vw*sc)/W,Y=(oy+vy*vh*sc)/Hh,S=sq*vw*sc/W,k=mk.ok?.35:1;mk.x+=(X-mk.x)*k;mk.y+=(Y-mk.y)*k;mk.s+=(S-mk.s)*k;mk.ok=true;mk.last=now}
+  }
+  if(now-mk.last>700)mk.ok=false;
+  $("#arMk").hidden=mk.ok||phase==="scan";
+  content.visible=mk.ok;ring.visible=mk.ok;
+  if(mk.ok&&ray){ray.setFromCamera({x:mk.x*2-1,y:-(mk.y*2-1)},cam);if(ray.ray.intersectPlane(gp,hit)){content.position.lerp(hit,.5);ring.position.set(content.position.x,.02,content.position.z);shadowPlane.position.set(content.position.x,0,content.position.z)}
+    const m=Math.min(2.2,Math.max(.3,mk.s/.25*.7));content.scale.multiplyScalar(m);ring.scale.setScalar(m)}
+  content.rotation.y=theta-.5;
+}
+const ptrs=new Map();
+const clamp01=x=>x<0?0:x>1?1:x,seg=(x,a,b)=>clamp01((x-a)/(b-a)),ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2,lerp=(a,b,x)=>a+(b-a)*x;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function toast(m){const e=$("#arToast");e.textContent=m;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>{e.hidden=true},6000)}
+
+function helpers(){
+  const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+  const M=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.7},o||{}));
+  const mesh=(geo,mat,x,y,z,sh)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);if(sh!==false){m.castShadow=true;m.receiveShadow=true}return m};
+  const canvasTex=(w,h)=>{const c=document.createElement("canvas");c.width=w;c.height=h;return {ctx:c.getContext("2d"),tex:new THREE.CanvasTexture(c),v:null}};
+  const bump=(geo,amp,f)=>{f=f||1;const p=geo.attributes.position,v=new THREE.Vector3();for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);const n=Math.sin(v.x*7*f+1.3)*Math.sin(v.y*9*f+.7)*Math.sin(v.z*8*f+2.1)+.5*Math.sin(v.x*17*f)*Math.sin(v.z*15*f);const l=Math.max(v.length(),.001);v.multiplyScalar(1+amp*n/l);p.setXYZ(i,v.x,v.y,v.z)}geo.computeVertexNormals();return geo};
+  const leafGeo=new THREE.SphereGeometry(1,8,6);
+  function fern(sc,col,n){
+    const G=new THREE.Group(),lm=M(col||0x3e8a45,{roughness:.85}),sm=M(0x4d6b2f);n=n||6;
+    for(let f=0;f<n;f++){
+      const a=f/n*Math.PI*2+.3,lean=.75+((f*7)%5)/10,pts=[];
+      for(let k=0;k<=10;k++){const u=k/10;pts.push(V(Math.cos(a)*u*1.5*sc*lean,sc*(1.5*Math.sin(u*Math.PI*.8)-.35*u),Math.sin(a)*u*1.5*sc*lean))}
+      const cu=new THREE.CatmullRomCurve3(pts);
+      G.add(mesh(new THREE.TubeGeometry(cu,16,.02*sc+.008,5,false),sm));
+      for(let k=1;k<=11;k++){const u=k/12,p=cu.getPoint(u),tg=cu.getTangent(u),side=new THREE.Vector3().crossVectors(tg,V(0,1,0)).normalize(),L=.32*sc*(1-u*.75)+.04;
+        [1,-1].forEach(sg=>{const m=mesh(leafGeo,lm);m.position.copy(p).addScaledVector(side,sg*L*.55);m.scale.set(.075*sc+.01,.018,L*.55);m.lookAt(m.position.clone().addScaledVector(side,sg));G.add(m)})}
+    }
+    return G;
+  }
+  function moss(n,r,h,col){
+    const G=new THREE.Group(),sm=M(col||0x4f8f36,{roughness:.9}),stG=new THREE.CylinderGeometry(.018,.025,1,5),tipG=new THREE.ConeGeometry(.06,.14,6);
+    for(let i=0;i<n;i++){const a=i*2.4,rr=r*Math.sqrt((i+.5)/n),x=Math.cos(a)*rr,z=Math.sin(a)*rr,hh=h*(.75+((i*13)%7)/20);
+      const st=mesh(stG,sm,x,hh/2,z);st.scale.y=hh;G.add(st);G.add(mesh(tipG,sm,x,hh+.05,z))}
+    const cap=M(0xb07a2a);
+    [[.2,.1],[-.25,-.15]].forEach(q=>{G.add(mesh(new THREE.CylinderGeometry(.008,.008,h*1.3,4),cap,q[0],h*.9+h*.65,q[1]));G.add(mesh(new THREE.SphereGeometry(.05,8,6),cap,q[0],h*.9+h*1.32,q[1]))});
+    return G;
+  }
+  return {V,M,mesh,canvasTex,bump,fern,moss,seg,ease,lerp,back};
+}
+
+function bookTexture(title){
+  const W=2048,Hh=1340,c=document.createElement("canvas");c.width=W;c.height=Hh;const x=c.getContext("2d");
+  x.fillStyle="#f7f3e8";x.fillRect(0,0,W,Hh);
+  const g=x.createLinearGradient(W/2-110,0,W/2+110,0);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.5,"rgba(0,0,0,.25)");g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.fillRect(W/2-110,0,220,Hh);
+  const rr=(X,Y,w,h)=>{x.beginPath();x.moveTo(X+h/2,Y);x.lineTo(X+w-h/2,Y);x.arc(X+w-h/2,Y+h/2,h/2,-Math.PI/2,Math.PI/2);x.lineTo(X+h/2,Y+h);x.arc(X+h/2,Y+h/2,h/2,Math.PI/2,Math.PI*1.5);x.fill()};
+  x.fillStyle="#d8d2c2";
+  for(let i=0;i<19;i++){const w=i%6===5?420:780-((i*37)%90);rr(W/2-120-w,150+i*58,w,15)}
+  for(let i=0;i<3;i++){const w=780-((i*53)%120);rr(W-120-w,Hh-230+i*58,w,15)}
+  x.direction="rtl";x.textAlign="right";x.fillStyle="#2f5f3c";x.font='700 58px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillText(title,W-120,150);
+  x.font='400 30px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillStyle="#7a8a7f";x.fillText("العلوم · الصف السادس · الدرس الثاني",W-120,212);
+  const cx=W*.75,cy=Hh*.52,bw=640,bh=600,L=70;x.strokeStyle="#22a565";x.lineWidth=9;x.lineCap="round";
+  [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(q=>{const X=cx+q[0]*bw/2,Y=cy+q[1]*bh/2;x.beginPath();x.moveTo(X-q[0]*L,Y);x.lineTo(X,Y);x.lineTo(X,Y-q[1]*L);x.stroke()});
+  const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;tx.anisotropy=R.capabilities.getMaxAnisotropy();return tx;
+}
+
+function init(){
+  H=helpers();tmpV=new THREE.Vector3();
+  R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.outputEncoding=THREE.sRGBEncoding;R.setClearColor(0x000000,0);
+  scene=new THREE.Scene();cam=new THREE.PerspectiveCamera(38,1,.1,200);clock=new THREE.Clock();
+  scene.add(new THREE.HemisphereLight(0xf2fbff,0x40362a,.85));
+  const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(-6,11,7);dl.castShadow=true;dl.shadow.mapSize.set(2048,2048);
+  Object.assign(dl.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:1,far:40});dl.shadow.bias=-.0004;scene.add(dl);
+  bookG=new THREE.Group();bookG.position.x=-4.15;scene.add(bookG);
+  const cover=new THREE.Mesh(new THREE.BoxGeometry(17.4,.3,11.5),new THREE.MeshStandardMaterial({color:0x1d4530,roughness:.75}));cover.position.y=-.38;cover.receiveShadow=true;bookG.add(cover);
+  const block=new THREE.Mesh(new THREE.BoxGeometry(16.9,.24,11.1),new THREE.MeshStandardMaterial({color:0xeee8d8,roughness:.95}));block.position.y=-.12;block.receiveShadow=true;bookG.add(block);
+  const pg=new THREE.Mesh(new THREE.PlaneGeometry(16.8,11),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.95}));pg.rotation.x=-Math.PI/2;pg.position.y=.001;pg.receiveShadow=true;pg.name="page";bookG.add(pg);
+  shadowPlane=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.35}));shadowPlane.rotation.x=-Math.PI/2;shadowPlane.receiveShadow=true;shadowPlane.visible=false;scene.add(shadowPlane);
+  ring=new THREE.Mesh(new THREE.RingGeometry(2.9,3.05,72),new THREE.MeshBasicMaterial({color:NEON,transparent:true,opacity:.8,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.02;scene.add(ring);
+  sweep=new THREE.Mesh(new THREE.PlaneGeometry(8.3,.12),new THREE.MeshBasicMaterial({color:NEON,transparent:true,opacity:.9}));sweep.rotation.x=-Math.PI/2;sweep.position.y=.03;scene.add(sweep);
+  const bg=new THREE.BufferGeometry();bg.setAttribute("position",new THREE.BufferAttribute(new Float32Array(90*3),3));
+  beam=new THREE.Points(bg,new THREE.PointsMaterial({color:NEON,size:.09,transparent:true,opacity:0}));
+  beam.userData.seed=Array.from({length:90},()=>[Math.random()*Math.PI*2,2.4+Math.random()*.6,Math.random()]);scene.add(beam);
+  cv.addEventListener("pointerdown",e=>{ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});try{cv.setPointerCapture(e.pointerId)}catch(_){}lastInput=performance.now()});
+  cv.addEventListener("pointermove",e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);
+    if(ptrs.size===1){theta-=(e.clientX-p.x)*.006;phi=Math.min(1.38,Math.max(.3,phi-(e.clientY-p.y)*.005))}
+    else if(ptrs.size===2){let o=null;ptrs.forEach((v,k)=>{if(k!==e.pointerId)o=v});if(o){const d0=Math.hypot(p.x-o.x,p.y-o.y),d1=Math.hypot(e.clientX-o.x,e.clientY-o.y);rad=Math.min(28,Math.max(6,rad*d0/Math.max(1,d1)))}}
+    p.x=e.clientX;p.y=e.clientY;lastInput=performance.now()});
+  const up=e=>ptrs.delete(e.pointerId);cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);
+  cv.addEventListener("wheel",e=>{e.preventDefault();rad=Math.min(28,Math.max(6,rad*(1+e.deltaY*.001)));lastInput=performance.now()},{passive:false});
+  window.addEventListener("resize",()=>{if(!arEl.hidden)resize()});
+}
+function resize(){const w=window.innerWidth,h=window.innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();baseRad=w<h?20:13.5}
+function dispose(o){o.traverse(m=>{if(m.geometry)m.geometry.dispose();if(m.material)(Array.isArray(m.material)?m.material:[m.material]).forEach(mt=>{if(mt.map)mt.map.dispose();mt.dispose()})})}
+
+/* ---------- scenes ---------- */
+function MOL(H){
+  const atom=(c,r)=>new THREE.Mesh(new THREE.SphereGeometry(r,14,10),H.M(c,{roughness:.4}));
+  const grp=(list)=>{const G=new THREE.Group();list.forEach(a=>{const m=atom(a[0],a[1]);m.position.set(a[2],a[3],0);m.castShadow=true;G.add(m)});return G};
+  return {
+    CO2:()=>grp([[0x333333,.16,0,0],[0xe03b3b,.13,-.27,0],[0xe03b3b,.13,.27,0]]),
+    H2O:()=>grp([[0xe03b3b,.16,0,0],[0xffffff,.1,-.18,.14],[0xffffff,.1,.18,.14]]),
+    O2:()=>grp([[0xe03b3b,.14,-.12,0],[0xe03b3b,.14,.12,0]]),
+    SUG:()=>{const l=[];for(let i=0;i<6;i++)l.push([0xf4f4f4,.11,Math.cos(i/6*Math.PI*2)*.26,Math.sin(i/6*Math.PI*2)*.26]);return grp(l)},
+    HALF:(c)=>grp([[c||0xf4f4f4,.11,-.13,0],[c||0xf4f4f4,.11,.13,0],[c||0xf4f4f4,.11,0,.2]])
+  };
+}
+const SCENES={
+cell3d(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
+  const tm=(c,o)=>new THREE.MeshPhysicalMaterial({color:c,transparent:true,opacity:o,roughness:.4,depthWrite:false,side:THREE.DoubleSide});
+  const em=c=>M(c,{emissive:c,emissiveIntensity:0,roughness:.5});
+  const A=new THREE.Group();A.position.set(-2.3,1.7,0);g.add(A);
+  const aMemM=tm(0xf2a0a8,.3),aMem=mesh(new THREE.SphereGeometry(1.6,40,30),aMemM,0,0,0,false);aMem.scale.set(1,.72,.85);A.add(aMem);
+  const aCytM=tm(0xfff0a0,0),aCyt=mesh(new THREE.SphereGeometry(1.5,32,24),aCytM,0,0,0,false);aCyt.scale.set(1,.7,.83);A.add(aCyt);
+  const nucM=em(0x7a5bc8);A.add(mesh(new THREE.SphereGeometry(.45,24,18),nucM,0,.05,0));
+  const mitM=em(0xe9824a),vacAM=em(0xb9a6ef);
+  [[.9,.2,.3],[-.8,-.25,.4],[.4,-.45,-.5]].forEach(p=>{const m=mesh(new THREE.SphereGeometry(.22,16,12),mitM,p[0],p[1],p[2]);m.scale.set(1.6,.6,.6);m.rotation.z=p[0];A.add(m)});
+  [[-.7,.45,-.3],[.75,-.3,-.4]].forEach(p=>A.add(mesh(new THREE.SphereGeometry(.16,14,10),vacAM,p[0],p[1],p[2])));
+  const P=new THREE.Group();P.position.set(2.3,1.7,0);g.add(P);
+  const wallM=new THREE.MeshStandardMaterial({color:0x3e9a3e,transparent:true,opacity:.28,emissive:0x3e9a3e,emissiveIntensity:0,depthWrite:false});
+  P.add(mesh(new THREE.BoxGeometry(3,1.9,2),wallM,0,0,0,false));
+  const edge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(3,1.9,2)),new THREE.LineBasicMaterial({color:0x2f7a2f}));P.add(edge);
+  const pMemM=tm(0xe8d080,.18);P.add(mesh(new THREE.BoxGeometry(2.8,1.7,1.8),pMemM,0,0,0,false));
+  const pCytM=tm(0xfff0a0,0);P.add(mesh(new THREE.BoxGeometry(2.7,1.6,1.7),pCytM,0,0,0,false));
+  const vacM=new THREE.MeshPhysicalMaterial({color:0x8fc6ef,transparent:true,opacity:.6,emissive:0x2a6fd0,emissiveIntensity:0,depthWrite:false});
+  const vac=mesh(new THREE.SphereGeometry(.68,28,20),vacM,.35,0,0,false);vac.scale.set(1.35,1,1);P.add(vac);
+  P.add(mesh(new THREE.SphereGeometry(.3,20,16),nucM,-.95,.4,.3));
+  const chlM=em(0x2f8a2f);[[-1,-.5,.5],[-.5,.6,-.6],[1.1,.6,.5],[1.15,-.6,-.4],[-1.1,.1,-.6],[.3,-.65,.7]].forEach(p=>{const c=mesh(new THREE.SphereGeometry(.17,14,10),chlM,p[0],p[1],p[2]);c.scale.set(1.5,.7,.9);P.add(c)});
+  [[-.6,-.6,-.2],[.2,.65,.6]].forEach(p=>{const m=mesh(new THREE.SphereGeometry(.15,14,10),mitM,p[0],p[1],p[2]);m.scale.set(1.6,.6,.6);P.add(m)});
+  const pulse=(rt)=>.55+.45*Math.sin(rt*5);
+  return {title:"الخلية الحيوانية والخلية النباتية",dur:17,
+    steps:[[0,"تتكوّن كل خلية من أجزاء تعمل معًا بوصفها وحدة واحدة"],[2,"الغشاء البلازمي: يحيط بالخلية ويسمح بدخول المواد وخروجها"],[4,"النواة: مركز التحكم في الخلية"],[6,"السيتوبلازم: مادة تشبه الهلام فيها كمية كبيرة من الماء"],[8,"الميتوكندريا: مصدر طاقة الخلية"],[10,"الفجوات: تخزن الماء والغذاء وبعض الفضلات، وهي في الخلية النباتية أكبر"],[12,"الجدار الخلوي: في الخلية النباتية فقط؛ يدعمها ويعطيها شكلها ويحميها"],[14,"البلاستيدات الخضراء: في الخلية النباتية فقط؛ تصنع الغذاء بالكلوروفيل"]],
+    labels:[{pos:V(-2.3,3.1,0),show:()=>true,text:"خلية حيوانية"},{pos:V(2.3,3.3,0),show:()=>true,text:"خلية نباتية"},
+      {pos:V(-2.3,1.8,.6),show:x=>x>=4&&x<6,text:"النواة"},{pos:V(1.35,2.1,.5),show:x=>x>=4&&x<6,text:"النواة"},
+      {pos:V(-1.4,1.9,.4),show:x=>x>=8&&x<10,text:"ميتوكندريا"},{pos:V(2.7,1.8,0),show:x=>x>=10&&x<12,text:"فجوة كبيرة"},{pos:V(-1.6,2.2,-.3),show:x=>x>=10&&x<12,text:"فجوة صغيرة"},
+      {pos:V(3.8,2.6,1),show:x=>x>=12&&x<14,text:"الجدار الخلوي"},{pos:V(3.4,2.3,.5),show:x=>x>=14,text:"بلاستيدات خضراء"}],
+    update(x,rt){A.rotation.y=Math.sin(rt*.4)*.3;P.rotation.y=Math.sin(rt*.4+1)*.3;
+      const on=(a,b)=>x>=a&&x<b?pulse(rt):0;
+      aMemM.opacity=.3+.35*on(2,4);pMemM.opacity=.18+.4*on(2,4);
+      nucM.emissiveIntensity=.6*on(4,6);aCytM.opacity=.45*on(6,8);pCytM.opacity=.4*on(6,8);
+      mitM.emissiveIntensity=.7*on(8,10);vacAM.emissiveIntensity=.6*on(10,12);vacM.emissiveIntensity=.6*on(10,12);
+      wallM.emissiveIntensity=.8*on(12,14);wallM.opacity=.28+.3*on(12,14);chlM.emissiveIntensity=.8*(x>=14?pulse(rt):0)}};
+},
+wilt(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;const mol=MOL(H);
+  g.add(mesh(new THREE.CylinderGeometry(.75,.55,1,28),M(0xb5701a),-1.4,.5,0));g.add(mesh(new THREE.CylinderGeometry(.72,.72,.06,28),M(0x4a3020),-1.4,1,0));
+  const plant=new THREE.Group();plant.position.set(-1.4,1,0);g.add(plant);
+  const stem=new THREE.Group();plant.add(stem);stem.add(mesh(new THREE.CylinderGeometry(.06,.08,2.2,10),M(0x4d7a2f),0,1.1,0));
+  const leafM=M(0x3e9a3e,{roughness:.6}),leaves=[];
+  [[.9,-1],[1.4,1],[1.9,-1],[2.25,1]].forEach(l=>{const pv=new THREE.Group();pv.position.y=l[0];stem.add(pv);const lf=mesh(new THREE.SphereGeometry(1,20,12),leafM,l[1]*.45,0,0);lf.scale.set(.45,.06,.2);pv.add(lf);leaves.push([pv,l[1]])});
+  stem.add(mesh(new THREE.SphereGeometry(.18,14,10),M(0x5aae4a),0,2.3,0));
+  const bub=new THREE.Group();bub.position.set(2,3,0);g.add(bub);
+  bub.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.8,1.3,.3)),new THREE.LineBasicMaterial({color:0x2f7a2f})));
+  bub.add(mesh(new THREE.BoxGeometry(1.8,1.3,.28),new THREE.MeshStandardMaterial({color:0x3e9a3e,transparent:true,opacity:.25,depthWrite:false}),0,0,0,false));
+  const inner=mesh(new THREE.BoxGeometry(1.6,1.1,.3),M(0xf6e7b0),0,0,0,false);bub.add(inner);
+  const iv=mesh(new THREE.SphereGeometry(.35,20,14),M(0x8fc6ef),.25,0,.16,false);iv.scale.set(1.2,.9,.3);inner.add(iv);
+  const outM=[],inM=[];for(let i=0;i<6;i++){const a=mol.H2O();g.add(a);outM.push([a,i/6]);const b=mol.H2O();g.add(b);inM.push([b,i/6])}
+  const drops=[];for(let i=0;i<6;i++){const d=mesh(new THREE.SphereGeometry(.07,10,8),M(0x4fb0ff),0,0,0,false);g.add(d);drops.push([d,i/6])}
+  return {title:"لماذا يذبل النبات؟",dur:16,
+    steps:[[0,"نبات سليم في حالة اتزان: يدخل الماء إلى خلاياه ويخرج منها بكميات متساوية"],[2,"إذا خرجت جزيئات الماء من خلاياه أكثر مما دخل إليها…"],[4.5,"تنكمش أجزاء الخلية الداخلية، وينكمش الغشاء البلازمي مبتعدًا عن الجدار الخلوي"],[6.5,"فيذبل النبات"],[9,"عند سقي النبات تنتقل جزيئات الماء إلى خلاياه بالخاصية الأسموزية"],[12.5,"فيعود سليمًا عندما يتساوى دخول الماء وخروجه: الاتزان"]],
+    labels:[{pos:V(2,4,0),show:()=>true,text:"خلية من النبات"},{pos:V(-1.4,4,0),show:x=>x>=2&&x<9,text:"خروج الماء"},{pos:V(-1.4,3.9,0),show:x=>x>=9&&x<12.5,text:"دخول الماء"},{pos:V(-1.4,3.8,0),show:x=>x>=12.5,text:"اتزان"}],
+    update(x,rt){const w=seg(x,2,7)*(1-seg(x,9.5,12.5));
+      stem.rotation.z=-.35*w;leaves.forEach(l=>{l[0].rotation.z=l[1]*-.9*w});
+      const s=1-.3*w;inner.scale.set(s,s,1);
+      outM.forEach(q=>{const on=(x>=2&&x<7.5)||x>=12.5;q[0].visible=on;if(on){const u=(rt*.4+q[1])%1;q[0].position.set(-1.4+(q[1]-.5)*1.6,2.3+u*2,0)}});
+      inM.forEach(q=>{const on=(x>=10&&x<12.5)||x>=12.5;q[0].visible=on;if(on){const u=(rt*.4+q[1]+.5)%1;q[0].position.set(-1.4+(q[1]-.5)*.8,1+u*1.4,.4)}});
+      drops.forEach(q=>{const on=x>=9&&x<11.5;q[0].visible=on;if(on){const u=(rt*1.2+q[1])%1;q[0].position.set(-1.4+(q[1]-.5)*.8,3.6-u*2.5,0)}})}};
+},
+photo(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;const mol=MOL(H);
+  const leaf=mesh(new THREE.SphereGeometry(1,32,20),M(0x3e9a3e,{roughness:.6}),0,2.2,0);leaf.scale.set(2.3,.16,1.25);leaf.rotation.z=.2;g.add(leaf);
+  g.add(mesh(new THREE.CylinderGeometry(.08,.1,2.2,8),M(0x4d7a2f),.4,1.1,0));
+  const berry=mesh(new THREE.SphereGeometry(.45,20,16),M(0xd93a3a,{roughness:.45}),1.8,.6,.3);berry.scale.set(1,1.2,1);g.add(berry);
+  g.add(mesh(new THREE.CylinderGeometry(.04,.04,1.3,6),M(0x4d7a2f),1.2,1.3,.2));
+  const sun=mesh(new THREE.SphereGeometry(.7,24,18),new THREE.MeshBasicMaterial({color:0xffd23f}),-4,6.2,-1,false);g.add(sun);
+  const rayM=new THREE.MeshBasicMaterial({color:0xffc83d,transparent:true,opacity:0}),rays=[];
+  for(let i=0;i<3;i++){const a=V(-4,6.2,-1),b=V(-.8+i*.7,2.4,(i-1)*.4),len=a.distanceTo(b),r=mesh(new THREE.CylinderGeometry(.045,.045,len,6),rayM,0,0,0,false);r.position.copy(a).lerp(b,.5);r.lookAt(b);r.rotateX(Math.PI/2);g.add(r);rays.push(r)}
+  const chl=[];for(let i=0;i<5;i++){const c=mesh(new THREE.SphereGeometry(.16,12,10),M(0x1f7a2a,{emissive:0x7dff7d,emissiveIntensity:0}),-1.3+i*.65,2.42,(i%2-.5)*.5,false);c.scale.set(1.5,.6,1);g.add(c);chl.push(c)}
+  const co2=[],h2o=[],o2=[],sug=[];
+  for(let i=0;i<4;i++){const c=mol.CO2();g.add(c);co2.push(c);const w=mol.H2O();g.add(w);h2o.push(w);const o=mol.O2();g.add(o);o2.push(o)}
+  for(let i=0;i<3;i++){const s=mol.SUG();g.add(s);sug.push(s)}
+  return {title:"البناء الضوئي",dur:17,
+    steps:[[0,"النباتات تصنع غذاءها بالبناء الضوئي"],[2,"تتحكم الطاقة الشمسية في سير العملية كلها"],[4,"يدخل ثاني أكسيد الكربون من الهواء"],[6,"ويصعد الماء من التربة"],[8,"في البلاستيدات الخضراء يلتقط الكلوروفيل الطاقة الشمسية"],[10,"ويُطرد الأكسجين بوصفه فضلات إلى الغلاف الجوي"],[12,"ويُصنع سكر الجلوكوز ويُخزن داخل المخلوق الحي"]],
+    labels:[{pos:V(-4,7.3,-1),show:x=>x>=1,text:"طاقة الشمس"},{pos:V(-3.3,3.7,0),show:x=>x>=4&&x<8,text:"ثاني أكسيد الكربون"},{pos:V(.9,-.1,1.2),show:x=>x>=6&&x<9.5,text:"الماء"},{pos:V(0,3,1.2),show:x=>x>=8&&x<10.5,text:"كلوروفيل في البلاستيدات الخضراء"},{pos:V(3.2,5.3,0),show:x=>x>=10.5,text:"أكسجين"},{pos:V(1.8,1.6,.6),show:x=>x>=13,text:"سكر الجلوكوز"}],
+    update(x,rt){
+      rayM.opacity=x>=2?.55+.25*Math.sin(rt*4):0;
+      co2.forEach((c,i)=>{const u=ease(seg(x,4+i*.4,6+i*.4));c.visible=x>=4&&u<1;c.position.set(lerp(-4,-1+i*.5,u),lerp(3.2+i*.2,2.3,u),(i%2-.5)*.6);c.rotation.y=rt+i});
+      h2o.forEach((w,i)=>{const u=seg(x,6+i*.4,8+i*.4),up=ease(u);w.visible=x>=6&&u<1;w.position.set(lerp(.4,-.6+i*.5,Math.max(0,up*2-1)),lerp(-.1,2.3,Math.min(1,up*1.6)),.15)});
+      chl.forEach((c,i)=>{c.material.emissiveIntensity=x>=8?.35+.35*Math.sin(rt*5+i):0});
+      o2.forEach((o,i)=>{const u=ease(seg(x,10+i*.35,12+i*.35));o.visible=x>=10;o.position.set(lerp(-.4+i*.4,2.6+i*.3,u),lerp(2.4,5+i*.2,u),(i%2-.5)*.5);o.rotation.z=rt*2+i});
+      sug.forEach((s,i)=>{const a=seg(x,12+i*.5,12.8+i*.5),b=ease(seg(x,13+i*.5,15+i*.5));s.visible=x>=12;s.scale.setScalar(Math.max(.001,back(a)));
+        s.position.set(lerp(-.5+i*.5,1.8+(i-1)*.25,b),lerp(2.55,.6+(i-1)*.2,b),lerp(.2,.85,b));s.rotation.z=rt*.8});
+    }};
+},
+resp(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;const mol=MOL(H);
+  g.add(mesh(new THREE.SphereGeometry(2.6,40,30),new THREE.MeshPhysicalMaterial({color:0xf7c9a8,transparent:true,opacity:.26,depthWrite:false,side:THREE.DoubleSide}),0,2.6,0,false));
+  g.add(mesh(new THREE.SphereGeometry(.7,24,18),M(0x7a6bc8),-1.3,3.1,-.8));
+  const mitoM=M(0xe9824a,{emissive:0xff9a2a,emissiveIntensity:0}),mito=mesh(new THREE.SphereGeometry(.95,24,16),mitoM,1.1,2.3,0);mito.scale.set(1,.46,.5);g.add(mito);
+  const burst=mesh(new THREE.IcosahedronGeometry(.55,0),new THREE.MeshBasicMaterial({color:0xffe066,transparent:true,opacity:0}),1.1,3.3,0,false);g.add(burst);
+  const spk=mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshBasicMaterial({color:0xffe066,transparent:true,opacity:0}),-.5,2.4,1,false);g.add(spk);
+  const glu=mol.SUG(),glu2=mol.SUG();g.add(glu,glu2);
+  const o2=[];for(let i=0;i<3;i++){const o=mol.O2();g.add(o);o2.push(o)}
+  const h1=mol.HALF(),h2=mol.HALF(),f1=mol.HALF(),f2=mol.HALF();g.add(h1,h2,f1,f2);
+  const outs=[mol.CO2(),mol.CO2(),mol.H2O(),mol.H2O()];outs.forEach(o=>g.add(o));
+  const lac=new THREE.Color(0xff6fb1),wht=new THREE.Color(0xf4f4f4);
+  const tint=(G,c)=>G.children.forEach(m=>m.material.color.copy(c));
+  return {title:"التنفس الخلوي والتخمر",dur:18,
+    steps:[[0,"يدخل الغذاء (الجلوكوز) والأكسجين إلى الخلية"],[2.5,"تبدأ الخلية بتحليل سكر الجلوكوز لإطلاق الطاقة"],[4,"في الميتوكندريا تتم عملية التنفس الهوائي باستهلاك الأكسجين"],[6.5,"فتتحرر الطاقة التي تستعملها الخلية في نشاطاتها الحيوية"],[8,"وينتج ثاني أكسيد الكربون والماء بوصفهما فضلات"],[10.5,"في التمارين المجهدة لا يصل الأكسجين إلى جميع الخلايا، فتُطلق الطاقة بالتخمّر"],[12,"والتخمّر تنفس لاهوائي لا يستعمل الأكسجين"],[13.5,"وينتج حمض اللاكتيك الذي يسبب الإحساس بألم في العضلات أو الإعياء"]],
+    labels:[{pos:V(-3.8,3.4,0),show:x=>x<2.5,text:"جلوكوز"},{pos:V(-3.8,4.5,0),show:x=>x<2.5,text:"أكسجين"},{pos:V(-.6,1.1,1.5),show:x=>x>=2.5&&x<4,text:"السيتوبلازم"},{pos:V(1.1,2.9,.4),show:x=>x>=4&&x<10.5,text:"ميتوكندريا"},{pos:V(1.1,4.3,0),show:x=>x>=6.5&&x<8.5,text:"طاقة"},{pos:V(4.3,3.9,0),show:x=>x>=8.5&&x<10.5,text:"ثاني أكسيد الكربون والماء"},{pos:V(0,5.7,0),show:x=>x>=10.5,text:"الأكسجين غير كافٍ"},{pos:V(-.5,3.1,1.3),show:x=>x>=12.5&&x<14,text:"طاقة"},{pos:V(-.5,1.2,1.5),show:x=>x>=14,text:"حمض اللاكتيك"}],
+    update(x,rt){
+      const e1=ease(seg(x,0,2.5));glu.visible=x<2.6;glu.position.set(lerp(-4.6,-.5,e1),lerp(2.8,1.9,e1),lerp(0,1,e1));glu.rotation.z=rt;
+      o2.forEach((o,i)=>{const u=ease(seg(x,.3+i*.3,2.5+i*.3)),v=ease(seg(x,4,6));o.visible=x<6.4;o.position.set(lerp(lerp(-4.6,-1+i*.4,u),1.1,v),lerp(lerp(4+i*.3,3.2,u),2.3,v),lerp(0,.6,u)*(1-v));o.rotation.z=rt+i});
+      const sp1=seg(x,2.5,3.2),mv=ease(seg(x,4,6.2));[h1,h2].forEach((h,i)=>{h.visible=x>=2.5&&x<6.4;h.position.set(lerp(-.5+(i?.35:-.35)*sp1,1.1,mv),lerp(1.9,2.3,mv),lerp(1,0,mv));h.scale.setScalar(Math.max(.001,1-mv*.6))});
+      spk.material.opacity=(x>=2.6&&x<3.6?.8:0)+(x>=12.6&&x<14?.8:0);spk.scale.setScalar(1+.2*Math.sin(rt*10));
+      const bu=x>=6.5&&x<8.6?1:0;burst.material.opacity=bu*(.6+.3*Math.sin(rt*9));burst.scale.setScalar(1+.35*bu*Math.sin(rt*6));burst.rotation.y=rt;mitoM.emissiveIntensity=bu*(.4+.3*Math.sin(rt*8));
+      outs.forEach((o,i)=>{const u=ease(seg(x,8+i*.3,10+i*.3));o.visible=x>=8&&x<10.6+i*.3;o.position.set(lerp(1.1,4.4,u),lerp(2.3,3.1+i*.25,u),(i%2-.5)*.6);o.rotation.y=rt});
+      const e2=ease(seg(x,10.5,12));glu2.visible=x>=10.5&&x<12.6;glu2.position.set(lerp(-4.6,-.5,e2),lerp(2.8,1.9,e2),lerp(0,1,e2));glu2.rotation.z=rt;
+      const sp2=seg(x,12.5,13.3),lt=seg(x,13.5,15);[f1,f2].forEach((h,i)=>{h.visible=x>=12.5;h.position.set(-.5+(i?.45:-.45)*sp2,1.9+Math.sin(rt*2+i)*.05,1);tint(h,wht.clone().lerp(lac,lt))});
+    }};
+}
+};
+
+/* ---------- loop ---------- */
+function caption(){let k=-1;api.steps.forEach((st,i)=>{if(t>=st[0])k=i});if(k!==capLast){capLast=k;$("#arCap").textContent=k>=0?api.steps[k][1]:"";$$("#arTl i").forEach((d,i)=>d.classList.toggle("on",i<=k))}}
+function labels(){
+  if(phase==="scan"){lblEls.forEach(l=>{l.style.opacity=0});return}
+  const w=window.innerWidth,h=window.innerHeight,tt=Math.min(t,api.dur);
+  api.labels.forEach((L,i)=>{const el=lblEls[i],sh=L.show(tt);el.style.opacity=sh?1:0;if(!sh)return;
+    const txt=typeof L.text==="function"?L.text(tt):L.text;if(el.textContent!==txt)el.textContent=txt;
+    tmpV.copy(L.pos);content.localToWorld(tmpV);tmpV.project(cam);
+    el.style.left=((tmpV.x+1)/2*w)+"px";el.style.top=((1-tmpV.y)/2*h)+"px";el.style.visibility=tmpV.z<1?"visible":"hidden"});
+}
+function frame(){
+  raf=requestAnimationFrame(frame);
+  const dt=Math.min(.05,clock.getDelta());let camR=rad,camPhi=phi;
+  if(phase==="scan"){pt+=dt;const k=ease(seg(pt,0,2));camR=rad*(1.55-.55*k);camPhi=lerp(.45,phi,k);
+    ring.material.opacity=.45+.35*Math.sin(pt*8);ring.scale.setScalar(1+.06*Math.sin(pt*6));
+    sweep.visible=!camMode;sweep.position.z=lerp(-5.2,5.2,(pt*.9)%1);
+    if(pt>2.1){phase="pop";pt=0;$("#arScan").style.opacity=0;sweep.visible=false}}
+  else{pt+=dt;content.scale.setScalar(Math.max(.001,back(seg(pt,0,1.1))));
+    ring.material.opacity=lerp(.8,.22,seg(pt,0,1.2));ring.scale.setScalar(1);ring.rotation.z+=dt*.2;
+    const bp=beam.geometry.attributes.position,bk=seg(pt,0,1.6);beam.material.opacity=bk<1?(1-bk):0;
+    beam.userData.seed.forEach((sd,i)=>bp.setXYZ(i,Math.cos(sd[0])*sd[1],bk*4*(.5+sd[2]),Math.sin(sd[0])*sd[1]));bp.needsUpdate=true;
+    if(playing&&(!camMode||mk.ok))t+=dt;api.update(Math.min(t,api.dur),t);caption()}
+  if(camMode){cam.position.set(0,9,11);cam.lookAt(0,0,0);cam.updateMatrixWorld();arTrack()}
+  else{if(phase!=="scan"&&performance.now()-lastInput>3000&&ptrs.size===0)theta+=dt*.06;
+  cam.position.set(Math.sin(theta)*Math.sin(camPhi)*camR,1.2+Math.cos(camPhi)*camR,Math.cos(theta)*Math.sin(camPhi)*camR);cam.lookAt(0,1.2,0)}
+  labels();R.render(scene,cam);
+}
+function open(name){
+  arEl.hidden=false;requestAnimationFrame(()=>arEl.classList.add("on"));$("#arClose").focus();
+  if(typeof THREE==="undefined"){$("#arScan").style.opacity=0;$("#arCap").textContent="تعذّر تحميل محرك العرض المجسّم. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.";return}
+  try{
+    if(!R)init();
+    if(content){scene.remove(content);dispose(content)}
+    content=new THREE.Group();scene.add(content);api=SCENES[name](content,H);
+    const pg=bookG.getObjectByName("page");if(pg.material.map)pg.material.map.dispose();pg.material.map=bookTexture(api.title);pg.material.needsUpdate=true;
+    $("#arTitle").textContent=api.title;
+    $("#arLabels").innerHTML=api.labels.map(()=>'<div class="ar-lbl"></div>').join("");lblEls=$$(".ar-lbl",$("#arLabels"));
+    $("#arTl").innerHTML=api.steps.map(()=>"<i></i>").join("");capLast=-1;$("#arCap").textContent="";
+    t=0;playing=true;$("#arPlay").textContent="إيقاف مؤقت";phase="scan";pt=0;content.scale.setScalar(.001);$("#arScan").style.opacity=1;
+    resize();rad=baseRad;theta=.5;phi=1.05;lastInput=0;
+    clock.getDelta();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
+  }catch(err){$("#arScan").style.opacity=0;$("#arCap").textContent="لا يدعم هذا الجهاز العرض المجسّم (WebGL).";}
+}
+function camOff(){if(stream){stream.getTracks().forEach(k=>k.stop());stream=null}camMode=false;mk.ok=false;if(content){content.position.set(0,0,0);content.rotation.y=0;content.visible=true}if(ring){ring.position.set(0,.02,0);ring.visible=true}if(shadowPlane)shadowPlane.position.set(0,0,0);$("#arMk").hidden=true;arEl.classList.remove("cam");if(bookG){bookG.visible=true;shadowPlane.visible=false}$("#arCam").textContent="الكاميرا"}
+async function camOn(){
+  try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+    video.srcObject=stream;await video.play();camMode=true;arEl.classList.add("cam");if(bookG){bookG.visible=false;shadowPlane.visible=true}$("#arCam").textContent="إيقاف الكاميرا";
+  }catch(e){camOff();toast("لم يُسمح بتشغيل الكاميرا في هذا العرض. جرّب فتح الكتاب في صفحته المستقلة واسمح بالوصول إلى الكاميرا.")}
+}
+function close(){cancelAnimationFrame(raf);raf=0;camOff();arEl.classList.remove("on");setTimeout(()=>{arEl.hidden=true},320)}
+$("#arClose").addEventListener("click",close);
+$("#arPlay").addEventListener("click",()=>{playing=!playing;$("#arPlay").textContent=playing?"إيقاف مؤقت":"تشغيل"});
+$("#arReplay").addEventListener("click",()=>{t=0;capLast=-1;playing=true;$("#arPlay").textContent="إيقاف مؤقت"});
+$("#arCam").addEventListener("click",()=>{camMode?camOff():camOn()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!arEl.hidden)close()});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ar]");if(b)open(b.dataset.ar)});
+$$(".ar-marker").forEach((m,idx)=>{let sd=idx*97+13,h='<svg viewBox="0 0 8 8" aria-hidden="true"><rect width="8" height="8" style="fill:currentColor"/><rect x="1" y="1" width="6" height="6" style="fill:var(--sheet)"/>';
+  for(let y=0;y<6;y++)for(let x=0;x<6;x++){sd=(sd*1103515245+12345)&0x7fffffff;if((sd>>8)%3===0||(x===0&&y===0))h+='<rect x="'+(1+x)+'" y="'+(1+y)+'" width="1.02" height="1.02" style="fill:currentColor"/>'}
+  m.innerHTML=h+'</svg>'});
+})();
+
+/* ---------- concept maps ---------- */
+function cmapAct(el,cfg){
+  if(!el)return;let sel=null;
+  const slot=g=>'<button class="cm-slot" data-g="'+g+'" data-v="" aria-label="خانة فارغة"></button>';
+  const link=x=>'<div class="cm-link">'+x+'</div>';
+  function draw(){sel=null;
+    el.innerHTML='<div class="cm-bank">'+shuffle(cfg.chips).map(c=>'<button class="chip" data-c="'+c+'">'+c+'</button>').join("")+'</div>'+
+      '<div class="cmap"><div class="cm-top"><div class="cm-node root">'+cfg.root+'</div>'+link(cfg.top[0])+slot(cfg.top[1])+'</div>'+link(cfg.mid)+'<div class="cm-split" style="margin:0 14%"></div>'+
+      '<div class="cm-cols" style="grid-template-columns:repeat('+cfg.cols.length+',minmax(0,1fr));gap:8px">'+cfg.cols.map(c=>'<div class="cm-col" style="padding:8px">'+c.map(it=>it.s?slot(it.s):it.l?link(it.l):'<div class="cm-node fixed">'+it.n+'</div>').join("")+'</div>').join("")+'</div></div>'+
+      '<div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>'}
+  const arm=()=>$$(".cm-slot",el).forEach(x=>x.classList.toggle("armed",!!sel));
+  const showChip=v=>{const ch=$$(".chip",el).find(x=>x.dataset.c===v);if(ch)ch.hidden=false};
+  el.addEventListener("click",e=>{
+    const a=e.target.closest("[data-act]");
+    if(a){if(a.dataset.act==="reset"){draw();return}
+      const sl=$$(".cm-slot",el),m=$(".msg",el);
+      if(sl.some(x=>!x.dataset.v)){m.className="msg bad";m.textContent="املأ جميع الخانات أولًا.";return}
+      let got=0;sl.forEach(x=>{const ok=cfg.groups[x.dataset.g].indexOf(x.dataset.v)>=0;x.classList.toggle("ok",ok);x.classList.toggle("bad",!ok);if(ok)got++});
+      m.className="msg "+(got===sl.length?"ok":"bad");
+      m.textContent=got===sl.length?"خريطة صحيحة بالكامل!":"صحيح "+ar(got)+" من "+ar(sl.length)+". اضغط على الخانات الحمراء لإفراغها ثم أعد المحاولة.";
+      saveScore(cfg.key,got,sl.length);return}
+    $$(".cm-slot",el).forEach(x=>x.classList.remove("ok","bad"));
+    const c=e.target.closest(".chip");
+    if(c){if(sel===c){c.classList.remove("sel");sel=null}else{if(sel)sel.classList.remove("sel");sel=c;c.classList.add("sel")}arm();return}
+    const sl=e.target.closest(".cm-slot");if(!sl)return;const cur=sl.dataset.v;
+    if(sel){if(cur)showChip(cur);sl.dataset.v=sel.dataset.c;sl.textContent=sel.dataset.c;sl.classList.add("filled");sl.setAttribute("aria-label",sel.dataset.c);sel.hidden=true;sel.classList.remove("sel");sel=null}
+    else if(cur){showChip(cur);sl.dataset.v="";sl.textContent="";sl.classList.remove("filled");sl.setAttribute("aria-label","خانة فارغة")}
+    arm()});
+  draw();
+}
+cmapAct($("#a-cmap1"),{key:"f-cmap1",root:"الخلية",top:["يحيط بها ◀","mem"],mid:"ومن عملياتها الحيوية",
+  cols:[[{s:"pas"},{l:"دون طاقة، ومنه"},{s:"pasx"},{s:"pasx"}],[{s:"act"},{l:"يحتاج إلى"},{s:"en"}],[{s:"ph"},{l:"يحدث في"},{s:"chl"},{l:"والتنفس الخلوي في"},{s:"mit"}]],
+  groups:{mem:["الغشاء البلازمي"],pas:["النقل السلبي"],pasx:["الانتشار","الخاصية الأسموزية"],act:["النقل النشط"],en:["الطاقة"],ph:["البناء الضوئي"],chl:["البلاستيدات الخضراء"],mit:["الميتوكندريا"]},
+  chips:["الغشاء البلازمي","النقل السلبي","الانتشار","الخاصية الأسموزية","النقل النشط","الطاقة","البناء الضوئي","البلاستيدات الخضراء","الميتوكندريا","الكروموسومات","حمض اللاكتيك"]});
+
+
+/* ---------- marker card ---------- */
+document.addEventListener("click",e=>{if(e.target.closest("[data-marker]"))$("#mkView").hidden=false});
+$("#mkClose").addEventListener("click",()=>{$("#mkView").hidden=true});
+$("#mkPrint").addEventListener("click",()=>{document.body.classList.add("pm");try{window.print()}catch(e){}setTimeout(()=>document.body.classList.remove("pm"),1500)});
+
+/* ================= diagnosis & remedial plan ================= */
+const OBJS=[
+  {t:"وصف أجزاء الخلية ووظائفها",pages:[["animal","الخلية الحيوانية"],["plant","الخلية النباتية"]],ar:[["cell3d","الخلية مجسّمة"]],
+   concept:"<b>الغشاء البلازمي</b> يحيط بالخلية ويسمح بدخول المواد وخروجها. <b>النواة</b> مركز التحكم وفيها <b>الكروموسومات</b>. <b>السيتوبلازم</b> مادة هلامية فيها الماء وأجزاء الخلية. <b>الميتوكندريا</b> مصدر الطاقة. <b>الفجوات</b> تخزن الماء والغذاء والفضلات.",
+   enrich:"العلوم والفن (ص٤١): أرسم مخططًا للخلية الحيوانية بثلاثة أبعاد، وأكتب أسماء تراكيبها ووصفًا مختصرًا لدورها.",
+   rq:[{q:"الجزء الذي يتحكم في أنشطة الخلية وينظم التفاعلات الكيميائية فيها:",o:["الفجوة","النواة","السيتوبلازم","الغشاء البلازمي"],a:1},
+       {q:"تراكيب تشبه الكيس تخزن الماء والغذاء:",o:["الفجوات","الميتوكندريا","الكروموسومات","الجدار الخلوي"],a:0},
+       {q:"مادة تشبه الهلام فيها كمية كبيرة من الماء:",o:["النواة","الجدار الخلوي","السيتوبلازم","الكلوروفيل"],a:2}]},
+  {t:"المقارنة بين الخلية النباتية والخلية الحيوانية",pages:[["explore","المجهر الافتراضي"],["plant","الخلية النباتية"]],ar:[["cell3d","الخلية مجسّمة"]],
+   concept:"في الخليتين: النواة والغشاء البلازمي والسيتوبلازم والميتوكندريا والفجوات. وفي <b>النباتية فقط</b>: <b>الجدار الخلوي</b> الذي يدعمها ويحميها، و<b>البلاستيدات الخضراء</b> بالكلوروفيل التي تصنع الغذاء. وفجواتها <b>أكبر</b>.",
+   enrich:"أستكشف أكثر (ص٣٣): أفحص شرائح خلايا أخرى، وأحدد هل تشبه خلايا الإلوديا أم خلايا باطن الخد، ولماذا.",
+   rq:[{q:"تركيب يوجد في الخلية النباتية فقط ويصنع الغذاء:",o:["النواة","البلاستيدات الخضراء","الميتوكندريا","السيتوبلازم"],a:1},
+       {q:"وظيفة الجدار الخلوي:",o:["يدعم الخلية النباتية ويعطيها شكلها ويحميها","يخزن المعلومات الوراثية","يطلق الطاقة","يصنع الكلوروفيل"],a:0},
+       {q:"الفجوات في الخلية النباتية مقارنة بالحيوانية:",o:["أصغر","أكبر","غير موجودة","متساوية"],a:1}]},
+  {t:"توضيح انتقال المواد من الخلية وإليها",pages:[["passive","النقل السلبي"],["active","النقل النشط"]],ar:[["wilt","لماذا يذبل النبات؟"]],
+   concept:"<b>النقل السلبي</b> دون طاقة: <b>الانتشار</b> من التركيز المرتفع إلى المنخفض، و<b>الخاصية الأسموزية</b> انتشار الماء فقط، حتى يحدث <b>الاتزان</b>. <b>النقل النشط</b> من التركيز المنخفض إلى المرتفع ويحتاج إلى طاقة. والمواد الكبيرة جدًا تدخل بـ<b>البلعمة</b>.",
+   enrich:"التفكير الناقد (ص٣٧): كيف يوضح العنب والزبيب حالة الاتزان؟",
+   rq:[{q:"الانتشار ينقل المواد:",o:["من التركيز المنخفض إلى المرتفع","من التركيز المرتفع إلى المنخفض دون طاقة","باستهلاك الطاقة دائمًا","عبر الجدار الخلوي فقط"],a:1},
+       {q:"عندما يخرج الماء من خلايا النبات أكثر مما يدخلها فإنه:",o:["يذبل","يكبر","يصنع غذاء أكثر","لا يتأثر"],a:0},
+       {q:"يحتاج النقل النشط إلى:",o:["الضوء","الطاقة","الكلوروفيل","الاتزان"],a:1}]},
+  {t:"توضيح البناء الضوئي والتنفس الخلوي",pages:[["photo","البناء الضوئي"],["resp","التنفس والتخمّر"]],ar:[["photo","البناء الضوئي"],["resp","التنفس والتخمّر"]],
+   concept:"<b>البناء الضوئي</b> (في البلاستيدات الخضراء، يحتاج إلى الضوء): ثاني أكسيد الكربون + ماء ← جلوكوز + أكسجين. <b>التنفس الخلوي</b> (في الميتوكندريا، في الضوء أو الظلام): يستهلك الأكسجين ليحرر الطاقة من الجلوكوز، وينتج الماء وثاني أكسيد الكربون. و<b>التخمّر</b> تنفس دون أكسجين.",
+   enrich:"العلوم والكتابة (ص٤١): أكتب يومًا في حياتي مديرًا لعمليات خلية نباتية أو حيوانية.",
+   rq:[{q:"نواتج عملية البناء الضوئي:",o:["ثاني أكسيد الكربون والماء","سكر الجلوكوز والأكسجين","حمض اللاكتيك","الماء فقط"],a:1},
+       {q:"يتطلب التنفس الهوائي وجود:",o:["الأكسجين","الضوء","الكلوروفيل","حمض اللاكتيك"],a:0},
+       {q:"العملية التي تحتاج إلى الضوء:",o:["التنفس الخلوي","التخمّر","البناء الضوئي","الانتشار"],a:2}]}
+];
+const POSTMAP=[0,0,0,0,0,1,1,1,1,2,2,2,2,2,3,3,3,3];
+const FORMMAP={"f-cell":0,"f-label":0,"f-rev5":0,"f-micro":1,"f-venn":1,"f-tea":2,"f-passive":2,"f-active":2,"f-rev4":2,"f-cmap1":2,"f-photo":3,"f-compare":3,"f-resp":3};
+const esc=x=>String(x).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function diagnose(){
+  const s=store.get("scores",{}),post=s.post;
+  if(!post||!post.detail||post.detail.length!==POSTMAP.length)return null;
+  return OBJS.map((o,k)=>{let pg=0,pt=0,fg=0,ft=0;
+    post.detail.forEach((ok,i)=>{if(POSTMAP[i]===k){pt++;if(ok)pg++}});
+    Object.keys(FORMMAP).forEach(key=>{if(FORMMAP[key]===k&&s[key]){fg+=s[key].got;ft+=s[key].total}});
+    const pp=pt?pg/pt:0,pct=Math.round((ft?pp*.7+fg/ft*.3:pp)*100),rem=s["rem-"+k];
+    return {k:k,pg:pg,pt:pt,fg:fg,ft:ft,pct:pct,lvl:pct>=80?"m":pct>=60?"n":"w",healed:!!(rem&&rem.got>=2)}});
+}
+let planSig=null;
+const LVN={m:"متقن",n:"قريب من الإتقان",w:"يحتاج إلى علاج"},LVC={m:"var(--ok)",n:"var(--spore)",w:"var(--bad)"};
+function renderDiag(){
+  const out=$("#diagOut"),plan=$("#planOut");if(!out)return;
+  const D=diagnose(),name=store.get("t:stuName","");
+  if(!D){out.innerHTML='<div class="sheet"><p>أكمل التقويم الختامي أولًا ليظهر تشخيص تحقق الأهداف.</p><div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="posttest">اذهب إلى التقويم الختامي</button></div></div>';plan.innerHTML='<div class="sheet"><p>تُبنى الخطة العلاجية تلقائيًا بعد التشخيص.</p></div>';planSig=null;return}
+  const mastered=D.filter(d=>d.lvl==="m").length,avg=Math.round(D.reduce((a,d)=>a+d.pct,0)/D.length);
+  out.innerHTML=(name?'<p class="kufi" style="margin:0 0 8px;font-weight:600">الطالب: '+esc(name)+'</p>':'')+
+    '<div class="diag-sum"><span class="big">'+ar(avg)+'٪</span><span>متوسط تحقق أهداف الدرس<br>تحقق '+ar(mastered)+' من '+ar(D.length)+' أهداف بإتقان</span></div>'+
+    D.map(d=>{const st=d.healed&&d.lvl!=="m"?"r":d.lvl;return '<div class="obj-row"><div class="top-l"><h4>الهدف '+ar(d.k+1)+': '+OBJS[d.k].t+'</h4><span class="lvl '+st+'">'+(st==="r"?"تم العلاج":LVN[d.lvl])+'</span></div><div class="obj-bar"><i style="width:'+d.pct+'%;background:'+LVC[d.lvl]+'"></i></div><div class="evid">'+ar(d.pct)+'٪ · التقويم الختامي '+ar(d.pg)+' من '+ar(d.pt)+(d.ft?' · الأنشطة '+ar(d.fg)+' من '+ar(d.ft):'')+'</div></div>'}).join("");
+  const weak=D.filter(d=>d.lvl!=="m").sort((a,b)=>a.pct-b.pct),sig=D.map(d=>d.lvl).join("");
+  if(sig!==planSig){planSig=sig;buildPlan(D,weak)}
+  $$(".plan-card").forEach(c=>{const d=D[+c.dataset.obj],b=$(".pb",c);c.classList.toggle("healed",d.healed);b.className="lvl pb "+(d.healed?"r":d.lvl);b.textContent=d.healed?"تم العلاج":LVN[d.lvl]});
+}
+function buildPlan(D,weak){
+  let h=weak.length?'<p>رُتّبت الأهداف من الأكثر حاجة إلى العلاج. نفّذ الخطوات بالترتيب، ثم أجب عن نشاط العلاج ليتحدّث التشخيص.</p>':'<div class="sheet"><p><b>أحسنت!</b> حققت جميع أهداف الدرس بإتقان، فلا تحتاج إلى خطة علاجية.</p></div>';
+  weak.forEach(d=>{const o=OBJS[d.k];let n=1;
+    h+='<div class="plan-card" data-obj="'+d.k+'"><div class="top-l"><h4>الهدف '+ar(d.k+1)+': '+o.t+'</h4><span class="lvl pb"></span></div><ol class="plan-steps">'+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>راجع المفهوم باختصار</b><div class="concept">'+o.concept+'</div></div></li>'+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>أعد قراءة الصفحات</b><div class="row no-print" style="margin-top:6px">'+o.pages.map(p=>'<button class="btn" data-go="'+p[0]+'">'+p[1]+'</button>').join("")+'</div><div class="print-only">'+o.pages.map(p=>p[1]).join("، ")+'</div></div></li>'+
+      (o.ar.length?'<li><span class="k">'+ar(n++)+'</span><div><b>شاهد المشهد المجسّم</b><div class="row no-print" style="margin-top:6px">'+o.ar.map(a=>'<button class="btn" data-ar="'+a[0]+'">'+a[1]+'</button>').join("")+'</div><div class="print-only">'+o.ar.map(a=>a[1]).join("، ")+'</div></div></li>':'')+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>نشاط العلاج</b> <span class="hint">(يُعد الهدف متحققًا بإجابتين صحيحتين من ثلاث)</span><div id="rq'+d.k+'"></div></div></li></ol></div>'});
+  const ok=D.filter(d=>d.lvl==="m");
+  if(ok.length)h+='<div class="sheet"><h3 style="margin:0 0 6px;font-size:17px">أنشطة إثرائية للأهداف المتقنة</h3><ul style="margin:0 0 10px;padding-right:20px">'+ok.map(d=>'<li>'+OBJS[d.k].enrich+'</li>').join("")+'</ul></div>';
+  $("#planOut").innerHTML=h;
+  weak.forEach(d=>quiz($("#rq"+d.k),OBJS[d.k].rq,{key:"rem-"+d.k}));
+}
+$("#printPlan").addEventListener("click",()=>{try{window.print()}catch(e){}});
+$("#stuName").addEventListener("input",()=>{store.set("t:stuName",$("#stuName").value);renderDiag()});
+
+/* ================= NAFES diagnosis & remedial ================= */
+
+const NREM=[
+  {tip:"<b>المعرفة</b> تعني أن تتذكر المفاهيم وتعريفاتها. راجع أجزاء الخلية ووظيفة كل جزء، والمفردات، وكرّر قراءتها حتى تحفظها.",pages:[["animal","الخلية الحيوانية"],["plant","الخلية النباتية"],["goals","المفردات"]],
+   rq:[{q:"مصدر طاقة الخلية الذي تتم فيه عملية التنفس الهوائي:",o:["الفجوة","الميتوكندريا","النواة","الجدار الخلوي"],a:1},{q:"تراكيب تشبه الكيس تخزن الماء والغذاء وبعض الفضلات:",o:["الفجوات","الكروموسومات","البلاستيدات الخضراء","الرايبوسومات"],a:0}]},
+  {tip:"<b>التطبيق</b> يعني استعمال ما تعرفه في موقف جديد. اسأل نفسك: أين أجد هذا الجزء أو هذه العملية في جسمي، أو في نبات حولي؟",pages:[["plant","الخلية النباتية"],["photo","البناء الضوئي"],["resp","التنفس والتخمّر"]],
+   rq:[{q:"خلية من ورقة نبات أخضر؛ أي التراكيب ستجده فيها ولا تجده في خلية من جلدك؟",o:["النواة","الغشاء البلازمي","البلاستيدات الخضراء","الميتوكندريا"],a:2},{q:"بعد ركض طويل شعر أحمد بألم في عضلات ساقه، والسبب:",o:["تراكم حمض اللاكتيك الناتج عن التخمّر","زيادة الأكسجين في العضلات","البناء الضوئي في العضلات","الخاصية الأسموزية"],a:0}]},
+  {tip:"<b>الاستدلال</b> يعني التفكير في صورة أو موقف للوصول إلى الإجابة. تأمّل الصورة جيدًا، وحدّد ما يشير إليه السهم أو ما يميز كل شكل، ثم استبعد الخيارات الخاطئة واحدًا بعد الآخر.",pages:[["explore","المجهر الافتراضي"],["plant","المقارنة بين الخليتين"]],
+   rq:[{q:"لاحظ الصورة: إلى أي مخلوق تنتمي هذه الخلية؟"+SV.plantOnly,o:["القطة","النبات","الإنسان","العصفور"],a:1},{q:"وُضع نبات في مكان مظلم عدة أيام؛ أي العمليتين تتوقف فيه؟",o:["البناء الضوئي","التنفس الخلوي","الانتشار","الخاصية الأسموزية"],a:0}]}
+];
+function nafesStats(){const s=store.get("scores",{}),n=s.nafes,p=s.pre;
+  const agg=(det,map,k)=>{let g=0,t=0;det.forEach((ok,i)=>{if(map[i]===k){t++;if(ok)g++}});return t?Math.round(g/t*100):null};
+  const lvMap=NAFES_Q.map(x=>x.lv),stdMap=NAFES_Q.map(x=>x.std),preMap=PRE_IDX.map(i=>NAFES_Q[i].lv);
+  const subMap=NAFES_Q.map(x=>NF_STDS[x.std].sub),cell=(det,sd,lv)=>{let g=0,t=0;det.forEach((ok,i)=>{if(NAFES_Q[i].std===sd&&NAFES_Q[i].lv===lv){t++;if(ok)g++}});return {g:g,t:t}};
+  return {post:n&&n.detail&&n.detail.length===NAFES_Q.length?{pct:Math.round(n.got/n.total*100),lv:[0,1,2].map(k=>agg(n.detail,lvMap,k)),std:[0,1,2].map(k=>agg(n.detail,stdMap,k)),sub:[0,1].map(k=>agg(n.detail,subMap,k)),mx:NF_STDS.map((_,sd)=>[0,1,2].map(lv=>cell(n.detail,sd,lv)))}:null,
+    pre:p&&p.detail&&p.detail.length===PRE_IDX.length?{pct:Math.round(p.got/p.total*100),lv:[0,1,2].map(k=>agg(p.detail,preMap,k))}:null}}
+let nSig=null;
+function mxTable(mx){const c=v=>{if(!v.t)return '<td class="na">—</td>';const p=v.g/v.t,k=p>=.8?"m":p>=.6?"n":"w";return '<td class="'+k+'">'+ar(v.g)+' / '+ar(v.t)+'</td>'};
+  return '<div class="nf-tbl"><table><tr><th>المعيار</th>'+LVT.map(l=>'<th>'+l+'</th>').join("")+'<th>المجموع</th></tr>'+NF_STDS.map((S,i)=>{const g=mx[i].reduce((a,v)=>a+v.g,0),t=mx[i].reduce((a,v)=>a+v.t,0);return '<tr><td class="sd">'+CODE(S.code)+'</td>'+mx[i].map(c).join("")+c({g:g,t:t})+'</tr>'}).join("")+'</table></div><p class="hint" style="margin:4px 0 0">كل خانة: عدد الإجابات الصحيحة من عدد أسئلة هذا المعيار في هذا المستوى. والخانة «—» تعني أن البنك لا يضم سؤالًا لها.</p>'}
+function renderNafes(){const d=$("#nafesDiag"),p=$("#nafesPlan");if(!d)return;const st=nafesStats(),s=store.get("scores",{});
+  if(!st.post){d.innerHTML='<div class="sheet"><p>حل أسئلة «تدرّب على نافس» أولًا ليظهر تشخيص مهاراتك.</p><div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="nafes">اذهب إلى أسئلة نافس</button></div></div>';p.innerHTML='<div class="sheet"><p>تُبنى خطة مهارات نافس تلقائيًا بعد التشخيص.</p></div>';nSig=null;return}
+  const lvl=v=>v>=80?"m":v>=60?"n":"w",healed=k=>{const r=s["nrem-"+k];return !!(r&&r.got>=2)};
+  const row=(t,pre,post,h)=>{const L=lvl(post),x=h&&L!=="m"?"r":L;return '<div class="obj-row"><div class="top-l"><h4>'+t+'</h4><span class="lvl '+x+'">'+(x==="r"?"تم العلاج":LVN[L])+'</span></div><div class="obj-bar"><i style="width:'+post+'%;background:'+LVC[L]+'"></i></div><div class="evid">بعد الدرس '+ar(post)+'٪'+(pre!=null?' · قبل الدرس '+ar(pre)+'٪':'')+'</div></div>'};
+  d.innerHTML='<div class="diag-sum"><span class="big">'+ar(st.post.pct)+'٪</span><span>نتيجتك في أسئلة «نافس»'+(st.pre?'<br>في التقويم القبلي: '+ar(st.pre.pct)+'٪':'')+'</span></div><h4 class="nf-h">جدول التشخيص: المعيار × المستوى الإدراكي</h4>'+mxTable(st.post.mx)+
+    '<h4 class="nf-h">حسب المجال الرئيسي</h4>'+row(NF_DOM[0],st.pre?st.pre.pct:null,st.post.pct,false)+
+    '<h4 class="nf-h">حسب المجال الفرعي</h4>'+[0,1].map(k=>row(NF_SUB[k],null,st.post.sub[k],false)).join("")+
+    '<h4 class="nf-h">حسب المعيار</h4>'+NF_STDS.map((S,k)=>row(CODE(S.code)+' '+S.t,null,st.post.std[k],false)).join("")+
+    '<h4 class="nf-h">حسب المستوى الإدراكي</h4>'+[0,1,2].map(k=>row(LVT[k],st.pre?st.pre.lv[k]:null,st.post.lv[k],healed(k))).join("");
+  const weak=[0,1,2].filter(k=>st.post.lv[k]<80),sig=weak.join(",");
+  if(sig!==nSig){nSig=sig;
+    p.innerHTML=weak.length?weak.map(k=>{const r=NREM[k];return '<div class="plan-card" data-nlv="'+k+'"><div class="top-l"><h4>مستوى '+LVT[k]+' ('+ar(st.post.lv[k])+'٪)</h4><span class="lvl pb"></span></div><ol class="plan-steps"><li><span class="k">١</span><div><b>أين أخطأت؟</b><div class="concept">'+NF_STDS.map((S,sd)=>{const v=st.post.mx[sd][k];return v.t&&v.g<v.t?'• '+CODE(S.code)+' '+S.t+' ('+ar(v.g)+' من '+ar(v.t)+')':''}).filter(Boolean).join("<br>")+'</div></div></li><li><span class="k">٢</span><div><b>كيف أجيب عن أسئلة هذا المستوى؟</b><div class="concept">'+r.tip+'</div></div></li><li><span class="k">٣</span><div><b>أراجع</b><div class="row no-print" style="margin-top:6px">'+r.pages.map(x=>'<button class="btn" data-go="'+x[0]+'">'+x[1]+'</button>').join("")+'</div><div class="print-only">'+r.pages.map(x=>x[1]).join("، ")+'</div></div></li><li><span class="k">٤</span><div><b>أتدرّب</b> <span class="hint">(يتحقق العلاج بإجابتين صحيحتين)</span><div id="nrq'+k+'"></div></div></li></ol></div>'}).join(""):'<div class="sheet"><p><b>أحسنت!</b> أتقنت مستويات «نافس» الثلاثة في هذا الدرس.</p></div>';
+    weak.forEach(k=>quiz($("#nrq"+k),NREM[k].rq,{key:"nrem-"+k}))}
+  $$("[data-nlv]").forEach(c=>{const k=+c.dataset.nlv,b=$(".pb",c),h=healed(k),L=lvl(st.post.lv[k]);c.classList.toggle("healed",h);b.className="lvl pb "+(h?"r":L);b.textContent=h?"تم العلاج":LVN[L]})}
+
+/* ================= cloud sync ================= */
+const LESSON_ID="cells6";
+let STU=store.get("stu",null),fdb=null,syncT=0;
+try{if(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase){if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);fdb=firebase.firestore()}}catch(e){fdb=null}
+function sid(){if(STU&&STU.code)return "r"+STU.code;let x=store.get("sid","");if(!x){x=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("sid",x)}return x}
+function setSync(t){const e=$("#syncState");if(e)e.textContent=t}
+function paintStu(){const e=$("#stuLine");if(!e)return;
+  if(!STU||STU.skip){e.textContent="أنت في وضع التصفح؛ نتائجك محفوظة على جهازك فقط.";setSync("");return}
+  e.innerHTML="<b>الطالب:</b> "+esc(STU.name)+" · <b>الفصل:</b> "+esc(STU.cls)+(STU.code?" · <b>الرمز:</b> "+esc(STU.code):"");
+  if(!fdb)setSync("لم يُربط الكتاب بقاعدة البيانات بعد؛ النتائج محفوظة على جهازك فقط.")}
+function payload(){const sc=store.get("scores",{}),D=diagnose(),N=nafesStats(),pick=k=>sc[k]?{got:sc[k].got,total:sc[k].total}:null,o={};
+  Object.keys(sc).forEach(k=>{if(k!=="pre"&&k!=="post")o[k]=pick(k)});
+  return {lesson:LESSON_ID,sid:sid(),name:STU.name,cls:STU.cls,code:STU.code||null,nafesClass:STU.code?store.get("nfClass",null):null,nafesHome:STU.code?store.get("nfHome",null):null,pre:pick("pre"),post:pick("post"),scores:o,
+    objectives:D?D.map(d=>d.pct):null,healed:D?D.map(d=>d.healed):null,
+    nafes:N.post?{pct:N.post.pct,lv:N.post.lv,std:N.post.std,sub:N.post.sub,prePct:N.pre?N.pre.pct:null,preLv:N.pre?N.pre.lv:null,healed:[0,1,2].map(k=>!!(sc["nrem-"+k]&&sc["nrem-"+k].got>=2))}:null,
+    survey:store.get("survey",null),seen:(store.get("seen",[])||[]).length,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}}
+function queueSync(){if(!fdb||!STU||STU.skip)return;clearTimeout(syncT);setSync("جارٍ حفظ نتائجك…");
+  syncT=setTimeout(()=>{const P=payload();if(STU.code)Object.keys(P).forEach(k=>{if(P[k]==null)delete P[k]});fdb.collection("durus_results").doc(LESSON_ID+"__"+sid()).set(P,STU.code?{merge:true}:{})
+    .then(()=>setSync("✓ نتائجك محفوظة ويراها معلمك."))
+    .catch(()=>setSync("تعذّر الحفظ الآن، وسيُعاد المحاولة مع نشاطك القادم."))},1200)}
+const _saveScore=saveScore;saveScore=function(k,g,t,d){_saveScore(k,g,t,d);if(k==="nafes")nfRecord(g,t);renderNafes();queueSync()};
+/* ---- وضع الحصة / المنزل ---- */
+const ROSTER_ON=!!fdb;let LIVE=null,liveUnsub=null,NFMODE="",fails=0,lockUntil=0;
+if(ROSTER_ON){$("#stuNameBox").hidden=true;$("#stuCodeBox").hidden=false;if(STU&&!STU.skip&&!STU.code)STU=null}
+function nfRecord(g,t){if(!STU||!STU.code)return;const N=nafesStats();if(!N.post)return;
+  if(NFMODE==="class"&&!store.get("nfClass",null))store.set("nfClass",{got:g,total:t,pct:N.post.pct,lv:N.post.lv,std:N.post.std,sess:(LIVE&&LIVE.sid)||"",at:Date.now()});
+  else if(NFMODE==="home"){const H=store.get("nfHome",null)||{n:0,best:0,first:null};H.n++;H.last=N.post.pct;H.best=Math.max(H.best,N.post.pct);if(H.first==null)H.first=N.post.pct;H.at=Date.now();store.set("nfHome",H)}
+  nfMode()}
+function curMode(){if(!fdb||!STU||STU.skip||!STU.code)return "free";const C=store.get("nfClass",null),live=!!(LIVE&&LIVE.open&&LIVE.cls===STU.cls);
+  if(C)return live&&C.sess===LIVE.sid?"done":"home";if(live)return "class";
+  if(LIVE&&(LIVE.homeOpen||[]).indexOf(STU.cls)>=0)return "home";return "wait"}
+function nfMode(){const box=$("#nfMode");if(!box)return;const m=curMode(),C=store.get("nfClass",null),H=store.get("nfHome",null);
+  const msg={free:"",
+    wait:'🔒 يبدأ اختبار «نافس» عندما يفتحه معلمك في الحصة.<small>بعد الحصة يُفتح لك التدريب في المنزل، وتُحسب محاولاتك في «أبطال التدريب المنزلي».</small>',
+    class:'🟢 اختبار الحصة · فصل '+esc(STU&&STU.cls)+'<small>لك محاولة واحدة تُحسب في لوحة الشرف. أجب عن كل الأسئلة بهدوء ثم اضغط «سلّم إجاباتي».</small>',
+    done:'✓ سلّمت إجابتك في الحصة'+(C?': '+ar(C.got)+' من '+ar(C.total):'')+'<small>تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد أن يُنهي معلمك الجلسة.</small>',
+    home:'🏠 التدريب المنزلي'+'<small>'+(C?'نتيجتك في اختبار الحصة: '+ar(C.got)+' من '+ar(C.total)+'. ':'')+(H?'أفضل نتيجة لك في المنزل: '+ar(H.best)+'٪ (عدد المحاولات: '+ar(H.n)+'). ':'')+'كل محاولة تُحسب في «أبطال التدريب المنزلي».</small>'}[m];
+  box.hidden=!msg;box.className="nf-mode m-"+m;box.innerHTML=msg;
+  if(m===NFMODE)return;const prev=NFMODE;NFMODE=m;if(prev==="class"&&m==="done")return;nfBuild(m)}
+function nfBuild(m){const old=$("#q-nafes"),el=old.cloneNode(false);old.replaceWith(el);
+  if(m==="wait"||m==="done"){el.innerHTML="";return}
+  const seed=STU&&STU.code?+STU.code:0;
+  const qs=NAFES_Q.map((x,i)=>{if(!seed)return {q:nq(x),o:x.o,a:x.a};const idx=x.o.map((_,j)=>j);let r=(seed*31+i*17)%9973;
+    for(let k=idx.length-1;k>0;k--){r=(r*1103+12345)%9973;const t=r%(k+1),tmp=idx[k];idx[k]=idx[t];idx[t]=tmp}
+    return {q:nq(x),o:idx.map(j=>x.o[j]),a:idx.indexOf(x.a)}});
+  quiz(el,qs,m==="class"?{key:"nafes",instant:false,noReveal:true,noRetry:true,checkLabel:"سلّم إجاباتي"}:{key:"nafes",instant:false})}
+function watchLive(){if(!fdb||!STU||!STU.code||liveUnsub)return;
+  liveUnsub=fdb.collection("durus_live").doc(LESSON_ID).onSnapshot(d=>{LIVE=d.exists?d.data():null;nfMode()},()=>{LIVE=null;nfMode()})}
+function hydrate(){if(!fdb||!STU||!STU.code)return;fdb.collection("durus_results").doc(LESSON_ID+"__r"+STU.code).get().then(d=>{if(!d.exists)return;const x=d.data();
+  if(x.nafesClass&&!store.get("nfClass",null))store.set("nfClass",x.nafesClass);
+  if(x.nafesHome){const H=store.get("nfHome",null);store.set("nfHome",H?{n:Math.max(H.n,x.nafesHome.n||0),best:Math.max(H.best,x.nafesHome.best||0),first:x.nafesHome.first!=null?x.nafesHome.first:H.first,last:H.last}:x.nafesHome)}
+  nfMode()}).catch(()=>{})}
+function codeLogin(){const er=$("#stuErr"),b=$("#stuSave"),c=$("#stuCode").value.replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/\D/g,"");
+  if(Date.now()<lockUntil){er.textContent="محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.";return}
+  if(c.length!==4){er.textContent="اكتب الرمز المكوّن من ٤ أرقام.";return}
+  er.textContent="جارٍ التحقق…";b.disabled=true;
+  fdb.collection("durus_roster").doc(c).get().then(d=>{
+    if(!d.exists){if(++fails>=5){fails=0;lockUntil=Date.now()+60000}er.textContent="الرمز غير صحيح. تأكد منه أو اسأل معلمك.";return}
+    const r=d.data();if(STU&&STU.code&&STU.code!==c){store.set("nfClass",null);store.set("nfHome",null)}
+    STU={name:r.name,cls:r.cls,code:c};store.set("stu",STU);store.set("t:stuName",r.name);const si=$("#stuName");if(si)si.value=r.name;
+    er.textContent="";$("#stuModal").hidden=true;renderDiag();paintStu();watchLive();hydrate();nfMode();queueSync()})
+   .catch(()=>{er.textContent="تعذّر التحقق الآن. تحقّق من اتصالك بالإنترنت."}).finally(()=>{b.disabled=false})}
+$("#stuCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
+function askStu(){$("#stuModal").hidden=false;if(ROSTER_ON){$("#stuCode").value="";$("#stuErr").textContent="";setTimeout(()=>$("#stuCode").focus(),50);return}$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
+$("#stuSave").addEventListener("click",()=>{if(ROSTER_ON){codeLogin();return}const n=$("#stuNm").value.trim().replace(/\s+/g," "),c=$("#stuCls").value.trim();
+  if(n.split(" ").length<2||!c){$("#stuErr").textContent="اكتب اسمك (اسمين على الأقل) ورمز فصلك.";return}
+  STU={name:n,cls:c};store.set("stu",STU);store.set("t:stuName",n);const si=$("#stuName");if(si)si.value=n;
+  $("#stuModal").hidden=true;renderDiag();paintStu();queueSync()});
+$("#stuSkip").addEventListener("click",()=>{STU={skip:true};store.set("stu",STU);$("#stuModal").hidden=true;paintStu()});
+$("#stuEdit").addEventListener("click",askStu);
+window.addEventListener("hashchange",()=>{if(!STU&&currentName()!=="cover")askStu()});
+(function(){
+  const Q=["استمتعت بتعلّم الدرس بالكتاب التفاعلي","ساعدتني المشاهد المجسّمة على فهم الدرس","الأنشطة والمحاكيات جعلت الدرس أسهل","عرفت من التشخيص ما أحتاج إلى مراجعته","أتمنى أن تكون دروس أخرى بهذه الطريقة"];
+  let sv=store.get("survey",null)||{a:[0,0,0,0,0],c:""};
+  $("#likert").innerHTML=Q.map((q,i)=>'<div class="lik-q"><p>'+ar(i+1)+". "+q+'</p><div class="lik-o">'+[1,2,3,4,5].map(v=>'<button data-lq="'+i+'" data-lv="'+v+'" class="'+(sv.a[i]===v?"on":"")+'">'+ar(v)+'</button>').join("")+'</div></div>').join("");
+  $("#svComment").value=sv.c||"";
+  $("#likert").addEventListener("click",e=>{const b=e.target.closest("[data-lq]");if(!b)return;sv.a[+b.dataset.lq]=+b.dataset.lv;$$('[data-lq="'+b.dataset.lq+'"]').forEach(x=>x.classList.toggle("on",x===b))});
+  $("#svSend").addEventListener("click",()=>{const m=$("#svMsg");if(sv.a.some(v=>!v)){m.className="msg bad";m.textContent="اختر رقمًا لكل عبارة.";return}
+    sv.c=$("#svComment").value.trim().slice(0,400);store.set("survey",{a:sv.a,c:sv.c});queueSync();m.className="msg ok";m.textContent="شكرًا لك! وصل رأيك."});
+})();
+paintStu();renderNafes();
+
+bindSaves();renderResults();renderDiag();renderNafes();show();watchLive();hydrate();nfMode();
+if(!STU&&currentName()!=="cover")askStu();
+})();
+</script>
+</body>
+</html>

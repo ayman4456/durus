@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>شاشة الحصة · اختبار نافس</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d2a20;--ink:#f6f3e8;--muted:#a9c4b4;--gold:#e8c45a;--ok:#5fd394;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.14);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{background:var(--bg);height:100%}
+body{margin:0;min-height:100%;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--ink);background:radial-gradient(1000px 500px at 50% -10%,#17573c,transparent 60%),var(--bg)}
+.wrap{max-width:1400px;margin:0 auto;padding:18px 22px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{margin:0;font-size:clamp(22px,3vw,36px);flex:1}
+header h1 small{display:block;font-size:.5em;color:var(--muted);font-weight:400}
+.pill{border-radius:999px;padding:6px 16px;font-weight:800;font-size:18px;background:var(--card);border:1px solid var(--line)}
+.pill.on{color:#06311b;background:var(--ok);border-color:var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(95,211,148,0)}0%{box-shadow:0 0 0 0 rgba(95,211,148,.6)}}
+.grid{display:grid;grid-template-columns:minmax(260px,1fr) minmax(300px,1.3fr) minmax(300px,1.3fr);gap:16px;margin-top:16px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 18px}
+.card h2{margin:0 0 10px;font-size:20px;color:var(--gold)}
+.ring{display:grid;place-items:center;margin:6px auto}
+.ring svg{width:min(230px,60vw);height:auto}
+.big{font-size:44px;font-weight:800;text-align:center;line-height:1.1}
+.sub{color:var(--muted);text-align:center}
+.avg{margin-top:12px;text-align:center;font-size:18px}.avg b{font-size:34px;color:var(--gold);display:block}
+ol.top{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.top li{display:flex;gap:12px;align-items:center;background:rgba(0,0,0,.2);border-radius:12px;padding:10px 14px;font-size:20px;animation:in .5s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+ol.top .m{font-size:26px;width:34px;text-align:center}ol.top .n{flex:1;font-weight:600}ol.top .s{color:var(--gold);font-weight:800}
+.bars{display:grid;gap:12px}
+.br .h{display:flex;justify-content:space-between;font-size:17px}.br .h b{color:var(--gold);font-size:22px}
+.br .t{height:16px;border-radius:99px;background:rgba(0,0,0,.3);overflow:hidden;margin-top:4px}.br .t i{display:block;height:100%;background:linear-gradient(90deg,#b8902c,var(--gold));transition:width .8s}
+.br.cur .h span:first-child{color:var(--ok);font-weight:800}
+.br small{color:var(--muted);font-size:13px}
+.empty{color:var(--muted);text-align:center;padding:16px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.login{max-width:420px;margin:60px auto;display:grid;gap:10px}
+.login input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink)}
+.msg{color:#ffb4a3;min-height:1.4em}
+.demo{background:#7a3e14;padding:6px 12px;border-radius:10px;text-align:center;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="empty">جارٍ التحميل…</div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(function(){
+const P=new URLSearchParams(location.search),lesson=P.get("l")||"cells6",demo=P.get("demo")==="1",app=document.getElementById("app");
+const AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v).replace(/\d/g,d=>AR[d]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const TITLES={cells6:"الخلية النباتية والخلية الحيوانية"};
+const medal=r=>r===1?"🥇":r===2?"🥈":r===3?"🥉":"⭐";
+let LIVE=null,ROS=[],RES=[],showNames=true;
+
+function draw(){
+  const cls=LIVE&&LIVE.cls,open=!!(LIVE&&LIVE.open);
+  const classes=[...new Set(ROS.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
+  const att=RES.filter(r=>r.lesson===lesson&&r.nafesClass);
+  const mine=att.filter(r=>r.cls===cls),tot=ROS.filter(x=>x.cls===cls).length,n=mine.length,pct=tot?Math.min(100,Math.round(n/tot*100)):0;
+  const avg=n?Math.round(mine.reduce((s,r)=>s+r.nafesClass.pct,0)/n):null;
+  const top=mine.slice().sort((a,b)=>b.nafesClass.pct-a.nafesClass.pct||((b.nafesClass.lv||[]).filter(v=>v>=80).length-(a.nafesClass.lv||[]).filter(v=>v>=80).length)||(a.nafesClass.at||0)-(b.nafesClass.at||0)).slice(0,5);
+  let rk=0,pv=null;top.forEach(r=>{if(r.nafesClass.pct!==pv)rk++;pv=r.nafesClass.pct;r._rk=rk});
+  const cmp=classes.map(c=>{const a=att.filter(r=>r.cls===c),t=ROS.filter(x=>x.cls===c).length,av=a.length?Math.round(a.reduce((s,r)=>s+r.nafesClass.pct,0)/a.length):null,pa=t?Math.min(100,Math.round(a.length/t*100)):0;return {c:c,n:a.length,t:t,av:av,pa:pa,ix:av==null?0:Math.round(av*pa/100)}}).sort((a,b)=>b.ix-a.ix);
+  const R=100,C=2*Math.PI*R;
+  app.innerHTML=(demo?'<div class="demo">عرض تجريبي ببيانات مولّدة</div>':'')+
+   '<header><h1>اختبار «نافس» في الحصة'+(cls?' · فصل '+esc(cls):'')+'<small>'+esc(TITLES[lesson]||"")+' · العلوم · الصف السادس</small></h1>'+
+   '<span class="pill'+(open?' on':'')+'">'+(open?'● الاختبار جارٍ':cls?'انتهت الجلسة':'لا توجد جلسة')+'</span>'+
+   '<div class="tools"><button class="btn" id="tgN">'+(showNames?'إخفاء الأسماء':'إظهار الأسماء')+'</button><button class="btn" id="fs">ملء الشاشة</button></div></header>'+
+   '<div class="grid">'+
+    '<section class="card"><h2>التسليم</h2><div class="ring"><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="'+R+'" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="20"/><circle cx="120" cy="120" r="'+R+'" fill="none" stroke="#5fd394" stroke-width="20" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100))+'" transform="rotate(-90 120 120)" style="transition:stroke-dashoffset .8s"/><text x="120" y="118" text-anchor="middle" font-size="54" font-weight="800" fill="#f6f3e8" font-family="Noto Kufi Arabic,Tahoma">'+ar(n)+'</text><text x="120" y="156" text-anchor="middle" font-size="20" fill="#a9c4b4" font-family="Noto Kufi Arabic,Tahoma">من '+ar(tot||0)+' طالبًا</text></svg></div>'+
+      '<div class="avg">متوسط درجات من سلّم<b>'+(avg==null?'—':ar(avg)+'٪')+'</b></div></section>'+
+    '<section class="card"><h2>🏆 أوائل الفصل الآن</h2>'+(top.length?'<ol class="top">'+top.map(r=>'<li><span class="m">'+medal(r._rk)+'</span><span class="n">'+(showNames?esc(r.name):'طالب متميز')+'</span><span class="s">'+ar(r.nafesClass.pct)+'٪</span></li>').join("")+'</ol>':'<div class="empty">بانتظار أول تسليم…</div>')+'</section>'+
+    '<section class="card"><h2>🏫 المنافسة بين الفصول</h2>'+(cmp.length?'<div class="bars">'+cmp.map((x,i)=>'<div class="br'+(x.c===cls?' cur':'')+'"><div class="h"><span>'+(x.ix?medal(i+1)+' ':'')+'فصل '+esc(x.c)+'</span><b>'+ar(x.ix)+'</b></div><div class="t"><i style="width:'+x.ix+'%"></i></div><small>متوسط '+(x.av==null?'—':ar(x.av)+'٪')+' · مشاركة '+ar(x.pa)+'٪ ('+ar(x.n)+' من '+ar(x.t)+')</small></div>').join("")+'</div><p class="sub" style="font-size:13px;margin:10px 0 0">المؤشر = متوسط الفصل × نسبة المشاركة</p>':'<div class="empty">لا يوجد كشف طلاب بعد.</div>')+'</section>'+
+   '</div>';
+  document.getElementById("tgN").onclick=()=>{showNames=!showNames;draw()};
+  document.getElementById("fs").onclick=()=>{const d=document.documentElement;if(document.fullscreenElement)document.exitFullscreen();else if(d.requestFullscreen)d.requestFullscreen()};
+}
+
+if(demo){const cl=["6أ","6ب","6ج"],nm=["سارة","نورة","ريم","لتين","جود","هيا","لمى","رهف","شهد","دانة","غلا","وعد","مها","أروى","تالا","بيان","ياسمين","رغد","سلمى","ليان","جنى"];
+  ROS=nm.map((n,i)=>({code:String(1000+i),name:n,cls:cl[i%3]}));LIVE={open:true,cls:"6ب",sid:"d"};
+  RES=ROS.filter((x,i)=>x.cls!=="6ب"||i<12).map((x,i)=>({lesson:lesson,name:x.name,cls:x.cls,code:x.code,nafesClass:{pct:[58,67,75,83,92,100][(i*7)%6],lv:[80,70,90],at:i}}));
+  draw();let k=12;const t=setInterval(()=>{const x=ROS.filter(r=>r.cls==="6ب"&&!RES.some(q=>q.code===r.code))[0];if(!x){clearInterval(t);return}RES.push({lesson:lesson,name:x.name,cls:x.cls,code:x.code,nafesClass:{pct:[67,83,92,75][k++%4],lv:[80,80,80],at:k}});draw()},2500);return}
+
+if(!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase)){app.innerHTML='<div class="empty">ضع إعدادات Firebase في firebase-config.js، أو افتح الصفحة مع ‎?demo=1 للمعاينة.</div>';return}
+firebase.initializeApp(window.DURUS_FB);const auth=firebase.auth(),db=firebase.firestore();let subs=[];
+auth.onAuthStateChanged(u=>{subs.forEach(f=>f());subs=[];
+  if(!u){app.innerHTML='<div class="login"><h2 style="text-align:center;color:var(--gold)">دخول المعلم</h2><input type="email" id="em" placeholder="البريد الإلكتروني"><input type="password" id="pw" placeholder="كلمة المرور"><button class="btn" id="go">دخول</button><div class="msg" id="lm"></div></div>';
+    const go=()=>auth.signInWithEmailAndPassword(document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(()=>document.getElementById("lm").textContent="البريد أو كلمة المرور غير صحيحة.");
+    document.getElementById("go").onclick=go;document.getElementById("pw").onkeydown=e=>{if(e.key==="Enter")go()};return}
+  subs.push(db.collection("durus_live").doc(lesson).onSnapshot(d=>{LIVE=d.exists?d.data():null;draw()}));
+  subs.push(db.collection("durus_roster").onSnapshot(s=>{ROS=s.docs.map(d=>Object.assign({code:d.id},d.data()));draw()}));
+  subs.push(db.collection("durus_results").where("lesson","==",lesson).onSnapshot(s=>{RES=s.docs.map(d=>d.data());draw()},()=>{app.innerHTML='<div class="empty">تعذّر قراءة النتائج: تحقّق من قواعد Firestore.</div>'}));
+});
+})();
+</script>
+</body>
+</html>

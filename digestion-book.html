@@ -173,6 +173,21 @@ img,svg{max-width:100%}
 .lsteps label::before{content:counter(ls,arabic-indic);flex:none;width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;margin-top:3px}
 .lsteps input[type="checkbox"]{width:20px;height:20px;accent-color:var(--fern);margin-top:6px;flex:none}
 
+/* student card + survey + sync */
+.stu-modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:20px}
+.stu-modal[hidden]{display:none}
+.stu-card{background:var(--sheet);color:var(--ink);border-radius:18px;padding:22px;max-width:400px;width:100%;display:grid;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.stu-card h3{margin:0;font-size:20px;color:var(--moss)}
+.stu-card label{display:grid;gap:4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--muted)}
+.stu-card input[type="text"]{width:100%;text-align:right;padding:10px 12px;font-size:17px}
+.stu-err{color:var(--bad);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px;min-height:1.2em}
+.lik{display:grid;gap:12px}
+.lik-q{background:var(--sheet-2);border-radius:12px;padding:10px 12px}
+.lik-q p{margin:0 0 8px;font-weight:600}
+.lik-o{display:flex;gap:6px;flex-wrap:wrap}
+.lik-o button{flex:1;min-width:44px;border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px}
+.lik-o button.on{background:var(--fern);border-color:var(--fern);color:#fff}
+
 /* concept map */
 .cm-bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border:1.5px dashed var(--line);border-radius:12px;background:var(--sheet-2);margin-bottom:14px;min-height:52px}
 .cmap{display:grid;gap:6px}
@@ -928,6 +943,7 @@ table.data th{background:var(--sheet-2);font-weight:600}
 <!-- ============ RESULTS ============ -->
 <section class="page" data-page="results" data-title="تقرير الإنجاز">
   <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تقرير الإنجاز</h2></header>
+  <div class="sheet"><p id="stuLine" style="margin:0 0 4px"></p><p class="hint" id="syncState" style="margin:0 0 8px"></p><div class="row" style="margin:0 0 10px"><button class="btn ghost" id="stuEdit">تعديل بياناتي</button></div></div>
   <div class="sheet" id="resTop"></div>
   <div class="sheet">
     <h3 style="margin:0 0 6px">التقويم التكويني والأنشطة</h3>
@@ -956,6 +972,16 @@ table.data th{background:var(--sheet-2);font-weight:600}
   <div class="row no-print" style="margin-bottom:12px"><button class="btn" id="printPlan">اطبع التشخيص والخطة</button></div>
 </section>
 
+
+<!-- ============ SURVEY ============ -->
+<section class="page" data-page="survey" data-title="رأيك يهمنا">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>رأيك يهمنا</h2></header>
+  <p>اختر رقمًا لكل عبارة: ١ = لا أوافق أبدًا، ٥ = أوافق تمامًا.</p>
+  <div class="lik" id="likert"></div>
+  <label style="display:grid;gap:6px;margin-top:12px">ماذا أعجبك؟ وماذا نحسّن؟<textarea id="svComment" maxlength="400"></textarea></label>
+  <div class="row"><button class="btn primary" id="svSend">أرسل رأيي</button></div>
+  <div class="msg" id="svMsg"></div>
+</section>
 
 <div class="leaf" id="leaf"></div><div class="shade" id="shade"></div>
 <button class="corner" id="corner" aria-label="اقلب إلى الصفحة التالية"></button><button class="corner-back" id="cornerBack" aria-label="ارجع إلى الصفحة السابقة"></button>
@@ -989,6 +1015,17 @@ table.data th{background:var(--sheet-2);font-weight:600}
   </div>
 </div>
 
+<div class="stu-modal" id="stuModal" hidden role="dialog" aria-modal="true" aria-labelledby="stuTitle">
+  <div class="stu-card">
+    <h3 id="stuTitle">مرحبًا بك في الكتاب التفاعلي</h3>
+    <p style="margin:0">اكتب اسمك ورمز فصلك ليعرف معلمك نتائجك ويساعدك.</p>
+    <label>الاسم الثلاثي<input type="text" id="stuNm" maxlength="60" autocomplete="name"></label>
+    <label>رمز الفصل (يعطيك إياه المعلم)<input type="text" id="stuCls" maxlength="20" placeholder="مثال: 6أ"></label>
+    <div class="stu-err" id="stuErr"></div>
+    <div class="row" style="margin:0"><button class="btn primary" id="stuSave">ابدأ</button><button class="btn ghost" id="stuSkip">تصفح فقط دون حفظ</button></div>
+  </div>
+</div>
+
 <div class="bnav">
   <div class="bnav-in">
     <button class="btn" id="prevBtn">السابق</button>
@@ -996,6 +1033,9 @@ table.data th{background:var(--sheet-2);font-weight:600}
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -1900,7 +1940,48 @@ function buildPlan(D,weak){
 $("#printPlan").addEventListener("click",()=>{try{window.print()}catch(e){}});
 $("#stuName").addEventListener("input",()=>{store.set("t:stuName",$("#stuName").value);renderDiag()});
 
+
+/* ================= cloud sync ================= */
+const LESSON_ID="digestion6";
+let STU=store.get("stu",null),fdb=null,syncT=0;
+try{if(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase){if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);fdb=firebase.firestore()}}catch(e){fdb=null}
+function sid(){let x=store.get("sid","");if(!x){x=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("sid",x)}return x}
+function setSync(t){const e=$("#syncState");if(e)e.textContent=t}
+function paintStu(){const e=$("#stuLine");if(!e)return;
+  if(!STU||STU.skip){e.textContent="أنت في وضع التصفح؛ نتائجك محفوظة على جهازك فقط.";setSync("");return}
+  e.innerHTML="<b>الطالب:</b> "+esc(STU.name)+" · <b>الفصل:</b> "+esc(STU.cls);
+  if(!fdb)setSync("لم يُربط الكتاب بقاعدة البيانات بعد؛ النتائج محفوظة على جهازك فقط.")}
+function payload(){const sc=store.get("scores",{}),D=diagnose(),pick=k=>sc[k]?{got:sc[k].got,total:sc[k].total}:null,o={};
+  Object.keys(sc).forEach(k=>{if(k!=="pre"&&k!=="post")o[k]=pick(k)});
+  return {lesson:LESSON_ID,sid:sid(),name:STU.name,cls:STU.cls,pre:pick("pre"),post:pick("post"),scores:o,
+    objectives:D?D.map(d=>d.pct):null,healed:D?D.map(d=>d.healed):null,survey:store.get("survey",null),
+    seen:(store.get("seen",[])||[]).length,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}}
+function queueSync(){if(!fdb||!STU||STU.skip)return;clearTimeout(syncT);setSync("جارٍ حفظ نتائجك…");
+  syncT=setTimeout(()=>{fdb.collection("durus_results").doc(LESSON_ID+"__"+sid()).set(payload())
+    .then(()=>setSync("✓ نتائجك محفوظة ويراها معلمك."))
+    .catch(()=>setSync("تعذّر الحفظ الآن، وسيُعاد المحاولة مع نشاطك القادم."))},1200)}
+const _saveScore=saveScore;saveScore=function(k,g,t,d){_saveScore(k,g,t,d);queueSync()};
+function askStu(){$("#stuModal").hidden=false;$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
+$("#stuSave").addEventListener("click",()=>{const n=$("#stuNm").value.trim().replace(/\s+/g," "),c=$("#stuCls").value.trim();
+  if(n.split(" ").length<2||!c){$("#stuErr").textContent="اكتب اسمك (اسمين على الأقل) ورمز فصلك.";return}
+  STU={name:n,cls:c};store.set("stu",STU);store.set("t:stuName",n);const si=$("#stuName");if(si)si.value=n;
+  $("#stuModal").hidden=true;renderDiag();paintStu();queueSync()});
+$("#stuSkip").addEventListener("click",()=>{STU={skip:true};store.set("stu",STU);$("#stuModal").hidden=true;paintStu()});
+$("#stuEdit").addEventListener("click",askStu);
+window.addEventListener("hashchange",()=>{if(!STU&&currentName()!=="cover")askStu()});
+/* survey */
+(function(){
+  const Q=["استمتعت بتعلّم الدرس بالكتاب التفاعلي","ساعدتني المشاهد المجسّمة على فهم الدرس","الأنشطة والمحاكيات جعلت الدرس أسهل","عرفت من التشخيص ما أحتاج إلى مراجعته","أتمنى أن تكون دروس أخرى بهذه الطريقة"];
+  let sv=store.get("survey",null)||{a:[0,0,0,0,0],c:""};
+  $("#likert").innerHTML=Q.map((q,i)=>'<div class="lik-q"><p>'+ar(i+1)+". "+q+'</p><div class="lik-o">'+[1,2,3,4,5].map(v=>'<button data-lq="'+i+'" data-lv="'+v+'" class="'+(sv.a[i]===v?"on":"")+'">'+ar(v)+'</button>').join("")+'</div></div>').join("");
+  $("#svComment").value=sv.c||"";
+  $("#likert").addEventListener("click",e=>{const b=e.target.closest("[data-lq]");if(!b)return;sv.a[+b.dataset.lq]=+b.dataset.lv;$$('[data-lq="'+b.dataset.lq+'"]').forEach(x=>x.classList.toggle("on",x===b))});
+  $("#svSend").addEventListener("click",()=>{const m=$("#svMsg");if(sv.a.some(v=>!v)){m.className="msg bad";m.textContent="اختر رقمًا لكل عبارة.";return}
+    sv.c=$("#svComment").value.trim().slice(0,400);store.set("survey",{a:sv.a,c:sv.c});queueSync();m.className="msg ok";m.textContent="شكرًا لك! وصل رأيك."});
+})();
+paintStu();
 bindSaves();renderResults();renderDiag();show();
+if(!STU&&currentName()!=="cover")askStu();
 })();
 </script>
 </body>

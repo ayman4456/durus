@@ -1,0 +1,7 @@
+node_modules/
+setup-private/
+*.xlsx
+roster*.json
+cards-*.html
+codes-*.csv
+.firebase/

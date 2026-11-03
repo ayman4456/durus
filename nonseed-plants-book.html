@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>النباتات اللابذرية — كتاب تفاعلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#edf1e7; --sheet:#fbfcf8; --sheet-2:#f2f5ec; --ink:#1d3428; --muted:#55685b; --line:#d5ddcc;
+  --moss:#2f5f3c; --fern:#3e7c4a; --leaf:#7aa84a; --spore:#c4871a; --water:#2a6c8c; --dry:#8b6a45;
+  --ok:#24804f; --ok-bg:#e1f2e6; --bad:#b9412d; --bad-bg:#f8e4df; --sel:#2a6c8c; --sel-bg:#e0edf3;
+  --bar:#1f2a24; --bar-ink:#f1f5ec; --desk:#2c3832; --edge:#d9d4c4; --page:#fdfcf7; --gold:#c9a24a;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+    --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+    --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+    --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+  --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+  --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+  --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+  color-scheme:dark;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;background:var(--desk)}
+body{margin:0;height:100%;overflow:hidden;display:flex;flex-direction:column;background:var(--desk);color:var(--ink);font-family:"Amiri","Traditional Arabic","Times New Roman",serif;font-size:19px;line-height:2}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+h1,h2,h3,.kufi{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;line-height:1.5;font-weight:700}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.btn,.tab,.toc button,.badge,.top-title,.top-count,.zone-h,.chip,.steps button,.vocab button,.lab-status,.msg,.hint,.where,.fact b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+:focus-visible{outline:3px solid var(--spore);outline-offset:2px;border-radius:6px}
+img,svg{max-width:100%}
+
+/* top bar */
+.top{flex:none;position:relative;z-index:20;background:var(--bar);color:var(--bar-ink)}
+.top-row{display:flex;align-items:center;gap:10px;max-width:860px;margin:auto;padding:10px 14px}
+.top-title{flex:1;min-width:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-count{font-size:14px;opacity:.8}
+.icon-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:10px;width:40px;height:40px;display:grid;place-items:center}
+.prog{height:4px;background:rgba(255,255,255,.12)}
+.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:40;display:none}
+.drawer.open{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.drawer-panel{position:absolute;top:0;bottom:0;right:0;width:min(340px,88vw);background:var(--sheet);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 14px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.drawer-panel h2{font-size:20px;margin:0 6px 10px}
+.toc{list-style:none;margin:0;padding:0}
+.toc button{width:100%;text-align:right;background:none;border:0;padding:10px 10px;border-radius:10px;display:flex;gap:10px;align-items:center;font-size:16px}
+.toc button:hover{background:var(--sheet-2)}
+.toc button.cur{background:var(--sel-bg);color:var(--sel);font-weight:700}
+.toc .n{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;flex:none}
+.toc .seen .n{background:var(--fern);border-color:var(--fern);color:#fff}
+
+/* book */
+.desk{flex:1;min-height:0;display:flex;justify-content:center;padding:14px 18px 12px 26px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,rgba(255,255,255,.07),transparent 70%)}
+.book{--turn:850ms;position:relative;width:100%;max-width:780px;height:100%;perspective:2400px}
+.book::before{content:"";position:absolute;top:8px;bottom:8px;left:-12px;width:16px;border-radius:10px 0 0 10px;background:repeating-linear-gradient(90deg,var(--edge) 0 1px,var(--page) 1px 3px);box-shadow:-3px 6px 12px rgba(0,0,0,.4)}
+.book::after{content:"";position:absolute;top:-5px;bottom:-5px;right:-8px;width:14px;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#163223,#2c5a3c 55%,#163223);box-shadow:3px 6px 12px rgba(0,0,0,.4)}
+.page{position:absolute;inset:0;display:none;overflow-y:auto;overscroll-behavior:contain;
+  background:linear-gradient(270deg,rgba(0,0,0,.13),rgba(0,0,0,0) 30px),linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,0) 16px),var(--page);
+  border-radius:14px 3px 3px 14px;box-shadow:0 12px 30px rgba(0,0,0,.35);padding:16px clamp(18px,4.5vw,44px) 16px;
+  transform-origin:right center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.page.on{display:block;z-index:2}
+.page.under{display:block;z-index:1}
+.page.turn-fwd,.page.turn-back{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+.page.turn-fwd{animation:turnFwd var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.turn-back{animation:turnBack var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes turnFwd{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes turnBack{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
+.leaf{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;transform-origin:right center;border-radius:3px 14px 14px 3px;background:linear-gradient(90deg,var(--page) 0,var(--page) 70%,var(--edge) 100%);box-shadow:0 14px 44px rgba(0,0,0,.45)}
+@keyframes leafFwd{0%{transform:rotateY(0);opacity:0}49.9%{opacity:0}50%{opacity:1}82%{opacity:1}100%{transform:rotateY(180deg);opacity:0}}
+@keyframes leafBack{0%{transform:rotateY(180deg);opacity:0}18%{opacity:1}49.9%{opacity:1}50%{opacity:0}100%{transform:rotateY(0);opacity:0}}
+.shade{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;border-radius:14px 3px 3px 14px;background:linear-gradient(90deg,rgba(0,0,0,.4),rgba(0,0,0,0) 75%)}
+@keyframes shade{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
+.corner{position:absolute;left:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 0 14px;
+  background:linear-gradient(45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.corner:hover{width:56px;height:56px}
+.runhead{display:flex;justify-content:space-between;gap:10px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:14px}
+.folio{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);margin-top:24px;padding-bottom:4px}
+.folio span{display:inline-block;min-width:40px;border-top:1px solid var(--line);padding-top:4px}
+
+/* two-page spread */
+.book.spread{max-width:1320px;transition:transform var(--turn) cubic-bezier(.55,.05,.35,1)}
+.book.spread::before,.book.spread::after{display:none}
+.book.spread.closed{transform:translateX(25%)}
+.book.spread.endonly{transform:translateX(-25%)}
+.book.spread .page{width:50%}
+.book.spread .page.pos-r{left:auto;right:0;border-radius:3px 14px 14px 3px;transform-origin:left center;background:linear-gradient(90deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l{right:auto;left:0;border-radius:14px 3px 3px 14px;transform-origin:right center;background:linear-gradient(270deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;border-radius:14px 4px 4px 14px}
+.page.flipL-out,.page.flipR-in,.page.flipR-out,.page.flipL-in{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.page.flipL-out{animation:fLout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-in{animation:fRin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-out{animation:fRout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipL-in{animation:fLin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes fLout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(180deg)}}
+@keyframes fRin{0%{transform:rotateY(-180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+@keyframes fRout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(-180deg)}}
+@keyframes fLin{0%{transform:rotateY(180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+.corner-back{display:none}
+.book.spread .corner-back{display:block;position:absolute;right:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 14px 0;background:linear-gradient(-45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:-3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.book.spread .corner-back:hover{width:56px;height:56px}
+.book.spread .corner-back[hidden]{display:none}
+
+/* AR card on page */
+.ar-card{display:flex;gap:14px;align-items:center;border:1.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:0 0 20px;background:var(--sheet)}
+.ar-card h3{margin:0;font-size:17px}
+.ar-card p{margin:2px 0 8px;font-size:16px;color:var(--muted);line-height:1.8}
+.ar-marker{flex:none;width:84px;height:84px;color:var(--ink);position:relative;overflow:hidden;border-radius:4px}
+.ar-marker svg{display:block;width:100%;height:100%}
+.ar-marker::after{content:"";position:absolute;left:0;right:0;height:30%;background:linear-gradient(transparent,rgba(42,168,101,.55),transparent);animation:scanl 2.6s linear infinite}
+@keyframes scanl{from{top:-30%}to{top:100%}}
+
+/* AR overlay */
+.ar{position:fixed;inset:0;z-index:60;background:radial-gradient(ellipse at 50% 38%,#24392d 0%,#0a120d 70%,#050806 100%);color:#eaf6ee;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;opacity:0;transition:opacity .35s}
+.ar.on{opacity:1}
+.ar.cam{background:#000}
+.ar video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.ar.cam video{display:block}
+.ar canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;display:block}
+.ar canvas:active{cursor:grabbing}
+.ar-hud{position:absolute;inset:0;pointer-events:none;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;flex-direction:column}
+.ar-hud button{pointer-events:auto}
+.ar-top{display:flex;align-items:center;gap:10px;position:relative;z-index:2}
+.ar-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid rgba(125,255,176,.6);color:#7dffb0;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ar-live::before{content:"";width:7px;height:7px;border-radius:50%;background:#7dffb0;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.ar-title{flex:1;min-width:0;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-x{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.4);color:#fff;font-size:17px}
+.brk{position:absolute;width:30px;height:30px;border:3px solid rgba(125,255,176,.75)}
+.b1{top:calc(env(safe-area-inset-top,0px) + 66px);right:14px;border-left:0;border-bottom:0}
+.b2{top:calc(env(safe-area-inset-top,0px) + 66px);left:14px;border-right:0;border-bottom:0}
+.b3{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);right:14px;border-left:0;border-top:0}
+.b4{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);left:14px;border-right:0;border-top:0}
+.ar-scan{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:14px;transition:opacity .5s;font-size:15px}
+.reticle{width:130px;height:130px;border-radius:50%;border:2px dashed #7dffb0;position:relative;animation:spin 4s linear infinite}
+.reticle::after{content:"";position:absolute;inset:44%;border-radius:50%;background:#7dffb0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ar-labels{position:absolute;inset:0;overflow:hidden}
+.ar-lbl{position:absolute;transform:translate(-50%,calc(-100% - 16px));background:rgba(6,18,11,.84);border:1px solid #7dffb0;color:#eaf6ee;font-size:13px;padding:3px 10px;border-radius:8px;white-space:nowrap;transition:opacity .3s;opacity:0}
+.ar-lbl::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:16px;background:#7dffb0}
+.ar-bottom{margin-top:auto;display:grid;gap:10px;justify-items:center;position:relative;z-index:2}
+.ar-cap{background:rgba(6,18,11,.86);border:1px solid rgba(125,255,176,.5);border-radius:14px;padding:10px 18px;font-size:15.5px;line-height:1.9;max-width:680px;text-align:center;min-height:52px}
+.ar-tl{display:flex;gap:6px}
+.ar-tl i{width:20px;height:5px;border-radius:3px;background:rgba(255,255,255,.25)}
+.ar-tl i.on{background:#7dffb0}
+.ar-ctrl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ar-ctrl button{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px}
+.ar-hint{font-size:11.5px;opacity:.65;text-align:center}
+.ar-toast{background:#3a1f1a;border:1px solid #f08a76;border-radius:10px;padding:8px 14px;font-size:13.5px;max-width:560px;text-align:center}
+
+/* launch steps */
+.lsteps{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:ls}
+.lsteps li{counter-increment:ls;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:8px}
+.lsteps label{display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.8}
+.lsteps label::before{content:counter(ls,arabic-indic);flex:none;width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;margin-top:3px}
+.lsteps input[type="checkbox"]{width:20px;height:20px;accent-color:var(--fern);margin-top:6px;flex:none}
+
+/* concept map */
+.cm-bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border:1.5px dashed var(--line);border-radius:12px;background:var(--sheet-2);margin-bottom:14px;min-height:52px}
+.cmap{display:grid;gap:6px}
+.cm-top{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.cm-node,.cm-slot{min-height:44px;border-radius:12px;padding:6px 12px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.5}
+.cm-node.root{background:var(--fern);color:#fff;font-size:15.5px;padding:8px 18px}
+.cm-slot{border:2px dashed var(--line);background:var(--sheet-2);width:100%;color:var(--ink)}
+.cm-top .cm-slot{width:auto;min-width:130px}
+.cm-slot:not(.filled)::before{content:"؟";color:var(--muted)}
+.cm-slot.filled{border-style:solid;border-color:var(--moss);background:var(--sheet)}
+.cm-slot.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.cm-slot.ok{border-color:var(--ok);background:var(--ok-bg)}
+.cm-slot.bad{border-color:var(--bad);background:var(--bad-bg)}
+.cm-link{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.6}
+.cm-split{height:16px;border:2px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;margin:0 22%}
+.cm-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-col{display:grid;gap:6px;align-content:start;border:1.5px solid var(--line);border-radius:14px;padding:10px;background:var(--sheet)}
+
+/* AR marker card */
+.ar-mk{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);background:rgba(6,18,11,.86);border:1px dashed #ff5cb8;color:#fff;border-radius:14px;padding:12px 18px;font-size:14.5px;text-align:center;max-width:320px;line-height:1.9}
+.mk-view{position:fixed;inset:0;z-index:70;background:#fff;color:#1d3428;display:flex;align-items:center;justify-content:center;padding:20px}
+.mk-view[hidden]{display:none}
+.mk-card{display:grid;justify-items:center;gap:14px;text-align:center;max-width:520px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.mk-sq{width:min(70vw,58vh,340px);aspect-ratio:1;background:#E6007E;border-radius:18px;display:grid;place-items:center}
+.mk-sq svg{width:34%;height:34%}
+.mk-card h3{margin:0;font-size:19px}
+.mk-card p{margin:0;font-size:14.5px;line-height:1.9}
+@media print{
+  body.pm .page{display:none!important}
+  body.pm .mk-view{display:flex!important;position:static;height:100vh}
+  body.pm .mk-card .row{display:none}
+}
+
+/* diagnosis & remedial plan */
+.diag-sum{display:flex;gap:14px;align-items:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.8}
+.diag-sum .big{font-size:34px;color:var(--fern);font-weight:700}
+.obj-row,.plan-card{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;background:var(--sheet)}
+.plan-card{border-color:var(--bad)}
+.plan-card.healed{border-color:var(--water)}
+.top-l{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.top-l h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15.5px;font-weight:600;line-height:1.7}
+.lvl{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;padding:2px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid currentColor}
+.lvl.m{color:var(--ok)}.lvl.n{color:var(--spore)}.lvl.w{color:var(--bad)}.lvl.r{color:var(--water)}
+.obj-bar{height:12px;background:var(--sheet-2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.obj-bar i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.evid{font-size:13px;color:var(--muted);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:12px}
+.plan-steps>li{display:grid;grid-template-columns:30px 1fr;gap:10px}
+.plan-steps .k{width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:13px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;font-weight:600}
+.concept{background:var(--sheet-2);border-radius:10px;padding:10px 12px;font-size:16.5px;margin-top:6px}
+.print-only{display:none}
+@media print{
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  .top,.bnav,.drawer,.corner,.corner-back,.leaf,.shade,.ar,.no-print,.runhead,.folio{display:none!important}
+  .desk{display:block;padding:0;overflow:visible}
+  .book{height:auto;max-width:none;transform:none!important;perspective:none}
+  .page{display:none!important}
+  .page[data-page="diagnosis"],.page[data-page="plan"]{display:block!important;position:static!important;width:auto!important;height:auto;overflow:visible;box-shadow:none;background:#fff!important;transform:none!important;animation:none!important;break-after:page}
+  .print-only{display:block}
+}
+
+/* hardcover */
+.page[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;color:#f2ead2;padding:14px}
+.cover-frame{min-height:100%;border:2px solid var(--gold);outline:1px solid var(--gold);outline-offset:-9px;border-radius:8px;padding:30px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.cover-frame .kick{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:#dcc78c}
+.cover-frame h1{color:#e4c670;font-size:clamp(34px,8.5vw,56px);margin:0}
+.cover-frame .sub{color:#efe6cc;font-size:19px;margin:0}
+.cover-win{width:min(100%,440px);border:2px solid var(--gold);border-radius:220px 220px 10px 10px;overflow:hidden;background:#f1eddf}
+.cover-win svg{display:block;width:100%;height:auto}
+.orn{color:var(--gold);font-size:18px;letter-spacing:8px;line-height:1}
+.cover-frame .open{margin-top:4px;background:transparent;border:1.5px solid var(--gold);color:#e4c670;border-radius:10px;padding:8px 26px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.pg-h{margin:6px 0 18px}
+.pg-h .where{font-size:14px;color:var(--muted)}
+.pg-h h2{font-size:clamp(26px,6vw,36px);margin:2px 0 0;color:var(--moss)}
+p{margin:0 0 14px}
+.lead{font-size:19px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin:0 0 18px}
+.verse{background:var(--sheet-2);border-right:4px solid var(--fern);padding:12px 16px;border-radius:10px;margin:0 0 16px;font-weight:600;color:var(--moss)}
+.term{background:linear-gradient(transparent 60%,color-mix(in srgb,var(--spore) 35%,transparent) 60%);font-weight:700;padding:0 2px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 18px}
+.fact{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:12px}
+.fact b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:22px;color:var(--fern)}
+.fact span{font-size:15px;color:var(--muted)}
+
+/* activity blocks */
+.act{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin:0 0 22px;position:relative}
+.act[data-kind="pre"]{border-color:var(--water)}
+.act[data-kind="form"]{border-style:dashed;border-color:var(--fern)}
+.act[data-kind="post"]{border-color:var(--spore)}
+.act[data-kind="lab"]{border-color:var(--leaf)}
+.act-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:8px}
+.act-h h3{margin:0;font-size:20px;flex:1 1 220px}
+.badge{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;padding:3px 10px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.b-pre{color:var(--water)} .b-form{color:var(--fern)} .b-act{color:var(--moss)} .b-lab{color:var(--leaf)} .b-post{color:var(--spore)} .b-think{color:var(--dry)}
+.hint{color:var(--muted);font-size:16px}
+
+.btn{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:12px;padding:8px 16px;font-size:16px;font-weight:600}
+.btn.primary{background:var(--fern);border-color:var(--fern);color:#fff}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+
+/* quiz */
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.q-t{font-weight:600;margin-bottom:8px;display:flex;gap:10px}
+.q-n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--sheet-2);border:1px solid var(--line);display:grid;place-items:center;font-size:14px;margin-top:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.opt{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font-size:16.5px;line-height:1.6}
+.opt:hover:not(:disabled){border-color:var(--sel)}
+.opt.sel{border-color:var(--sel);background:var(--sel-bg)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.why{margin-top:8px;font-size:16px;padding:8px 12px;border-radius:10px;background:var(--sheet-2)}
+.why.ok{color:var(--ok)} .why.bad{color:var(--bad)}
+.score{margin-top:14px;padding:14px;border-radius:12px;background:var(--sheet-2);font-weight:600;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.score .big{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:28px;color:var(--fern)}
+
+/* sort */
+.pool,.zone-body{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:12px}
+.pool{background:var(--sheet-2);border:1.5px dashed var(--line)}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.zone{border:1.5px solid var(--line);border-radius:14px;background:var(--sheet);cursor:pointer}
+.zone.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.zone-h{padding:8px 12px;border-bottom:1px solid var(--line);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.chip{background:var(--sheet);border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:15.5px}
+.chip.sel{border-color:var(--sel);background:var(--sel-bg);transform:translateY(-2px)}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg)}
+.chip.bad{border-color:var(--bad);background:var(--bad-bg)}
+.msg{margin-top:10px;font-weight:600;min-height:1em}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+
+/* order */
+.order{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.order li{display:flex;align-items:center;gap:10px;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px}
+.order li.ok{border-color:var(--ok);background:var(--ok-bg)}
+.order li.bad{border-color:var(--bad);background:var(--bad-bg)}
+.order .k{flex:none;width:30px;height:30px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:14px}
+.order .t{flex:1;font-size:16px;line-height:1.6}
+.order .mv{display:flex;flex-direction:column;gap:4px}
+.order .mv button{width:34px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);font-size:13px;line-height:1}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px;align-content:start}
+.match .col h4{margin:0 0 2px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--muted);font-weight:500}
+.mi{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;font-size:15.5px;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+.mi .tag{flex:none;min-width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:transparent}
+.mi.sel{border-color:var(--sel);background:var(--sel-bg)}
+.mi.ok{border-color:var(--ok);background:var(--ok-bg)}
+.mi.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+.flip{perspective:1100px;background:none;border:0;padding:0;text-align:right;min-height:300px}
+.flip-in{position:relative;width:100%;height:100%;min-height:300px;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--line);border-radius:16px;background:var(--sheet);padding:14px;display:flex;flex-direction:column}
+.face.front{align-items:center;justify-content:center;text-align:center;gap:6px}
+.face.front svg{width:150px;height:120px}
+.face.front h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:20px;color:var(--moss)}
+.face.front small{color:var(--muted);font-size:14px}
+.face.back{transform:rotateY(180deg);background:var(--sheet-2)}
+.face.back h4{margin:0 0 6px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss)}
+.face.back ul{margin:0;padding-right:18px;font-size:15.5px;line-height:1.7}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 14px;font-size:15.5px}
+.tab[aria-selected="true"]{background:var(--fern);border-color:var(--fern);color:#fff}
+.tabpane{display:none}
+.tabpane.on{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:start}
+.tabpane svg{width:150px;height:150px;background:var(--sheet-2);border-radius:14px}
+.tabpane ul{margin:0;padding-right:18px;font-size:16.5px}
+@media (max-width:520px){.tabpane.on{grid-template-columns:1fr}.tabpane svg{width:100%;height:150px}}
+
+/* reveal */
+.reveal{border-top:1px solid var(--line);padding:10px 0}
+.reveal:first-of-type{border-top:0}
+.reveal p{margin:0 0 6px;font-weight:600}
+.model{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--ok-bg);font-size:16px}
+textarea{width:100%;min-height:80px;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:10px;font-size:16px;line-height:1.7;resize:vertical}
+input[type="text"]{border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 10px;width:110px;text-align:center}
+
+/* KWL */
+.kwl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kwl label{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss);margin-bottom:4px}
+@media (max-width:640px){.kwl{grid-template-columns:1fr}}
+
+/* size scale */
+.scale-list{display:grid;gap:8px}
+.sz{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;background:none;border:0;padding:4px 0;text-align:right}
+.sz .nm{font-size:15px}
+.sz .tr{background:var(--sheet-2);border-radius:999px;height:26px;position:relative;overflow:hidden}
+.sz .tr i{position:absolute;inset:0 0 0 auto;background:var(--leaf);border-radius:999px;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;color:#fff;font-style:normal;font-size:13px;white-space:nowrap;transition:width .6s}
+.sz.on .tr i{background:var(--fern)}
+.sz-note{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:48px}
+
+/* lab */
+.lab-svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.lab-svg .glass{fill:none;stroke:var(--muted);stroke-width:3}
+.lab-svg .water{fill:var(--water);opacity:.45;transform-box:fill-box;transform-origin:50% 100%;transition:transform 1s}
+.lab-svg .scale-body{fill:var(--muted)}
+.lab-svg .scale-screen{fill:#0d1f14}
+.lab-svg .scale-txt{fill:#7dfc9f;font-size:12px;font-family:Tahoma,sans-serif}
+.lab-svg .tbl{fill:var(--dry);opacity:.5}
+.lab-svg .lbl{fill:var(--muted);font-size:11px}
+#ball{transition:transform 1s ease,opacity .4s}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.steps button{width:100%;text-align:right;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:16px}
+.steps button .k{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.steps button.done{background:var(--ok-bg);border-color:var(--ok)}
+.steps button.done .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps button.next{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.lab-status{text-align:center;margin-top:8px;font-weight:600;color:var(--water);min-height:1.9em}
+table.data{width:100%;border-collapse:collapse;margin-top:12px;font-size:16px}
+table.data td,table.data th{border:1px solid var(--line);padding:6px 10px;text-align:right}
+table.data th{background:var(--sheet-2);font-weight:600}
+.lab-q{margin-top:12px;display:grid;gap:10px}
+.lab-q label{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* vascular sim */
+.vsim{display:grid;grid-template-columns:1fr;gap:10px}
+.vsim svg{width:100%;max-width:440px;margin:auto;display:block;background:var(--sheet-2);border-radius:14px}
+.vsim input[type="range"]{width:100%;accent-color:var(--fern)}
+.flow{stroke-dasharray:6 10;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+
+/* cover */
+.cover{position:relative;border-radius:20px;overflow:hidden;background:var(--sheet);border:1px solid var(--line);margin-bottom:18px}
+.cover svg.art{display:block;width:100%;height:auto}
+.cover-body{padding:18px 20px 22px}
+.cover h1{font-size:clamp(36px,10vw,58px);margin:0;color:var(--moss);letter-spacing:0}
+.cover .sub{color:var(--muted);margin:2px 0 14px;font-size:17px}
+.specimen{position:absolute;top:14px;left:14px;background:var(--sheet);border:1.5px solid var(--ink);border-radius:4px;padding:6px 12px;font-size:13px;line-height:1.6;transform:rotate(-3deg);box-shadow:2px 3px 0 var(--line)}
+.objs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.objs li{display:flex;gap:10px;align-items:flex-start}
+.objs li b{flex:none;color:var(--fern);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.vocab{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.vocab button{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:999px;padding:4px 14px;font-size:15.5px}
+.vocab-def{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:46px}
+
+/* results */
+.res-bars{display:grid;gap:12px}
+.res-bar .lb{display:flex;justify-content:space-between;font-size:16px}
+.res-bar .tr{height:16px;background:var(--sheet-2);border-radius:999px;overflow:hidden}
+.res-bar .tr i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.res-list{list-style:none;padding:0;margin:0}
+.res-list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:8px 0;font-size:16px}
+
+/* bottom nav */
+.bnav{flex:none;z-index:20;background:var(--bar);padding:8px 14px 10px}
+.bnav .btn{background:transparent;border-color:rgba(255,255,255,.25);color:var(--bar-ink)}
+.bnav .btn.primary{background:var(--gold);border-color:var(--gold);color:#1d2a20}
+.bnav-in{max-width:860px;margin:auto;display:flex;gap:10px;justify-content:space-between}
+.bnav .btn{flex:1;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.opt{font-size:17.5px}.mi{font-size:16.5px}.order .t{font-size:17px}.face.back ul{font-size:16.5px}.why{font-size:16.5px}.tabpane ul{font-size:17.5px}
+.hint{font-size:14px;line-height:1.9}.chip{font-size:14px}.btn{font-size:14.5px}.badge{font-size:12px}.act-h h3{font-size:18px}.fact b{font-size:19px}
+.pg-h h2{font-size:clamp(24px,5.5vw,32px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-row">
+    <button class="icon-btn" id="menuBtn" aria-label="فهرس الكتاب">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="top-title" id="topTitle">النباتات اللابذرية</div>
+    <div class="top-count" id="topCount"></div>
+    <button class="icon-btn" id="sndBtn" aria-label="صوت تقليب الصفحات" aria-pressed="true"></button>
+  </div>
+  <div class="prog"><i id="progBar"></i></div>
+</div>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-bg" id="drawerBg"></div>
+  <nav class="drawer-panel" aria-label="فهرس الكتاب">
+    <h2>فهرس الدرس</h2>
+    <ul class="toc" id="toc"></ul>
+  </nav>
+</div>
+
+<main class="desk"><div class="book" id="book">
+
+<!-- ============ COVER ============ -->
+<section class="page" data-page="cover" data-title="الغلاف">
+  <div class="cover-frame">
+    <div class="kick">العلوم · الصف الثاني المتوسط</div>
+    <div class="orn">❖ ❖ ❖</div>
+    <div class="cover-win"><svg id="coverArt" viewBox="100 0 600 300" aria-hidden="true"></svg></div>
+    <h1>النباتات اللابذرية</h1>
+    <p class="sub">الفصل التاسع: النباتات · الدرس الأول</p>
+    <div class="orn">❖ ❖ ❖</div>
+    <button class="open" data-go="goals">افتح الكتاب</button>
+    <div class="kick" style="margin-top:8px">تصميم: أيمن الصاعدي</div>
+  </div>
+</section>
+
+<!-- ============ GOALS ============ -->
+<section class="page" data-page="goals" data-title="الأهداف والمفردات">
+  <header class="pg-h"><div class="where">في هذا الدرس</div><h2>الأهداف والمفردات</h2></header>
+  <p class="lead">وهب الله عز وجل النباتات اللابذرية تكيفات تعيش بها وتنمو في البيئة الرطبة. اقرأ، وجرّب، واختبر فهمك صفحة بعد صفحة.</p>
+  <div class="sheet">
+    <h3 style="margin:0 0 10px">ستتمكن في نهاية الدرس من أن</h3>
+    <ul class="objs">
+      <li><b>تحدد</b><span>الخصائص العامة لجميع النباتات.</span></li>
+      <li><b>تقارن</b><span>بين النباتات الوعائية والنباتات اللاوعائية.</span></li>
+      <li><b>تميّز</b><span>خصائص النباتات اللاوعائية اللابذرية والوعائية اللابذرية.</span></li>
+      <li><b>تحدد</b><span>أهمية بعض النباتات اللاوعائية والوعائية.</span></li>
+    </ul>
+  </div>
+
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">المفردات الجديدة</h3>
+    <p class="hint" style="margin:0">اضغط على أي مفردة لترى معناها.</p>
+    <div class="vocab" id="vocab"></div>
+    <div class="vocab-def" id="vocabDef">…</div>
+  </div>
+</section>
+
+<!-- ============ PRE-TEST ============ -->
+<section class="page" data-page="pretest" data-title="التقويم القبلي">
+  <header class="pg-h"><div class="where">قبل أن تبدأ</div><h2>ماذا تعرف عن النباتات؟</h2></header>
+  <p>هذا التقويم لا يُحسب عليك. هدفه أن تعرف ما لديك من معلومات الآن، لتقارنه بنتيجتك في التقويم الختامي.</p>
+  <div class="act" data-kind="pre">
+    <div class="act-h"><span class="badge b-pre">تقويم قبلي</span><h3>ستة أسئلة سريعة</h3></div>
+    <div id="q-pre"></div>
+  </div>
+</section>
+
+<!-- ============ INTRO ============ -->
+<section class="page" data-page="intro" data-title="فيم تتشابه النباتات؟">
+  <header class="pg-h"><div class="where">مدخل الفصل · ص١٤</div><h2>فيم تتشابه النباتات؟</h2></header>
+  <div class="verse">قال الله تعالى: ﴿وهو الذي أنزل من السماء ماء فأخرجنا به نبات كل شيء﴾ [الأنعام: ٩٩]</div>
+  <p>توجد النباتات في كل مكان تقريبًا على سطح الأرض، وتمتلئ الغابات المطيرة بنباتات خضراء كثيرة الأوراق. لكن: هل لكل النباتات أوراق خضراء؟ وهل تنتج جميعها أزهارًا أو بذورًا؟</p>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>اختر الخصائص المشتركة بين جميع النباتات</h3></div>
+    <p class="hint">اختر كل عبارة تراها صحيحة لجميع النباتات، ثم اضغط «تحقق».</p>
+    <div id="a-intro"></div>
+  </div>
+</section>
+
+<!-- ============ LAUNCH LAB ============ -->
+<section class="page" data-page="launch" data-title="التجربة الاستهلالية">
+  <header class="pg-h"><div class="where">نشاطات تمهيدية · ص١٥</div><h2>كيف تستفيد من النباتات؟</h2></header>
+  <p>توجد النباتات في كل مكان: في الحدائق والمتنزهات، وعلى الأنهار والصخور، وفي المنازل، وحتى في طبق الطعام. فهل تُستخدم النباتات في أشياء أخرى غير الطعام؟</p>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">تجربة استهلالية</span><h3>خطوات التجربة</h3></div>
+    <p class="hint">نفّذ الخطوات مع زملائك، وضع علامة على كل خطوة تنهيها.</p>
+    <ol class="lsteps">
+      <li><label><input type="checkbox"> من خلال جلسة عصف ذهني مع زملائك في الصف، اكتب قائمة بالأشياء التي تستخدمها يوميًا ويمكن أن يكون مصدرها نباتيًا.</label><textarea data-save="launch1" placeholder="قائمتي…"></textarea></li>
+      <li><label><input type="checkbox"> قارن القائمة التي حصلت عليها بقوائم الزملاء الآخرين.</label></li>
+      <li><label><input type="checkbox"> ابحث في المجلات والكتب عن صور للأشياء التي في قائمتك.</label></li>
+      <li><label><input type="checkbox"> استخدم الكرتون المقوّى لعرض الصور التي حصلت عليها أنت وزملاؤك في الصف.</label></li>
+      <li><label><input type="checkbox"> <b>التفكير الناقد:</b> سجّل الأشياء التي كانت تُصنع من النباتات قبل ١٠٠ عام أو أكثر، وتُصنع اليوم من البلاستيك أو الفولاذ أو من مواد أخرى.</label><textarea data-save="launch5" placeholder="اكتب ما توصلت إليه…"></textarea></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ FOLDABLE ============ -->
+<section class="page" data-page="foldable" data-title="المطوية">
+  <header class="pg-h"><div class="where">منظم الأفكار · ص١٥</div><h2>مطوية النباتات</h2></header>
+  <p>اكتب ما تعرفه عن النباتات قبل القراءة، وما تود معرفته. عُد بعد إنهاء الدرس لتكتب ما تعلمته. يُحفظ ما تكتبه على جهازك.</p>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">مطوية رقمية</span><h3>أعرف · أود أن أعرف · تعلمت</h3></div>
+    <div class="kwl">
+      <div><label for="k1">ما أعرفه</label><textarea id="k1" data-save="kwl1" placeholder="مثال: النباتات تحتاج إلى الماء"></textarea></div>
+      <div><label for="k2">ما أود معرفته</label><textarea id="k2" data-save="kwl2" placeholder="مثال: كيف يتكاثر نبات بلا بذور؟"></textarea></div>
+      <div><label for="k3">ما تعلمته</label><textarea id="k3" data-save="kwl3" placeholder="اكتبه بعد إنهاء الدرس"></textarea></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT ARE PLANTS ============ -->
+<section class="page" data-page="what" data-title="ما النباتات؟">
+  <header class="pg-h"><div class="where">الدرس ١ · ص١٨</div><h2>ما النباتات؟</h2></header>
+  <p>لو طُلب منك كتابة أسماء النباتات التي تعرفها لكتبت الأشجار والأزهار والخضراوات والفواكه، والمحاصيل كالقمح والأرز والذرة. والنباتات مصدر رئيس لغذاء الإنسان والمخلوقات الأخرى، ولولا أن الله خلقها لكانت الحياة على الأرض مستحيلة.</p>
+  <div class="facts">
+    <div class="fact"><b>٢٦٠ – ٣٠٠ ألف</b><span>نوع نباتي اكتُشف حتى الآن تقريبًا</span></div>
+    <div class="fact"><b>أكثر من ١٠٠ م</b><span>طول شجرة السكويا العملاقة</span></div>
+    <div class="fact"><b>كل البيئات</b><span>من المناطق القطبية إلى الصحراء الحارة</span></div>
+  </div>
+  <p><span class="term">خصائص النباتات</span> تتكون جميع النباتات من خلايا عديدة، ويحتوي معظمها على الكلوروفيل، ولها جذور أو أشباه جذور تثبتها في الأرض أو على الصخور أو على نباتات أخرى، وتحتاج جميعها إلى الماء.</p>
+  <div class="verse">قال الله تعالى: ﴿وجعلنا من الماء كل شيء حي أفلا يؤمنون﴾ [الأنبياء: ٣٠]</div>
+
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>مسطرة أحجام النباتات</h3></div>
+    <p class="hint">تختلف النباتات في أحجامها اختلافًا هائلًا. اضغط على أي نبات لتقرأ عنه. (المسطرة لوغاريتمية، فكل خطوة تعني أضعافًا.)</p>
+    <div class="scale-list" id="a-size"></div>
+    <div class="sz-note" id="sizeNote">اختر نباتًا من القائمة.</div>
+  </div>
+
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تقويم تكويني</span><h3>تحقق من فهمك</h3></div>
+    <div id="q-what"></div>
+  </div>
+</section>
+
+<!-- ============ CLASSIFY ============ -->
+<section class="page" data-page="classify" data-title="تصنيف النباتات">
+  <header class="pg-h"><div class="where">الدرس ١ · ص١٩</div><h2>تصنيف النباتات</h2></header>
+  <p>تُصنَّف المملكة النباتية إلى مجموعات رئيسة تُسمّى أقسامًا، ويقابل القسم الشعبةَ في الممالك الأخرى. ويقسم العلماء النباتات إلى مجموعتين رئيستين:</p>
+  <div class="facts">
+    <div class="fact"><b>النباتات الوعائية</b><span>فيها تراكيب أنبوبية تنقل الماء والمواد المغذية داخل النبات.</span></div>
+    <div class="fact"><b>النباتات اللاوعائية</b><span>تفتقر إلى هذه التراكيب، وتنقل الماء والمواد بطرائق أخرى.</span></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>صنّف النباتات اللابذرية</h3></div>
+    <p class="hint">انتبه: بعض الأسماء قد تخدعك! اضغط البطاقة ثم المجموعة.</p>
+    <div id="a-classify"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تقويم تكويني</span><h3>تحقق من فهمك</h3></div>
+    <div id="q-classify"></div>
+  </div>
+</section>
+
+<!-- ============ NONVASCULAR ============ -->
+<section class="page" data-page="nonvascular" data-title="النباتات اللاوعائية اللابذرية">
+  <header class="pg-h"><div class="where">الدرس ١ · ص١٩–٢٠</div><h2>النباتات اللاوعائية اللابذرية</h2></header>
+  <p>بعض النباتات لا تنمو من البذور، وليس لها جذور وسيقان وأوراق حقيقية. يبلغ سُمكها عددًا قليلًا من الخلايا، ويتراوح طولها بين ٢ و٥ سم، ولها أشباه سيقان وأشباه أوراق خضراء. وبدلًا من الجذور لها <span class="term">أشباه الجذور</span> التي تثبّت النبات في مكانه.</p>
+  <p>تنمو في المناطق الرطبة، وتمتص الماء مباشرة عبر غشاء الخلية والجدار الخلوي، وليس لها أزهار ولا مخاريط، فهي تتكاثر <span class="term">بالأبواغ</span> لا بالبذور.</p>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">بطاقات قلّابة</span><h3>تعرّف المجموعات الثلاث</h3></div>
+    <p class="hint">اضغط على البطاقة لتقلبها وترى خصائص النبات.</p>
+    <div class="flips" id="a-flip"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تقويم تكويني</span><h3>لمن هذه الصفة؟</h3></div>
+    <p class="hint">صِل كل صفة بالنبات الذي تميّزه.</p>
+    <div id="a-traits"></div>
+  </div>
+</section>
+
+<!-- ============ LAB ============ -->
+<section class="page" data-page="lab" data-title="تجربة: الحزازيات والماء">
+  <header class="pg-h"><div class="where">تجربة · ص١٩</div><h2>قياس كمية الماء التي تمتصها الحزازيات</h2></header>
+  <p>نفّذ التجربة افتراضيًا بالضغط على الخطوات بالترتيب، ودوّن بياناتك، ثم أجب عن أسئلة التحليل. كل مرة تعيد فيها التجربة تحصل على عيّنة مختلفة.</p>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>شاهد خطوات التجربة تخرج من الصفحة مجسّمة، وتابع القياسات لحظة بلحظة.</p><button class="btn primary" data-ar="lab">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">تجربة افتراضية</span><h3>مختبر الحزازيات</h3></div>
+    <svg class="lab-svg" viewBox="0 0 320 210" aria-label="محاكاة التجربة">
+      <rect x="0" y="182" width="320" height="28" class="tbl"/>
+      <g>
+        <rect x="18" y="160" width="114" height="22" rx="5" class="scale-body"/>
+        <rect x="45" y="164" width="60" height="14" rx="3" class="scale-screen"/>
+        <text id="scaleTxt" x="75" y="175" text-anchor="middle" class="scale-txt">0.0 g</text>
+        <rect x="30" y="152" width="90" height="8" rx="3" class="scale-body"/>
+        <text x="75" y="200" text-anchor="middle" class="lbl">الميزان</text>
+      </g>
+      <g>
+        <rect id="water" x="190" y="42" width="100" height="140" class="water" style="transform:scaleY(0)"/>
+        <path d="M186 30 V182 H294 V30" class="glass"/>
+        <line x1="186" y1="70" x2="198" y2="70" stroke="currentColor" class="glass"/>
+        <text x="300" y="74" class="lbl" text-anchor="start" style="direction:ltr">200</text>
+        <line x1="186" y1="126" x2="198" y2="126" class="glass"/>
+        <text x="300" y="130" class="lbl" text-anchor="start" style="direction:ltr">100</text>
+        <text x="240" y="200" text-anchor="middle" class="lbl">الوعاء (مل)</text>
+      </g>
+      <g id="ball" style="opacity:0;transform:translate(150px,60px)">
+        <circle r="17" fill="#5b8f3e"/>
+        <circle r="17" fill="none" stroke="#e8e2cf" stroke-width="2" stroke-dasharray="3 3"/>
+        <path d="M-10 -4 q5 -6 10 0 q5 6 10 0 M-9 6 q5 -5 9 0 q5 5 9 0" stroke="#a7cf7a" stroke-width="2" fill="none"/>
+        <path d="M0 -17 l-4 -8 M0 -17 l4 -8" stroke="#e8e2cf" stroke-width="2"/>
+      </g>
+    </svg>
+    <div class="lab-status" id="labStatus">ابدأ بالخطوة الأولى.</div>
+    <ol class="steps" id="labSteps"></ol>
+    <table class="data">
+      <tr><th>القياس</th><th>القيمة</th></tr>
+      <tr><td>كتلة كرة الحزازيات الجافة</td><td id="d1">—</td></tr>
+      <tr><td>حجم الماء في البداية</td><td id="d2">—</td></tr>
+      <tr><td>كتلة الكرة بعد ١٥ دقيقة</td><td id="d3">—</td></tr>
+      <tr><td>حجم الماء المتبقي</td><td id="d4">—</td></tr>
+    </table>
+    <div class="lab-q" id="labQ" hidden>
+      <h3 style="margin:6px 0 0;font-size:19px">التحليل</h3>
+      <label>احسب كمية الماء التي امتصتها الحزازيات، ثم سجّلها في دفتر العلوم: <input type="text" id="lq1" inputmode="decimal"> مل</label>
+            <div class="row"><button class="btn primary" id="labCheck">تحقق من التحليل</button><button class="btn ghost" id="labReset">أعد التجربة بعيّنة جديدة</button></div>
+      <div class="msg" id="labMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PIONEER ============ -->
+<section class="page" data-page="pioneer" data-title="النباتات اللاوعائية والبيئة">
+  <header class="pg-h"><div class="where">الربط مع البيئة · ص٢٠</div><h2>النباتات اللاوعائية والبيئة</h2></header>
+  <p>الحزازيات وحشيشة الكبد ضروريتان للبيئة في مناطق عديدة. ومع حاجتها إلى الرطوبة، يقاوم كثير منها الجفاف طويلًا، وتنمو في التربة القليلة السُّمك التي لا تستطيع النباتات الأخرى النمو فيها. تحمل الرياح أبواغها، فتنمو نباتات جديدة إذا توافرت الظروف المناسبة.</p>
+  <p>تُسمّى المخلوقات التي تنمو أولًا في البيئات الجديدة أو غير المستقرة كسهول اللابة وأراضي الغابات المحترقة <span class="term">الأنواع الرائدة</span>.</p>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>شاهد كيف تحوّل الحزازيات صخرة عارية إلى تربة جديدة.</p><button class="btn primary" data-ar="pioneer">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>رتّب مراحل تكوّن تربة جديدة</h3></div>
+    <p class="hint">استخدم السهمين لترتيب المراحل من الأولى (أعلى) إلى الأخيرة، ثم اضغط «تحقق».</p>
+    <div id="a-pioneer"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">ماذا قرأت؟</span><h3>سؤال مفتوح</h3></div>
+    <div class="reveal" style="border:0;padding:0">
+      <p>لماذا تُعد النباتات الرائدة مهمة في البيئات غير المستقرة؟</p>
+      <textarea data-save="pioneerWhy" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>لأنها تحطّم الصخور ببطء، وعندما تموت تتحلل وتتجمع موادها، فتتكوّن تربة جديدة تسمح لمخلوقات حية أخرى بالانتقال إلى المنطقة والعيش فيها.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VASCULAR ============ -->
+<section class="page" data-page="vascular" data-title="النباتات الوعائية اللابذرية">
+  <header class="pg-h"><div class="where">الدرس ١ · ص٢١</div><h2>النباتات الوعائية اللابذرية</h2></header>
+  <p>تنمو السرخسيات أحيانًا بالقرب من الحزازيات، ويتشابهان في أن كليهما يتكاثر بالأبواغ لا بالبذور. لكن السرخسيات تحتوي على <span class="term">أنسجة وعائية</span>: خلايا طويلة أنبوبية الشكل تنقل الماء والأملاح المعدنية والغذاء داخل النبات.</p>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>تابع رحلة الماء داخل نبات حزازي ونبات سرخسي بالأبعاد الثلاثية.</p><button class="btn primary" data-ar="vascular">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="lab">
+    <div class="act-h"><span class="badge b-lab">محاكاة</span><h3>لماذا لا تطول الحزازيات؟</h3></div>
+    <p class="hint">حرّك المؤشر لزيادة ارتفاع النبات (عدد طبقات الخلايا)، وراقب ما يحدث للخلايا العليا في كل نبات.</p>
+    <div class="vsim">
+      <svg id="vsimSvg" viewBox="0 0 320 300" aria-label="محاكاة نقل الماء"></svg>
+      <label>ارتفاع النبات: <b id="vsimVal">٣</b> طبقات
+        <input type="range" id="vsimRange" min="1" max="10" value="3">
+      </label>
+      <div class="sz-note" id="vsimMsg"></div>
+    </div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تقويم تكويني</span><h3>وضّح</h3></div>
+    <div class="reveal" style="border:0;padding:0">
+      <p>لماذا تستطيع السرخسيات النمو أطول من الحزازيات؟</p>
+      <textarea data-save="vascWhy" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>لأن السرخسيات نباتات وعائية؛ ينقل نسيجها الوعائي الماء والمواد المغذية إلى جميع الخلايا مهما بعدت، أما الحزازيات فتمتص كل خلية الماء من البيئة مباشرة، فلا تستطيع أن تنمو طويلة أو سميكة.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAINFOREST ============ -->
+<section class="page" data-page="rainforest" data-title="تطبيق العلوم: الغابات المطيرة">
+  <header class="pg-h"><div class="where">تطبيق العلوم · ص٢١</div><h2>ما أهمية الغابات المطيرة؟</h2></header>
+  <p>استخدمت الحضارات النباتات لصنع الدواء عبر التاريخ. وتحتوي الغابات المطيرة الاستوائية على أكبر تنوع من المخلوقات الحية، وما زال كثير من أنواع نباتاتها غير معروف، لكن تدميرها بدأ يتسارع.</p>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>صيدلية الطبيعة</h3></div>
+    <p class="hint">صِل كل نبات بما يُستخلص منه أو يُعالج به.</p>
+    <div id="a-med"></div>
+  </div>
+  <div class="act" data-kind="think">
+    <div class="act-h"><span class="badge b-think">حل المشكلة</span><h3>اعتمادًا على خريطة الكتاب (ص ٢١)</h3></div>
+    <div id="q-forest"></div>
+    <div class="reveal">
+      <p>أين يستطيع العلماء الذهاب لدراسة النباتات في الغابات المطيرة قبل تدميرها؟</p>
+      <textarea data-save="forest2" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>إلى المناطق التي تُظهر الخريطة أن نسبة تدمير الغابات المطيرة فيها ما زالت قليلة.</div>
+    </div>
+    <div class="reveal">
+      <p>توقّع كيف يمكن أن يؤثر تدمير الغابات المطيرة في البحث عن أدوية جديدة من النباتات.</p>
+      <textarea data-save="forest3" placeholder="اكتب إجابتك"></textarea>
+      <div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div>
+      <div class="model" hidden>قد تختفي أنواع نباتية ما زالت غير معروفة قبل أن يدرسها العلماء، فتضيع فرصة اكتشاف أدوية جديدة منها.</div>
+    </div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">العلوم عبر المواقع الإلكترونية</span><h3>النباتات الطبية</h3></div>
+    <p class="hint">ابحث في مصادر موثوقة، واكتب أربعة نباتات طبية واستخداماتها.</p>
+    <textarea data-save="medPlants" placeholder="١. ...&#10;٢. ...&#10;٣. ...&#10;٤. ..."></textarea>
+  </div>
+</section>
+
+<!-- ============ TYPES ============ -->
+<section class="page" data-page="types" data-title="أنواع النباتات الوعائية اللابذرية">
+  <header class="pg-h"><div class="where">الدرس ١ · ص٢٢–٢٣</div><h2>أنواع النباتات الوعائية اللابذرية</h2></header>
+  <p>تضم السرخسيات، والصنوبريات الأرضية، والحزازيات المسمارية، وذيل الحصان. ازدهرت قبل ٢٨٦ – ٣٦٠ مليون سنة في فترة دافئة رطبة، وكان بعضها أطول كثيرًا من أنواعه الحديثة.</p>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">ملف النبات</span><h3>اختر مجموعة لتتعرف عليها</h3></div>
+    <div class="tabs" role="tablist" id="typeTabs"></div>
+    <div id="typePanes"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تقويم تكويني</span><h3>أسئلة الصور</h3></div>
+    <div id="q-types"></div>
+  </div>
+</section>
+
+<!-- ============ IMPORTANCE ============ -->
+<section class="page" data-page="importance" data-title="أهمية النباتات اللابذرية">
+  <header class="pg-h"><div class="where">الدرس ١ · ص٢٣–٢٤</div><h2>أهمية النباتات اللابذرية</h2></header>
+  <p>عندما ماتت نباتات لابذرية كثيرة في العصور القديمة غُمرت بالماء والطين قبل أن تتحلل، ومع تراكمها وتعرّضها للضغط والحرارة تحوّلت إلى فحم حجري خلال ملايين السنين. واليوم تحدث العملية نفسها في المستنقعات، فتتكوّن مادة <span class="term">الخث</span> التي تُستخدم وقودًا في بعض الدول.</p>
+  <div class="ar-card"><div class="ar-marker"></div><div><h3>مشهد مجسّم بالواقع المعزز</h3><p>شاهد تحوّل نباتات المستنقعات القديمة إلى خث ثم إلى فحم حجري.</p><button class="btn primary" data-ar="coal">شغّل العرض المجسّم</button> <button class="btn" data-marker>بطاقة العلامة</button></div></div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>من النبات إلى الفحم الحجري</h3></div>
+    <p class="hint">رتّب المراحل من الأولى إلى الأخيرة.</p>
+    <div id="a-coal"></div>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">نشاط تفاعلي</span><h3>كيف يستخدم الناس النباتات الوعائية اللابذرية؟</h3></div>
+    <p class="hint">صنّف كل استخدام حسب النبات أو المادة.</p>
+    <div id="a-uses"></div>
+  </div>
+</section>
+
+<!-- ============ REVIEW ============ -->
+<section class="page" data-page="review" data-title="مراجعة الدرس">
+  <header class="pg-h"><div class="where">مراجعة الدرس ١ · ص٢٤</div><h2>الخلاصة واختبر نفسك</h2></header>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">الخلاصة</h3>
+    <ul style="margin:0 0 10px;padding-right:20px">
+      <li>للنباتات صفات مشتركة، وتنقسم إلى وعائية ولاوعائية.</li>
+      <li>تشمل اللاوعائية اللابذرية الحزازيات والحشائش الكبدية والبوقية، وهي رقيقة لا يتجاوز طولها بضعة سنتيمترات، وتنتج أبواغًا.</li>
+      <li>تشمل الوعائية اللابذرية السرخسيات وحزازيات قدم الذئب وذيل الحصان، وهي أطول وتتحمل الجفاف أكثر.</li>
+      <li>تساعد اللاوعائية على تكوين تربة جديدة، وتكوّن الفحم الحجري من نباتات لابذرية قديمة.</li>
+    </ul>
+  </div>
+  <div class="act" data-kind="act">
+    <div class="act-h"><span class="badge b-act">خريطة مفاهيم</span><h3>أكمل خريطة مفاهيم الدرس</h3></div>
+    <p class="hint">اضغط على مفهوم من البنك، ثم اضغط على الخانة المناسبة له في الخريطة. انتبه: في البنك مفهومان لا مكان لهما. للتراجع اضغط على الخانة الممتلئة.</p>
+    <div id="a-cmap"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">اختبر نفسك</span><h3>أجب ثم قارن بالإجابة النموذجية</h3></div>
+    <div id="r-self"></div>
+  </div>
+  <div class="act" data-kind="form">
+    <div class="act-h"><span class="badge b-form">تطبيق الرياضيات</span><h3>استعمال الكسور</h3></div>
+    <div id="q-math"></div>
+  </div>
+</section>
+
+<!-- ============ POST-TEST ============ -->
+<section class="page" data-page="posttest" data-title="التقويم الختامي">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>التقويم الختامي</h2></header>
+  <p>أجب عن جميع الأسئلة ثم اضغط «صحّح إجاباتي». ستظهر نتيجتك ومقارنتها بالتقويم القبلي في صفحة التقرير.</p>
+  <div class="act" data-kind="post">
+    <div class="act-h"><span class="badge b-post">تقويم ختامي</span><h3>أربعة عشر سؤالًا</h3></div>
+    <div id="q-post"></div>
+  </div>
+</section>
+
+<!-- ============ DIAGNOSIS ============ -->
+<section class="page" data-page="diagnosis" data-title="تشخيص تحقق الأهداف">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تشخيص تحقق أهداف الدرس</h2></header>
+  <p>يُحسب مستوى تحقق كل هدف من إجاباتك في التقويم الختامي (٧٠٪)، ومن أنشطة التقويم التكويني المرتبطة به (٣٠٪).</p>
+  <div class="row no-print" style="margin:0 0 14px"><label>اسم الطالب: <input type="text" id="stuName" data-save="stuName" style="width:210px;text-align:right"></label></div>
+  <div id="diagOut"></div>
+  <p class="hint">مستويات الإتقان: متقن ٨٠٪ فأكثر، قريب من الإتقان ٦٠–٧٩٪، يحتاج إلى علاج أقل من ٦٠٪.</p>
+</section>
+
+<!-- ============ PLAN ============ -->
+<section class="page" data-page="plan" data-title="الخطة العلاجية">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>الخطة العلاجية</h2></header>
+  <div id="planOut"></div>
+  <div class="row no-print" style="margin-bottom:12px"><button class="btn" id="printPlan">اطبع التشخيص والخطة</button></div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="page" data-page="results" data-title="تقرير الإنجاز">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تقرير الإنجاز</h2></header>
+  <div class="sheet" id="resTop"></div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">التقويم التكويني والأنشطة</h3>
+    <ul class="res-list" id="resList"></ul>
+  </div>
+  <div class="sheet">
+    <h3 style="margin:0 0 6px">أكمل مطويتك</h3>
+    <p>عُد إلى المطوية واكتب في عمود «ما تعلمته» ثلاثة أشياء جديدة.</p>
+    <div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="foldable">افتح المطوية</button><button class="btn ghost" id="resetAll">ابدأ الدرس من جديد</button></div>
+  </div>
+</section>
+
+<div class="leaf" id="leaf"></div><div class="shade" id="shade"></div>
+<button class="corner" id="corner" aria-label="اقلب إلى الصفحة التالية"></button><button class="corner-back" id="cornerBack" aria-label="ارجع إلى الصفحة السابقة"></button>
+</div></main>
+
+<div class="ar" id="ar" hidden role="dialog" aria-modal="true" aria-label="عرض مجسّم بالواقع المعزز">
+  <video id="arVideo" playsinline muted></video>
+  <canvas id="arCanvas"></canvas>
+  <div class="ar-hud">
+    <span class="brk b1"></span><span class="brk b2"></span><span class="brk b3"></span><span class="brk b4"></span>
+    <div class="ar-top"><span class="ar-live">واقع معزز</span><div class="ar-title" id="arTitle"></div><button class="ar-x" id="arClose" aria-label="إغلاق العرض">✕</button></div>
+    <div class="ar-scan" id="arScan"><div class="reticle"></div><p>جارٍ التعرّف على الصفحة…</p></div>
+    <div class="ar-mk" id="arMk" hidden>وجّه الكاميرا نحو بطاقة العلامة الوردية<br>ليظهر المشهد فوقها</div>
+    <div class="ar-labels" id="arLabels"></div>
+    <div class="ar-bottom">
+      <div class="ar-toast" id="arToast" hidden></div>
+      <div class="ar-cap" id="arCap" aria-live="polite"></div>
+      <div class="ar-tl" id="arTl"></div>
+      <div class="ar-ctrl"><button id="arPlay">إيقاف مؤقت</button><button id="arReplay">إعادة العرض</button><button id="arCam">الكاميرا</button></div>
+      <div class="ar-hint">اسحب لتدوير المشهد، وقرّب أو بعّد بإصبعين أو بعجلة الفأرة</div>
+    </div>
+  </div>
+</div>
+
+<div class="mk-view" id="mkView" hidden role="dialog" aria-modal="true" aria-label="بطاقة العلامة">
+  <div class="mk-card">
+    <h3>بطاقة العلامة للواقع المعزز</h3>
+    <div class="mk-sq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <p>اطبع هذه البطاقة أو اعرضها على شاشة جهاز آخر. ثم افتح العرض المجسّم واضغط «الكاميرا»، ووجّهها نحو المربع الوردي ليظهر المشهد فوقه.</p>
+    <div class="row" style="justify-content:center"><button class="btn primary" id="mkPrint">اطبع البطاقة</button><button class="btn" id="mkClose">إغلاق</button></div>
+  </div>
+</div>
+
+<div class="bnav">
+  <div class="bnav-in">
+    <button class="btn" id="prevBtn">السابق</button>
+    <button class="btn primary" id="nextBtn">التالي</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const AR="٠١٢٣٤٥٦٧٨٩";
+const ar=n=>String(n).replace(/\d/g,d=>AR[d]).replace(/\./g,"٫");
+const toEn=s=>String(s).trim().replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫,]/g,".");
+const store={
+  get(k,d){try{const v=localStorage.getItem("nsp1:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("nsp1:"+k,JSON.stringify(v))}catch(e){}},
+  clear(){try{Object.keys(localStorage).filter(k=>k.indexOf("nsp1:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function saveScore(key,got,total,detail){const s=store.get("scores",{});s[key]={got:got,total:total,detail:detail||null};store.set("scores",s);renderResults();renderDiag()}
+function praise(p){return p>=90?"ممتاز! فهمك متين.":p>=70?"جيد جدًا، راجع ما أخطأت فيه.":p>=50?"بداية جيدة، أعد قراءة الأجزاء المرتبطة.":"لا بأس، اقرأ الدرس مرة أخرى ثم أعد المحاولة."}
+
+/* ---------- quiz ---------- */
+function quiz(el,qs,o){
+  o=o||{};const instant=o.instant!==false;
+  let picks=qs.map(()=>null),done=false;
+  function draw(){
+    picks=qs.map(()=>null);done=false;
+    el.innerHTML=qs.map((q,i)=>'<div class="q"><div class="q-t"><span class="q-n">'+ar(i+1)+'</span><span>'+q.q+'</span></div><div class="opts">'+q.o.map((t,j)=>'<button class="opt" data-i="'+i+'" data-j="'+j+'">'+t+'</button>').join("")+'</div><div class="why" hidden></div></div>').join("")+
+      (instant?"":'<div class="row"><button class="btn primary" data-act="check">'+(o.checkLabel||"صحّح إجاباتي")+'</button></div><div class="msg"></div>')+'<div class="score" hidden></div>';
+  }
+  function mark(i){
+    const q=qs[i],box=$$(".q",el)[i];
+    $$(".opt",box).forEach((b,j)=>{b.disabled=true;b.classList.remove("sel");if(j===q.a)b.classList.add("ok");else if(j===picks[i])b.classList.add("bad")});
+    const w=$(".why",box);w.hidden=false;const right=picks[i]===q.a;
+    w.className="why "+(right?"ok":"bad");w.innerHTML=(right?"إجابة صحيحة. ":"الإجابة الصحيحة: "+q.o[q.a]+". ")+(q.why||"");
+  }
+  function finish(){
+    done=true;const got=picks.filter((p,i)=>p===qs[i].a).length,p=Math.round(got/qs.length*100);
+    const s=$(".score",el);s.hidden=false;
+    s.innerHTML='<span class="big">'+ar(got)+' / '+ar(qs.length)+'</span><span>'+praise(p)+'</span><button class="btn ghost" data-act="retry">أعد المحاولة</button>';
+    if(o.key)saveScore(o.key,got,qs.length,picks.map((p,i)=>p===qs[i].a));
+  }
+  el.addEventListener("click",e=>{
+    const b=e.target.closest(".opt");
+    if(b&&!b.disabled&&!done){
+      const i=+b.dataset.i,j=+b.dataset.j;
+      if(instant){if(picks[i]!==null)return;picks[i]=j;mark(i);if(picks.every(p=>p!==null))finish()}
+      else{picks[i]=j;$$(".opt",$$(".q",el)[i]).forEach(x=>x.classList.toggle("sel",x===b))}
+      return;
+    }
+    const a=e.target.closest("[data-act]");if(!a)return;
+    if(a.dataset.act==="check"){
+      const m=$(".msg",el);
+      if(picks.some(p=>p===null)){m.className="msg bad";m.textContent="أجب عن جميع الأسئلة أولًا ("+ar(picks.filter(p=>p===null).length)+" بلا إجابة).";return}
+      m.textContent="";qs.forEach((q,i)=>mark(i));a.disabled=true;finish();
+    }
+    if(a.dataset.act==="retry"){draw()}
+  });
+  draw();
+}
+
+/* ---------- sort ---------- */
+function sortAct(el,cfg){
+  let sel=null;
+  function draw(){
+    el.innerHTML='<div class="pool" data-zone="pool">'+shuffle(cfg.items).map(it=>'<button class="chip" data-b="'+it.b+'">'+it.t+'</button>').join("")+'</div><div class="zones">'+cfg.bins.map(b=>'<div class="zone" data-zone="'+b.id+'"><div class="zone-h">'+b.label+'</div><div class="zone-body"></div></div>').join("")+'</div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+    sel=null;
+  }
+  const zoneOf=c=>c.closest("[data-zone]");
+  const bodyOf=z=>z.dataset.zone==="pool"?z:$(".zone-body",z);
+  function arm(on){$$(".zone",el).forEach(z=>z.classList.toggle("armed",on))}
+  el.addEventListener("click",e=>{
+    const a=e.target.closest("[data-act]");
+    if(a){
+      if(a.dataset.act==="reset"){draw();return}
+      const m=$(".msg",el),pool=$(".pool",el);
+      if(pool.querySelector(".chip")){m.className="msg bad";m.textContent="ضع جميع البطاقات في الصناديق أولًا.";return}
+      let got=0;const chips=$$(".zone .chip",el);
+      chips.forEach(c=>{c.classList.remove("sel");const ok=zoneOf(c).dataset.zone===c.dataset.b;c.classList.toggle("ok",ok);c.classList.toggle("bad",!ok);if(ok)got++});
+      m.className="msg "+(got===chips.length?"ok":"bad");
+      m.textContent=got===chips.length?"أحسنت! كل البطاقات في مكانها الصحيح.":"صحيح "+ar(got)+" من "+ar(chips.length)+". انقل البطاقات الحمراء ثم تحقق مرة أخرى.";
+      if(cfg.key)saveScore(cfg.key,got,chips.length);
+      return;
+    }
+    const c=e.target.closest(".chip");
+    if(c){
+      $$(".chip",el).forEach(x=>x.classList.remove("ok","bad"));
+      if(sel&&sel!==c&&zoneOf(sel)!==zoneOf(c)){bodyOf(zoneOf(c)).appendChild(sel);sel.classList.remove("sel");sel=null;arm(false);return}
+      if(sel===c){c.classList.remove("sel");sel=null;arm(false);return}
+      if(sel)sel.classList.remove("sel");sel=c;c.classList.add("sel");arm(true);return;
+    }
+    const z=e.target.closest("[data-zone]");
+    if(z&&sel){bodyOf(z).appendChild(sel);sel.classList.remove("sel");sel=null;arm(false)}
+  });
+  draw();
+}
+
+/* ---------- order ---------- */
+function orderAct(el,cfg){
+  let cur;
+  function draw(){
+    do{cur=shuffle(cfg.steps.map((t,i)=>({t:t,i:i})))}while(cur.every((c,k)=>c.i===k));
+    render();
+  }
+  function render(){
+    el.innerHTML='<ol class="order">'+cur.map((c,k)=>'<li><span class="k">'+ar(k+1)+'</span><span class="t">'+c.t+'</span><span class="mv"><button data-up="'+k+'" aria-label="إلى الأعلى" '+(k===0?"disabled":"")+'>▲</button><button data-dn="'+k+'" aria-label="إلى الأسفل" '+(k===cur.length-1?"disabled":"")+'>▼</button></span></li>').join("")+'</ol><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">رتّب من جديد</button></div><div class="msg"></div>';
+  }
+  el.addEventListener("click",e=>{
+    const u=e.target.closest("[data-up]"),d=e.target.closest("[data-dn]"),a=e.target.closest("[data-act]");
+    if(u){const k=+u.dataset.up;[cur[k-1],cur[k]]=[cur[k],cur[k-1]];render();$$("[data-up]",el)[k-1]&&$$("[data-up]",el)[k-1].focus();return}
+    if(d){const k=+d.dataset.dn;[cur[k+1],cur[k]]=[cur[k],cur[k+1]];render();$$("[data-dn]",el)[k+1]&&$$("[data-dn]",el)[k+1].focus();return}
+    if(!a)return;
+    if(a.dataset.act==="reset"){draw();return}
+    let got=0;$$(".order li",el).forEach((li,k)=>{const ok=cur[k].i===k;li.classList.toggle("ok",ok);li.classList.toggle("bad",!ok);if(ok)got++});
+    const m=$(".msg",el);m.className="msg "+(got===cur.length?"ok":"bad");
+    m.textContent=got===cur.length?"ترتيب صحيح تمامًا!":"في مكانها الصحيح "+ar(got)+" من "+ar(cur.length)+". حرّك المراحل الحمراء.";
+    if(cfg.key)saveScore(cfg.key,got,cur.length);
+  });
+  draw();
+}
+
+/* ---------- match ---------- */
+const COLORS=["#2f6f9a","#b5701a","#5a8f2e","#8a4f9c","#b23f52","#2f8a86","#6b5a2d"];
+function matchAct(el,cfg){
+  let map,rights,selL=null;
+  function draw(){
+    map={};selL=null;rights=shuffle(cfg.pairs.map((p,i)=>({t:p[1],i:i})));
+    el.innerHTML='<div class="match"><div class="col"><h4>'+(cfg.lt||"")+'</h4>'+cfg.pairs.map((p,i)=>'<button class="mi" data-l="'+i+'"><span class="tag"></span><span>'+p[0]+'</span></button>').join("")+'</div><div class="col"><h4>'+(cfg.rt||"")+'</h4>'+rights.map(r=>'<button class="mi" data-r="'+r.i+'"><span class="tag"></span><span>'+r.t+'</span></button>').join("")+'</div></div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  function paint(){
+    $$(".mi",el).forEach(b=>{b.classList.remove("ok","bad");const t=$(".tag",b);t.style.background="transparent";t.textContent=""});
+    Object.keys(map).forEach(l=>{const r=map[l],c=COLORS[l%COLORS.length];
+      const L=$('[data-l="'+l+'"] .tag',el),R=$('[data-r="'+r+'"] .tag',el);
+      L.style.background=c;R.style.background=c;L.textContent=ar(+l+1);R.textContent=ar(+l+1)});
+    $$("[data-l]",el).forEach(b=>b.classList.toggle("sel",selL!==null&&+b.dataset.l===selL));
+  }
+  el.addEventListener("click",e=>{
+    const l=e.target.closest("[data-l]"),r=e.target.closest("[data-r]"),a=e.target.closest("[data-act]");
+    if(l){selL=+l.dataset.l;paint();return}
+    if(r){
+      if(selL===null){const m=$(".msg",el);m.className="msg bad";m.textContent="اختر عنصرًا من العمود الأول أولًا.";return}
+      const ri=+r.dataset.r;Object.keys(map).forEach(k=>{if(map[k]===ri)delete map[k]});map[selL]=ri;
+      const next=cfg.pairs.findIndex((p,i)=>map[i]===undefined);selL=next>=0?next:null;$(".msg",el).textContent="";paint();return;
+    }
+    if(!a)return;
+    if(a.dataset.act==="reset"){draw();return}
+    const m=$(".msg",el);
+    if(Object.keys(map).length<cfg.pairs.length){m.className="msg bad";m.textContent="صِل جميع العناصر أولًا.";return}
+    let got=0;cfg.pairs.forEach((p,i)=>{const ok=map[i]===i;if(ok)got++;$('[data-l="'+i+'"]',el).classList.toggle("ok",ok);$('[data-l="'+i+'"]',el).classList.toggle("bad",!ok);$('[data-r="'+map[i]+'"]',el).classList.toggle("ok",ok);$('[data-r="'+map[i]+'"]',el).classList.toggle("bad",!ok)});
+    m.className="msg "+(got===cfg.pairs.length?"ok":"bad");
+    m.textContent=got===cfg.pairs.length?"توصيل صحيح بالكامل!":"صحيح "+ar(got)+" من "+ar(cfg.pairs.length)+". اختر العنصر الأحمر وأعد توصيله.";
+    if(cfg.key)saveScore(cfg.key,got,cfg.pairs.length);
+  });
+  draw();
+}
+
+/* ---------- multi select ---------- */
+function multiAct(el,cfg){
+  function draw(){
+    el.innerHTML='<div class="opts">'+shuffle(cfg.opts).map(o=>'<button class="opt" data-ok="'+(o.ok?1:0)+'" aria-pressed="false">'+o.t+'</button>').join("")+'</div><div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  el.addEventListener("click",e=>{
+    const b=e.target.closest(".opt"),a=e.target.closest("[data-act]");
+    if(b&&!b.disabled){const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);b.classList.toggle("sel",on);return}
+    if(!a)return;if(a.dataset.act==="reset"){draw();return}
+    const bs=$$(".opt",el),m=$(".msg",el);
+    if(!bs.some(x=>x.classList.contains("sel"))){m.className="msg bad";m.textContent="اختر عبارة واحدة على الأقل.";return}
+    let got=0;bs.forEach(x=>{const s=x.classList.contains("sel"),ok=x.dataset.ok==="1";x.disabled=true;x.classList.remove("sel");if(s===ok)got++;if(ok)x.classList.add("ok");else if(s)x.classList.add("bad")});
+    m.className="msg "+(got===bs.length?"ok":"bad");
+    m.innerHTML=(got===bs.length?"أحسنت! ":"قراراتك الصحيحة "+ar(got)+" من "+ar(bs.length)+". ")+(cfg.note||"");
+    if(cfg.key)saveScore(cfg.key,got,bs.length);
+  });
+  draw();
+}
+
+/* ---------- reveal + saved text ---------- */
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-reveal]");
+  if(r){const m=r.closest(".reveal").querySelector(".model");m.hidden=!m.hidden;r.textContent=m.hidden?"اعرض الإجابة النموذجية":"أخفِ الإجابة النموذجية"}
+  const g=e.target.closest("[data-go]");if(g)go(g.dataset.go);
+});
+function bindSaves(){$$("[data-save]").forEach(t=>{t.value=store.get("t:"+t.dataset.save,"");t.addEventListener("input",()=>store.set("t:"+t.dataset.save,t.value))})}
+
+/* ---------- illustrations ---------- */
+function frond(x,y,h,ang,col){
+  let s='<g transform="translate('+x+' '+y+') rotate('+ang+')"><path d="M0 0 Q 3 '+(-h/2)+' 0 '+(-h)+'" stroke="'+col+'" stroke-width="2" fill="none"/>';
+  const n=13;for(let i=1;i<n;i++){const yy=-h*i/n,L=h*0.34*(1-i/n)+3,r=Math.max(1.6,L/5);
+    s+='<ellipse cx="'+(-L/2)+'" cy="'+yy+'" rx="'+(L/2)+'" ry="'+r+'" fill="'+col+'" transform="rotate(28 0 '+yy+')"/><ellipse cx="'+(L/2)+'" cy="'+yy+'" rx="'+(L/2)+'" ry="'+r+'" fill="'+col+'" transform="rotate(-28 0 '+yy+')"/>'}
+  return s+'</g>';
+}
+const svgw=(inner,vb)=>'<svg viewBox="'+(vb||"0 0 120 100")+'" aria-hidden="true">'+inner+'</svg>';
+const ICON={
+  moss(){let s='<ellipse cx="60" cy="90" rx="48" ry="7" fill="#7a5a3a"/>';
+    for(let i=0;i<8;i++){const x=24+i*10,h=26+((i*7)%12);s+='<line x1="'+x+'" y1="88" x2="'+x+'" y2="'+(88-h)+'" stroke="#3f7d36" stroke-width="2"/>';
+      for(let k=0;k<5;k++){const y=86-k*h/5;s+='<path d="M'+x+' '+y+' l-4 -4 M'+x+' '+y+' l4 -4" stroke="#69ad4f" stroke-width="2" stroke-linecap="round"/>'}}
+    s+='<path d="M64 56 Q66 30 70 14" stroke="#b07a2a" stroke-width="1.6" fill="none"/><ellipse cx="70" cy="11" rx="3.2" ry="6" fill="#c4871a" transform="rotate(15 70 11)"/>';
+    s+='<path d="M44 58 Q42 36 38 22" stroke="#b07a2a" stroke-width="1.6" fill="none"/><ellipse cx="38" cy="19" rx="3" ry="5.5" fill="#c4871a" transform="rotate(-15 38 19)"/>';
+    return svgw(s)},
+  liver(){let s='<ellipse cx="60" cy="88" rx="50" ry="7" fill="#7a5a3a"/>';
+    s+='<path d="M60 86 C40 80 22 74 14 60 C30 62 44 70 58 78 Z" fill="#4f9440"/><path d="M60 86 C80 80 98 74 106 60 C90 62 76 70 62 78 Z" fill="#4f9440"/><path d="M60 86 C56 70 50 56 52 40 C62 54 64 70 62 84 Z" fill="#5fa44c"/><path d="M60 86 C66 72 76 62 88 52 C84 66 74 78 62 86 Z" fill="#3f8436"/>';
+    s+='<line x1="34" y1="66" x2="34" y2="40" stroke="#6d8f43" stroke-width="2"/><path d="M24 40 Q34 28 44 40 Z" fill="#7fb547"/><line x1="82" y1="64" x2="82" y2="36" stroke="#6d8f43" stroke-width="2"/><path d="M72 36 Q82 24 92 36 Z" fill="#7fb547"/>';
+    return svgw(s)},
+  horn(){let s='<ellipse cx="60" cy="88" rx="50" ry="7" fill="#7a5a3a"/>';
+    for(let i=0;i<7;i++){const a=-70+i*23;s+='<ellipse cx="60" cy="80" rx="30" ry="7" fill="'+(i%2?"#4f9440":"#62a84e")+'" transform="rotate('+a+' 60 80) translate(0 0)" opacity=".9"/>'}
+    [[46,10],[56,4],[66,8],[76,14]].forEach(p=>{s+='<path d="M'+p[0]+' 78 Q'+(p[0]+2)+' 40 '+(p[0]+1)+' '+p[1]+'" stroke="#8a9a2a" stroke-width="3" fill="none" stroke-linecap="round"/>'});
+    return svgw(s)},
+  fern(){return svgw('<ellipse cx="60" cy="94" rx="40" ry="5" fill="#7a5a3a"/>'+frond(60,94,86,0,"#3e7c4a")+frond(52,94,70,-28,"#5a9a52")+frond(68,94,70,28,"#5a9a52"))},
+  club(){let s='<ellipse cx="60" cy="94" rx="46" ry="5" fill="#7a5a3a"/><path d="M14 92 Q60 84 106 92" stroke="#3f7d36" stroke-width="3" fill="none"/>';
+    [[36,50],[56,64],[78,56],[96,40]].forEach(p=>{const x=p[0],h=p[1];s+='<line x1="'+x+'" y1="90" x2="'+x+'" y2="'+(90-h)+'" stroke="#3f7d36" stroke-width="3"/>';
+      for(let y=88;y>90-h+10;y-=4){s+='<path d="M'+x+' '+y+' l-5 -3 M'+x+' '+y+' l5 -3" stroke="#6aa84f" stroke-width="1.6"/>'}
+      s+='<ellipse cx="'+x+'" cy="'+(90-h)+'" rx="4" ry="10" fill="#c9b04a"/>'});
+    return svgw(s)},
+  horse(){let s='<ellipse cx="60" cy="94" rx="40" ry="5" fill="#7a5a3a"/>';
+    [[44,78],[66,88],[86,60]].forEach(p=>{const x=p[0],h=p[1];s+='<line x1="'+x+'" y1="92" x2="'+x+'" y2="'+(92-h)+'" stroke="#4f8a3c" stroke-width="4"/>';
+      for(let y=88;y>92-h+12;y-=11){s+='<line x1="'+(x-3)+'" y1="'+y+'" x2="'+(x+3)+'" y2="'+y+'" stroke="#2f5a26" stroke-width="2"/>';
+        for(let k=-3;k<=3;k++){if(!k)continue;s+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+k*5)+'" y2="'+(y-6-Math.abs(k))+'" stroke="#7fb547" stroke-width="1.2"/>'}}
+      s+='<ellipse cx="'+x+'" cy="'+(92-h)+'" rx="4.5" ry="8" fill="#b08a3a"/>'});
+    return svgw(s)}
+};
+
+/* ---------- cover art ---------- */
+(function(){
+  let s='<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a6c8c" stop-opacity=".35"/><stop offset="1" stop-color="#7aa84a" stop-opacity=".18"/></linearGradient></defs>';
+  s+='<rect width="800" height="300" fill="url(#sky)"/>';
+  s+='<path d="M0 200 Q120 150 240 185 T480 170 T800 180 V300 H0Z" fill="#2f5f3c" opacity=".35"/>';
+  s+='<path d="M0 240 Q160 205 330 235 T640 220 T800 230 V300 H0Z" fill="#2f5f3c" opacity=".55"/>';
+  s+=frond(120,300,210,-14,"#3e7c4a")+frond(160,300,170,12,"#5a9a52")+frond(80,300,150,-34,"#4a8a4c");
+  s+=frond(690,300,230,10,"#3e7c4a")+frond(650,300,160,-18,"#5a9a52")+frond(735,300,170,30,"#4a8a4c");
+  for(let i=0;i<34;i++){const x=260+i*9,h=14+((i*13)%16);s+='<line x1="'+x+'" y1="298" x2="'+x+'" y2="'+(298-h)+'" stroke="#69ad4f" stroke-width="3" stroke-linecap="round"/>';if(i%5===2)s+='<ellipse cx="'+(x+2)+'" cy="'+(292-h-12)+'" rx="2.4" ry="5" fill="#c4871a"/><line x1="'+x+'" y1="'+(298-h)+'" x2="'+(x+2)+'" y2="'+(292-h-8)+'" stroke="#b07a2a" stroke-width="1.2"/>'}
+  $("#coverArt").innerHTML=s;
+})();
+
+/* ---------- vocabulary ---------- */
+(function(){
+  const V=[["النوع","مجموعة من الأفراد لها صفات مشتركة وتتزاوج فيما بينها."],["النباتات الوعائية","نباتات فيها تراكيب أنبوبية تنقل الماء والمواد المغذية داخل النبات."],["النباتات اللاوعائية","نباتات ليس فيها تراكيب أنبوبية، وتنقل الماء والمواد بطرائق أخرى كالانتشار من خلية إلى أخرى."],["أشباه الجذور","تراكيب تشبه الجذور تثبّت النباتات اللاوعائية في مكانها."],["الأنواع الرائدة","أول المخلوقات التي تنمو في البيئات الجديدة أو غير المستقرة."]];
+  $("#vocab").innerHTML=V.map((v,i)=>'<button data-v="'+i+'">'+v[0]+'</button>').join("");
+  $("#vocab").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b)return;const v=V[+b.dataset.v];$("#vocabDef").innerHTML="<b>"+v[0]+":</b> "+v[1]});
+})();
+
+/* ---------- content ---------- */
+quiz($("#q-pre"),[
+  {q:"أي مما يلي ليس من خصائص جميع النباتات؟",o:["تتكون من خلايا عديدة","تحتاج إلى الماء","تنتج بذورًا","لها جذور أو أشباه جذور"],a:2,why:"بعض النباتات كالحزازيات والسرخسيات لا تنتج بذورًا."},
+  {q:"النباتات التي فيها أنابيب تنقل الماء والغذاء تُسمّى:",o:["نباتات لاوعائية","نباتات وعائية","نباتات رائدة","نباتات بذرية فقط"],a:1,why:"النسيج الوعائي يتكون من خلايا أنبوبية الشكل."},
+  {q:"تتكاثر الحزازيات بواسطة:",o:["البذور","الأزهار","الأبواغ","الثمار"],a:2,why:""},
+  {q:"السرخس نبات:",o:["وعائي لابذري","لاوعائي لابذري","وعائي بذري","لاوعائي بذري"],a:0,why:""},
+  {q:"المخلوقات التي تنمو أولًا في البيئات الجديدة تُسمّى:",o:["الأنواع المهددة","الأنواع الرائدة","الأنواع الغازية","الأنواع المنقرضة"],a:1,why:""},
+  {q:"الفحم الحجري تكوّن من:",o:["صخور بركانية","بقايا حيوانات بحرية فقط","بقايا نباتات قديمة دُفنت قبل أن تتحلل","رمال الصحراء"],a:2,why:""}
+],{key:"pre",instant:false});
+
+multiAct($("#a-intro"),{key:"f-intro",opts:[
+  {t:"تتكون من خلايا عديدة",ok:1},{t:"تحتاج إلى الماء",ok:1},{t:"لها جذور أو أشباه جذور",ok:1},{t:"يحتوي معظمها على الكلوروفيل",ok:1},
+  {t:"جميعها تنتج أزهارًا",ok:0},{t:"جميعها تنتج بذورًا",ok:0},{t:"تعيش في الماء العذب فقط",ok:0},{t:"جميعها أطول من متر",ok:0}],
+  note:"لاحظ أن «معظم» النباتات فيها الكلوروفيل، وأن بعضها لا ينتج أزهارًا ولا بذورًا، وهو ما ستدرسه في هذا الدرس."});
+
+
+
+(function(){
+  const S=[["نباتات مجهرية",0.001,"تتراوح النباتات في أحجامها بين نباتات مجهرية، ومنها السرخسيات المائية، وأشجار عملاقة."],["الحزازيات",0.04,"طولها من ٢ إلى ٥ سم؛ لأنها لاوعائية لا تستطيع أن تطول."],["ذيل الحصان الحديث",1.5,"طوله اليوم بين متر ومترين تقريبًا."],["السرخس الشجري الحديث",4,"لا يزيد طوله اليوم على ٣ – ٥ أمتار، ويعيش في المناطق الاستوائية."],["ذيل الحصان قديمًا",15,"يُظهر سجل الأحافير أن بعض أنواعه وصل طولها إلى ١٥ مترًا."],["السرخس الشجري قديمًا",25,"كانت أشجار السرخسيات قديمًا تصل إلى نحو ٢٥ مترًا."],["شجرة السكويا العملاقة",100,"شجرة الخشب الأحمر، قد يزيد طولها على ١٠٠ متر."]];
+  const lo=Math.log10(0.0005),hi=Math.log10(120);
+  const fmt=h=>h<0.01?"مجهري":h<1?ar(Math.round(h*100))+" سم":ar(h)+" م";
+  $("#a-size").innerHTML=S.map((s,i)=>'<button class="sz" data-s="'+i+'"><span class="nm">'+s[0]+'</span><span class="tr"><i style="width:'+Math.max(12,(Math.log10(s[1])-lo)/(hi-lo)*100)+'%">'+fmt(s[1])+'</i></span></button>').join("");
+  $("#a-size").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;$$(".sz").forEach(x=>x.classList.toggle("on",x===b));const s=S[+b.dataset.s];$("#sizeNote").innerHTML="<b>"+s[0]+" ("+fmt(s[1])+"):</b> "+s[2]});
+})();
+
+quiz($("#q-what"),[
+  {q:"ما الذي يثبّت النبات في الأرض أو على الصخور؟",o:["الأوراق","الجذور أو أشباه الجذور","الأزهار","الأبواغ"],a:1,why:""},
+  {q:"لماذا لا يمكن أن تقوم الحياة على الأرض دون النباتات؟",o:["لأنها مصدر الغذاء والأكسجين للمخلوقات الأخرى","لأنها تمنع سقوط الأمطار","لأنها تعيش في كل مكان فقط","لأنها كلها أشجار ضخمة"],a:0,why:"هيأ الله النباتات لإنتاج الأكسجين والغذاء الضروريين لبقاء المخلوقات الحية."}
+],{key:"f-what"});
+
+sortAct($("#a-classify"),{key:"f-classify",bins:[{id:"v",label:"وعائية لابذرية"},{id:"n",label:"لاوعائية لابذرية"}],items:[
+  {t:"الحزازيات",b:"n"},{t:"الحشائش الكبدية",b:"n"},{t:"الحشائش البوقية",b:"n"},
+  {t:"السرخسيات",b:"v"},{t:"ذيل الحصان",b:"v"},{t:"الصنوبريات الأرضية",b:"v"},{t:"الحزازيات المسمارية",b:"v"}]});
+
+quiz($("#q-classify"),[
+  {q:"«الحزازيات المسمارية» نباتات:",o:["لاوعائية مثل الحزازيات","وعائية لابذرية ضمن حزازيات قدم الذئب"],a:1,why:"رغم اسمها فهي أقرب إلى السرخسيات وفيها أنسجة وعائية."},
+  {q:"كيف تنقل النباتات اللاوعائية الماء داخلها؟",o:["عبر أنابيب طويلة","تمتصه كل خلية مباشرة وينتقل من خلية إلى أخرى","عبر الجذور الحقيقية","لا تحتاج إلى الماء"],a:1,why:""}
+],{key:"f-classify"});
+
+(function(){
+  const F=[
+    {ic:"moss",n:"الحزازيات",s:"أكثر النباتات اللاوعائية انتشارًا",li:["أشباه أوراق تنمو بشكل منظم حول أشباه السيقان.","أشباه جذورها متعددة الخلايا.","تحمل أشباه السيقان أحيانًا تراكيب كأسية تحوي خلايا تكاثرية هي الأبواغ.","توجد على جذوع الأشجار والصخور والأرض، وبعضها يعيش في الصحراء."]},
+    {ic:"liver",n:"الحشائش الكبدية",s:"سُمّيت بهذا الاسم لسبب تاريخي",li:["اعتقد الناس في القرن التاسع أنها تفيد في علاج أمراض الكبد.","لا جذور لها، وجسمها مسطح يشبه الأوراق.","أشباه جذورها تتكون عادة من خلية واحدة."]},
+    {ic:"horn",n:"الحشائش البوقية",s:"مثل العشبة ذات القرون",li:["قطرها أقل من ٢٫٥ سم، ولها جسم مسطح.","تحتوي كل خلية على بلاستيدة خضراء واحدة فقط.","أخذت اسمها من شكل تراكيب إنتاج الأبواغ التي تشبه البوق (قرن الماشية)."]}
+  ];
+  $("#a-flip").innerHTML=F.map(f=>'<button class="flip" aria-pressed="false"><div class="flip-in"><div class="face front">'+ICON[f.ic]()+'<h4>'+f.n+'</h4><small>'+f.s+'</small><small>اضغط للقلب</small></div><div class="face back"><h4>'+f.n+'</h4><ul>'+f.li.map(x=>"<li>"+x+"</li>").join("")+'</ul></div></div></button>').join("");
+  $("#a-flip").addEventListener("click",e=>{const b=e.target.closest(".flip");if(!b)return;b.classList.toggle("on");b.setAttribute("aria-pressed",b.classList.contains("on"))});
+})();
+
+matchAct($("#a-traits"),{key:"f-traits",lt:"الصفة",rt:"النبات",pairs:[
+  ["أشباه جذور متعددة الخلايا وأشباه أوراق حول أشباه السيقان","الحزازيات"],
+  ["جسم مسطح بلا جذور، وأشباه جذور من خلية واحدة","الحشائش الكبدية"],
+  ["بلاستيدة خضراء واحدة في كل خلية","الحشائش البوقية"]]});
+
+/* ---------- lab ---------- */
+(function(){
+  const steps=["لُفّ عدة ملاعق من نبات حزازي بقطعة قماش رقيق على هيئة كرة","قِس كتلة كرة القماش التي تحتوي على الحزازيات","ضع ٢٠٠ مل من الماء في الوعاء، ثم ضع الكرة فيه","انتظر ١٥ دقيقة","ارفع الكرة وجففها من الماء","قِس كتلة الكرة مرة أخرى","قِس حجم الماء المتبقي في الوعاء","اغسل يديك بعد لمس الحزازيات"];
+  let st,m0,abs;
+  const ball=$("#ball"),water=$("#water"),txt=$("#scaleTxt"),status=$("#labStatus");
+  const pos=(x,y,o)=>{ball.style.transform="translate("+x+"px,"+y+"px)";if(o!=null)ball.style.opacity=o};
+  const lvl=v=>{water.style.transform="scaleY("+(v/250)+")"};
+  function reset(){
+    st=0;m0=Math.round(14+Math.random()*10);abs=Math.round(m0*(4+Math.random()*2.2));
+    pos(150,60,0);lvl(0);txt.textContent="0.0 g";status.textContent="ابدأ بالخطوة الأولى.";
+    ["d1","d2","d3","d4"].forEach(id=>$("#"+id).textContent="—");
+    $("#labQ").hidden=true;$("#lq1").value="";$("#labMsg").textContent="";
+    $("#labSteps").innerHTML=steps.map((s,i)=>'<li><button data-st="'+i+'"><span class="k">'+ar(i+1)+'</span><span>'+s+'</span></button></li>').join("");
+    paint();
+  }
+  function paint(){$$("#labSteps button").forEach((b,i)=>{b.disabled=i!==st;b.classList.toggle("done",i<st);b.classList.toggle("next",i===st)})}
+  function run(i){
+    if(i!==st)return;
+    if(i===0){pos(150,60,1);status.textContent="جهزت كرة الحزازيات."}
+    if(i===1){pos(75,134);setTimeout(()=>{txt.textContent=m0.toFixed(1)+" g"},700);$("#d1").textContent=ar(m0)+" جم";status.textContent="الكتلة الجافة: "+ar(m0)+" جم."}
+    if(i===2){txt.textContent="0.0 g";lvl(200);setTimeout(()=>pos(240,150),500);$("#d2").textContent="٢٠٠ مل";status.textContent="الكرة الآن مغمورة في الماء."}
+    if(i===3){const t0=performance.now(),D=2600;st=-1;paint();
+      (function tick(t){const p=Math.min(1,(t-t0)/D);lvl(200-abs*p);status.textContent="الوقت المنقضي: "+ar(Math.round(p*15))+" دقيقة";if(p<1)requestAnimationFrame(tick);else{st=4;paint();status.textContent="مرت ١٥ دقيقة. لاحظ انخفاض مستوى الماء."}})(t0);return}
+    if(i===4){pos(150,50);status.textContent="رفعت الكرة وجففتها."}
+    if(i===5){pos(75,134);setTimeout(()=>{txt.textContent=(m0+abs).toFixed(1)+" g"},700);$("#d3").textContent=ar(m0+abs)+" جم";status.textContent="الكتلة بعد الامتصاص: "+ar(m0+abs)+" جم."}
+    if(i===6){$("#d4").textContent=ar(200-abs)+" مل";status.textContent="الماء المتبقي: "+ar(200-abs)+" مل."}
+    if(i===7){status.textContent="انتهت التجربة. حلّل بياناتك.";$("#labQ").hidden=false}
+    st=i+1;paint();
+  }
+  $("#labSteps").addEventListener("click",e=>{const b=e.target.closest("[data-st]");if(b)run(+b.dataset.st)});
+  $("#labReset").addEventListener("click",reset);
+  $("#labCheck").addEventListener("click",()=>{
+    const a1=parseFloat(toEn($("#lq1").value)),ok1=a1===abs,m=$("#labMsg");
+    m.className="msg "+(ok1?"ok":"bad");
+    m.textContent=ok1?"صحيح: امتصت الحزازيات "+ar(abs)+" مل من الماء.":"راجع حسابك: الماء الممتص = حجم الماء في البداية − حجم الماء المتبقي.";
+    saveScore("f-lab",ok1?1:0,1);
+  });
+  reset();
+})();
+
+orderAct($("#a-pioneer"),{key:"f-pioneer",steps:[
+  "أرض جديدة عارية: صخور أو سهل لابة أو أرض غابة محترقة",
+  "تحمل الرياح أبواغ الحزازيات وحشيشة الكبد إلى المكان",
+  "تنمو الحزازيات على طبقة رقيقة جدًا من التربة",
+  "تموت الحزازيات وتتحلل، وتحطّم الصخور ببطء",
+  "تتكوّن تربة جديدة",
+  "تنتقل مخلوقات ونباتات أخرى إلى المنطقة"]});
+
+/* ---------- vascular sim ---------- */
+(function(){
+  const svg=$("#vsimSvg"),R=$("#vsimRange"),C=22,BASE=262,REACH=3;
+  function draw(){
+    const h=+R.value;let s='<rect x="0" y="'+BASE+'" width="320" height="38" fill="#8b6a45" opacity=".55"/>';
+    s+='<text x="80" y="290" text-anchor="middle" font-size="12" fill="currentColor">لاوعائي (حزازي)</text><text x="240" y="290" text-anchor="middle" font-size="12" fill="currentColor">وعائي (سرخس)</text>';
+    for(let k=0;k<h;k++){const y=BASE-(k+1)*C;
+      for(let c=0;c<3;c++){const wet=k<REACH;s+='<rect x="'+(47+c*C)+'" y="'+y+'" width="'+(C-2)+'" height="'+(C-2)+'" rx="5" fill="'+(wet?"#5f9f4a":"#b89462")+'" stroke="'+(wet?"#3e7c36":"#8b6a45")+'"/>';if(wet&&c===1)s+='<circle cx="'+(47+c*C+10)+'" cy="'+(y+10)+'" r="3.2" fill="#6bb3d6"/>'}
+      for(let c=0;c<3;c++){s+='<rect x="'+(207+c*C)+'" y="'+y+'" width="'+(C-2)+'" height="'+(C-2)+'" rx="5" fill="#5f9f4a" stroke="#3e7c36"/>'}}
+    const top=BASE-h*C;
+    s+='<rect x="235" y="'+top+'" width="10" height="'+(BASE-top+16)+'" fill="#2a6c8c" opacity=".35"/>';
+    s+='<line x1="240" y1="'+(BASE+16)+'" x2="240" y2="'+(top+4)+'" stroke="#6bb3d6" stroke-width="4" class="flow"/>';
+    s+='<path d="M70 '+(BASE+10)+' q10 -6 20 0" stroke="#6bb3d6" stroke-width="3" fill="none"/>';
+    svg.innerHTML=s;svg.style.color="var(--muted)";
+    $("#vsimVal").textContent=ar(h);
+    $("#vsimMsg").innerHTML=h<=REACH?"النباتان قصيران، فيصل الماء إلى جميع خلاياهما. زِد الارتفاع.":"<b>لاحظ:</b> في النبات اللاوعائي ينتقل الماء من خلية إلى أخرى ببطء، فلا يصل إلى الخلايا العليا فتجف (اللون البني). أما في النبات الوعائي فالنسيج الوعائي (الأنبوب الأزرق) يوزّع الماء على جميع الخلايا، لذلك يستطيع أن ينمو أطول وأسمك.";
+  }
+  R.addEventListener("input",draw);draw();
+})();
+
+matchAct($("#a-med"),{key:"f-med",lt:"النبات",rt:"الاستخدام الطبي",pairs:[
+  ["نبات الصفصاف","مادة الساليسيلات، المكوّن الرئيس للأسبرين لعلاج الصداع"],
+  ["نبتة كف الثعلب","مصدر رئيس لدواء يُوصف لمشكلات القلب"],
+  ["السرخسيات","استُخدمت شعبيًا لعلاج الحروق واللدغات والحمى"]]});
+
+quiz($("#q-forest"),[
+  {q:"بحسب الخريطة، ما الدولة التي فيها أكبر نسبة دمار للغابات المطيرة سنويًا؟",o:["البرازيل","الهند","أستراليا","مصر"],a:0,why:"تظهر البرازيل بأغمق لون في الخريطة (أكثر من ١٥ ألف كم² سنويًا)."}
+],{key:"f-forest"});
+
+/* ---------- types tabs ---------- */
+(function(){
+  const T=[
+    {id:"fern",n:"السرخسيات",ic:"fern",li:["أكبر مجموعات النباتات الوعائية اللابذرية؛ يُعرف منها ١٢٠٠٠ نوع على الأقل.","لها سيقان وأوراق وجذور، وتُسمّى أوراقها السعف.","تتكاثر بالأبواغ التي تتكوّن في تراكيب على السطح السفلي لأوراقها.","كان طول أشجارها قديمًا نحو ٢٥ مترًا، واليوم لا يزيد على ٣ – ٥ أمتار."]},
+    {id:"club",n:"حزازيات قدم الذئب",ic:"club",li:["تضم الصنوبريات الأرضية والحزازيات المسمارية.","أقرب إلى السرخسيات منها إلى الحزازيات، ولها أوراق إبرية الشكل.","تُحمل الأبواغ في تركيب صغير يشبه مخروط الصنوبر في نهاية الساق.","مهددة بالانقراض في بعض المناطق لاستخدامها في أكاليل الورد والزينة.","أبواغها الجافة سريعة الاشتعال، فاستخدمها المصورون قديمًا لإضاءة الفلاش.","تكيّف نوع منها للعيش في الصحراء: يجف فيبدو ميتًا، ثم يخضر عندما يتوافر الماء."]},
+    {id:"horse",n:"ذيل الحصان",ic:"horse",li:["ساقه مجوّف ومحاط بنسيج وعائي حلقي، وفيه عُقد تنمو عندها الأوراق حول الساق.","إذا سُحب ساقه تفتّت إلى أجزاء.","تتكوّن الأبواغ في تراكيب تشبه المخاريط في قمة الساق.","يحتوي ساقه على السليكا الموجودة في الرمل، فاستُخدم لتلميع الأشياء وتنظيف أدوات الطبخ.","تنمو معظم أنواعه في المناطق الرطبة وطولها أقل من متر، وبعضها قديمًا وصل إلى ١٥ مترًا."]}
+  ];
+  $("#typeTabs").innerHTML=T.map((t,i)=>'<button class="tab" role="tab" aria-selected="'+(i===0)+'" data-t="'+i+'">'+t.n+'</button>').join("");
+  $("#typePanes").innerHTML=T.map((t,i)=>'<div class="tabpane'+(i===0?" on":"")+'" role="tabpanel">'+ICON[t.ic]().replace('viewBox="0 0 120 100"','viewBox="0 0 120 100"')+'<ul>'+t.li.map(x=>"<li>"+x+"</li>").join("")+'</ul></div>').join("");
+  $("#typeTabs").addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(!b)return;const k=+b.dataset.t;$$(".tab").forEach((x,i)=>x.setAttribute("aria-selected",i===k));$$(".tabpane").forEach((p,i)=>p.classList.toggle("on",i===k))});
+})();
+
+quiz($("#q-types"),[
+  {q:"أين تتكوّن الأبواغ في حزازيات قدم الذئب؟",o:["في تركيب يشبه مخروط الصنوبر في نهاية الساق","على السطح السفلي للسعف","داخل البذور","في الجذور"],a:0,why:""},
+  {q:"استنتج: لماذا يُسمّى أحد أنواع السرخسيات «قرن الغزال»؟",o:["لأن أوراقه متفرعة تشبه قرون الغزال","لأن الغزلان تأكله","لأنه ينمو في الصحراء","لأن له قرونًا حقيقية"],a:0,why:"شكل السعف المتفرّع يشبه قرون الغزال، وينمو هذا النوع على النباتات الأخرى لا في التربة."},
+  {q:"لماذا استخدم المصورون أبواغ حزازيات قدم الذئب؟",o:["لأنها تحترق بسرعة فتعطي ضوءًا ساطعًا للفلاش","لأنها ملونة","لأنها تمتص الضوء","لأنها تنظف العدسات"],a:0,why:""},
+  {q:"أين تتكوّن الأبواغ في ذيل الحصان؟",o:["في تراكيب تشبه المخاريط في قمة الساق","عند العُقد فقط","على الجذور","في الأزهار"],a:0,why:""}
+],{key:"f-types"});
+
+orderAct($("#a-coal"),{key:"f-coal",steps:[
+  "نباتات لابذرية تنمو في مستنقعات دافئة رطبة قبل ٢٨٦ – ٣٦٠ مليون سنة",
+  "تموت النباتات وتُغمر بالماء والطين قبل أن تتحلل",
+  "تتراكم البقايا وتتعرض للضغط والحرارة",
+  "تتحول البقايا إلى مادة الخث",
+  "مع ضغط أكبر وطمر أعمق يتحول الخث إلى فحم حجري"]});
+
+sortAct($("#a-uses"),{key:"f-uses",bins:[{id:"f",label:"السرخسيات"},{id:"h",label:"ذيل الحصان"},{id:"p",label:"الخث"}],items:[
+  {t:"تزيين المنازل والحدائق المظللة",b:"f"},{t:"علاج شعبي للحروق واللدغات",b:"f"},{t:"صناعة السلال (مع بعض أنواع الحزازيات)",b:"f"},
+  {t:"سيقان جافة تُطحن إلى طحين",b:"h"},{t:"تلميع الأشياء وتنظيف أدوات الطبخ",b:"h"},
+  {t:"وقود رخيص في المناطق الفقيرة",b:"p"},{t:"تحسين نوعية التربة",b:"p"}]});
+
+/* ---------- review ---------- */
+(function(){
+  const R=[
+    ["اكتب خصائص النباتات.","متعددة الخلايا، يحتوي معظمها على الكلوروفيل، لها جذور أو أشباه جذور، وتحتاج جميعها إلى الماء."],
+    ["قارن بين خصائص النباتات الوعائية واللاوعائية.","الوعائية فيها أنسجة أنبوبية تنقل الماء والغذاء فتنمو أطول وأسمك، واللاوعائية بلا أنسجة وعائية وتمتص كل خلية الماء مباشرة، فتبقى صغيرة ورقيقة وتعيش في الأماكن الرطبة."],
+    ["قارن بين خصائص الحزازيات والسرخسيات.","كلاهما لابذري يتكاثر بالأبواغ ويفضل الرطوبة. الحزازيات لاوعائية قصيرة لها أشباه جذور وأشباه أوراق، والسرخسيات وعائية أطول لها جذور وسيقان وأوراق (سعف) تحمل الأبواغ على سطحها السفلي."],
+    ["حدد الظروف التي تشاهد فيها نمو نباتات رائدة كالحزازيات والحشائش الكبدية.","في البيئات الجديدة أو غير المستقرة: سهول اللابة، وأراضي الغابات المحترقة، والصخور المغطاة بطبقة رقيقة من التربة، مع توافر الرطوبة."],
+    ["لخّص وظائف الأنسجة الوعائية.","تنقل الماء والأملاح المعدنية والغذاء إلى جميع خلايا النبات، فتسمح له بالنمو أطول وأسمك وتحمّل الجفاف مدة أطول."],
+    ["تفكير ناقد: إذا وضعت لوحًا على العشب وتركته عدة أيام، فماذا تتوقع أن يحدث للعشب تحته؟ ولماذا؟","يصفرّ العشب ويذبل؛ لأن اللوح يحجب الضوء فيتوقف العشب عن صنع غذائه."],
+    ["تفكير ناقد: ما العلاقة بين توليد الكهرباء بحرق الفحم والنباتات الوعائية اللابذرية؟","الفحم الحجري تكوّن من بقايا نباتات وعائية لابذرية قديمة، وعند حرقه تتحرر الطاقة المخزنة في تلك البقايا وتُستخدم لتوليد الكهرباء."]
+  ];
+  $("#r-self").innerHTML=R.map((r,i)=>'<div class="reveal"><p>'+ar(i+1)+". "+r[0]+'</p><textarea data-save="self'+i+'" placeholder="اكتب إجابتك"></textarea><div class="row"><button class="btn" data-reveal>اعرض الإجابة النموذجية</button></div><div class="model" hidden>'+r[1]+'</div></div>').join("");
+})();
+
+quiz($("#q-math"),[
+  {q:"يوجد نحو ٨ آلاف نوع من الحشائش الكبدية ونحو ٩ آلاف نوع من الحزازيات. ما الكسر الذي يمثّل الحزازيات من مجموع النوعين؟",o:["٩ / ١٧","٨ / ١٧","٩ / ٨","١ / ٩"],a:0,why:"المجموع = ٨٠٠٠ + ٩٠٠٠ = ١٧٠٠٠، فالكسر = ٩٠٠٠ / ١٧٠٠٠ = ٩ / ١٧، أي أكثر من النصف بقليل."}
+],{key:"f-math"});
+
+quiz($("#q-post"),[
+  {q:"تتكوّن جميع النباتات من:",o:["خلية واحدة","خلايا عديدة","أنسجة وعائية فقط","بذور وأزهار"],a:1},
+  {q:"أي مما يلي تحتاج إليه جميع النباتات؟",o:["الماء","البذور","الأزهار","التربة العميقة"],a:0},
+  {q:"تتكاثر النباتات اللابذرية بواسطة:",o:["البذور","الأبواغ","المخاريط","الأزهار"],a:1},
+  {q:"وظيفة أشباه الجذور في النباتات اللاوعائية:",o:["نقل الماء لمسافات طويلة","صنع الغذاء","تثبيت النبات في مكانه","إنتاج الأبواغ"],a:2},
+  {q:"أي النباتات التالية وعائي لابذري؟",o:["الحشائش الكبدية","الحزازيات","الحشائش البوقية","ذيل الحصان"],a:3},
+  {q:"تحصل النباتات اللاوعائية على الماء:",o:["بالجذور الحقيقية","عبر الأنسجة الوعائية","مباشرة عبر غشاء الخلية والجدار الخلوي","من البذور"],a:2},
+  {q:"النبات الذي تحتوي كل خلية فيه على بلاستيدة خضراء واحدة:",o:["الحشائش البوقية","السرخسيات","الحزازيات","ذيل الحصان"],a:0},
+  {q:"استُخدم ذيل الحصان في تلميع الأشياء لاحتوائه على:",o:["الكلوروفيل","السليكا","الخث","السكر"],a:1},
+  {q:"المادة التي تتكون من نباتات المستنقعات المضغوطة وتُستخدم وقودًا:",o:["النفط","الخث","الرمل","اللابة"],a:1},
+  {q:"تستطيع السرخسيات أن تنمو أطول من الحزازيات لأن:",o:["لها أزهارًا","نسيجها الوعائي يوزع الماء والغذاء على جميع الخلايا","تعيش في الصحراء","أبواغها أكبر"],a:1},
+  {q:"تتكوّن أبواغ السرخسيات في:",o:["قمة الساق","الجذور","تراكيب على السطح السفلي للسعف","البذور"],a:2},
+  {q:"الحزازيات المسمارية من النباتات اللاوعائية.",o:["صح","خطأ"],a:1,why:"هي وعائية لابذرية ضمن حزازيات قدم الذئب."},
+  {q:"تُعد الحزازيات من الأنواع الرائدة لأنها تساعد على تكوين تربة جديدة.",o:["صح","خطأ"],a:0},
+  {q:"سُمك النباتات اللاوعائية كبير، لذلك تنمو إلى أطوال عالية.",o:["صح","خطأ"],a:1,why:"سُمكها بضع خلايا فقط، وطولها بضعة سنتيمترات."}
+],{key:"post",instant:false});
+
+/* ---------- results ---------- */
+const LABELS={"f-intro":"خصائص النباتات المشتركة","f-what":"تحقق: ما النباتات؟","f-classify":"صنّف النباتات اللابذرية","f-traits":"لمن هذه الصفة؟","f-lab":"تجربة الحزازيات والماء","f-pioneer":"مراحل تكوّن التربة","f-med":"صيدلية الطبيعة","f-forest":"حل المشكلة: الغابات المطيرة","f-types":"أسئلة الصور","f-coal":"من النبات إلى الفحم","f-uses":"استخدامات النباتات","f-math":"تطبيق الرياضيات","f-cmap":"خريطة المفاهيم"};
+function renderResults(){
+  const s=store.get("scores",{});const pct=k=>s[k]?Math.round(s[k].got/s[k].total*100):null;
+  const pre=pct("pre"),post=pct("post");
+  const bar=(lb,p,c)=>'<div class="res-bar"><div class="lb"><span>'+lb+'</span><b>'+(p==null?"لم يُنجز بعد":ar(p)+"٪")+'</b></div><div class="tr"><i style="width:'+(p||0)+'%;background:'+c+'"></i></div></div>';
+  let top='<h3 style="margin:0 0 10px">مقارنة التقويم القبلي بالختامي</h3><div class="res-bars">'+bar("التقويم القبلي",pre,"var(--water)")+bar("التقويم الختامي",post,"var(--spore)")+'</div>';
+  if(pre!=null&&post!=null){const d=post-pre;top+='<p style="margin-top:12px">'+(d>0?"تقدّمت بمقدار "+ar(d)+" نقطة مئوية. "+praise(post):d===0?"نتيجتك ثابتة. راجع الأجزاء التي أخطأت فيها ثم أعد التقويم الختامي.":"راجع الدرس ثم أعد التقويم الختامي.")+'</p>'}
+  else top+='<p class="hint" style="margin-top:12px">أكمل التقويمين لتظهر المقارنة.</p>';
+  $("#resTop").innerHTML=top;
+  $("#resList").innerHTML=Object.keys(LABELS).map(k=>'<li><span>'+LABELS[k]+'</span><b>'+(s[k]?ar(s[k].got)+" / "+ar(s[k].total):"—")+'</b></li>').join("");
+}
+$("#resetAll").addEventListener("click",()=>{if(confirm("سيُمسح تقدّمك وإجاباتك المكتوبة. هل تريد المتابعة؟")){store.clear();location.hash="#cover";location.reload()}});
+
+/* ---------- navigation ---------- */
+const pages=$$(".page"),names=pages.map(p=>p.dataset.page);
+function buildToc(){
+  const seen=store.get("seen",[]),cur=currentName();
+  $("#toc").innerHTML=pages.map((p,i)=>'<li class="'+(seen.indexOf(p.dataset.page)>=0?"seen":"")+'"><button data-go="'+p.dataset.page+'" class="'+(p.dataset.page===cur?"cur":"")+'"><span class="n">'+ar(i+1)+'</span><span>'+p.dataset.title+'</span></button></li>').join("");
+}
+function currentName(){const h=location.hash.replace("#","");return names.indexOf(h)>=0?h:"cover"}
+let curIdx=-1,curSpread=-1,busy=false;
+const reduceMotion=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TURN=850;
+pages.forEach((p,i)=>{if(i===0)return;p.insertAdjacentHTML("afterbegin",'<div class="runhead"><span>الفصل التاسع: النباتات</span><span>الدرس الأول: النباتات اللابذرية</span></div>');p.insertAdjacentHTML("beforeend",'<div class="folio"><span>'+ar(i)+'</span></div>')});
+let snd=store.get("snd",true),actx=null;
+const SPK='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/>';
+function paintSnd(){const b=$("#sndBtn");b.setAttribute("aria-pressed",snd);b.innerHTML=SPK+(snd?'<path d="M13 7.5q2 2.5 0 5M15 5.5q4 4.5 0 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>':'<path d="M13 7l5 6M18 7l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>')+'</svg>'}
+$("#sndBtn").addEventListener("click",()=>{snd=!snd;store.set("snd",snd);paintSnd()});paintSnd();
+function sfx(){if(!snd)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();const d=.38,r=actx.sampleRate,buf=actx.createBuffer(1,Math.floor(r*d),r),c=buf.getChannelData(0);
+  for(let k=0;k<c.length;k++){const t=k/c.length;c[k]=(Math.random()*2-1)*Math.pow(1-t,2.2)*Math.min(1,t*8)}
+  const src=actx.createBufferSource();src.buffer=buf;const f=actx.createBiquadFilter();f.type="bandpass";f.frequency.value=2200;f.Q.value=.6;const g=actx.createGain();g.gain.value=.28;
+  src.connect(f);f.connect(g);g.connect(actx.destination);src.start()}catch(e){}}
+const mqSpread=window.matchMedia("(min-width: 1000px) and (min-height: 560px)");
+let spread=mqSpread.matches;
+const SPREADS=[{l:0,r:null}];for(let k=1;k<pages.length;k+=2)SPREADS.push({r:k,l:k+1<pages.length?k+1:null});
+const spreadOf=i=>i===0?0:Math.floor((i+1)/2);
+const bookBox=$("#book");
+const setCls=(i,c)=>{if(i!=null)pages[i].className="page "+c};
+function bookState(sp){bookBox.classList.toggle("spread",spread);bookBox.classList.toggle("closed",spread&&sp===0);bookBox.classList.toggle("endonly",spread&&sp>0&&SPREADS[sp].l==null)}
+function renderStatic(){pages.forEach(p=>p.className="page");if(spread){const S=SPREADS[curSpread];setCls(S.r,"on pos-r");setCls(S.l,"on pos-l")}else pages[curIdx].classList.add("on");bookState(curSpread)}
+function turnSingle(op,np,fwd){
+  busy=true;const leaf=$("#leaf"),shade=$("#shade"),ez=" var(--turn) cubic-bezier(.55,.05,.35,1) forwards";sfx();
+  pages.forEach(p=>{if(p!==op&&p!==np)p.className="page"});
+  if(fwd){op.className="page turn-fwd";np.className="page under";leaf.style.animation="leafFwd"+ez}
+  else{op.className="page under";np.className="page turn-back";leaf.style.animation="leafBack"+ez}
+  leaf.style.display="block";shade.style.display="block";shade.style.animation="shade var(--turn) ease forwards";
+  setTimeout(()=>{renderStatic();leaf.style.display="none";leaf.style.animation="";shade.style.display="none";shade.style.animation="";busy=false},TURN+40);
+}
+function turnSpread(a,b){
+  const A=SPREADS[a],B=SPREADS[b],fwd=b>a;busy=true;sfx();
+  pages.forEach(p=>p.className="page");
+  [B.r,B.l].forEach(i=>{if(i!=null)pages[i].scrollTop=0});
+  if(fwd){setCls(A.r,"pos-r under");setCls(B.l,"pos-l under");setCls(A.l,"pos-l flipL-out");setCls(B.r,"pos-r flipR-in")}
+  else{setCls(A.l,"pos-l under");setCls(B.r,"pos-r under");setCls(A.r,"pos-r flipR-out");setCls(B.l,"pos-l flipL-in")}
+  bookState(b);
+  setTimeout(()=>{renderStatic();busy=false},TURN+40);
+}
+function show(){
+  const i=names.indexOf(currentName());
+  if(spread){const sp=spreadOf(i),prev=curSpread;curIdx=i;if(sp!==prev){curSpread=sp;if(prev<0||reduceMotion||busy)renderStatic();else turnSpread(prev,sp)}}
+  else if(i!==curIdx){const prev=curIdx;curIdx=i;curSpread=spreadOf(i);pages[i].scrollTop=0;if(prev<0||reduceMotion||busy)renderStatic();else turnSingle(pages[prev],pages[i],i>prev)}
+  chrome();
+}
+function visibleIdx(){if(!spread)return [curIdx];const S=SPREADS[curSpread];return [S.r,S.l].filter(x=>x!=null)}
+function target(dd){if(spread){const k=curSpread+dd;if(k<0||k>=SPREADS.length)return null;const S=SPREADS[k];return S.r!=null?S.r:S.l}const i=curIdx+dd;return i>=0&&i<pages.length?i:null}
+function chrome(){
+  const vis=visibleIdx(),first=Math.min.apply(null,vis),last=Math.max.apply(null,vis);
+  $("#topTitle").textContent=vis.map(k=>pages[k].dataset.title).join("  ·  ");
+  $("#topCount").textContent=(first===last?ar(first+1):ar(first+1)+"–"+ar(last+1))+" / "+ar(pages.length);
+  const seen=store.get("seen",[]);vis.forEach(k=>{if(seen.indexOf(names[k])<0)seen.push(names[k])});store.set("seen",seen);
+  $("#progBar").style.width=Math.round(seen.length/pages.length*100)+"%";
+  const pp=target(-1),nn=target(1),pv=$("#prevBtn"),nx=$("#nextBtn");
+  pv.disabled=pp==null;pv.textContent=pp==null?"السابق":"‹ "+pages[pp].dataset.title;
+  nx.disabled=nn==null;nx.textContent=nn==null?"نهاية الدرس":pages[nn].dataset.title+" ›";
+  $("#corner").hidden=nn==null;$("#cornerBack").hidden=pp==null;
+  buildToc();if(vis.some(k=>names[k]==="results"))renderResults();
+}
+function onMQ(){spread=mqSpread.matches;if(curIdx<0)return;curSpread=spreadOf(curIdx);renderStatic();chrome()}
+if(mqSpread.addEventListener)mqSpread.addEventListener("change",onMQ);else if(mqSpread.addListener)mqSpread.addListener(onMQ);
+function go(n){closeDrawer();if(location.hash==="#"+n)show();else location.hash=n}
+$("#prevBtn").addEventListener("click",()=>step(-1));
+$("#nextBtn").addEventListener("click",()=>step(1));
+function openDrawer(){$("#drawer").classList.add("open");$("#drawer").setAttribute("aria-hidden","false")}
+function closeDrawer(){$("#drawer").classList.remove("open");$("#drawer").setAttribute("aria-hidden","true")}
+$("#menuBtn").addEventListener("click",openDrawer);
+const step=dd=>{if(!$("#ar").hidden)return;const k=target(dd);if(k!=null)go(names[k])};
+$("#cornerBack").addEventListener("click",()=>step(-1));
+$("#corner").addEventListener("click",()=>step(1));
+let sx=null,sy=null;const bookEl=$("#book");
+bookEl.addEventListener("touchstart",e=>{if(e.target.closest("input,textarea")){sx=null;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
+bookEl.addEventListener("touchend",e=>{if(sx==null)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6)step(dx>0?1:-1)},{passive:true});
+document.addEventListener("keydown",e=>{if(e.target.closest("input,textarea"))return;if(e.key==="ArrowLeft")step(1);if(e.key==="ArrowRight")step(-1)});$("#drawerBg").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+window.addEventListener("hashchange",show);
+
+/* ================= AR viewer ================= */
+(function(){
+const arEl=$("#ar"),cv=$("#arCanvas"),video=$("#arVideo"),NEON=0x7dffb0;
+let R=null,scene,cam,clock,raf=0,content=null,bookG,shadowPlane,ring,sweep,beam,api=null,H,tmpV;
+let t=0,playing=true,phase="scan",pt=0,theta=.5,phi=1.05,rad=13,baseRad=13,lastInput=0,stream=null,camMode=false,lblEls=[],capLast=-1;
+let mk={x:.5,y:.5,s:.25,ok:false,last:-9999},tcv=null,tcx=null,ray=null,gp=null,hit=null,trTick=0;
+function arTrack(){
+  const now=performance.now();
+  if((trTick++&1)===0&&video.readyState>=2){
+    if(!tcv){tcv=document.createElement("canvas");tcv.width=160;tcv.height=120;tcx=tcv.getContext("2d",{willReadFrequently:true});ray=new THREE.Raycaster();gp=new THREE.Plane(new THREE.Vector3(0,1,0),0);hit=new THREE.Vector3()}
+    tcx.drawImage(video,0,0,160,120);const d=tcx.getImageData(0,0,160,120).data;let n=0,sx=0,sy=0;
+    for(let i=0,q=0;i<d.length;i+=4,q++){const r=d[i],g=d[i+1],b=d[i+2];if(r>130&&b>90&&g<Math.min(r,b)*.62&&r-g>60&&b-g>40){n++;sx+=q%160;sy+=(q/160)|0}}
+    if(n>35){const vx=sx/n/160,vy=sy/n/120,sq=Math.sqrt(n/19200),W=window.innerWidth,Hh=window.innerHeight,vw=video.videoWidth||640,vh=video.videoHeight||480,sc=Math.max(W/vw,Hh/vh),ox=(W-vw*sc)/2,oy=(Hh-vh*sc)/2;
+      const X=(ox+vx*vw*sc)/W,Y=(oy+vy*vh*sc)/Hh,S=sq*vw*sc/W,k=mk.ok?.35:1;mk.x+=(X-mk.x)*k;mk.y+=(Y-mk.y)*k;mk.s+=(S-mk.s)*k;mk.ok=true;mk.last=now}
+  }
+  if(now-mk.last>700)mk.ok=false;
+  $("#arMk").hidden=mk.ok||phase==="scan";
+  content.visible=mk.ok;ring.visible=mk.ok;
+  if(mk.ok&&ray){ray.setFromCamera({x:mk.x*2-1,y:-(mk.y*2-1)},cam);if(ray.ray.intersectPlane(gp,hit)){content.position.lerp(hit,.5);ring.position.set(content.position.x,.02,content.position.z);shadowPlane.position.set(content.position.x,0,content.position.z)}
+    const m=Math.min(2.2,Math.max(.3,mk.s/.25*.7));content.scale.multiplyScalar(m);ring.scale.setScalar(m)}
+  content.rotation.y=theta-.5;
+}
+const ptrs=new Map();
+const clamp01=x=>x<0?0:x>1?1:x,seg=(x,a,b)=>clamp01((x-a)/(b-a)),ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2,lerp=(a,b,x)=>a+(b-a)*x;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function toast(m){const e=$("#arToast");e.textContent=m;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>{e.hidden=true},6000)}
+
+function helpers(){
+  const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+  const M=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.7},o||{}));
+  const mesh=(geo,mat,x,y,z,sh)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);if(sh!==false){m.castShadow=true;m.receiveShadow=true}return m};
+  const canvasTex=(w,h)=>{const c=document.createElement("canvas");c.width=w;c.height=h;return {ctx:c.getContext("2d"),tex:new THREE.CanvasTexture(c),v:null}};
+  const bump=(geo,amp,f)=>{f=f||1;const p=geo.attributes.position,v=new THREE.Vector3();for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);const n=Math.sin(v.x*7*f+1.3)*Math.sin(v.y*9*f+.7)*Math.sin(v.z*8*f+2.1)+.5*Math.sin(v.x*17*f)*Math.sin(v.z*15*f);const l=Math.max(v.length(),.001);v.multiplyScalar(1+amp*n/l);p.setXYZ(i,v.x,v.y,v.z)}geo.computeVertexNormals();return geo};
+  const leafGeo=new THREE.SphereGeometry(1,8,6);
+  function fern(sc,col,n){
+    const G=new THREE.Group(),lm=M(col||0x3e8a45,{roughness:.85}),sm=M(0x4d6b2f);n=n||6;
+    for(let f=0;f<n;f++){
+      const a=f/n*Math.PI*2+.3,lean=.75+((f*7)%5)/10,pts=[];
+      for(let k=0;k<=10;k++){const u=k/10;pts.push(V(Math.cos(a)*u*1.5*sc*lean,sc*(1.5*Math.sin(u*Math.PI*.8)-.35*u),Math.sin(a)*u*1.5*sc*lean))}
+      const cu=new THREE.CatmullRomCurve3(pts);
+      G.add(mesh(new THREE.TubeGeometry(cu,16,.02*sc+.008,5,false),sm));
+      for(let k=1;k<=11;k++){const u=k/12,p=cu.getPoint(u),tg=cu.getTangent(u),side=new THREE.Vector3().crossVectors(tg,V(0,1,0)).normalize(),L=.32*sc*(1-u*.75)+.04;
+        [1,-1].forEach(sg=>{const m=mesh(leafGeo,lm);m.position.copy(p).addScaledVector(side,sg*L*.55);m.scale.set(.075*sc+.01,.018,L*.55);m.lookAt(m.position.clone().addScaledVector(side,sg));G.add(m)})}
+    }
+    return G;
+  }
+  function moss(n,r,h,col){
+    const G=new THREE.Group(),sm=M(col||0x4f8f36,{roughness:.9}),stG=new THREE.CylinderGeometry(.018,.025,1,5),tipG=new THREE.ConeGeometry(.06,.14,6);
+    for(let i=0;i<n;i++){const a=i*2.4,rr=r*Math.sqrt((i+.5)/n),x=Math.cos(a)*rr,z=Math.sin(a)*rr,hh=h*(.75+((i*13)%7)/20);
+      const st=mesh(stG,sm,x,hh/2,z);st.scale.y=hh;G.add(st);G.add(mesh(tipG,sm,x,hh+.05,z))}
+    const cap=M(0xb07a2a);
+    [[.2,.1],[-.25,-.15]].forEach(q=>{G.add(mesh(new THREE.CylinderGeometry(.008,.008,h*1.3,4),cap,q[0],h*.9+h*.65,q[1]));G.add(mesh(new THREE.SphereGeometry(.05,8,6),cap,q[0],h*.9+h*1.32,q[1]))});
+    return G;
+  }
+  return {V,M,mesh,canvasTex,bump,fern,moss,seg,ease,lerp,back};
+}
+
+function bookTexture(title){
+  const W=2048,Hh=1340,c=document.createElement("canvas");c.width=W;c.height=Hh;const x=c.getContext("2d");
+  x.fillStyle="#f7f3e8";x.fillRect(0,0,W,Hh);
+  const g=x.createLinearGradient(W/2-110,0,W/2+110,0);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.5,"rgba(0,0,0,.25)");g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.fillRect(W/2-110,0,220,Hh);
+  const rr=(X,Y,w,h)=>{x.beginPath();x.moveTo(X+h/2,Y);x.lineTo(X+w-h/2,Y);x.arc(X+w-h/2,Y+h/2,h/2,-Math.PI/2,Math.PI/2);x.lineTo(X+h/2,Y+h);x.arc(X+h/2,Y+h/2,h/2,Math.PI/2,Math.PI*1.5);x.fill()};
+  x.fillStyle="#d8d2c2";
+  for(let i=0;i<19;i++){const w=i%6===5?420:780-((i*37)%90);rr(W/2-120-w,150+i*58,w,15)}
+  for(let i=0;i<3;i++){const w=780-((i*53)%120);rr(W-120-w,Hh-230+i*58,w,15)}
+  x.direction="rtl";x.textAlign="right";x.fillStyle="#2f5f3c";x.font='700 58px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillText(title,W-120,150);
+  x.font='400 30px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillStyle="#7a8a7f";x.fillText("الفصل التاسع: النباتات · الدرس الأول",W-120,212);
+  const cx=W*.75,cy=Hh*.52,bw=640,bh=600,L=70;x.strokeStyle="#22a565";x.lineWidth=9;x.lineCap="round";
+  [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(q=>{const X=cx+q[0]*bw/2,Y=cy+q[1]*bh/2;x.beginPath();x.moveTo(X-q[0]*L,Y);x.lineTo(X,Y);x.lineTo(X,Y-q[1]*L);x.stroke()});
+  const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;tx.anisotropy=R.capabilities.getMaxAnisotropy();return tx;
+}
+
+function init(){
+  H=helpers();tmpV=new THREE.Vector3();
+  R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.outputEncoding=THREE.sRGBEncoding;R.setClearColor(0x000000,0);
+  scene=new THREE.Scene();cam=new THREE.PerspectiveCamera(38,1,.1,200);clock=new THREE.Clock();
+  scene.add(new THREE.HemisphereLight(0xf2fbff,0x40362a,.85));
+  const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(-6,11,7);dl.castShadow=true;dl.shadow.mapSize.set(2048,2048);
+  Object.assign(dl.shadow.camera,{left:-8,right:8,top:8,bottom:-8,near:1,far:40});dl.shadow.bias=-.0004;scene.add(dl);
+  bookG=new THREE.Group();bookG.position.x=-4.15;scene.add(bookG);
+  const cover=new THREE.Mesh(new THREE.BoxGeometry(17.4,.3,11.5),new THREE.MeshStandardMaterial({color:0x1d4530,roughness:.75}));cover.position.y=-.38;cover.receiveShadow=true;bookG.add(cover);
+  const block=new THREE.Mesh(new THREE.BoxGeometry(16.9,.24,11.1),new THREE.MeshStandardMaterial({color:0xeee8d8,roughness:.95}));block.position.y=-.12;block.receiveShadow=true;bookG.add(block);
+  const pg=new THREE.Mesh(new THREE.PlaneGeometry(16.8,11),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.95}));pg.rotation.x=-Math.PI/2;pg.position.y=.001;pg.receiveShadow=true;pg.name="page";bookG.add(pg);
+  shadowPlane=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.35}));shadowPlane.rotation.x=-Math.PI/2;shadowPlane.receiveShadow=true;shadowPlane.visible=false;scene.add(shadowPlane);
+  ring=new THREE.Mesh(new THREE.RingGeometry(2.9,3.05,72),new THREE.MeshBasicMaterial({color:NEON,transparent:true,opacity:.8,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.02;scene.add(ring);
+  sweep=new THREE.Mesh(new THREE.PlaneGeometry(8.3,.12),new THREE.MeshBasicMaterial({color:NEON,transparent:true,opacity:.9}));sweep.rotation.x=-Math.PI/2;sweep.position.y=.03;scene.add(sweep);
+  const bg=new THREE.BufferGeometry();bg.setAttribute("position",new THREE.BufferAttribute(new Float32Array(90*3),3));
+  beam=new THREE.Points(bg,new THREE.PointsMaterial({color:NEON,size:.09,transparent:true,opacity:0}));
+  beam.userData.seed=Array.from({length:90},()=>[Math.random()*Math.PI*2,2.4+Math.random()*.6,Math.random()]);scene.add(beam);
+  cv.addEventListener("pointerdown",e=>{ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});try{cv.setPointerCapture(e.pointerId)}catch(_){}lastInput=performance.now()});
+  cv.addEventListener("pointermove",e=>{if(!ptrs.has(e.pointerId))return;const p=ptrs.get(e.pointerId);
+    if(ptrs.size===1){theta-=(e.clientX-p.x)*.006;phi=Math.min(1.38,Math.max(.3,phi-(e.clientY-p.y)*.005))}
+    else if(ptrs.size===2){let o=null;ptrs.forEach((v,k)=>{if(k!==e.pointerId)o=v});if(o){const d0=Math.hypot(p.x-o.x,p.y-o.y),d1=Math.hypot(e.clientX-o.x,e.clientY-o.y);rad=Math.min(28,Math.max(6,rad*d0/Math.max(1,d1)))}}
+    p.x=e.clientX;p.y=e.clientY;lastInput=performance.now()});
+  const up=e=>ptrs.delete(e.pointerId);cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);
+  cv.addEventListener("wheel",e=>{e.preventDefault();rad=Math.min(28,Math.max(6,rad*(1+e.deltaY*.001)));lastInput=performance.now()},{passive:false});
+  window.addEventListener("resize",()=>{if(!arEl.hidden)resize()});
+}
+function resize(){const w=window.innerWidth,h=window.innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();baseRad=w<h?20:13.5}
+function dispose(o){o.traverse(m=>{if(m.geometry)m.geometry.dispose();if(m.material)(Array.isArray(m.material)?m.material:[m.material]).forEach(mt=>{if(mt.map)mt.map.dispose();mt.dispose()})})}
+
+/* ---------- scenes ---------- */
+const SCENES={
+lab(g,H){const {V,M,mesh,canvasTex,bump,seg,ease,lerp,back}=H;
+  const scl=new THREE.Group();scl.position.set(-2.3,0,.3);g.add(scl);
+  scl.add(mesh(new THREE.BoxGeometry(2.4,.45,1.9),M(0x5d6870,{metalness:.35,roughness:.45}),0,.225,0));
+  scl.add(mesh(new THREE.CylinderGeometry(.85,.85,.08,40),M(0xd5dce0,{metalness:.75,roughness:.25}),0,.49,-.1));
+  const disp=canvasTex(256,96),dm=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.36),new THREE.MeshBasicMaterial({map:disp.tex}));dm.position.set(0,.23,.952);scl.add(dm);
+  const showMass=v=>{if(disp.v===v)return;disp.v=v;const c=disp.ctx;c.fillStyle="#0b1d12";c.fillRect(0,0,256,96);c.fillStyle="#7dfc9f";c.font="bold 54px Courier New, monospace";c.textAlign="center";c.textBaseline="middle";c.fillText(v.toFixed(1)+" g",128,50);disp.tex.needsUpdate=true};showMass(0);
+  const bk=new THREE.Group();bk.position.set(2,0,0);g.add(bk);
+  const glass=()=>new THREE.MeshPhysicalMaterial({color:0xe6f6ff,transparent:true,opacity:.2,roughness:.05,side:THREE.DoubleSide,depthWrite:false});
+  bk.add(mesh(new THREE.CylinderGeometry(1.05,1,2.7,48,1,true),glass(),0,1.35,0,false));
+  const bot=mesh(new THREE.CircleGeometry(1,48),glass(),0,.01,0,false);bot.rotation.x=-Math.PI/2;bk.add(bot);
+  const rim=mesh(new THREE.TorusGeometry(1.05,.035,8,48),glass(),0,2.7,0,false);rim.rotation.x=Math.PI/2;rim.material.opacity=.5;bk.add(rim);
+  [.95,1.9].forEach(y=>bk.add(mesh(new THREE.BoxGeometry(.3,.025,.02),M(0x2a6c8c),0,y,1.03,false)));
+  const water=mesh(new THREE.CylinderGeometry(.98,.96,1,48),new THREE.MeshPhysicalMaterial({color:0x3a9ad9,transparent:true,opacity:.55,roughness:.1,depthWrite:false}),0,0,0,false);bk.add(water);
+  const level=h=>{water.visible=h>.01;water.scale.y=Math.max(.001,h);water.position.y=h/2+.02};
+  const bubs=[];for(let i=0;i<14;i++){const b=mesh(new THREE.SphereGeometry(.035,8,6),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.7}),0,0,0,false);bk.add(b);bubs.push([b,Math.random(),Math.random()*Math.PI*2])}
+  const ballG=new THREE.Group();g.add(ballG);
+  const dry=new THREE.Color(0x6aa63f),wet=new THREE.Color(0x2f5a22),mm=M(0x6aa63f,{roughness:.95});
+  ballG.add(mesh(bump(new THREE.SphereGeometry(.48,36,26),.07,1.4),mm));
+  const clothM=new THREE.MeshBasicMaterial({color:0xf4efe0,wireframe:true,transparent:true,opacity:.55});ballG.add(new THREE.Mesh(new THREE.SphereGeometry(.53,16,12),clothM));
+  ballG.add(mesh(new THREE.ConeGeometry(.13,.32,10),M(0xf1ecdc),0,.62,0));
+  const drops=[];for(let i=0;i<6;i++){const d=mesh(new THREE.SphereGeometry(.05,8,6),new THREE.MeshPhysicalMaterial({color:0x6bb3e6,transparent:true,opacity:.8}),0,0,0,false);g.add(d);drops.push([d,i/6])}
+  const P0=V(0,1.4,1.8),PS=V(-2.3,1.06,.2),PA=V(2,3.4,0),PW=V(2,.62,0),pv=V(0,0,0);
+  const KF=[[0,P0],[2,P0],[4,PS,1],[7,PS],[8,PA,1],[9,PW],[14,PW],[15.5,PA],[17.5,PS,1]];
+  const pathAt=x=>{for(let i=KF.length-1;i>=0;i--){if(x>=KF[i][0]){const a=KF[i],b=KF[i+1];if(!b)return pv.copy(a[1]);const k=ease(seg(x,a[0],b[0]));pv.lerpVectors(a[1],b[1],k);if(b[2])pv.y+=Math.sin(Math.PI*k)*1.3;return pv}}return pv.copy(P0)};
+  const L200=1.9,lv=x=>x<5?0:x<9?L200*ease(seg(x,5,7)):lerp(L200,L200*.45,ease(seg(x,9,14)));
+  return {title:"قياس كمية الماء التي تمتصها الحزازيات",dur:23,
+    steps:[[0,"١. لُفّ عدة ملاعق من نبات حزازي بقطعة قماش رقيق على هيئة كرة"],[2,"٢. قِس كتلة الكرة الجافة: ٢٠ جم"],[5,"٣. ضع ٢٠٠ مل من الماء في الوعاء"],[7,"٤. ضع الكرة في الماء"],[9,"٥. انتظر ١٥ دقيقة… تمتص الحزازيات الماء مباشرة عبر خلاياها"],[14,"٦. ارفع الكرة وجففها من الماء"],[16,"٧. قِس كتلة الكرة مرة أخرى: ١٣٠ جم"],[18.5,"٨. بقي ٩٠ مل، إذن امتصت الحزازيات ١١٠ مل من الماء"]],
+    labels:[
+      {pos:V(-2.3,2.3,.3),show:x=>(x>=4&&x<7)||x>=17.6,text:x=>x<10?"الكتلة الجافة: ٢٠ جم":"الكتلة بعد الامتصاص: ١٣٠ جم"},
+      {pos:V(2,3,0),show:x=>x>=6.6&&x<8.8,text:"٢٠٠ مل"},
+      {pos:V(2,3.9,0),show:x=>x>=9&&x<14.3,text:x=>"الوقت: "+ar(Math.round(seg(x,9,13.6)*15))+" دقيقة"},
+      {pos:V(2,2.4,1),show:x=>x>=18.6,text:"المتبقي: ٩٠ مل"},
+      {pos:V(0,4.7,0),show:x=>x>=19.6,text:"الماء الممتص = ٢٠٠ − ٩٠ = ١١٠ مل"}],
+    update(x,rt){
+      ballG.position.copy(pathAt(x));ballG.scale.setScalar(Math.max(.001,back(seg(x,0,1))));
+      if(x>=9&&x<14)ballG.position.y+=Math.sin(rt*2)*.03;
+      const wk=seg(x,9,14);mm.color.copy(dry).lerp(wet,wk);clothM.opacity=.55-.25*wk;
+      showMass(x>=3.9&&x<7.1?20:x>=17.4?130:0);
+      level(lv(x));
+      bubs.forEach(q=>{const on=x>=9&&x<14;q[0].visible=on;if(on){const u=(rt*.6+q[1])%1;q[0].position.set(Math.cos(q[2])*.35,.5+u*(lv(x)-.5),Math.sin(q[2])*.35)}});
+      drops.forEach(q=>{const on=x>=14.8&&x<17.2;q[0].visible=on;if(on){const u=(rt*1.4+q[1])%1;q[0].position.set(ballG.position.x+Math.cos(q[1]*9)*.15,ballG.position.y-.5-u*1.2,ballG.position.z+Math.sin(q[1]*9)*.15)}});
+    }};
+},
+vascular(g,H){const {V,M,mesh,seg,lerp,back}=H;
+  g.add(mesh(new THREE.BoxGeometry(7.2,.6,3.6),M(0x6b4a2e,{roughness:1}),0,.3,0));
+  const mossG=H.moss(46,.95,.42);mossG.position.set(-2,.6,0);g.add(mossG);
+  const fernG=new THREE.Group();fernG.position.set(1.8,.6,0);g.add(fernG);
+  const stemC=new THREE.CatmullRomCurve3([V(0,0,0),V(.15,1.2,.05),V(-.05,2.3,.1),V(.1,3.1,0)]);
+  fernG.add(mesh(new THREE.TubeGeometry(stemC,40,.12,12,false),new THREE.MeshPhysicalMaterial({color:0x5c9a46,transparent:true,opacity:.42,roughness:.5,depthWrite:false}),0,0,0,false));
+  const vasM=M(0x2a7fc0,{emissive:0x0d3a5c,emissiveIntensity:.6});fernG.add(mesh(new THREE.TubeGeometry(stemC,40,.045,8,false),vasM));
+  const top=H.fern(1.15,0x3e8a45,7);top.position.copy(stemC.getPoint(1));fernG.add(top);
+  fernG.add(H.fern(.6,0x4f9a4a,5));
+  const dropG=new THREE.SphereGeometry(.06,10,8),dropM=new THREE.MeshStandardMaterial({color:0x4fb0ff,emissive:0x1b6fb0,emissiveIntensity:.8});
+  const fp=[];for(let i=0;i<22;i++){const d=mesh(dropG,dropM,0,0,0,false);fernG.add(d);fp.push([d,i/22])}
+  const mp=[];for(let i=0;i<26;i++){const d=mesh(dropG,dropM,0,0,0,false);mossG.add(d);const a=i*2.4,r=.85*Math.sqrt((i+.5)/26);mp.push([d,(i*.37)%1,Math.cos(a)*r,Math.sin(a)*r])}
+  const pud=[];for(let i=0;i<10;i++){const p=mesh(new THREE.CircleGeometry(.16,16),new THREE.MeshBasicMaterial({color:0x4fb0ff,transparent:true,opacity:.6}),lerp(-3.2,3.2,i/9),.605,((i*7)%5-2)*.5,false);p.rotation.x=-Math.PI/2;g.add(p);pud.push(p)}
+  const xs=new THREE.Group();xs.position.set(3.9,2.6,1.1);g.add(xs);
+  const disc=mesh(new THREE.CylinderGeometry(.85,.85,.16,40),M(0x9cc97a,{roughness:.8}));disc.rotation.x=Math.PI/2.6;xs.add(disc);
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2;disc.add(mesh(new THREE.CylinderGeometry(.12,.12,.2,16),vasM,Math.cos(a)*.52,0,Math.sin(a)*.52))}
+  return {title:"رحلة الماء في النباتات الوعائية واللاوعائية",dur:17,
+    steps:[[0,"نبات حزازي (لاوعائي) ونبات سرخسي (وعائي) في التربة نفسها"],[2.5,"الماء موجود في التربة"],[4,"الحزازيات: تمتص كل خلية الماء مباشرة، وينتقل من خلية إلى أخرى ببطء فلا يصل بعيدًا"],[8,"السرخس: يصعد الماء بسرعة عبر الأنسجة الوعائية حتى قمة النبات"],[12,"النسيج الوعائي: خلايا طويلة أنبوبية الشكل تحمل الماء والأملاح المعدنية والغذاء داخل النبات"]],
+    labels:[{pos:V(-2,1.6,0),show:x=>x>=1,text:"حزازيات: ٢–٥ سم"},{pos:V(1.8,4.9,0),show:x=>x>=1,text:"سرخس: نبات وعائي"},{pos:V(-2,1.15,1.2),show:x=>x>=4.5,text:"انتقال بطيء من خلية لأخرى"},{pos:V(2.6,2.3,0),show:x=>x>=8.5,text:"أنسجة وعائية"},{pos:V(3.9,3.6,1.1),show:x=>x>=12.6,text:"نسيج وعائي"}],
+    update(x,rt){
+      pud.forEach((p,i)=>p.scale.setScalar(Math.max(.001,back(seg(x,2.5+i*.08,3.3+i*.08)))));
+      mp.forEach(q=>{const on=x>=4;q[0].visible=on;if(on){const u=((rt-4)*.11+q[1])%1;q[0].position.set(q[2],.03+u*.34,q[3]);q[0].scale.setScalar(Math.max(.001,1-u))}});
+      fp.forEach(q=>{const on=x>=8;q[0].visible=on;if(on){const u=((rt-8)*.32+q[1])%1;q[0].position.copy(stemC.getPoint(u))}});
+      vasM.emissiveIntensity=x>=8?.6+.4*Math.sin(rt*4):.4;
+      xs.scale.setScalar(Math.max(.001,back(seg(x,12,13))));xs.rotation.y=rt*.4;
+    }};
+},
+pioneer(g,H){const {V,M,mesh,seg,ease,back}=H;
+  const soil=mesh(new THREE.CylinderGeometry(2.9,3.1,.5,56),M(0x5b3d24,{roughness:1}),0,.25,0);g.add(soil);
+  const rockM=M(0x8b9096,{roughness:.9,flatShading:true}),rock=mesh(H.bump(new THREE.IcosahedronGeometry(1.6,3),.18,.8),rockM,0,.5,0);rock.scale.set(1.35,.72,1.05);g.add(rock);
+  const rockGray=new THREE.Color(0x8b9096),rockBrown=new THREE.Color(0x7b6a55);
+  const frags=[];for(let i=0;i<9;i++){const a=i/9*Math.PI*2,f=mesh(new THREE.DodecahedronGeometry(.18+(i%3)*.05),rockM,Math.cos(a)*2.2,.15,Math.sin(a)*1.75);g.add(f);frags.push(f)}
+  const spM=new THREE.MeshStandardMaterial({color:0xe3b23c,emissive:0x8a5a00,emissiveIntensity:.6}),pM=M(0x5aa63e,{roughness:.95});
+  const liveC=new THREE.Color(0x5aa63e),deadC=new THREE.Color(0x6b4f2c),spores=[],patches=[];
+  for(let i=0;i<34;i++){const a=i*2.4,r=.78*Math.sqrt((i+.5)/34),x=Math.cos(a)*r*2.16,z=Math.sin(a)*r*1.68,y=.5+1.15*Math.sqrt(Math.max(0,1-r*r));
+    const p=mesh(new THREE.SphereGeometry(.2,10,8),pM,x,y,z);g.add(p);patches.push([p,y,i/34]);
+    const sp=mesh(new THREE.SphereGeometry(.05,8,6),spM,0,0,0,false);g.add(sp);spores.push([sp,V(-7,2.4+(i%5)*.4,-1.5+(i%7)*.5),V(x,y+.1,z),(i%9)/9])}
+  const gM=M(0x4f9a3a),grass=[];
+  for(let i=0;i<26;i++){const a=i*2.4+.2,r=1.7+(i%5)*.22,h=.7+(i%4)*.15,cg=new THREE.ConeGeometry(.05,h,5);cg.translate(0,h/2,0);const bl=mesh(cg,gM,Math.cos(a)*r,.5,Math.sin(a)*r);g.add(bl);grass.push([bl,i/26])}
+  const f1=H.fern(.7);f1.position.set(-1.6,.5,1.2);g.add(f1);const f2=H.fern(.55);f2.position.set(1.9,.5,-.9);g.add(f2);
+  const flower=new THREE.Group();flower.add(mesh(new THREE.CylinderGeometry(.02,.02,.8,5),gM,0,.4,0));flower.add(mesh(new THREE.SphereGeometry(.14,12,10),M(0xf2c230,{emissive:0x5a4000}),0,.85,0));flower.position.set(.9,.5,1.6);g.add(flower);
+  return {title:"الأنواع الرائدة وتكوّن التربة",dur:18,
+    steps:[[0,"بيئة جديدة: صخور عارية لا تربة فيها"],[2,"تحمل الرياح أبواغ الحزازيات وحشيشة الكبد"],[5,"تنمو الحزازيات على طبقة رقيقة فوق الصخور، فهي من الأنواع الرائدة"],[9,"تموت الحزازيات وتتحلل، وتُفتّت الصخر ببطء"],[13,"تتكوّن تربة جديدة تنتقل إليها نباتات ومخلوقات أخرى"]],
+    labels:[{pos:V(0,2.4,0),show:x=>x<2.6,text:"صخرة عارية"},{pos:V(-3.3,3.4,0),show:x=>x>=2&&x<5,text:"أبواغ تحملها الرياح"},{pos:V(0,2.5,0),show:x=>x>=5.6&&x<9.2,text:"حزازيات: أنواع رائدة"},{pos:V(0,2.1,0),show:x=>x>=9.2&&x<13,text:"تحلل وتفتيت للصخر"},{pos:V(2.4,.9,1.7),show:x=>x>=12.5,text:"تربة جديدة"},{pos:V(-1.6,1.8,1.2),show:x=>x>=15,text:"نباتات أخرى"}],
+    update(x,rt){
+      const cr=ease(seg(x,9,13));
+      soil.visible=cr>0;soil.scale.y=Math.max(.001,cr);soil.position.y=.25*cr;
+      rock.position.y=.5-.55*cr;rockM.color.copy(rockGray).lerp(rockBrown,cr*.6);
+      frags.forEach((f,i)=>{const k=seg(x,9+i*.15,10.5+i*.15);f.visible=k>0&&x<13.5;f.scale.setScalar(Math.max(.001,back(k)*(1-seg(x,12,13.5))))});
+      spores.forEach(q=>{const k=seg(x,2+q[3]*1.2,4.6+q[3]*.6);q[0].visible=k>0&&x<6;q[0].position.lerpVectors(q[1],q[2],ease(k));q[0].position.y+=Math.sin(k*Math.PI)*1.2+Math.sin(rt*3+q[3]*9)*.08*(1-k)});
+      patches.forEach(q=>{const gk=seg(x,5+q[2]*2,6.5+q[2]*2),die=seg(x,9.5,12);q[0].visible=gk>0&&x<12.5;q[0].scale.set(1,.5,1).multiplyScalar(Math.max(.001,back(gk)*(1-die*.6)));q[0].position.y=q[1]-.55*cr});
+      pM.color.copy(liveC).lerp(deadC,seg(x,9.5,11.5));
+      grass.forEach(q=>{const k=seg(x,13+q[1]*1.5,14.2+q[1]*1.5);q[0].visible=k>0;q[0].scale.setScalar(Math.max(.001,ease(k)))});
+      [[f1,14,16],[f2,14.5,16.5],[flower,15.5,17]].forEach(q=>{const k=seg(x,q[1],q[2]);q[0].visible=k>0;q[0].scale.setScalar(Math.max(.001,back(k)))});
+    }};
+},
+coal(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
+  const BW=5.2,BD=2.6,BH=5;
+  const fr=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(BW,BH,BD)),new THREE.LineBasicMaterial({color:NEON,transparent:true,opacity:.7}));fr.position.y=BH/2;g.add(fr);
+  g.add(mesh(new THREE.BoxGeometry(BW,BH,BD),new THREE.MeshPhysicalMaterial({color:0xdff3ff,transparent:true,opacity:.08,depthWrite:false,side:THREE.DoubleSide}),0,BH/2,0,false));
+  const box=(h,c,o)=>mesh(new THREE.BoxGeometry(BW-.06,h,BD-.06),M(c,o));
+  const mud=box(.6,0x6b4a2e);mud.position.y=.3;g.add(mud);
+  const water=box(1.1,0x3a8fc9,{transparent:true,opacity:.45,depthWrite:false});water.castShadow=false;water.position.y=1.15;g.add(water);
+  function horsetail(){const G=new THREE.Group(),m=M(0x5e9a3c),dk=M(0x2f5a26);G.add(mesh(new THREE.CylinderGeometry(.06,.07,1.6,8),m,0,.8,0));
+    for(let k=1;k<5;k++){const r=mesh(new THREE.TorusGeometry(.075,.022,5,12),dk,0,k*.34,0);r.rotation.x=Math.PI/2;G.add(r);
+      for(let j=0;j<6;j++){const a=j/6*Math.PI*2,n=mesh(new THREE.CylinderGeometry(.008,.008,.35,3),m,Math.cos(a)*.15,k*.34+.08,Math.sin(a)*.15);n.rotation.z=Math.cos(a)*.9;n.rotation.x=-Math.sin(a)*.9;G.add(n)}}
+    G.add(mesh(new THREE.ConeGeometry(.09,.28,8),M(0xb08a3a),0,1.72,0));return G}
+  const plants=[];for(let i=0;i<6;i++){const f=i%2?H.fern(.55,0x3e8a45,5):horsetail();f.position.set(-2+i*.8,.6,((i*5)%3-1)*.6);g.add(f);plants.push([f,i%2?1:-1])}
+  const plantLayer=box(.4,0x4a6b2a);g.add(plantLayer);
+  const green=new THREE.Color(0x4a6b2a),peat=new THREE.Color(0x5a3b22),coalC=new THREE.Color(0x141414),plC=new THREE.Color();
+  const seds=[[.6,0xc9a46a],[.5,0xa98455],[.55,0xd2b27a]].map(q=>{const s=box(q[0],q[1]);g.add(s);return [s,q[0]]});
+  const arrows=[-1.5,0,1.5].map(x=>{const a=mesh(new THREE.ConeGeometry(.25,.6,16),M(NEON,{emissive:0x1f8a50,emissiveIntensity:.6}),x,0,0);a.rotation.x=Math.PI;g.add(a);return a});
+  return {title:"من المستنقع إلى الفحم الحجري",dur:18,
+    steps:[[0,"قبل ٢٨٦–٣٦٠ مليون سنة: نباتات لابذرية في مستنقعات دافئة رطبة"],[4,"تموت النباتات وتُغمر بالماء والطين قبل أن تتحلل"],[7.5,"تتراكم فوقها طبقات جديدة فتتعرض للضغط والحرارة"],[10.5,"تتحول البقايا إلى خث يُستخدم وقودًا"],[13.5,"ومع ضغط أكبر وطمر أعمق يتحول الخث إلى فحم حجري"]],
+    labels:[{pos:V(0,5.8,0),show:x=>x<4,text:"مستنقع قديم دافئ ورطب"},{pos:V(0,3.2,0),show:x=>x>=4.2&&x<7.5,text:"نباتات تموت وتُغمر بالماء والطين"},{pos:V(0,6.7,0),show:x=>x>=8.6&&x<16.5,text:"ضغط"},{pos:V(-3.3,1,1.3),show:x=>x>=10.5&&x<13.5,text:"خث"},{pos:V(-3.3,.9,1.3),show:x=>x>=14,text:"فحم حجري"},{pos:V(3.3,1.3,1.3),show:x=>x>=12.6&&x<16.6,text:"حرارة"}],
+    update(x,rt){
+      const fall=ease(seg(x,4,6.5));
+      plants.forEach(q=>{q[0].visible=x<7.2;q[0].rotation.z=q[1]*fall*1.45;q[0].scale.setScalar(Math.max(.001,1-seg(x,6.5,7.2)))});
+      water.visible=x>=3&&x<10;water.material.opacity=.45*seg(x,3,4.5)*(1-seg(x,8,10));
+      const pk=seg(x,6.4,7.3),comp=lerp(1,.45,ease(seg(x,8,12)))*lerp(1,.55,ease(seg(x,13,16)));
+      plantLayer.visible=pk>0;plantLayer.scale.y=Math.max(.001,pk*comp);
+      let y=.6;plantLayer.position.y=y+.2*plantLayer.scale.y;y+=.4*plantLayer.scale.y;
+      plC.copy(green).lerp(peat,seg(x,9,12)).lerp(coalC,seg(x,13,16));plantLayer.material.color.copy(plC);
+      plantLayer.material.roughness=lerp(.9,.35,seg(x,13,16));
+      const heat=x>=12.5&&x<16.8?(.5+.5*Math.sin(rt*5))*seg(x,12.5,13.5)*(1-seg(x,16,16.8)):0;plantLayer.material.emissive.setRGB(.55*heat,.12*heat,0);
+      seds.forEach((q,i)=>{const k=seg(x,7.5+i*1.1,8.6+i*1.1);q[0].visible=k>0;q[0].position.y=lerp(BH+2,y+q[1]/2,ease(k));y+=q[1]});
+      arrows.forEach(a=>{const k=seg(x,8.5,9.2)*(1-seg(x,16.2,16.8));a.visible=k>0;a.scale.setScalar(Math.max(.001,back(k)));a.position.y=BH+1+.18*Math.sin(rt*6)});
+    }};
+}
+};
+
+/* ---------- loop ---------- */
+function caption(){let k=-1;api.steps.forEach((st,i)=>{if(t>=st[0])k=i});if(k!==capLast){capLast=k;$("#arCap").textContent=k>=0?api.steps[k][1]:"";$$("#arTl i").forEach((d,i)=>d.classList.toggle("on",i<=k))}}
+function labels(){
+  if(phase==="scan"){lblEls.forEach(l=>{l.style.opacity=0});return}
+  const w=window.innerWidth,h=window.innerHeight,tt=Math.min(t,api.dur);
+  api.labels.forEach((L,i)=>{const el=lblEls[i],sh=L.show(tt);el.style.opacity=sh?1:0;if(!sh)return;
+    const txt=typeof L.text==="function"?L.text(tt):L.text;if(el.textContent!==txt)el.textContent=txt;
+    tmpV.copy(L.pos);content.localToWorld(tmpV);tmpV.project(cam);
+    el.style.left=((tmpV.x+1)/2*w)+"px";el.style.top=((1-tmpV.y)/2*h)+"px";el.style.visibility=tmpV.z<1?"visible":"hidden"});
+}
+function frame(){
+  raf=requestAnimationFrame(frame);
+  const dt=Math.min(.05,clock.getDelta());let camR=rad,camPhi=phi;
+  if(phase==="scan"){pt+=dt;const k=ease(seg(pt,0,2));camR=rad*(1.55-.55*k);camPhi=lerp(.45,phi,k);
+    ring.material.opacity=.45+.35*Math.sin(pt*8);ring.scale.setScalar(1+.06*Math.sin(pt*6));
+    sweep.visible=!camMode;sweep.position.z=lerp(-5.2,5.2,(pt*.9)%1);
+    if(pt>2.1){phase="pop";pt=0;$("#arScan").style.opacity=0;sweep.visible=false}}
+  else{pt+=dt;content.scale.setScalar(Math.max(.001,back(seg(pt,0,1.1))));
+    ring.material.opacity=lerp(.8,.22,seg(pt,0,1.2));ring.scale.setScalar(1);ring.rotation.z+=dt*.2;
+    const bp=beam.geometry.attributes.position,bk=seg(pt,0,1.6);beam.material.opacity=bk<1?(1-bk):0;
+    beam.userData.seed.forEach((sd,i)=>bp.setXYZ(i,Math.cos(sd[0])*sd[1],bk*4*(.5+sd[2]),Math.sin(sd[0])*sd[1]));bp.needsUpdate=true;
+    if(playing&&(!camMode||mk.ok))t+=dt;api.update(Math.min(t,api.dur),t);caption()}
+  if(camMode){cam.position.set(0,9,11);cam.lookAt(0,0,0);cam.updateMatrixWorld();arTrack()}
+  else{if(phase!=="scan"&&performance.now()-lastInput>3000&&ptrs.size===0)theta+=dt*.06;
+  cam.position.set(Math.sin(theta)*Math.sin(camPhi)*camR,1.2+Math.cos(camPhi)*camR,Math.cos(theta)*Math.sin(camPhi)*camR);cam.lookAt(0,1.2,0)}
+  labels();R.render(scene,cam);
+}
+function open(name){
+  arEl.hidden=false;requestAnimationFrame(()=>arEl.classList.add("on"));$("#arClose").focus();
+  if(typeof THREE==="undefined"){$("#arScan").style.opacity=0;$("#arCap").textContent="تعذّر تحميل محرك العرض المجسّم. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.";return}
+  try{
+    if(!R)init();
+    if(content){scene.remove(content);dispose(content)}
+    content=new THREE.Group();scene.add(content);api=SCENES[name](content,H);
+    const pg=bookG.getObjectByName("page");if(pg.material.map)pg.material.map.dispose();pg.material.map=bookTexture(api.title);pg.material.needsUpdate=true;
+    $("#arTitle").textContent=api.title;
+    $("#arLabels").innerHTML=api.labels.map(()=>'<div class="ar-lbl"></div>').join("");lblEls=$$(".ar-lbl",$("#arLabels"));
+    $("#arTl").innerHTML=api.steps.map(()=>"<i></i>").join("");capLast=-1;$("#arCap").textContent="";
+    t=0;playing=true;$("#arPlay").textContent="إيقاف مؤقت";phase="scan";pt=0;content.scale.setScalar(.001);$("#arScan").style.opacity=1;
+    resize();rad=baseRad;theta=.5;phi=1.05;lastInput=0;
+    clock.getDelta();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);
+  }catch(err){$("#arScan").style.opacity=0;$("#arCap").textContent="لا يدعم هذا الجهاز العرض المجسّم (WebGL).";}
+}
+function camOff(){if(stream){stream.getTracks().forEach(k=>k.stop());stream=null}camMode=false;mk.ok=false;if(content){content.position.set(0,0,0);content.rotation.y=0;content.visible=true}if(ring){ring.position.set(0,.02,0);ring.visible=true}if(shadowPlane)shadowPlane.position.set(0,0,0);$("#arMk").hidden=true;arEl.classList.remove("cam");if(bookG){bookG.visible=true;shadowPlane.visible=false}$("#arCam").textContent="الكاميرا"}
+async function camOn(){
+  try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+    video.srcObject=stream;await video.play();camMode=true;arEl.classList.add("cam");if(bookG){bookG.visible=false;shadowPlane.visible=true}$("#arCam").textContent="إيقاف الكاميرا";
+  }catch(e){camOff();toast("لم يُسمح بتشغيل الكاميرا في هذا العرض. جرّب فتح الكتاب في صفحته المستقلة واسمح بالوصول إلى الكاميرا.")}
+}
+function close(){cancelAnimationFrame(raf);raf=0;camOff();arEl.classList.remove("on");setTimeout(()=>{arEl.hidden=true},320)}
+$("#arClose").addEventListener("click",close);
+$("#arPlay").addEventListener("click",()=>{playing=!playing;$("#arPlay").textContent=playing?"إيقاف مؤقت":"تشغيل"});
+$("#arReplay").addEventListener("click",()=>{t=0;capLast=-1;playing=true;$("#arPlay").textContent="إيقاف مؤقت"});
+$("#arCam").addEventListener("click",()=>{camMode?camOff():camOn()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!arEl.hidden)close()});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-ar]");if(b)open(b.dataset.ar)});
+$$(".ar-marker").forEach((m,idx)=>{let sd=idx*97+13,h='<svg viewBox="0 0 8 8" aria-hidden="true"><rect width="8" height="8" style="fill:currentColor"/><rect x="1" y="1" width="6" height="6" style="fill:var(--sheet)"/>';
+  for(let y=0;y<6;y++)for(let x=0;x<6;x++){sd=(sd*1103515245+12345)&0x7fffffff;if((sd>>8)%3===0||(x===0&&y===0))h+='<rect x="'+(1+x)+'" y="'+(1+y)+'" width="1.02" height="1.02" style="fill:currentColor"/>'}
+  m.innerHTML=h+'</svg>'});
+})();
+
+/* ---------- concept map ---------- */
+(function(){
+  const el=$("#a-cmap");if(!el)return;
+  const NV=["الحزازيات","الحشائش الكبدية","الحشائش البوقية"],VA=["السرخسيات","حزازيات قدم الذئب","ذيل الحصان"];
+  const SL={sp:["الأبواغ"],nv:["لاوعائية"],va:["وعائية"],nvp:["أشباه جذور"],vap:["أنسجة وعائية"],nx:NV,vx:VA};
+  const CH=["الأبواغ","لاوعائية","وعائية","أشباه جذور","أنسجة وعائية"].concat(NV,VA,["البذور","الأزهار"]);
+  let sel=null;
+  const slot=g=>'<button class="cm-slot" data-g="'+g+'" data-v="" aria-label="خانة فارغة"></button>';
+  const link=x=>'<div class="cm-link">'+x+'</div>';
+  function draw(){
+    sel=null;
+    el.innerHTML='<div class="cm-bank">'+shuffle(CH).map(c=>'<button class="chip" data-c="'+c+'">'+c+'</button>').join("")+'</div>'+
+      '<div class="cmap"><div class="cm-top"><div class="cm-node root">النباتات اللابذرية</div>'+link("تتكاثر بواسطة ◀")+slot("sp")+'</div>'+link("تنقسم إلى")+'<div class="cm-split"></div>'+
+      '<div class="cm-cols">'+[["nv","nvp","nx"],["va","vap","vx"]].map(c=>'<div class="cm-col">'+slot(c[0])+link("تمتلك")+slot(c[1])+link("مثل")+slot(c[2])+slot(c[2])+slot(c[2])+'</div>').join("")+'</div></div>'+
+      '<div class="row"><button class="btn primary" data-act="check">تحقق</button><button class="btn ghost" data-act="reset">ابدأ من جديد</button></div><div class="msg"></div>';
+  }
+  const arm=()=>$$(".cm-slot",el).forEach(x=>x.classList.toggle("armed",!!sel));
+  const showChip=v=>{const ch=$$(".chip",el).find(x=>x.dataset.c===v);if(ch)ch.hidden=false};
+  el.addEventListener("click",e=>{
+    const a=e.target.closest("[data-act]");
+    if(a){if(a.dataset.act==="reset"){draw();return}
+      const sl=$$(".cm-slot",el),m=$(".msg",el);
+      if(sl.some(x=>!x.dataset.v)){m.className="msg bad";m.textContent="املأ جميع الخانات أولًا.";return}
+      let got=0;sl.forEach(x=>{const ok=SL[x.dataset.g].indexOf(x.dataset.v)>=0;x.classList.toggle("ok",ok);x.classList.toggle("bad",!ok);if(ok)got++});
+      m.className="msg "+(got===sl.length?"ok":"bad");
+      m.textContent=got===sl.length?"خريطة صحيحة بالكامل! لاحظ أن البذور والأزهار لا مكان لها في النباتات اللابذرية.":"صحيح "+ar(got)+" من "+ar(sl.length)+". اضغط على الخانات الحمراء لإفراغها ثم أعد المحاولة.";
+      saveScore("f-cmap",got,sl.length);return}
+    $$(".cm-slot",el).forEach(x=>x.classList.remove("ok","bad"));
+    const c=e.target.closest(".chip");
+    if(c){if(sel===c){c.classList.remove("sel");sel=null}else{if(sel)sel.classList.remove("sel");sel=c;c.classList.add("sel")}arm();return}
+    const sl=e.target.closest(".cm-slot");if(!sl)return;
+    const cur=sl.dataset.v;
+    if(sel){if(cur)showChip(cur);sl.dataset.v=sel.dataset.c;sl.textContent=sel.dataset.c;sl.classList.add("filled");sl.setAttribute("aria-label",sel.dataset.c);sel.hidden=true;sel.classList.remove("sel");sel=null}
+    else if(cur){showChip(cur);sl.dataset.v="";sl.textContent="";sl.classList.remove("filled");sl.setAttribute("aria-label","خانة فارغة")}
+    arm();
+  });
+  draw();
+})();
+
+/* ---------- marker card ---------- */
+document.addEventListener("click",e=>{if(e.target.closest("[data-marker]"))$("#mkView").hidden=false});
+$("#mkClose").addEventListener("click",()=>{$("#mkView").hidden=true});
+$("#mkPrint").addEventListener("click",()=>{document.body.classList.add("pm");try{window.print()}catch(e){}setTimeout(()=>document.body.classList.remove("pm"),1500)});
+
+/* ================= diagnosis & remedial plan ================= */
+const OBJS=[
+  {t:"تحديد الخصائص العامة لجميع النباتات",pages:[["intro","فيم تتشابه النباتات؟"],["what","ما النباتات؟"]],ar:[],
+   concept:"جميع النباتات: <b>تتكون من خلايا عديدة</b>، ويحتوي <b>معظمها</b> على الكلوروفيل، ولها <b>جذور أو أشباه جذور</b>، و<b>تحتاج إلى الماء</b>. لكن ليست كلها تنتج بذورًا أو أزهارًا.",
+   enrich:"دفتر العلوم (ص١٤): اكتب ثلاث خصائص مشتركة بين النباتات.",
+   rq:[{q:"أي العبارات التالية صحيحة لجميع النباتات؟",o:["تنتج أزهارًا","تحتاج إلى الماء","طولها أكثر من متر","تعيش في الصحراء"],a:1},
+       {q:"نبات لا ينتج بذورًا، هل يُعد نباتًا؟",o:["نعم، فبعض النباتات تتكاثر بالأبواغ","لا، فكل النباتات تنتج بذورًا"],a:0},
+       {q:"يحتوي معظم النباتات على:",o:["الكلوروفيل","السليكا","الخث","الفحم"],a:0}]},
+  {t:"المقارنة بين النباتات الوعائية والنباتات اللاوعائية",pages:[["classify","تصنيف النباتات"],["vascular","النباتات الوعائية اللابذرية"]],ar:[["vascular","رحلة الماء في النبات"]],
+   concept:"<b>الوعائي</b>: فيه أنابيب تنقل الماء والغذاء إلى كل الخلايا، فينمو أطول وأسمك. <b>اللاوعائي</b>: بلا أنابيب، ينتقل الماء من خلية إلى أخرى ببطء، فيبقى قصيرًا في الأماكن الرطبة.",
+   enrich:"التجربة (ص١٩): نفّذ تجربة قياس كمية الماء التي تمتصها الحزازيات، وسجّل النتيجة في دفتر العلوم.",
+   rq:[{q:"نبات طوله ٤ سم يعيش في مكان رطب وليس فيه أنابيب ناقلة:",o:["لاوعائي","وعائي"],a:0},
+       {q:"ما الذي يسمح للنبات الوعائي بالنمو طويلًا؟",o:["النسيج الوعائي الذي يوزّع الماء","الأبواغ","أشباه الجذور","الأزهار"],a:0},
+       {q:"أي زوج يتكون من نباتين وعائيين؟",o:["الحزازيات والحشائش الكبدية","السرخسيات وذيل الحصان","الحشائش البوقية والحزازيات","الحشائش الكبدية والسرخسيات"],a:1}]},
+  {t:"تمييز خصائص النباتات اللاوعائية اللابذرية والوعائية اللابذرية",pages:[["nonvascular","النباتات اللاوعائية"],["types","أنواع الوعائية اللابذرية"],["lab","تجربة الحزازيات"]],ar:[["lab","تجربة امتصاص الماء"]],
+   concept:"<b>لاوعائية لابذرية</b>: الحزازيات والحشائش الكبدية والبوقية، لها أشباه جذور وطولها ٢–٥ سم. <b>وعائية لابذرية</b>: السرخسيات (سعف تحمل الأبواغ على سطحها السفلي)، وحزازيات قدم الذئب (أبواغ في تركيب كالمخروط بنهاية الساق)، وذيل الحصان (ساق مجوف بعُقد ويحتوي السليكا). وجميعها تتكاثر بالأبواغ.",
+   enrich:"تطبيق الرياضيات (ص٢٤): قدّر الكسر الذي تمثله الحزازيات من النباتات اللاوعائية اللابذرية.",
+   rq:[{q:"نبات له سعف تحمل الأبواغ على سطحها السفلي:",o:["الحزاز","ذيل الحصان","السرخس","الحشيشة الكبدية"],a:2},
+       {q:"ساق مجوف فيه عُقد ويحتوي على السليكا:",o:["ذيل الحصان","الصنوبريات الأرضية","الحشيشة البوقية","الحزاز"],a:0},
+       {q:"جسم مسطح بلا جذور، وأشباه جذوره من خلية واحدة:",o:["السرخس","الحشيشة الكبدية","ذيل الحصان","الحزاز"],a:1}]},
+  {t:"تحديد أهمية بعض النباتات اللاوعائية والوعائية",pages:[["pioneer","النباتات اللاوعائية والبيئة"],["importance","أهمية النباتات اللابذرية"]],ar:[["pioneer","تكوّن التربة"],["coal","تكوّن الفحم"]],
+   concept:"<b>الحزازيات</b> أنواع رائدة تفتّت الصخر وتكوّن تربة جديدة. <b>النباتات اللابذرية القديمة</b> كوّنت الفحم الحجري. <b>الخث</b> وقود ومحسّن للتربة. <b>السرخسيات</b> للزينة واستُخدمت في العلاج الشعبي.",
+   enrich:"التفكير الناقد (ص٢٤): ما العلاقة بين توليد الكهرباء بحرق الفحم والنباتات الوعائية اللابذرية؟",
+   rq:[{q:"لماذا تُعد الحزازيات مهمة في أرض غابة محترقة؟",o:["تمنع سقوط الأمطار","تبدأ بتكوين تربة جديدة","تنتج بذورًا للأشجار","تطرد الحيوانات"],a:1},
+       {q:"ما مصدر الفحم الحجري؟",o:["صخور بركانية","رمال الصحراء","نباتات لابذرية قديمة دُفنت قبل تحللها","عظام الحيوانات"],a:2},
+       {q:"من استخدامات الخث:",o:["صناعة الزجاج","الوقود وتحسين التربة","تلميع أدوات الطبخ","علاج الصداع"],a:1}]}
+];
+const POSTMAP=[0,0,2,2,2,1,2,3,3,1,2,1,3,2];
+const FORMMAP={"f-cmap":2,"f-intro":0,"f-what":0,"f-classify":1,"f-lab":1,"f-traits":2,"f-types":2,"f-pioneer":3,"f-med":3,"f-coal":3,"f-uses":3};
+const esc=x=>String(x).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function diagnose(){
+  const s=store.get("scores",{}),post=s.post;
+  if(!post||!post.detail||post.detail.length!==POSTMAP.length)return null;
+  return OBJS.map((o,k)=>{let pg=0,pt=0,fg=0,ft=0;
+    post.detail.forEach((ok,i)=>{if(POSTMAP[i]===k){pt++;if(ok)pg++}});
+    Object.keys(FORMMAP).forEach(key=>{if(FORMMAP[key]===k&&s[key]){fg+=s[key].got;ft+=s[key].total}});
+    const pp=pt?pg/pt:0,pct=Math.round((ft?pp*.7+fg/ft*.3:pp)*100),rem=s["rem-"+k];
+    return {k:k,pg:pg,pt:pt,fg:fg,ft:ft,pct:pct,lvl:pct>=80?"m":pct>=60?"n":"w",healed:!!(rem&&rem.got>=2)}});
+}
+let planSig=null;
+const LVN={m:"متقن",n:"قريب من الإتقان",w:"يحتاج إلى علاج"},LVC={m:"var(--ok)",n:"var(--spore)",w:"var(--bad)"};
+function renderDiag(){
+  const out=$("#diagOut"),plan=$("#planOut");if(!out)return;
+  const D=diagnose(),name=store.get("t:stuName","");
+  if(!D){out.innerHTML='<div class="sheet"><p>أكمل التقويم الختامي أولًا ليظهر تشخيص تحقق الأهداف.</p><div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="posttest">اذهب إلى التقويم الختامي</button></div></div>';plan.innerHTML='<div class="sheet"><p>تُبنى الخطة العلاجية تلقائيًا بعد التشخيص.</p></div>';planSig=null;return}
+  const mastered=D.filter(d=>d.lvl==="m").length,avg=Math.round(D.reduce((a,d)=>a+d.pct,0)/D.length);
+  out.innerHTML=(name?'<p class="kufi" style="margin:0 0 8px;font-weight:600">الطالب: '+esc(name)+'</p>':'')+
+    '<div class="diag-sum"><span class="big">'+ar(avg)+'٪</span><span>متوسط تحقق أهداف الدرس<br>تحقق '+ar(mastered)+' من '+ar(D.length)+' أهداف بإتقان</span></div>'+
+    D.map(d=>{const st=d.healed&&d.lvl!=="m"?"r":d.lvl;return '<div class="obj-row"><div class="top-l"><h4>الهدف '+ar(d.k+1)+': '+OBJS[d.k].t+'</h4><span class="lvl '+st+'">'+(st==="r"?"تم العلاج":LVN[d.lvl])+'</span></div><div class="obj-bar"><i style="width:'+d.pct+'%;background:'+LVC[d.lvl]+'"></i></div><div class="evid">'+ar(d.pct)+'٪ · التقويم الختامي '+ar(d.pg)+' من '+ar(d.pt)+(d.ft?' · الأنشطة '+ar(d.fg)+' من '+ar(d.ft):'')+'</div></div>'}).join("");
+  const weak=D.filter(d=>d.lvl!=="m").sort((a,b)=>a.pct-b.pct),sig=D.map(d=>d.lvl).join("");
+  if(sig!==planSig){planSig=sig;buildPlan(D,weak)}
+  $$(".plan-card").forEach(c=>{const d=D[+c.dataset.obj],b=$(".pb",c);c.classList.toggle("healed",d.healed);b.className="lvl pb "+(d.healed?"r":d.lvl);b.textContent=d.healed?"تم العلاج":LVN[d.lvl]});
+}
+function buildPlan(D,weak){
+  let h=weak.length?'<p>رُتّبت الأهداف من الأكثر حاجة إلى العلاج. نفّذ الخطوات بالترتيب، ثم أجب عن نشاط العلاج ليتحدّث التشخيص.</p>':'<div class="sheet"><p><b>أحسنت!</b> حققت جميع أهداف الدرس بإتقان، فلا تحتاج إلى خطة علاجية.</p></div>';
+  weak.forEach(d=>{const o=OBJS[d.k];let n=1;
+    h+='<div class="plan-card" data-obj="'+d.k+'"><div class="top-l"><h4>الهدف '+ar(d.k+1)+': '+o.t+'</h4><span class="lvl pb"></span></div><ol class="plan-steps">'+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>راجع المفهوم باختصار</b><div class="concept">'+o.concept+'</div></div></li>'+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>أعد قراءة الصفحات</b><div class="row no-print" style="margin-top:6px">'+o.pages.map(p=>'<button class="btn" data-go="'+p[0]+'">'+p[1]+'</button>').join("")+'</div><div class="print-only">'+o.pages.map(p=>p[1]).join("، ")+'</div></div></li>'+
+      (o.ar.length?'<li><span class="k">'+ar(n++)+'</span><div><b>شاهد المشهد المجسّم</b><div class="row no-print" style="margin-top:6px">'+o.ar.map(a=>'<button class="btn" data-ar="'+a[0]+'">'+a[1]+'</button>').join("")+'</div><div class="print-only">'+o.ar.map(a=>a[1]).join("، ")+'</div></div></li>':'')+
+      '<li><span class="k">'+ar(n++)+'</span><div><b>نشاط العلاج</b> <span class="hint">(يُعد الهدف متحققًا بإجابتين صحيحتين من ثلاث)</span><div id="rq'+d.k+'"></div></div></li></ol></div>'});
+  const ok=D.filter(d=>d.lvl==="m");
+  if(ok.length)h+='<div class="sheet"><h3 style="margin:0 0 6px;font-size:17px">أنشطة إثرائية للأهداف المتقنة</h3><ul style="margin:0 0 10px;padding-right:20px">'+ok.map(d=>'<li>'+OBJS[d.k].enrich+'</li>').join("")+'</ul></div>';
+  $("#planOut").innerHTML=h;
+  weak.forEach(d=>quiz($("#rq"+d.k),OBJS[d.k].rq,{key:"rem-"+d.k}));
+}
+$("#printPlan").addEventListener("click",()=>{try{window.print()}catch(e){}});
+$("#stuName").addEventListener("input",()=>{store.set("t:stuName",$("#stuName").value);renderDiag()});
+
+bindSaves();renderResults();renderDiag();show();
+})();
+</script>
+</body>
+</html>
