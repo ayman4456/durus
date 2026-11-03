@@ -196,9 +196,14 @@ function renderHonor(){const L=LESSONS[lesson];$("#hnCard").hidden=!L.nafes;if(!
 let XL=null;
 function rosRender(){const cl=[...new Set(ROSTER.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
   const cur=$("#sessCls").value;$("#sessCls").innerHTML=cl.length?cl.map(c=>'<option'+(c===cur?" selected":"")+'>'+esc(c)+'</option>').join(""):'<option value="">ارفع الكشف أولًا</option>';
-  $("#rosList").innerHTML=cl.length?cl.map(c=>{const st=ROSTER.filter(x=>x.cls===c).sort((a,b)=>a.name.localeCompare(b.name,"ar"));
+  const seen={},dups=[];ROSTER.slice().sort((a,b)=>((a.at&&a.at.toMillis?a.at.toMillis():0)-(b.at&&b.at.toMillis?b.at.toMillis():0))||a.code.localeCompare(b.code)).forEach(x=>{const k=x.cls+"|"+x.name;if(seen[k])dups.push(x);else seen[k]=1});
+  $("#rosList").innerHTML=(dups.length?'<div class="sess-state" style="border-color:var(--bad)"><b style="color:var(--bad)">⚠ يوجد '+ar(dups.length)+' اسمًا مكررًا في الكشف</b> (غالبًا من الضغط على زر الحفظ مرتين). يُبقى لكل طالب رمزه الأول ويُحذف المكرر.<div class="row" style="margin-top:6px"><button class="btn primary" id="dupDel">حذف المكرر ('+ar(dups.length)+')</button></div></div>':'')+(cl.length?cl.map(c=>{const st=ROSTER.filter(x=>x.cls===c).sort((a,b)=>a.name.localeCompare(b.name,"ar"));
     return '<details class="ros-cls"><summary><span class="sp">فصل '+esc(c)+' ('+ar(st.length)+' طالبًا)</span><button class="btn" data-print="'+esc(c)+'">طباعة البطاقات</button></summary><div class="tbl"><table><tr><th>الاسم</th><th>الرمز</th><th></th></tr>'+
-      st.map(x=>'<tr><td>'+esc(x.name)+'</td><td class="cd">'+esc(x.code)+'</td><td><button class="xdel" title="حذف" data-del="'+esc(x.code)+'">✕</button></td></tr>').join("")+'</table></div></details>'}).join(""):'<p class="hint">لا يوجد كشف بعد.</p>';
+      st.map(x=>'<tr><td>'+esc(x.name)+'</td><td class="cd">'+esc(x.code)+'</td><td><button class="xdel" title="حذف" data-del="'+esc(x.code)+'">✕</button></td></tr>').join("")+'</table></div></details>'}).join(""):'<p class="hint">لا يوجد كشف بعد.</p>');
+  const dd=$("#dupDel");if(dd)dd.onclick=()=>{if(!confirm("حذف "+dups.length+" رمزًا مكررًا؟ يبقى لكل طالب رمز واحد."))return;dd.disabled=true;dd.textContent="جارٍ الحذف…";
+    if(demo||!db){const del=new Set(dups.map(x=>x.code));ROSTER=ROSTER.filter(x=>!del.has(x.code));rosRender();return}
+    const ch=[];for(let i=0;i<dups.length;i+=400)ch.push(dups.slice(i,i+400));
+    Promise.all(ch.map(c=>{const b=db.batch();c.forEach(x=>b.delete(db.collection("durus_roster").doc(x.code)));return b.commit()})).then(()=>{$("#rosMsg").textContent="✓ حُذف المكرر"}).catch(()=>{$("#rosMsg").textContent="تعذّر الحذف.";dd.disabled=false})};
   sessRender();if(rows.length||demo)render()}
 function parseSheet(aoa){aoa=aoa.filter(r=>r&&r.some(c=>String(c==null?"":c).trim()));let h=-1,ni=0,ci=-1;
   for(let i=0;i<Math.min(10,aoa.length);i++){const r=aoa[i].map(c=>String(c==null?"":c).trim());const n=r.findIndex(c=>/اسم/.test(c));if(n>=0){h=i;ni=n;ci=r.findIndex(c=>/فصل|شعبة/.test(c)&&!/اسم/.test(c));if(ci<0)ci=r.findIndex(c=>/صف/.test(c)&&!/اسم/.test(c));break}}
@@ -209,7 +214,7 @@ function xlPreview(){if(!XL){$("#xlPrev").innerHTML="";return}const L=parseSheet
   $("#xlPrev").innerHTML='<div class="sess-state">وُجد '+ar(L.length)+' اسمًا: '+Object.keys(by).map(c=>"فصل "+esc(c)+" ("+ar(by[c])+")").join("، ")+(dup.length?'<br><span class="miss">'+ar(dup.length)+' موجودون في الكشف مسبقًا وسيُتجاوزون.</span>':'')+
     '<br><span class="miss">أول الأسماء: '+nw.slice(0,4).map(x=>esc(x.name)).join("، ")+'</span>'+
     (noCls.length?'<br><b style="color:var(--bad)">لم أجد عمود الفصل؛ اكتب اسم الفصل في الخانة أعلاه.</b>':'<div class="row" style="margin-top:6px"><button class="btn primary" id="xlSave">حفظ '+ar(nw.length)+' طالبًا في الكشف وتوليد الرموز</button></div>')+'</div>';
-  const b=$("#xlSave");if(b)b.onclick=()=>rosAdd(nw)}
+  const b=$("#xlSave");if(b)b.onclick=()=>{if(b.disabled)return;b.disabled=true;b.textContent="جارٍ الحفظ…";rosAdd(nw)}}
 function newCode(used){for(let k=0;k<5000;k++){const c=String(1000+Math.floor(Math.random()*9000));if(!used.has(c)){used.add(c);return c}}return null}
 function rosAdd(list){if(!list.length)return;const used=new Set(ROSTER.map(x=>x.code)),add=list.map(x=>({name:x.name,cls:x.cls,code:newCode(used)}));
   if(demo||!db){ROSTER=ROSTER.concat(add);XL=null;$("#xlFile").value="";xlPreview();rosRender();$("#rosMsg").textContent="✓ أُضيف "+ar(add.length);return}
