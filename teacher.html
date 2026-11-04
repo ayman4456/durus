@@ -249,7 +249,7 @@ function sessRender(){const L=LESSONS[lesson];$("#sessCard").hidden=!L.nafes;$("
 let CQ=[],cqUnsub=null;
 function cqRender(){const by={};CQ.filter(x=>x.lesson===lesson).forEach(x=>{const t=x.at&&x.at.toMillis?x.at.toMillis():0;if(!by[x.cls]||by[x.cls]._t<t)by[x.cls]=Object.assign({_t:t},x)});
   const L=["معرفة","تطبيق","استدلال"],ks=Object.keys(by).sort((a,b)=>a.localeCompare(b,"ar"));
-  $("#cqRes").innerHTML=ks.length?ks.map(c=>{const x=by[c];return '<div><b>فصل '+esc(c)+': '+ar(x.pct)+'٪</b> ('+ar(x.present)+' حاضرًا)<br>'+L.map((l,i)=>l+' '+(x.lv[i]==null?'—':ar(x.lv[i])+'٪')).join(" · ")+'<br><span class="miss">'+(x._t?fmtT(x._t):'')+'</span></div>'}).join(""):''}
+  $("#cqRes").innerHTML=ks.length?ks.map(c=>{const x=by[c];return '<div><b>فصل '+esc(c)+': '+ar(x.pct)+'٪</b>'+(x.present?' ('+ar(x.present)+' حاضرًا)':'')+'<br>'+L.map((l,i)=>l+' '+(x.lv[i]==null?'—':ar(x.lv[i])+'٪')).join(" · ")+'<br><span class="miss">'+(x._t?fmtT(x._t):'')+'</span></div>'}).join(""):''}
 setInterval(()=>{if(LIVE)sessRender()},60000);
 function liveWatch(){if(liveUnsub){liveUnsub();liveUnsub=null}if(demo||!db)return;liveUnsub=db.collection("durus_live").doc(lesson).onSnapshot(d=>{LIVE=d.exists?d.data():null;sessRender()},()=>{})}
 function render(){
@@ -299,7 +299,7 @@ function startDemo(){$("#demoNote").hidden=false;$("#dash").hidden=false;
     return {lesson:"digestion6",name:n+" (تجريبي)",cls:i%2?"6أ":"6ب",pre:{got:pre,total:17},post:{got:post,total:17},objectives:o,healed:o.map(p=>p<80&&Math.random()>.4),seen:10+i%7,survey:{a:[5,4,5,4,5].map(v=>Math.max(1,v-Math.floor(Math.random()*2))),c:i%5===0?"أعجبتني المشاهد المجسّمة كثيرًا":""}}}));
   ROSTER=[];const cl=["6أ","6ب","6ج"];names.forEach((n,i)=>ROSTER.push({code:String(2000+i*37),name:n+" (تجريبي)",cls:cl[i%3]}));["ياسمين","رغد","سلمى"].forEach((n,i)=>ROSTER.push({code:String(7000+i),name:n+" (تجريبي)",cls:cl[i]}));
   rows.forEach(r=>{if(r.lesson!=="cells6")return;const R=ROSTER.find(x=>x.name===r.name);if(R){r.code=R.code;r.cls=R.cls}r.nafesClass={pct:r.nafes.pct,lv:r.nafes.lv,std:r.nafes.std,sess:"demo"};const b=Math.min(100,r.nafes.pct+Math.floor(Math.random()*25));if(Math.random()>.3)r.nafesHome={n:1+Math.floor(Math.random()*5),best:b,last:b}});
-  CQ=[{lesson:"cells6",cls:"6ب",present:38,pct:71,lv:[82,70,58]}];tSurvey();rosRender();render()}
+  CQ=[{lesson:"cells6",cls:"6ب",pct:71,lv:[82,70,58]}];tSurvey();rosRender();render()}
 
 $("#xlFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;if(!window.XLSX){$("#xlPrev").innerHTML='<p class="msg">تعذّر تحميل قارئ Excel؛ تحقّق من الاتصال.</p>';return}
   const rd=new FileReader();rd.onload=()=>{try{const wb=XLSX.read(new Uint8Array(rd.result),{type:"array"});XL=[];wb.SheetNames.forEach(n=>{XL=XL.concat(XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:""}))});xlPreview()}catch(err){$("#xlPrev").innerHTML='<p class="msg">تعذّرت قراءة الملف.</p>'}};rd.readAsArrayBuffer(f)});

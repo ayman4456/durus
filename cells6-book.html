@@ -543,6 +543,9 @@ table.data th{background:var(--sheet-2);font-weight:600}
 .lik-o button.on{background:var(--fern);border-color:var(--fern);color:#fff}
 .nlv{display:inline-block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;font-weight:600;border-radius:999px;padding:0 9px;margin-left:4px;color:#fff;vertical-align:2px}
 .nlv.l0{background:#2a6c8c}.nlv.l1{background:#b5701a}.nlv.l2{background:#7a3e9a}
+.stu-toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 64px);left:3vw;right:3vw;margin:0 auto;width:fit-content;z-index:60;background:#1d3a2a;color:#fff;border-radius:14px;padding:8px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:15px;max-width:94vw;transition:opacity .5s}
+.stu-toast .btn{color:#fff;border-color:rgba(255,255,255,.5);padding:4px 10px;font-size:13px}
+.stu-toast.out{opacity:0}
 .stu-code{font-size:30px!important;letter-spacing:14px;text-align:center;font-family:Tahoma,monospace}
 .nf-mode{border-radius:12px;padding:10px 14px;margin:0 0 12px;font-weight:600;line-height:1.85;background:var(--sheet-2);border-right:5px solid #8a8a8a}
 .nf-mode.m-wait{border-color:#c79a2c}.nf-mode.m-class{border-color:#2f8a52}.nf-mode.m-done{border-color:#2f8a52}.nf-mode.m-home{border-color:#2a6c8c}
@@ -2061,8 +2064,8 @@ function codeLogin(){const er=$("#stuErr"),b=$("#stuSave"),c=$("#stuCode").value
   er.textContent="جارٍ التحقق…";b.disabled=true;
   fdb.collection("durus_roster").doc(c).get().then(d=>{
     if(!d.exists){if(++fails>=5){fails=0;lockUntil=Date.now()+60000}er.textContent="الرمز غير صحيح. تأكد منه أو اسأل معلمك.";return}
-    const r=d.data();if(STU&&STU.code&&STU.code!==c){store.set("nfClass",null);store.set("nfHome",null)}
-    STU={name:r.name,cls:r.cls,code:c};store.set("stu",STU);store.set("t:stuName",r.name);const si=$("#stuName");if(si)si.value=r.name;
+    const r=d.data();const switched=!!(STU&&STU.code&&STU.code!==c);if(switched)store.clear();
+    STU={name:r.name,cls:r.cls,code:c};store.set("stu",STU);if(switched){location.reload();return}store.set("t:stuName",r.name);const si=$("#stuName");if(si)si.value=r.name;
     er.textContent="";$("#stuModal").hidden=true;renderDiag();paintStu();watchLive();hydrate();nfMode();queueSync()})
    .catch(()=>{er.textContent="تعذّر التحقق الآن. تحقّق من اتصالك بالإنترنت."}).finally(()=>{b.disabled=false})}
 $("#stuCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
@@ -2071,7 +2074,7 @@ $("#stuSave").addEventListener("click",()=>{if(ROSTER_ON){codeLogin();return}con
   if(n.split(" ").length<2||!c){$("#stuErr").textContent="اكتب اسمك (اسمين على الأقل) ورمز فصلك.";return}
   STU={name:n,cls:c};store.set("stu",STU);store.set("t:stuName",n);const si=$("#stuName");if(si)si.value=n;
   $("#stuModal").hidden=true;renderDiag();paintStu();queueSync()});
-$("#stuSkip").addEventListener("click",()=>{STU={skip:true};store.set("stu",STU);$("#stuModal").hidden=true;paintStu()});
+$("#stuSkip").addEventListener("click",()=>{STU={skip:true};if(!ROSTER_ON)store.set("stu",STU);$("#stuModal").hidden=true;paintStu()});
 $("#stuEdit").addEventListener("click",askStu);
 window.addEventListener("hashchange",()=>{if(!STU&&currentName()!=="cover")askStu()});
 (function(){
@@ -2086,7 +2089,9 @@ window.addEventListener("hashchange",()=>{if(!STU&&currentName()!=="cover")askSt
 paintStu();renderNafes();
 
 bindSaves();renderResults();renderDiag();renderNafes();show();watchLive();hydrate();nfMode();
-if(!STU&&currentName()!=="cover")askStu();
+if(!STU&&(ROSTER_ON||currentName()!=="cover"))askStu();
+else if(STU&&STU.code){const t=document.createElement("div");t.className="stu-toast";t.innerHTML='👋 مرحبًا <b>'+esc(STU.name)+'</b> · فصل '+esc(STU.cls)+' <button class="btn ghost" type="button">لست أنا؟ بدّل الطالب</button>';
+  document.body.appendChild(t);t.querySelector("button").onclick=()=>{t.remove();askStu()};setTimeout(()=>{t.classList.add("out");setTimeout(()=>t.remove(),600)},9000)}
 })();
 </script>
 </body>
