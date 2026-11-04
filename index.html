@@ -3,42 +3,469 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>دروس · الكتب التفاعلية للعلوم</title>
+<title>مِجهر · من الدرس التفاعلي والواقع المعزز إلى إتقان مهارات «نافس»</title>
+<meta name="description" content="مِجهر: دروس علوم تفاعلية بالواقع المعزز، مرتبطة بمعايير «نافس»، تشخّص مستوى الطالب وتعالجه.">
+<meta name="theme-color" content="#0d3426">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مِجهر">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef2ec;--card:#fff;--ink:#1d2a21;--muted:#5d6b61;--line:#d9e0d4;--brand:#2f5f3c;
-  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1712;--card:#18241c;--ink:#e4ece4;--muted:#9fb3a5;--line:#2c3d32;--brand:#8cc79a;color-scheme:dark}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;line-height:1.8}
-.wrap{max-width:900px;margin:auto;padding:24px 16px}
-h1{margin:0;color:var(--brand)}p{color:var(--muted);margin:4px 0 18px}
-h2{font-size:17px;margin:22px 0 8px}
-.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
-a.c{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-a.c b{display:block;color:var(--brand)}a.c span{font-size:13px;color:var(--muted)}
-footer{margin-top:28px;font-size:13px;color:var(--muted);text-align:center}
+:root{
+  --green:#1b5e3f;--green-d:#134530;--green-l:#e7f1ea;--gold:#b8913a;--gold-l:#f6efdc;
+  --bg:#f4f6f5;--card:#ffffff;--ink:#14231b;--muted:#24392d;--line:#dde4df;
+  --ok:#1f8a54;--warn:#b7791f;--bad:#b4432f;
+  --font:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1612;--card:#16211b;--ink:#e6ede8;--muted:#d3e0d7;--line:#26352c;--green-l:#173326;--gold-l:#2a2416;--ok:#57c48b;--warn:#e1a94c;--bad:#ef8a75;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1612;--card:#16211b;--ink:#e6ede8;--muted:#d3e0d7;--line:#26352c;--green-l:#173326;--gold-l:#2a2416;--ok:#57c48b;--warn:#e1a94c;--bad:#ef8a75;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit}button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+
+/* الشريط العلوي */
+.bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.bar::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:21}
+.bar .wrap{display:flex;align-items:center;gap:12px;min-height:64px}
+.logo{width:40px;height:40px;border-radius:10px;flex:none}
+.bar .nm{font-weight:700;font-size:19px;line-height:1.2}
+.bar .nm small{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.bar .sp{flex:1}
+
+/* البنر */
+.hero{position:relative;color:#fff;background:
+  radial-gradient(700px 420px at 18% 50%,rgba(184,145,58,.20),transparent 65%),
+  radial-gradient(900px 500px at 90% -10%,#1d6b48 0%,transparent 60%),
+  linear-gradient(160deg,#0d3426 0%,#0a2a1e 100%);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:14px;border:1px solid rgba(232,207,140,.35);border-radius:18px;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.2px) 0 0/22px 22px;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%)}
+.hero-in{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:calc(env(safe-area-inset-top,0px) + 48px) 8px 50px}
+.hero-txt{max-width:none}
+@media (max-width:640px){.mark .br{display:none}}
+.kicker{margin:0 0 4px;color:#e8cf8c;font-weight:500;font-size:15px}
+.name{margin:0;font-weight:700;font-size:clamp(60px,11vw,104px);line-height:1.2;letter-spacing:-1px;
+  background:linear-gradient(180deg,#fbeec4 0%,#e3c271 45%,#b8913a 70%,#f0d68c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
+.mark{margin:2px 0 24px;font-weight:700;font-size:clamp(20px,3.2vw,32px);line-height:1.6;
+  background:linear-gradient(180deg,#fbeec4 0%,#e3c271 45%,#b8913a 70%,#f0d68c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
+.hero .mark{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#eef5f0;filter:none;font-weight:600}
+.kicker+.name{margin-top:-4px}
+.lead{margin:6px 0 22px;font-size:clamp(17px,2.4vw,21px);font-weight:500;color:#eef5f0;line-height:1.7;max-width:34ch}
+.lens{flex:none;width:clamp(170px,26vw,270px);filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.lens svg{display:block;width:100%;height:auto}
+.drift{transform-origin:120px 120px;animation:drift 60s linear infinite}
+@keyframes drift{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.drift{animation:none}}
+@media (max-width:640px){.hero-in{flex-direction:column-reverse;align-items:flex-start;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 30px) 6px 34px}.lens{width:140px;align-self:center}.hero::before{inset:8px}}
+.seg{display:inline-flex;background:rgba(255,255,255,.08);border:1px solid rgba(232,207,140,.45);border-radius:12px;padding:4px}
+.door{border:0;background:transparent;color:#f1f6f2;font-weight:600;font-size:16px;padding:10px 26px;border-radius:9px}
+.door[aria-selected="true"]{background:linear-gradient(180deg,#f0d68c,#c9a24a);color:#0d3426}
+.door:not([aria-selected="true"]):hover{background:rgba(255,255,255,.12)}
+
+main.wrap{padding-top:26px;padding-bottom:40px}
+h2{font-size:21px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.sub{color:var(--muted);margin:0 0 14px}
+.sec{margin-top:30px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.sec-h span{color:var(--muted);font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 16px;font-weight:600;text-decoration:none;line-height:1.4;font-size:15px}
+.btn.solid{background:var(--green);border-color:var(--green);color:#fff}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn:hover{border-color:var(--gold)}
+.btn.solid:hover{background:var(--green-d)}
+.msg{color:var(--bad);min-height:1.5em;font-size:14px}
+.demo-note{background:var(--gold-l);border:1px solid var(--gold);border-radius:10px;padding:8px 14px;margin:0 0 18px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px}
+
+/* الدخول */
+.gate{padding:22px;max-width:480px}
+.gate label{display:block;font-weight:600;margin-bottom:6px}
+.code{width:100%;font-family:Tahoma,monospace;font-size:32px;letter-spacing:16px;text-align:center;direction:ltr;border:1.5px solid var(--line);border-radius:10px;padding:8px;background:var(--bg);color:var(--ink)}
+.code:focus,.field:focus{border-color:var(--green);outline:none}
+.gate .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.field{width:100%;font:inherit;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);color:var(--ink);margin-bottom:10px}
+.hello{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;margin-bottom:16px}
+.hello h2{margin:0}
+.hello .who{color:var(--muted);background:var(--green-l);border-radius:8px;padding:0 10px;font-size:14px}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0;font-size:14px}
+
+/* حالة نافس */
+.live{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"ic t go" "ic p go";gap:4px 16px;align-items:center;padding:16px 18px;border-inline-start:5px solid var(--muted)}
+.live .ic{grid-area:ic;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:var(--bg)}
+.live h3{grid-area:t;margin:0;font-size:18px;font-weight:700}
+.live p{grid-area:p;margin:0;color:var(--muted);font-size:15px}
+.live .go{grid-area:go}
+.live.s-open,.live.s-done{border-inline-start-color:var(--ok)}.live.s-open .ic{background:var(--green-l)}
+.live.s-wait{border-inline-start-color:var(--warn)}
+.live.s-home{border-inline-start-color:var(--gold)}
+.clock{font-weight:700;color:var(--ok)}
+@media (max-width:620px){.live{grid-template-columns:auto 1fr;grid-template-areas:"ic t" "p p" "go go"}}
+
+/* الكتب */
+.books{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.book{display:flex;gap:14px;align-items:stretch;padding:12px;text-decoration:none;transition:border-color .2s}
+a.book:hover{border-color:var(--gold)}
+.cover{flex:none;width:86px;aspect-ratio:3/4;border-radius:4px 8px 8px 4px;display:grid;place-items:center;box-shadow:inset 5px 0 0 rgba(0,0,0,.18)}
+.cover svg{width:52px;height:52px}
+.book .bd{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.book .k{font-size:13px;color:var(--muted)}
+.book .t{font-weight:700;font-size:17px;line-height:1.5}
+.book .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.tg{font-size:12px;border-radius:6px;padding:0 8px;background:var(--green-l);color:var(--green)}
+@media (prefers-color-scheme:dark){.tg{color:var(--ok)}}
+.book .go{margin-top:auto;align-self:flex-start;font-size:14px;padding:5px 12px}
+.book.soon{position:relative;background:color-mix(in srgb,var(--card) 62%,transparent);border:1.5px solid color-mix(in srgb,var(--green) 28%,var(--line));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 6px 18px -12px rgba(20,60,40,.35)}
+.book.soon .cover{background:linear-gradient(160deg,color-mix(in srgb,var(--green) 16%,transparent),color-mix(in srgb,var(--gold) 22%,transparent));box-shadow:inset 5px 0 0 color-mix(in srgb,var(--green) 25%,transparent);border:1px solid color-mix(in srgb,var(--green) 30%,transparent);color:var(--green)}
+.book.soon .t{color:var(--ink)}
+.book.soon .st{align-self:flex-start;margin-top:auto;background:var(--gold-l);color:#8a6a1f;border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);border-radius:6px;padding:1px 10px;font-size:13px;font-weight:700}
+@media (prefers-color-scheme:dark){.book.soon .cover{color:var(--ok)}.book.soon .st{color:#f0d68c}}
+
+/* لوحة الشرف */
+.honor{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:16px 18px;text-decoration:none;background:var(--gold-l);border-color:color-mix(in srgb,var(--gold) 45%,var(--line))}
+.honor .cup{font-size:34px}
+.honor>span:nth-child(2){flex:1;min-width:190px}
+.honor b{font-size:18px;display:block}
+.honor span{color:var(--muted)}
+.honor .btn{margin-inline-start:auto}
+
+/* أدوات المعلم */
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:860px){.tools{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.tools{grid-template-columns:1fr}}
+.tool{padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;min-height:150px;transition:border-color .2s}
+.tool:hover{border-color:var(--gold)}
+.tool .ti{display:flex;gap:10px;align-items:center;font-weight:700;font-size:17px}
+.tool .ti i{font-style:normal;font-size:20px;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--green-l)}
+.tool p{margin:0;color:var(--muted);font-size:14.5px}
+.tool .st{margin-top:auto;font-weight:600;font-size:14.5px;color:var(--green)}
+@media (prefers-color-scheme:dark){.tool .st{color:var(--ok)}}
+.tool.wide{grid-column:span 2;background:var(--green);border-color:var(--green);color:#fff}
+.tool.wide .ti i{background:rgba(255,255,255,.15)}
+.tool.wide p{color:#d6e6dc}.tool.wide .st{color:#f3e2b3}
+.tool.full{grid-column:1/-1;min-height:0}
+@media (max-width:560px){.tool.wide{grid-column:auto}}
+.pill{display:inline-flex;align-items:center;border-radius:6px;padding:0 8px;font-size:13px;font-weight:700}
+.pill.on{background:#fff;color:var(--green)}.pill.off{background:rgba(255,255,255,.16);color:#e3ece6}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* النوافذ */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(8,18,12,.7);display:grid;place-items:center;padding:18px}
+.sheet{background:var(--card);color:var(--ink);border-radius:16px;padding:22px;max-width:540px;width:100%;text-align:center}
+.qrbox{background:#fff;border-radius:12px;padding:14px;display:inline-block;margin:10px 0}
+.qrbox img,.qrbox canvas{width:min(60vh,340px)!important;height:auto!important;display:block}
+.url{font-family:Tahoma,sans-serif;direction:ltr;font-size:clamp(17px,3vw,24px);font-weight:700;color:var(--green);word-break:break-all}
+@media (prefers-color-scheme:dark){.url{color:var(--ok)}}
+
+footer{border-top:1px solid var(--line);background:var(--card);padding:20px 0 24px;margin-top:10px}
+footer .wrap{display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center;font-size:15px;color:var(--muted)}
+footer b{color:var(--ink);font-weight:600}
+
+/* نصوص واضحة بهوية المنصة */
+.sub,.hello .who,.link,.live p,.book .k,.honor span,.tool p,footer .wrap,.sec-h span,.demo-note,.gate label,.book.soon .t{font-weight:600}
+.book .t,.tool .ti,.live h3,.hello h2,h2{font-weight:700}
+.book .k{color:var(--green)}
+@media (prefers-color-scheme:dark){.book .k{color:var(--ok)}}
+.sec-h span{color:var(--green);background:var(--green-l);border-radius:6px;padding:0 8px}
+.book.soon .k{color:var(--green)}
+.link{color:var(--green);text-decoration-thickness:2px}
+@media (prefers-color-scheme:dark){.link{color:var(--ok)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>دروس · كتب العلوم التفاعلية</h1>
-  <p>صفحات تقلّب، ومشاهد بالواقع المعزز، وتقويم وتشخيص وخطة علاجية.</p>
-  <h2>الصف السادس الابتدائي</h2>
-  <div class="g">
-    <a class="c" href="cells6-book.html"><b>الخلية النباتية والخلية الحيوانية</b><span>مع تدريب «نافس» ولوحة الشرف</span></a>
-    <a class="c" href="digestion-book.html"><b>الهضم والإخراج والتنفس والدوران</b><span>أجهزة الجسم</span></a>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-in">
+      <div class="hero-txt">
+        <p class="kicker">منصة تعليمية تفاعلية للمرحلة الابتدائية</p>
+        <h1 class="name">مِجهر</h1>
+        <p class="mark">من الدرس التفاعلي والواقع المعزز<br class="br"> إلى إتقان مهارات «نافس»</p>
+        <div class="seg" role="tablist" aria-label="اختر الواجهة">
+          <button class="door" role="tab" id="tabS" aria-controls="vS" aria-selected="true">أنا طالب</button>
+          <button class="door" role="tab" id="tabT" aria-controls="vT" aria-selected="false">أنا معلم</button>
+        </div>
+      </div>
+      <div class="lens" aria-hidden="true"><svg viewBox="0 0 240 240"><defs><radialGradient id="lf" cx="45%" cy="40%"><stop offset="0" stop-color="#f7fbf2"/><stop offset=".75" stop-color="#d9ecd3"/><stop offset="1" stop-color="#9fc7a3"/></radialGradient><clipPath id="lc"><circle cx="120" cy="120" r="96"/></clipPath><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3dc9b"/><stop offset=".5" stop-color="#b8913a"/><stop offset="1" stop-color="#f0d68c"/></linearGradient></defs><circle cx="120" cy="120" r="96" fill="url(#lf)"/><g clip-path="url(#lc)"><g class="drift"><ellipse cx="70" cy="80" rx="34" ry="24" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(-12 70 80)"/><circle cx="74" cy="78" r="7" fill="#7a5bc8" opacity=".85"/><ellipse cx="142" cy="66" rx="30" ry="22" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(18 142 66)"/><circle cx="137" cy="69" r="6" fill="#7a5bc8" opacity=".85"/><ellipse cx="110" cy="132" rx="38" ry="26" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(6 110 132)"/><circle cx="116" cy="134" r="8" fill="#7a5bc8" opacity=".85"/><ellipse cx="176" cy="126" rx="26" ry="19" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(-20 176 126)"/><circle cx="178" cy="123" r="5" fill="#7a5bc8" opacity=".85"/><ellipse cx="52" cy="150" rx="24" ry="18" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(24 52 150)"/><circle cx="49" cy="152" r="5" fill="#7a5bc8" opacity=".85"/><ellipse cx="150" cy="182" rx="28" ry="20" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(-8 150 182)"/><circle cx="154" cy="183" r="6" fill="#7a5bc8" opacity=".85"/><ellipse cx="88" cy="196" rx="22" ry="16" fill="#e3f1df" stroke="#7fb58e" stroke-width="2.2" transform="rotate(14 88 196)"/><circle cx="86" cy="194" r="4" fill="#7a5bc8" opacity=".85"/><ellipse cx="58" cy="90" rx="5" ry="3" fill="#3f9b5b" transform="rotate(20 58 90)"/><ellipse cx="84" cy="74" rx="5" ry="3" fill="#3f9b5b" transform="rotate(-30 84 74)"/><ellipse cx="130" cy="58" rx="5" ry="3" fill="#3f9b5b" transform="rotate(10 130 58)"/><ellipse cx="152" cy="76" rx="5" ry="3" fill="#3f9b5b" transform="rotate(40 152 76)"/><ellipse cx="98" cy="140" rx="5" ry="3" fill="#3f9b5b" transform="rotate(-15 98 140)"/><ellipse cx="124" cy="124" rx="5" ry="3" fill="#3f9b5b" transform="rotate(30 124 124)"/><ellipse cx="168" cy="132" rx="5" ry="3" fill="#3f9b5b" transform="rotate(-20 168 132)"/><ellipse cx="64" cy="158" rx="5" ry="3" fill="#3f9b5b" transform="rotate(15 64 158)"/><ellipse cx="140" cy="190" rx="5" ry="3" fill="#3f9b5b" transform="rotate(25 140 190)"/><ellipse cx="160" cy="174" rx="5" ry="3" fill="#3f9b5b" transform="rotate(-35 160 174)"/></g></g><circle cx="120" cy="120" r="96" fill="none" stroke="#0a2a1e" stroke-opacity=".35" stroke-width="10"/><circle cx="120" cy="120" r="104" fill="none" stroke="url(#gr)" stroke-width="6"/><circle cx="120" cy="120" r="114" fill="none" stroke="url(#gr)" stroke-width="1.2" opacity=".7"/><g stroke="url(#gr)" stroke-width="1.6" opacity=".9"><line x1="120" y1="8" x2="120" y2="14" transform="rotate(0 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(15 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(30 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(45 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(60 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(75 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(90 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(105 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(120 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(135 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(150 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(165 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(180 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(195 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(210 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(225 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(240 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(255 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(270 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(285 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(300 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(315 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(330 120 120)"/><line x1="120" y1="8" x2="120" y2="14" transform="rotate(345 120 120)"/></g><path d="M62 70a70 70 0 0 1 40-30" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/></svg></div>
+    </div>
   </div>
-  <h2>المرحلة المتوسطة</h2>
-  <div class="g">
-    <a class="c" href="nonseed-plants-book.html"><b>النباتات اللابذرية</b><span>علوم الحياة</span></a>
-    <a class="c" href="cell-activities-book.html"><b>أنشطة في الخلية</b><span>علوم الحياة</span></a>
-    <a class="c" href="dna-book.html"><b>مادة الوراثة DNA</b><span>الوراثة</span></a>
+</section>
+
+<main class="wrap">
+  <p class="demo-note" id="demoNote" hidden>معاينة ببيانات تجريبية. تعمل الروابط والبيانات الحقيقية بعد النشر على الموقع.</p>
+  <!-- ===== الطالب ===== -->
+  <section class="view" id="vS" role="tabpanel" aria-labelledby="tabS">
+    <div id="sGate" class="card gate" hidden>
+      <h2>ادخل برمزك</h2>
+      <p class="sub">الرمز المكوّن من ٤ أرقام موجود في البطاقة التي أعطاك إياها معلمك.</p>
+      <label for="sCode">رمز الدخول</label>
+      <input id="sCode" class="code" inputmode="numeric" maxlength="4" autocomplete="off" aria-describedby="sMsg">
+      <div class="row"><button class="btn solid" id="sGo">ادخل</button><button class="link" id="sBrowse">أتصفح الكتب دون دخول</button></div>
+      <div class="msg" id="sMsg" role="status"></div>
+    </div>
+
+    <div id="sHome">
+      <div class="hello" id="sHello" hidden><h2 id="sName"></h2><span class="who" id="sCls"></span><button class="link" id="sSwitch">لست أنا؟ بدّل الطالب</button></div>
+      <div class="card live s-wait" id="sLive" hidden>
+        <span class="ic" id="lIc">🔒</span><h3 id="lT">اختبار «نافس»</h3>
+        <a class="btn solid go" id="lGo" href="cells6-book.html#nafes">افتح التدريب</a>
+        <p id="lP"></p>
+      </div>
+
+      <div class="sec">
+        <div class="sec-h"><h2>كتب الصف السادس</h2><span>العلوم</span></div>
+        <div class="books" id="shelf6"></div>
+      </div>
+      <div class="sec">
+        <a class="card honor" href="honor.html?l=cells6" id="sHonor">
+          <span class="cup">🏆</span>
+          <span><b>لوحة الشرف</b><span id="hTxt">المتميزون في تدريب «نافس» والمنافسة بين الفصول</span></span>
+          <span class="btn gold">اعرض اللوحة</span>
+        </a>
+      </div>
+      <div class="sec">
+        <div class="sec-h"><h2>قريبًا</h2><span>مواد جديدة قيد الإعداد</span></div>
+        <div class="books" id="shelfSoon"></div>
+      </div>
+
+
+
+      <div class="acts" id="sActs"></div>
+    </div>
+  </section>
+
+  <!-- ===== المعلم ===== -->
+  <section class="view" id="vT" role="tabpanel" aria-labelledby="tabT" hidden>
+    <div id="tGate" class="card gate" hidden>
+      <h2>دخول المعلم</h2>
+      <p class="sub">بالبريد وكلمة المرور نفسيهما اللذين تدخل بهما لوحة المعلم.</p>
+      <input id="tEm" class="field" type="email" placeholder="البريد الإلكتروني" autocomplete="username">
+      <input id="tPw" class="field" type="password" placeholder="كلمة المرور" autocomplete="current-password">
+      <div class="row"><button class="btn solid" id="tGo">ادخل</button></div>
+      <div class="msg" id="tMsg" role="status"></div>
+    </div>
+
+    <div id="tHome" hidden>
+      <div class="hello"><h2>أدوات المعلم</h2><span class="who" id="tWho"></span><button class="link" id="tOut">تسجيل الخروج</button></div>
+      <div class="tools">
+        <a class="card tool wide" href="teacher.html">
+          <span class="ti"><i>🟢</i>الاختبار الرسمي لـ«نافس»</span>
+          <p>افتحه لفصل أو أكثر لمدة تحددها، وتابع من سلّم ومن لم يسلّم.</p>
+          <span class="st" id="tLive">—</span>
+        </a>
+        <a class="card tool" href="class-quiz.html">
+          <span class="ti"><i>🖥️</i>الاختبار العام على السبورة</span>
+          <p>أسئلة «نافس» للفصل كله، والإجابة برفع البطاقات، بلا أجهزة.</p>
+          <span class="st" id="tCq">—</span>
+        </a>
+        <a class="card tool" href="teacher.html">
+          <span class="ti"><i>📊</i>لوحة المعلم</span>
+          <p>النتائج والتشخيص والخطة العلاجية وتصدير Excel.</p>
+          <span class="st" id="tRes">—</span>
+        </a>
+        <a class="card tool" href="live.html?l=cells6">
+          <span class="ti"><i>📺</i>شاشة المتابعة</span>
+          <p>تُعرض على السبورة: التسليم والأوائل وترتيب الفصول.</p>
+          <span class="st">مباشرة</span>
+        </a>
+        <a class="card tool" href="honor.html?l=cells6">
+          <span class="ti"><i>🏆</i>لوحة الشرف</span>
+          <p>المنافسة بين الفصول، وأبطال الاختبار الرسمي والتدريب المنزلي.</p>
+          <span class="st" id="tHon">—</span>
+        </a>
+        <a class="card tool full" href="teacher.html#rosCard">
+          <span class="ti"><i>🪪</i>كشف الطلاب والبطاقات</span>
+          <p>رفع الكشف من Excel، وطباعة بطاقات رموز الدخول.</p>
+          <span class="st" id="tRos">—</span>
+        </a>
+      </div>
+      <div class="acts">
+        <button class="btn gold" id="qrBtn">اعرض الباركود على السبورة</button>
+        <a class="btn" id="waBtn" target="_blank" rel="noopener">أرسل للطلاب بالواتساب</a>
+        <button class="btn" id="tBooks">تصفّح الكتب</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <button class="btn" id="instBtn" hidden>ثبّت التطبيق على جوالك</button>
+    <span class="credit">«مِجهر» · تصميم وإعداد رائد النشاط: <b>أيمن الصاعدي</b></span>
   </div>
-  <h2>للمعلم وللطلاب</h2>
-  <div class="g">
-    <a class="c" href="honor.html?l=cells6"><b>🏆 لوحة الشرف</b><span>المتميزون في تدريب «نافس»</span></a>
-    <a class="c" href="teacher.html"><b>لوحة المعلم</b><span>النتائج والتشخيص وجلسات الحصة</span></a>
+</footer>
+
+<div class="modal" id="qrModal" hidden role="dialog" aria-modal="true" aria-label="باركود الدخول">
+  <div class="sheet">
+    <h2>امسح الباركود بكاميرا الجوال</h2>
+    <div class="qrbox" id="qrBox"></div>
+    <div class="url" id="qrUrl"></div>
+    <p class="sub" style="margin:8px 0 14px">ثم اختر «أنا طالب» واكتب رمزك.</p>
+    <button class="btn solid" data-close>إغلاق</button>
   </div>
-  <footer>تصميم: أيمن الصاعدي</footer>
 </div>
+<div class="modal" id="iosModal" hidden role="dialog" aria-modal="true" aria-label="تثبيت التطبيق">
+  <div class="sheet">
+    <h2>ثبّت «مِجهر» على الآيفون</h2>
+    <p>١) اضغط زر المشاركة <b>⬆︎</b> أسفل Safari.<br>٢) اختر <b>«إضافة إلى الشاشة الرئيسية»</b>.<br>٣) اضغط <b>«إضافة»</b>، فتظهر أيقونة «مِجهر» بين تطبيقاتك.</p>
+    <button class="btn solid" data-close>فهمت</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v).replace(/\d/g,d=>AR[d]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const HUB=location.origin+location.pathname.replace(/index\.html$/,"");
+const LESSON="cells6";
+
+/* ---------- أغلفة الكتب ---------- */
+const IC={
+ cell:'<svg viewBox="0 0 64 64"><rect x="6" y="10" width="52" height="44" rx="8" fill="none" stroke="#e8d39a" stroke-width="3"/><circle cx="30" cy="32" r="9" fill="#e8d39a"/><circle cx="30" cy="32" r="3.5" fill="#1f5a3e"/><ellipse cx="47" cy="20" rx="5" ry="3" fill="#9fd3a8"/><ellipse cx="46" cy="44" rx="5" ry="3" fill="#9fd3a8"/></svg>',
+ body:'<svg viewBox="0 0 64 64"><path d="M32 8v10M24 18c-8 4-10 16-6 24 4 9 16 12 24 6 7-5 6-14 0-18-5-3-11 0-11 5" fill="none" stroke="#e8d39a" stroke-width="3.5" stroke-linecap="round"/><circle cx="44" cy="16" r="4" fill="#f0a9a0"/></svg>',
+ fern:'<svg viewBox="0 0 64 64"><path d="M32 58C32 36 30 20 40 8" fill="none" stroke="#e8d39a" stroke-width="3"/><g fill="#9fd3a8">'+[14,22,30,38,46].map((y,i)=>'<ellipse cx="'+(28-i)+'" cy="'+y+'" rx="7" ry="2.6" transform="rotate(-25 '+(28-i)+' '+y+')"/><ellipse cx="'+(41-i*2)+'" cy="'+(y+3)+'" rx="7" ry="2.6" transform="rotate(25 '+(41-i*2)+' '+(y+3)+')"/>').join("")+'</g></svg>',
+ helix:'<svg viewBox="0 0 64 64"><path d="M20 6c24 10 0 22 24 32S20 52 44 58M44 6C20 16 44 28 20 38S44 52 20 58" fill="none" stroke="#e8d39a" stroke-width="3"/><g stroke="#9fd3a8" stroke-width="2.5">'+[12,22,32,42,52].map(y=>'<line x1="25" y1="'+y+'" x2="39" y2="'+y+'"/>').join("")+'</g></svg>',
+ lab:'<svg viewBox="0 0 64 64"><path d="M26 8h12M28 8v16L14 52a4 4 0 0 0 4 6h28a4 4 0 0 0 4-6L36 24V8" fill="none" stroke="#e8d39a" stroke-width="3"/><path d="M20 44h24l4 8H16z" fill="#9fd3a8"/></svg>',
+ math:'<svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M14 18h14M21 11v14M36 18h14M14 44h14M38 38l10 10M48 38L38 48"/></g></svg>',
+ read:'<svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M32 18c-6-5-14-6-22-5v36c8-1 16 0 22 5 6-5 14-6 22-5V13c-8-1-16 0-22 5zM32 18v36"/></g></svg>'
+};
+const B6=[{f:"cells6-book.html",t:"الخلية النباتية والخلية الحيوانية",k:"العلوم · الصف السادس",bg:"#1f5a3e",ic:"cell",tags:["تدريب «نافس»","واقع معزز"]},
+          {f:"digestion-book.html",t:"الهضم والإخراج والتنفس والدوران",k:"العلوم · الصف السادس",bg:"#6b2f37",ic:"body",tags:["واقع معزز"]}];
+const SOON=[{t:"الرياضيات",k:"المرحلة الابتدائية",ic:"math"},{t:"القراءة",k:"المرحلة الابتدائية",ic:"read"}];
+const book=b=>b.f?'<a class="card book" href="'+b.f+'"><span class="cover" style="background:'+b.bg+'">'+IC[b.ic]+'</span><span class="bd"><span class="k">'+b.k+'</span><span class="t">'+b.t+'</span><span class="tags">'+b.tags.map(x=>'<span class="tg">'+x+'</span>').join("")+'</span><span class="btn solid go">افتح الكتاب</span></span></a>'
+  :'<div class="card book soon"><span class="cover">'+IC[b.ic]+'</span><span class="bd"><span class="k">'+b.k+'</span><span class="t">'+b.t+'</span><span class="st">قريبًا · قيد الإعداد</span></span></div>';
+$("#shelf6").innerHTML=B6.map(book).join("");$("#shelfSoon").innerHTML=SOON.map(book).join("");
+
+/* ---------- البابان ---------- */
+function door(t){const T=t==="t";$("#tabS").setAttribute("aria-selected",!T);$("#tabT").setAttribute("aria-selected",T);$("#vS").hidden=T;$("#vT").hidden=!T;LS.set("durus:role",t);if(T)teacherInit()}
+$("#tabS").onclick=()=>door("s");$("#tabT").onclick=()=>door("t");
+$("#tBooks").onclick=()=>door("s");
+
+/* ---------- Firebase ---------- */
+const FB=!!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase);
+let db=null,auth=null;
+if(FB){firebase.initializeApp(window.DURUS_FB);db=firebase.firestore()}
+const DEMO=!FB;if(DEMO)$("#demoNote").hidden=false;
+const untilMs=L=>L&&L.until?(L.until.toMillis?L.until.toMillis():+L.until):0;
+const left=ms=>{const m=Math.max(0,Math.round(ms/60000)),h=Math.floor(m/60),d=Math.floor(h/24),j=(a,b)=>b?a+" و"+b:a;
+  const H=n=>n===1?"ساعة":n===2?"ساعتين":ar(n)+(n<=10?" ساعات":" ساعة"),M=n=>n===1?"دقيقة":n===2?"دقيقتين":ar(n)+(n<=10?" دقائق":" دقيقة"),Dd=n=>n===1?"يوم":n===2?"يومين":ar(n)+" أيام";
+  return d?j(Dd(d),h%24?H(h%24):""):h?j(H(h),m%60?M(m%60):""):M(Math.max(1,m))};
+const when=ms=>{try{return new Date(ms).toLocaleString("ar-SA",{weekday:"long",hour:"numeric",minute:"2-digit"})}catch(e){return ""}};
+
+/* ---------- الطالب ---------- */
+let STU=LS.get("durus:stu",null),LIVE=null,MY=null,HON=null,liveUnsub=null,fails=0,lockUntil=0;
+function bookStu(){ // يُدخل الطالب كتاب الخلية مباشرة دون سؤال جديد
+  const prev=LS.get("c6l2:stu",null);
+  if(prev&&prev.code&&STU&&prev.code!==STU.code){try{Object.keys(localStorage).filter(k=>k.indexOf("c6l2:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+  if(STU)LS.set("c6l2:stu",{name:STU.name,cls:STU.cls,code:STU.code})}
+function studentView(){
+  if(DEMO&&!STU&&!LS.get("durus:browse",false)){STU={name:"سارة أحمد",cls:"6/1",code:"0000",demo:1};LIVE={open:true,classes:["6/1","6/2"],until:Date.now()+(5*60+20)*60000,homeOpen:[]};HON={cmp:[{cls:"6/2",rank:1},{cls:"6/1",rank:2}],grade:[{name:"سارة أحمد",cls:"6/1",rank:3}],home:[]}}
+  const need=FB&&!STU&&!LS.get("durus:browse",false);
+  $("#sGate").hidden=!need;$("#sHome").hidden=need;
+  $("#sHello").hidden=!STU;
+  if(STU){$("#sName").textContent="مرحبًا "+STU.name;$("#sCls").textContent="فصل "+STU.cls;$("#sLive").hidden=false;watch()}
+  else{$("#sLive").hidden=true}
+  if(!STU&&!need&&FB)$("#sActs").innerHTML='<button class="btn solid" id="sLogin">ادخل برمزك</button>';else $("#sActs").innerHTML="";
+  const lb=$("#sLogin");if(lb)lb.onclick=()=>{LS.del("durus:browse");studentView();$("#sCode").focus()};
+  liveRender();honorRender()}
+function codeLogin(){const c=$("#sCode").value.replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/\D/g,""),m=$("#sMsg");
+  if(Date.now()<lockUntil){m.textContent="محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.";return}
+  if(c.length!==4){m.textContent="اكتب الرمز المكوّن من ٤ أرقام.";return}
+  m.style.color="var(--muted)";m.textContent="جارٍ التحقق…";$("#sGo").disabled=true;
+  db.collection("durus_roster").doc(c).get().then(d=>{m.style.color="";
+    if(!d.exists){if(++fails>=5){fails=0;lockUntil=Date.now()+60000}m.textContent="الرمز غير صحيح. تأكد منه أو اسأل معلمك.";return}
+    const r=d.data();STU={name:r.name,cls:r.cls,code:c};LS.set("durus:stu",STU);LS.del("durus:browse");bookStu();m.textContent="";studentView()})
+   .catch(()=>{m.style.color="";m.textContent="تعذّر التحقق. تحقّق من اتصالك بالإنترنت."}).finally(()=>{$("#sGo").disabled=false})}
+$("#sGo").onclick=codeLogin;$("#sCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
+$("#sBrowse").onclick=()=>{LS.set("durus:browse",true);studentView()};
+$("#sSwitch").onclick=()=>{LS.del("durus:stu");LS.del("c6l2:stu");try{Object.keys(localStorage).filter(k=>k.indexOf("c6l2:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}STU=null;MY=null;if(liveUnsub){liveUnsub();liveUnsub=null}studentView();$("#sCode").value="";$("#sCode").focus()};
+function watch(){if(!db||liveUnsub)return;
+  liveUnsub=db.collection("durus_live").doc(LESSON).onSnapshot(d=>{LIVE=d.exists?d.data():null;mine()},()=>{LIVE=null;liveRender()});
+  db.collection("durus_honor").doc(LESSON).get().then(d=>{HON=d.exists?d.data():null;honorRender()}).catch(()=>{})}
+function mine(){if(!STU||!db){liveRender();return}
+  db.collection("durus_results").doc(LESSON+"__r"+STU.code).get().then(d=>{MY=d.exists?d.data():null;liveRender()}).catch(()=>{MY=null;liveRender()})}
+function liveRender(){if(!STU){return}
+  const u=untilMs(LIVE),CL=LIVE?(LIVE.classes||(LIVE.cls?[LIVE.cls]:[])):[],inWin=CL.indexOf(STU.cls)>=0,now=Date.now(),open=!!(LIVE&&LIVE.open&&inWin&&now<u);
+  const C=(MY&&MY.nafesClass)||LS.get("c6l2:nfClass",null),H=MY&&MY.nafesHome;
+  let s,ic,t,p,btn="افتح التدريب";
+  if(C&&open){s="done";ic="✅";t="سلّمت الاختبار الرسمي: "+ar(C.got)+" من "+ar(C.total);p="تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء الاختبار "+when(u)+".";btn="افتح الكتاب"}
+  else if(C){s="home";ic="🏠";t="تدرّب في المنزل";p="نتيجتك في الاختبار الرسمي: "+ar(C.got)+" من "+ar(C.total)+(H?". أفضل نتيجة لك في المنزل: "+ar(H.best)+"٪":"")+". كل محاولة تُحسب في «أبطال التدريب المنزلي»."}
+  else if(open){s="open";ic="🟢";t="الاختبار الرسمي مفتوح الآن";p='لك محاولة واحدة. يُغلق بعد <span class="clock">'+left(u-now)+'</span> ('+when(u)+").";btn="ابدأ الاختبار"}
+  else if(LIVE&&((LIVE.homeOpen||[]).indexOf(STU.cls)>=0||(inWin&&now>=u))){s="home";ic="🏠";t="تدرّب في المنزل";p="انتهى الاختبار الرسمي. تدرّب الآن بمحاولات مفتوحة، وكل محاولة تُحسب في «أبطال التدريب المنزلي»."}
+  else{s="wait";ic="🔒";t="اختبار «نافس» لم يبدأ بعد";p="يفتحه معلمك قريبًا. حتى ذلك الحين اقرأ الدرس وحلّ أنشطته.";btn="افتح الكتاب"}
+  const el=$("#sLive");el.className="live s-"+s;$("#lIc").textContent=ic;$("#lT").textContent=t;$("#lP").innerHTML=p;$("#lGo").textContent=btn;$("#lGo").href="cells6-book.html"+(s==="wait"?"":"#nafes")}
+function honorRender(){const e=$("#hTxt");if(!HON){e.textContent="المتميزون في تدريب «نافس» والمنافسة بين الفصول";return}
+  let t="";if(STU){const c=(HON.cmp||[]).find(x=>x.cls===STU.cls);if(c)t="فصلك "+esc(STU.cls)+" في المركز "+ar(c.rank)+" بين الفصول. ";
+    const me=(HON.grade||[]).concat(HON.home||[]).some(x=>x.name===STU.name&&x.cls===STU.cls);if(me)t+="🎉 اسمك في لوحة الشرف!"}
+  e.innerHTML=t||"المتميزون في تدريب «نافس» والمنافسة بين الفصول"}
+setInterval(()=>{if(STU&&LIVE)liveRender()},30000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&STU)mine()});
+
+/* ---------- المعلم ---------- */
+let tInit=false,ROS=[],RES=[],CQ=[],TL=null;
+function teacherInit(){if(tInit)return;tInit=true;
+  if(DEMO){$("#tGate").hidden=true;$("#tHome").hidden=false;$("#tWho").textContent="teacher@school.sa";
+    TL={open:true,classes:["6/1","6/2"],until:Date.now()+(5*60+20)*60000};
+    ["6/1","6/2","6/3"].forEach((c,i)=>{for(let k=0;k<[45,43,43][i];k++)ROS.push({cls:c})});
+    for(let k=0;k<30;k++)RES.push({cls:"6/1",nafesClass:{}});for(let k=0;k<22;k++)RES.push({cls:"6/2",nafesClass:{}});
+    CQ=[{cls:"6/1"},{cls:"6/3"}];tRender();$("#tHon").textContent="آخر نشر: أمس";return}
+  auth=firebase.auth();let subs=[];
+  auth.onAuthStateChanged(u=>{subs.forEach(f=>f());subs=[];$("#tGate").hidden=!!u;$("#tHome").hidden=!u;if(!u)return;
+    $("#tWho").textContent=u.email;
+    subs.push(db.collection("durus_live").doc(LESSON).onSnapshot(d=>{TL=d.exists?d.data():null;tRender()},()=>{}));
+    subs.push(db.collection("durus_roster").onSnapshot(s=>{ROS=s.docs.map(d=>d.data());tRender()},()=>{}));
+    subs.push(db.collection("durus_results").where("lesson","==",LESSON).onSnapshot(s=>{RES=s.docs.map(d=>d.data());tRender()},()=>{}));
+    subs.push(db.collection("durus_classquiz").onSnapshot(s=>{CQ=s.docs.map(d=>d.data()).filter(x=>x.lesson===LESSON);tRender()},()=>{}));
+    db.collection("durus_honor").doc(LESSON).get().then(d=>{const h=d.exists?d.data():null;$("#tHon").textContent=h&&h.at&&h.at.toMillis?"آخر نشر: "+when(h.at.toMillis()):"لم تُنشر بعد"}).catch(()=>{})})}
+function tRender(){const u=untilMs(TL),CL=TL?(TL.classes||(TL.cls?[TL.cls]:[])):[],open=!!(TL&&TL.open&&Date.now()<u),done=RES.filter(r=>r.nafesClass);
+  $("#tLive").innerHTML=open?'<span class="pill on">● مفتوح</span> '+CL.map(c=>{const n=done.filter(r=>r.cls===c).length,t=ROS.filter(x=>x.cls===c).length;return "فصل "+esc(c)+": "+ar(n)+" من "+ar(t)}).join("، ")+" · يُغلق "+when(u)
+    :'<span class="pill off">مغلق</span> '+(done.length?"سلّم "+ar(done.length)+" طالبًا حتى الآن":"لم يُفتح بعد");
+  const cls=[...new Set(ROS.map(x=>x.cls))];
+  $("#tRos").textContent=ROS.length?"الطلاب: "+ar(ROS.length)+" · الفصول: "+cls.sort((a,b)=>a.localeCompare(b,"ar")).join("، "):"لا يوجد كشف بعد";
+  $("#tRes").textContent=RES.length?"نتائج درس الخلية: "+ar(RES.length)+" طالبًا":"لا توجد نتائج بعد";
+  $("#tCq").textContent=CQ.length?"نُفّذ في: "+[...new Set(CQ.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar")).join("، "):"لم يُنفّذ بعد"}
+$("#tGo").onclick=()=>{const m=$("#tMsg");m.textContent="";auth.signInWithEmailAndPassword($("#tEm").value.trim(),$("#tPw").value).catch(()=>m.textContent="البريد أو كلمة المرور غير صحيحة.")};
+$("#tPw").addEventListener("keydown",e=>{if(e.key==="Enter")$("#tGo").click()});
+$("#tOut").onclick=()=>auth&&auth.signOut();
+
+/* ---------- الباركود والواتساب ---------- */
+let qrMade=false;
+$("#qrBtn").onclick=()=>{$("#qrUrl").textContent=HUB.replace(/^https?:\/\//,"");$("#qrModal").hidden=false;
+  if(!qrMade&&window.QRCode){new QRCode($("#qrBox"),{text:HUB,width:720,height:720,colorDark:"#163a2b",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});qrMade=true}
+  else if(!window.QRCode)$("#qrBox").textContent="تعذّر تحميل مولّد الباركود؛ تحقّق من الاتصال."};
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>b.closest(".modal").hidden=true);
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.hidden=true}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal").forEach(m=>m.hidden=true)});
+$("#waBtn").href="https://wa.me/?text="+encodeURIComponent("السلام عليكم 🌿\nمنصة «مِجهر»: الكتاب التفاعلي لدرس «الخلية النباتية والخلية الحيوانية» جاهز، بالواقع المعزز والتدريب على «نافس».\n\n١- افتح الرابط: "+HUB+"\n٢- اختر «أنا طالب» واكتب رمزك المكوّن من ٤ أرقام (في البطاقة).\n٣- افتح الكتاب، وتابع اختبار «نافس» من البطاقة الخضراء.\n\nبالتوفيق للجميع.");
+
+/* ---------- التثبيت كتطبيق ---------- */
+let deferred=null;const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;if(!standalone)$("#instBtn").hidden=false});
+if(ios&&!standalone)$("#instBtn").hidden=false;
+$("#instBtn").onclick=()=>{if(deferred){deferred.prompt();deferred.userChoice.finally(()=>{deferred=null;$("#instBtn").hidden=true})}else if(ios)$("#iosModal").hidden=false};
+if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+
+/* ---------- البدء ---------- */
+if(STU)bookStu();
+studentView();
+const P=new URLSearchParams(location.search);door(P.get("t")==="1"?"t":LS.get("durus:role","s"));
+})();
+</script>
 </body>
 </html>
