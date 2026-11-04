@@ -1944,23 +1944,32 @@ $("#stuName").addEventListener("input",()=>{store.set("t:stuName",$("#stuName").
 const LESSON_ID="digestion6";
 let STU=store.get("stu",null),fdb=null,syncT=0;
 try{if(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase){if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);fdb=firebase.firestore()}}catch(e){fdb=null}
-function sid(){let x=store.get("sid","");if(!x){x=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("sid",x)}return x}
+
+/* ---- دخول موحّد: الطالب يدخل من المنصة مرة واحدة ---- */
+const HUBSTU=(()=>{try{return JSON.parse(localStorage.getItem("durus:stu")||"null")}catch(e){return null}})();
+function toHub(sw){const n=(location.pathname.split("/").pop()||"")+location.hash;location.replace("index.html?"+(sw?"switch=1&":"")+"next="+encodeURIComponent(n))}
+let GATED=false;
+if(fdb){
+  if(!HUBSTU||!HUBSTU.code){GATED=true;STU={skip:true,gate:1};toHub(false)}
+  else if(!STU||STU.code!==HUBSTU.code){if(STU&&STU.code)store.clear();STU={name:HUBSTU.name,cls:HUBSTU.cls,code:HUBSTU.code};store.set("stu",STU)}
+}
+function sid(){if(STU&&STU.code)return "r"+STU.code;let x=store.get("sid","");if(!x){x=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("sid",x)}return x}
 function setSync(t){const e=$("#syncState");if(e)e.textContent=t}
 function paintStu(){const e=$("#stuLine");if(!e)return;
   if(!STU||STU.skip){e.textContent="أنت في وضع التصفح؛ نتائجك محفوظة على جهازك فقط.";setSync("");return}
-  e.innerHTML="<b>الطالب:</b> "+esc(STU.name)+" · <b>الفصل:</b> "+esc(STU.cls);
+  e.innerHTML="<b>الطالب:</b> "+esc(STU.name)+" · <b>الفصل:</b> "+esc(STU.cls)+(STU.code?" · <b>الرمز:</b> "+esc(STU.code):"");
   if(!fdb)setSync("لم يُربط الكتاب بقاعدة البيانات بعد؛ النتائج محفوظة على جهازك فقط.")}
 function payload(){const sc=store.get("scores",{}),D=diagnose(),pick=k=>sc[k]?{got:sc[k].got,total:sc[k].total}:null,o={};
   Object.keys(sc).forEach(k=>{if(k!=="pre"&&k!=="post")o[k]=pick(k)});
-  return {lesson:LESSON_ID,sid:sid(),name:STU.name,cls:STU.cls,pre:pick("pre"),post:pick("post"),scores:o,
+  return {lesson:LESSON_ID,sid:sid(),name:STU.name,cls:STU.cls,code:STU.code||null,pre:pick("pre"),post:pick("post"),scores:o,
     objectives:D?D.map(d=>d.pct):null,healed:D?D.map(d=>d.healed):null,survey:store.get("survey",null),
     seen:(store.get("seen",[])||[]).length,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}}
 function queueSync(){if(!fdb||!STU||STU.skip)return;clearTimeout(syncT);setSync("جارٍ حفظ نتائجك…");
-  syncT=setTimeout(()=>{fdb.collection("durus_results").doc(LESSON_ID+"__"+sid()).set(payload())
+  syncT=setTimeout(()=>{const P=payload();if(STU.code)Object.keys(P).forEach(k=>{if(P[k]==null)delete P[k]});fdb.collection("durus_results").doc(LESSON_ID+"__"+sid()).set(P,STU.code?{merge:true}:{})
     .then(()=>setSync("✓ نتائجك محفوظة ويراها معلمك."))
     .catch(()=>setSync("تعذّر الحفظ الآن، وسيُعاد المحاولة مع نشاطك القادم."))},1200)}
 const _saveScore=saveScore;saveScore=function(k,g,t,d){_saveScore(k,g,t,d);queueSync()};
-function askStu(){$("#stuModal").hidden=false;$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
+function askStu(){if(fdb){toHub(true);return}$("#stuModal").hidden=false;$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
 $("#stuSave").addEventListener("click",()=>{const n=$("#stuNm").value.trim().replace(/\s+/g," "),c=$("#stuCls").value.trim();
   if(n.split(" ").length<2||!c){$("#stuErr").textContent="اكتب اسمك (اسمين على الأقل) ورمز فصلك.";return}
   STU={name:n,cls:c};store.set("stu",STU);store.set("t:stuName",n);const si=$("#stuName");if(si)si.value=n;

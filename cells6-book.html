@@ -2007,6 +2007,15 @@ function renderNafes(){const d=$("#nafesDiag"),p=$("#nafesPlan");if(!d)return;co
 const LESSON_ID="cells6";
 let STU=store.get("stu",null),fdb=null,syncT=0;
 try{if(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase){if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);fdb=firebase.firestore()}}catch(e){fdb=null}
+
+/* ---- دخول موحّد: الطالب يدخل من المنصة مرة واحدة ---- */
+const HUBSTU=(()=>{try{return JSON.parse(localStorage.getItem("durus:stu")||"null")}catch(e){return null}})();
+function toHub(sw){const n=(location.pathname.split("/").pop()||"")+location.hash;location.replace("index.html?"+(sw?"switch=1&":"")+"next="+encodeURIComponent(n))}
+let GATED=false;
+if(fdb){
+  if(!HUBSTU||!HUBSTU.code){GATED=true;STU={skip:true,gate:1};toHub(false)}
+  else if(!STU||STU.code!==HUBSTU.code){if(STU&&STU.code)store.clear();STU={name:HUBSTU.name,cls:HUBSTU.cls,code:HUBSTU.code};store.set("stu",STU)}
+}
 function sid(){if(STU&&STU.code)return "r"+STU.code;let x=store.get("sid","");if(!x){x=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("sid",x)}return x}
 function setSync(t){const e=$("#syncState");if(e)e.textContent=t}
 function paintStu(){const e=$("#stuLine");if(!e)return;
@@ -2069,7 +2078,7 @@ function codeLogin(){const er=$("#stuErr"),b=$("#stuSave"),c=$("#stuCode").value
     er.textContent="";$("#stuModal").hidden=true;renderDiag();paintStu();watchLive();hydrate();nfMode();queueSync()})
    .catch(()=>{er.textContent="تعذّر التحقق الآن. تحقّق من اتصالك بالإنترنت."}).finally(()=>{b.disabled=false})}
 $("#stuCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
-function askStu(){$("#stuModal").hidden=false;if(ROSTER_ON){$("#stuCode").value="";$("#stuErr").textContent="";setTimeout(()=>$("#stuCode").focus(),50);return}$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
+function askStu(){if(fdb){toHub(true);return}$("#stuModal").hidden=false;if(ROSTER_ON){$("#stuCode").value="";$("#stuErr").textContent="";setTimeout(()=>$("#stuCode").focus(),50);return}$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
 $("#stuSave").addEventListener("click",()=>{if(ROSTER_ON){codeLogin();return}const n=$("#stuNm").value.trim().replace(/\s+/g," "),c=$("#stuCls").value.trim();
   if(n.split(" ").length<2||!c){$("#stuErr").textContent="اكتب اسمك (اسمين على الأقل) ورمز فصلك.";return}
   STU={name:n,cls:c};store.set("stu",STU);store.set("t:stuName",n);const si=$("#stuName");if(si)si.value=n;

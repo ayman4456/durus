@@ -208,7 +208,8 @@ footer b{color:var(--ink);font-weight:600}
       <p class="sub">الرمز المكوّن من ٤ أرقام موجود في البطاقة التي أعطاك إياها معلمك.</p>
       <label for="sCode">رمز الدخول</label>
       <input id="sCode" class="code" inputmode="numeric" maxlength="4" autocomplete="off" aria-describedby="sMsg">
-      <div class="row"><button class="btn solid" id="sGo">ادخل</button><button class="link" id="sBrowse">أتصفح الكتب دون دخول</button></div>
+      <div class="row"><button class="btn solid" id="sGo">ادخل</button></div>
+      <p class="sub" style="margin:10px 0 0">نسيت رمزك؟ اطلبه من معلمك، فهو مكتوب في بطاقتك.</p>
       <div class="msg" id="sMsg" role="status"></div>
     </div>
 
@@ -374,14 +375,12 @@ function bookStu(){ // يُدخل الطالب كتاب الخلية مباشر�
   if(prev&&prev.code&&STU&&prev.code!==STU.code){try{Object.keys(localStorage).filter(k=>k.indexOf("c6l2:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
   if(STU)LS.set("c6l2:stu",{name:STU.name,cls:STU.cls,code:STU.code})}
 function studentView(){
-  if(DEMO&&!STU&&!LS.get("durus:browse",false)){STU={name:"سارة أحمد",cls:"6/1",code:"0000",demo:1};LIVE={open:true,classes:["6/1","6/2"],until:Date.now()+(5*60+20)*60000,homeOpen:[]};HON={cmp:[{cls:"6/2",rank:1},{cls:"6/1",rank:2}],grade:[{name:"سارة أحمد",cls:"6/1",rank:3}],home:[]}}
-  const need=FB&&!STU&&!LS.get("durus:browse",false);
+  if(DEMO&&!STU){STU={name:"سارة أحمد",cls:"6/1",code:"0000",demo:1};LIVE={open:true,classes:["6/1","6/2"],until:Date.now()+(5*60+20)*60000,homeOpen:[]};HON={cmp:[{cls:"6/2",rank:1},{cls:"6/1",rank:2}],grade:[{name:"سارة أحمد",cls:"6/1",rank:3}],home:[]}}
+  const need=FB&&!STU;
   $("#sGate").hidden=!need;$("#sHome").hidden=need;
   $("#sHello").hidden=!STU;
   if(STU){$("#sName").textContent="مرحبًا "+STU.name;$("#sCls").textContent="فصل "+STU.cls;$("#sLive").hidden=false;watch()}
   else{$("#sLive").hidden=true}
-  if(!STU&&!need&&FB)$("#sActs").innerHTML='<button class="btn solid" id="sLogin">ادخل برمزك</button>';else $("#sActs").innerHTML="";
-  const lb=$("#sLogin");if(lb)lb.onclick=()=>{LS.del("durus:browse");studentView();$("#sCode").focus()};
   liveRender();honorRender()}
 function codeLogin(){const c=$("#sCode").value.replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/\D/g,""),m=$("#sMsg");
   if(Date.now()<lockUntil){m.textContent="محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.";return}
@@ -389,11 +388,11 @@ function codeLogin(){const c=$("#sCode").value.replace(/[٠-٩]/g,d=>AR.indexOf(
   m.style.color="var(--muted)";m.textContent="جارٍ التحقق…";$("#sGo").disabled=true;
   db.collection("durus_roster").doc(c).get().then(d=>{m.style.color="";
     if(!d.exists){if(++fails>=5){fails=0;lockUntil=Date.now()+60000}m.textContent="الرمز غير صحيح. تأكد منه أو اسأل معلمك.";return}
-    const r=d.data();STU={name:r.name,cls:r.cls,code:c};LS.set("durus:stu",STU);LS.del("durus:browse");bookStu();m.textContent="";studentView()})
+    const r=d.data();STU={name:r.name,cls:r.cls,code:c};LS.set("durus:stu",STU);bookStu();m.textContent="";if(NEXT){location.replace(NEXT);return}studentView()})
    .catch(()=>{m.style.color="";m.textContent="تعذّر التحقق. تحقّق من اتصالك بالإنترنت."}).finally(()=>{$("#sGo").disabled=false})}
 $("#sGo").onclick=codeLogin;$("#sCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
-$("#sBrowse").onclick=()=>{LS.set("durus:browse",true);studentView()};
-$("#sSwitch").onclick=()=>{LS.del("durus:stu");LS.del("c6l2:stu");try{Object.keys(localStorage).filter(k=>k.indexOf("c6l2:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}STU=null;MY=null;if(liveUnsub){liveUnsub();liveUnsub=null}studentView();$("#sCode").value="";$("#sCode").focus()};
+function signOutStu(){LS.del("durus:stu");try{Object.keys(localStorage).filter(k=>/^(c6l2|dg1|nsp1|cell1|dna1):/.test(k)).forEach(k=>localStorage.removeItem(k))}catch(e){}STU=null;MY=null;if(liveUnsub){liveUnsub();liveUnsub=null}}
+$("#sSwitch").onclick=()=>{signOutStu();studentView();$("#sCode").value="";$("#sCode").focus()};
 function watch(){if(!db||liveUnsub)return;
   liveUnsub=db.collection("durus_live").doc(LESSON).onSnapshot(d=>{LIVE=d.exists?d.data():null;mine()},()=>{LIVE=null;liveRender()});
   db.collection("durus_honor").doc(LESSON).get().then(d=>{HON=d.exists?d.data():null;honorRender()}).catch(()=>{})}
@@ -462,9 +461,13 @@ $("#instBtn").onclick=()=>{if(deferred){deferred.prompt();deferred.userChoice.fi
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 /* ---------- البدء ---------- */
+const Q=new URLSearchParams(location.search),NX=Q.get("next")||"",NEXT=/^[\w-]+\.html(#[\w-]*)?$/.test(NX)?NX:"";
+if(Q.get("switch")==="1"&&FB){signOutStu();history.replaceState(null,"",location.pathname+(NEXT?"?next="+encodeURIComponent(NEXT):""))}
+if(STU&&NEXT&&FB){bookStu();location.replace(NEXT)}
+if(NEXT&&FB&&!STU)setTimeout(()=>{$("#sMsg").style.color="var(--muted)";$("#sMsg").textContent="سجّل دخولك برمزك، ثم يُفتح لك الكتاب مباشرة."},0);
 if(STU)bookStu();
 studentView();
-const P=new URLSearchParams(location.search);door(P.get("t")==="1"?"t":LS.get("durus:role","s"));
+const P=new URLSearchParams(location.search);door(NEXT?"s":P.get("t")==="1"?"t":LS.get("durus:role","s"));
 })();
 </script>
 </body>
