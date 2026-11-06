@@ -173,6 +173,560 @@ img,svg{max-width:100%}
 .lsteps label::before{content:counter(ls,arabic-indic);flex:none;width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;margin-top:3px}
 .lsteps input[type="checkbox"]{width:20px;height:20px;accent-color:var(--fern);margin-top:6px;flex:none}
 
+/* concept map */
+.cm-bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border:1.5px dashed var(--line);border-radius:12px;background:var(--sheet-2);margin-bottom:14px;min-height:52px}
+.cmap{display:grid;gap:6px}
+.cm-top{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.cm-node,.cm-slot{min-height:44px;border-radius:12px;padding:6px 12px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.5}
+.cm-node.root{background:var(--fern);color:#fff;font-size:15.5px;padding:8px 18px}
+.cm-slot{border:2px dashed var(--line);background:var(--sheet-2);width:100%;color:var(--ink)}
+.cm-top .cm-slot{width:auto;min-width:130px}
+.cm-slot:not(.filled)::before{content:"؟";color:var(--muted)}
+.cm-slot.filled{border-style:solid;border-color:var(--moss);background:var(--sheet)}
+.cm-slot.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.cm-slot.ok{border-color:var(--ok);background:var(--ok-bg)}
+.cm-slot.bad{border-color:var(--bad);background:var(--bad-bg)}
+.cm-link{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);line-height:1.6}
+.cm-split{height:16px;border:2px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;margin:0 22%}
+.cm-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-col{display:grid;gap:6px;align-content:start;border:1.5px solid var(--line);border-radius:14px;padding:10px;background:var(--sheet)}
+
+/* AR marker card */
+.ar-mk{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);background:rgba(6,18,11,.86);border:1px dashed #ff5cb8;color:#fff;border-radius:14px;padding:12px 18px;font-size:14.5px;text-align:center;max-width:320px;line-height:1.9}
+.mk-view{position:fixed;inset:0;z-index:70;background:#fff;color:#1d3428;display:flex;align-items:center;justify-content:center;padding:20px}
+.mk-view[hidden]{display:none}
+.mk-card{display:grid;justify-items:center;gap:14px;text-align:center;max-width:520px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.mk-sq{width:min(70vw,58vh,340px);aspect-ratio:1;background:#E6007E;border-radius:18px;display:grid;place-items:center}
+.mk-sq svg{width:34%;height:34%}
+.mk-card h3{margin:0;font-size:19px}
+.mk-card p{margin:0;font-size:14.5px;line-height:1.9}
+@media print{
+  body.pm .page{display:none!important}
+  body.pm .mk-view{display:flex!important;position:static;height:100vh}
+  body.pm .mk-card .row{display:none}
+}
+
+/* diagnosis & remedial plan */
+.diag-sum{display:flex;gap:14px;align-items:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.8}
+.diag-sum .big{font-size:34px;color:var(--fern);font-weight:700}
+.obj-row,.plan-card{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;background:var(--sheet)}
+.plan-card{border-color:var(--bad)}
+.plan-card.healed{border-color:var(--water)}
+.top-l{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.top-l h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15.5px;font-weight:600;line-height:1.7}
+.lvl{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;padding:2px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid currentColor}
+.lvl.m{color:var(--ok)}.lvl.n{color:var(--spore)}.lvl.w{color:var(--bad)}.lvl.r{color:var(--water)}
+.obj-bar{height:12px;background:var(--sheet-2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.obj-bar i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.evid{font-size:13px;color:var(--muted);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:12px}
+.plan-steps>li{display:grid;grid-template-columns:30px 1fr;gap:10px}
+.plan-steps .k{width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:13px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.plan-steps b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;font-weight:600}
+.concept{background:var(--sheet-2);border-radius:10px;padding:10px 12px;font-size:16.5px;margin-top:6px}
+.print-only{display:none}
+@media print{
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  .top,.bnav,.drawer,.corner,.corner-back,.leaf,.shade,.ar,.no-print,.runhead,.folio{display:none!important}
+  .desk{display:block;padding:0;overflow:visible}
+  .book{height:auto;max-width:none;transform:none!important;perspective:none}
+  .page{display:none!important}
+  .page[data-page="diagnosis"],.page[data-page="plan"]{display:block!important;position:static!important;width:auto!important;height:auto;overflow:visible;box-shadow:none;background:#fff!important;transform:none!important;animation:none!important;break-after:page}
+  .print-only{display:block}
+}
+
+/* hardcover */
+.page[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;color:#f2ead2;padding:14px}
+.cover-frame{min-height:100%;border:2px solid var(--gold);outline:1px solid var(--gold);outline-offset:-9px;border-radius:8px;padding:30px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.cover-frame .kick{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:#dcc78c}
+.cover-frame h1{color:#e4c670;font-size:clamp(34px,8.5vw,56px);margin:0}
+.cover-frame .sub{color:#efe6cc;font-size:19px;margin:0}
+.cover-win{width:min(100%,440px);border:2px solid var(--gold);border-radius:220px 220px 10px 10px;overflow:hidden;background:#f1eddf}
+.cover-win svg{display:block;width:100%;height:auto}
+.orn{color:var(--gold);font-size:18px;letter-spacing:8px;line-height:1}
+.cover-frame .open{margin-top:4px;background:transparent;border:1.5px solid var(--gold);color:#e4c670;border-radius:10px;padding:8px 26px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.pg-h{margin:6px 0 18px}
+.pg-h .where{font-size:14px;color:var(--muted)}
+.pg-h h2{font-size:clamp(26px,6vw,36px);margin:2px 0 0;color:var(--moss)}
+p{margin:0 0 14px}
+.lead{font-size:19px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin:0 0 18px}
+.verse{background:var(--sheet-2);border-right:4px solid var(--fern);padding:12px 16px;border-radius:10px;margin:0 0 16px;font-weight:600;color:var(--moss)}
+.term{background:linear-gradient(transparent 60%,color-mix(in srgb,var(--spore) 35%,transparent) 60%);font-weight:700;padding:0 2px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 18px}
+.fact{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:12px}
+.fact b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:22px;color:var(--fern)}
+.fact span{font-size:15px;color:var(--muted)}
+
+/* activity blocks */
+.act{background:var(--sheet);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin:0 0 22px;position:relative}
+.act[data-kind="pre"]{border-color:var(--water)}
+.act[data-kind="form"]{border-style:dashed;border-color:var(--fern)}
+.act[data-kind="post"]{border-color:var(--spore)}
+.act[data-kind="lab"]{border-color:var(--leaf)}
+.act-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:8px}
+.act-h h3{margin:0;font-size:20px;flex:1 1 220px}
+.badge{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;padding:3px 10px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.b-pre{color:var(--water)} .b-form{color:var(--fern)} .b-act{color:var(--moss)} .b-lab{color:var(--leaf)} .b-post{color:var(--spore)} .b-think{color:var(--dry)}
+.hint{color:var(--muted);font-size:16px}
+
+.btn{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:12px;padding:8px 16px;font-size:16px;font-weight:600}
+.btn.primary{background:var(--fern);border-color:var(--fern);color:#fff}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+
+/* quiz */
+.q{padding:12px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0}
+.q-t{font-weight:600;margin-bottom:8px;display:flex;gap:10px}
+.q-n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--sheet-2);border:1px solid var(--line);display:grid;place-items:center;font-size:14px;margin-top:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.opt{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font-size:16.5px;line-height:1.6}
+.opt:hover:not(:disabled){border-color:var(--sel)}
+.opt.sel{border-color:var(--sel);background:var(--sel-bg)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.why{margin-top:8px;font-size:16px;padding:8px 12px;border-radius:10px;background:var(--sheet-2)}
+.why.ok{color:var(--ok)} .why.bad{color:var(--bad)}
+.score{margin-top:14px;padding:14px;border-radius:12px;background:var(--sheet-2);font-weight:600;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.score .big{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:28px;color:var(--fern)}
+
+/* sort */
+.pool,.zone-body{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:12px}
+.pool{background:var(--sheet-2);border:1.5px dashed var(--line)}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:10px}
+.zone{border:1.5px solid var(--line);border-radius:14px;background:var(--sheet);cursor:pointer}
+.zone.armed{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.zone-h{padding:8px 12px;border-bottom:1px solid var(--line);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.chip{background:var(--sheet);border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:15.5px}
+.chip.sel{border-color:var(--sel);background:var(--sel-bg);transform:translateY(-2px)}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg)}
+.chip.bad{border-color:var(--bad);background:var(--bad-bg)}
+.msg{margin-top:10px;font-weight:600;min-height:1em}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+
+/* order */
+.order{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.order li{display:flex;align-items:center;gap:10px;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px}
+.order li.ok{border-color:var(--ok);background:var(--ok-bg)}
+.order li.bad{border-color:var(--bad);background:var(--bad-bg)}
+.order .k{flex:none;width:30px;height:30px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-size:14px}
+.order .t{flex:1;font-size:16px;line-height:1.6}
+.order .mv{display:flex;flex-direction:column;gap:4px}
+.order .mv button{width:34px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--sheet);font-size:13px;line-height:1}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:grid;gap:8px;align-content:start}
+.match .col h4{margin:0 0 2px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--muted);font-weight:500}
+.mi{text-align:right;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;font-size:15.5px;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+.mi .tag{flex:none;min-width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:transparent}
+.mi.sel{border-color:var(--sel);background:var(--sel-bg)}
+.mi.ok{border-color:var(--ok);background:var(--ok-bg)}
+.mi.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+.flip{perspective:1100px;background:none;border:0;padding:0;text-align:right;min-height:300px}
+.flip-in{position:relative;width:100%;height:100%;min-height:300px;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--line);border-radius:16px;background:var(--sheet);padding:14px;display:flex;flex-direction:column}
+.face.front{align-items:center;justify-content:center;text-align:center;gap:6px}
+.face.front svg{width:150px;height:120px}
+.face.front h4{margin:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:20px;color:var(--moss)}
+.face.front small{color:var(--muted);font-size:14px}
+.face.back{transform:rotateY(180deg);background:var(--sheet-2)}
+.face.back h4{margin:0 0 6px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss)}
+.face.back ul{margin:0;padding-right:18px;font-size:15.5px;line-height:1.7}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 14px;font-size:15.5px}
+.tab[aria-selected="true"]{background:var(--fern);border-color:var(--fern);color:#fff}
+.tabpane{display:none}
+.tabpane.on{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:start}
+.tabpane svg{width:150px;height:150px;background:var(--sheet-2);border-radius:14px}
+.tabpane ul{margin:0;padding-right:18px;font-size:16.5px}
+@media (max-width:520px){.tabpane.on{grid-template-columns:1fr}.tabpane svg{width:100%;height:150px}}
+
+/* reveal */
+.reveal{border-top:1px solid var(--line);padding:10px 0}
+.reveal:first-of-type{border-top:0}
+.reveal p{margin:0 0 6px;font-weight:600}
+.model{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--ok-bg);font-size:16px}
+textarea{width:100%;min-height:80px;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:10px;font-size:16px;line-height:1.7;resize:vertical}
+input[type="text"]{border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 10px;width:110px;text-align:center}
+
+/* KWL */
+.kwl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kwl label{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;color:var(--moss);margin-bottom:4px}
+@media (max-width:640px){.kwl{grid-template-columns:1fr}}
+
+/* size scale */
+.scale-list{display:grid;gap:8px}
+.sz{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;background:none;border:0;padding:4px 0;text-align:right}
+.sz .nm{font-size:15px}
+.sz .tr{background:var(--sheet-2);border-radius:999px;height:26px;position:relative;overflow:hidden}
+.sz .tr i{position:absolute;inset:0 0 0 auto;background:var(--leaf);border-radius:999px;display:flex;align-items:center;justify-content:flex-start;padding:0 10px;color:#fff;font-style:normal;font-size:13px;white-space:nowrap;transition:width .6s}
+.sz.on .tr i{background:var(--fern)}
+.sz-note{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:48px}
+
+/* lab */
+.lab-svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.lab-svg .glass{fill:none;stroke:var(--muted);stroke-width:3}
+.lab-svg .water{fill:var(--water);opacity:.45;transform-box:fill-box;transform-origin:50% 100%;transition:transform 1s}
+.lab-svg .scale-body{fill:var(--muted)}
+.lab-svg .scale-screen{fill:#0d1f14}
+.lab-svg .scale-txt{fill:#7dfc9f;font-size:12px;font-family:Tahoma,sans-serif}
+.lab-svg .tbl{fill:var(--dry);opacity:.5}
+.lab-svg .lbl{fill:var(--muted);font-size:11px}
+#ball{transition:transform 1s ease,opacity .4s}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.steps button{width:100%;text-align:right;border:1.5px solid var(--line);background:var(--sheet);border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:16px}
+.steps button .k{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px}
+.steps button.done{background:var(--ok-bg);border-color:var(--ok)}
+.steps button.done .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps button.next{border-color:var(--sel);box-shadow:0 0 0 3px var(--sel-bg)}
+.lab-status{text-align:center;margin-top:8px;font-weight:600;color:var(--water);min-height:1.9em}
+table.data{width:100%;border-collapse:collapse;margin-top:12px;font-size:16px}
+table.data td,table.data th{border:1px solid var(--line);padding:6px 10px;text-align:right}
+table.data th{background:var(--sheet-2);font-weight:600}
+.lab-q{margin-top:12px;display:grid;gap:10px}
+.lab-q label{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* vascular sim */
+.vsim{display:grid;grid-template-columns:1fr;gap:10px}
+.vsim svg{width:100%;max-width:440px;margin:auto;display:block;background:var(--sheet-2);border-radius:14px}
+.vsim input[type="range"]{width:100%;accent-color:var(--fern)}
+.flow{stroke-dasharray:6 10;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+
+/* cover */
+.cover{position:relative;border-radius:20px;overflow:hidden;background:var(--sheet);border:1px solid var(--line);margin-bottom:18px}
+.cover svg.art{display:block;width:100%;height:auto}
+.cover-body{padding:18px 20px 22px}
+.cover h1{font-size:clamp(36px,10vw,58px);margin:0;color:var(--moss);letter-spacing:0}
+.cover .sub{color:var(--muted);margin:2px 0 14px;font-size:17px}
+.specimen{position:absolute;top:14px;left:14px;background:var(--sheet);border:1.5px solid var(--ink);border-radius:4px;padding:6px 12px;font-size:13px;line-height:1.6;transform:rotate(-3deg);box-shadow:2px 3px 0 var(--line)}
+.objs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.objs li{display:flex;gap:10px;align-items:flex-start}
+.objs li b{flex:none;color:var(--fern);font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+.vocab{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.vocab button{border:1.5px solid var(--line);background:var(--sheet-2);border-radius:999px;padding:4px 14px;font-size:15.5px}
+.vocab-def{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--sheet-2);font-size:16px;min-height:46px}
+
+/* results */
+.res-bars{display:grid;gap:12px}
+.res-bar .lb{display:flex;justify-content:space-between;font-size:16px}
+.res-bar .tr{height:16px;background:var(--sheet-2);border-radius:999px;overflow:hidden}
+.res-bar .tr i{display:block;height:100%;border-radius:999px;transition:width .7s}
+.res-list{list-style:none;padding:0;margin:0}
+.res-list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:8px 0;font-size:16px}
+
+/* bottom nav */
+.bnav{flex:none;z-index:20;background:var(--bar);padding:8px 14px 10px}
+.bnav .btn{background:transparent;border-color:rgba(255,255,255,.25);color:var(--bar-ink)}
+.bnav .btn.primary{background:var(--gold);border-color:var(--gold);color:#1d2a20}
+.bnav-in{max-width:860px;margin:auto;display:flex;gap:10px;justify-content:space-between}
+.bnav .btn{flex:1;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.opt{font-size:17.5px}.mi{font-size:16.5px}.order .t{font-size:17px}.face.back ul{font-size:16.5px}.why{font-size:16.5px}.tabpane ul{font-size:17.5px}
+.hint{font-size:14px;line-height:1.9}.chip{font-size:14px}.btn{font-size:14.5px}.badge{font-size:12px}.act-h h3{font-size:18px}.fact b{font-size:19px}
+.pg-h h2{font-size:clamp(24px,5.5vw,32px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* cell lesson */
+.simple{background:var(--ok-bg);border-radius:12px;padding:12px 16px;margin:0 0 16px;font-size:17.5px;line-height:1.95}
+.simple b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px}
+.sim svg{width:100%;max-width:480px;display:block;margin:auto;background:var(--sheet-2);border-radius:14px}
+.sim-note{text-align:center;font-weight:600;margin-top:8px;min-height:1.9em;color:var(--water);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14.5px;line-height:1.9}
+.st-card{background:var(--sheet-2);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.st-card h4{margin:0 0 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.st-card p{margin:0}
+.st-k{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12px;color:var(--muted)}
+.st-svg svg{width:100%;max-width:340px;display:block;margin:8px auto;background:var(--sheet);border-radius:10px}
+.st-dots{display:flex;gap:6px;align-items:center}.st-dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.st-dots i.on{background:var(--fern)}
+.st-viz{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0}
+.st-box{border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;text-align:center;min-width:110px;background:var(--sheet)}
+.st-box span{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted)}
+.st-box .dots{color:#d0457a;letter-spacing:2px;font-size:14px;line-height:1.3;min-height:20px}
+.st-arrow{font-size:22px;color:var(--water)}
+.strip{border:1.5px solid var(--line);border-radius:12px;background:var(--sheet);padding:10px 12px;margin-bottom:10px}
+.strip-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.strip-h b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:16px;color:var(--moss)}
+.strip .reveal{display:grid;gap:8px;padding-top:10px;border:0}
+.strip .reveal[hidden]{display:none}
+.strip label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);display:grid;gap:4px}
+.vocab button.rv{border-color:var(--fern);color:var(--fern)}
+.cm-node.fixed{border:2px solid var(--moss);background:var(--sheet);color:var(--ink);font-size:13px}
+.cm-col .cm-slot,.cm-col .cm-link{font-size:12.5px}
+.eq{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;text-align:center;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px;margin:0 0 16px;font-size:17px;color:var(--moss);overflow-x:auto;white-space:nowrap}
+.eq span{font-size:12.5px;color:var(--muted)}
+.atoms{width:100%;border-collapse:collapse;font-size:16px}
+.atoms th,.atoms td{border:1px solid var(--line);padding:6px;text-align:center}
+.atoms th{background:var(--sheet-2);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px}
+.atoms input[type="text"]{width:64px}
+.carrot{transition:transform 1s ease,opacity .6s}
+.carrot-in{transition:transform 1.2s ease;transform-box:fill-box;transform-origin:50% 0}
+.carrot-in path:first-child{transition:fill 1.2s}
+.carrot-in.limp{transform:rotate(26deg) scale(.86,.92)}
+.carrot-in.limp path:first-child{fill:#b86a2c}
+.water-r{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform 1s}
+.water-r.on{transform:scaleY(1)}
+.cyc-arc{opacity:.25;transition:opacity .4s}
+.cyc-arc.on{opacity:1}
+
+.bt{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;color:#fff;font-family:monospace;font-weight:700;font-size:15px;margin:2px;border:2px solid transparent;text-shadow:0 1px 1px rgba(0,0,0,.35);flex:none}
+.bt.nw{opacity:.55;border-style:dashed;border-color:#555}
+.bt.mut{border-color:#ff2d2d;box-shadow:0 0 0 3px rgba(255,45,45,.35)}
+.bt-in{background:var(--sheet-2);color:var(--ink);border-color:var(--line);cursor:pointer;text-shadow:none}
+.bt-in.ok{border-color:var(--ok)}.bt-in.bad{border-color:var(--bad);box-shadow:0 0 0 3px var(--bad-bg)}
+.lad{display:block;margin:6px auto;padding:8px;background:var(--sheet-2);border-radius:12px;overflow-x:auto}
+.lad-row{display:flex;flex-wrap:nowrap;justify-content:center}
+.lad-mid{display:flex;justify-content:center}.lad-mid i{width:34px;height:10px;display:flex;justify-content:center;flex:none}.lad-mid i::after{content:"";width:3px;height:10px;background:var(--muted)}
+.rep-out{display:grid;gap:10px;margin-top:10px}
+.rep-blk{background:var(--sheet-2);border-radius:12px;padding:8px;overflow-x:auto}
+.rep-blk h5{margin:0 0 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);font-weight:600}
+.rep-blk .bt,.tri .bt,.mut-grid .bt{width:22px;height:24px;font-size:12px;margin:1px}
+.rep-blk .gap{height:10px}
+.tri{display:inline-flex;padding:2px;border-radius:8px;border:2px solid transparent;margin:0 2px;flex:none}
+.tri.cur{border-color:var(--sel);background:var(--sel-bg)}.tri.done{opacity:.4}
+.chain{display:flex;gap:4px;align-items:center;justify-content:center;min-height:30px;flex-wrap:wrap}
+.chain i{width:24px;height:24px;border-radius:50%;display:inline-block;border:2px solid rgba(0,0,0,.15)}
+.chain i.mut{border-radius:4px;border-color:#ff2d2d}
+.tr-box{background:var(--sheet-2);border-radius:12px;padding:10px;overflow-x:auto}
+.tr-l{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:12.5px;color:var(--muted);text-align:center;margin:4px 0}
+.tr-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tr-o{display:flex;justify-content:center;padding:6px}
+.tr-o .bt{width:26px;height:26px}
+.mut-grid{background:var(--sheet-2);border-radius:12px;padding:10px;overflow-x:auto}
+.tally{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.tal{background:var(--sheet-2);border-radius:12px;padding:10px;text-align:center}
+.tal span{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px;color:var(--muted)}
+.tal b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:32px;color:var(--fern)}
+.tal .row{justify-content:center;margin-top:4px}
+.trows{display:grid;gap:8px}
+.trow{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.trow input[type="text"]{flex:1;min-width:140px;text-align:right;width:auto}
+
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 16px}
+.c3{background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px}
+.c3 b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--moss);margin-bottom:4px}
+.c3 span{font-size:16.5px;line-height:1.85}
+.ps{display:grid;gap:4px}
+.ps-box{background:var(--sheet-2);border-radius:12px;padding:8px 10px}
+.ps-box b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:block;margin-bottom:4px}
+.ps-box textarea{min-height:56px}
+.ps-arr{text-align:center;color:var(--water);font-size:20px;line-height:1}
+.tcomp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 16px}
+.tc{border-radius:12px;padding:10px 12px;border:1.5px solid var(--line)}
+.tc.cold{background:var(--sel-bg)}.tc.hot{background:var(--bad-bg)}
+.tc b{display:block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;margin-bottom:4px}
+.dlg{background:var(--sheet-2);border-radius:12px;padding:10px 14px;margin-bottom:10px}
+.dlg p{margin:0 0 4px}
+.fold3{display:grid;gap:10px}
+
+.stu-modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:20px}
+.stu-modal[hidden]{display:none}
+.stu-card{background:var(--sheet);color:var(--ink);border-radius:18px;padding:22px;max-width:400px;width:100%;display:grid;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.stu-card h3{margin:0;font-size:20px;color:var(--moss)}
+.stu-card label{display:grid;gap:4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--muted)}
+.stu-card input[type="text"]{width:100%;text-align:right;padding:10px 12px;font-size:17px}
+.stu-err{color:var(--bad);font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px;min-height:1.2em}
+.lik{display:grid;gap:12px}
+.lik-q{background:var(--sheet-2);border-radius:12px;padding:10px 12px}
+.lik-q p{margin:0 0 8px;font-weight:600}
+.lik-o{display:flex;gap:6px;flex-wrap:wrap}
+.lik-o button{flex:1;min-width:44px;border:1.5px solid var(--line);background:var(--sheet);border-radius:10px;padding:6px 4px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px}
+.lik-o button.on{background:var(--fern);border-color:var(--fern);color:#fff}
+.nlv{display:inline-block;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;font-weight:600;border-radius:999px;padding:0 9px;margin-left:4px;color:#fff;vertical-align:2px}
+.nlv.l0{background:#2a6c8c}.nlv.l1{background:#b5701a}.nlv.l2{background:#7a3e9a}
+.stu-toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 64px);left:3vw;right:3vw;margin:0 auto;width:fit-content;z-index:60;background:#1d3a2a;color:#fff;border-radius:14px;padding:8px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:15px;max-width:94vw;transition:opacity .5s}
+.stu-toast .btn{color:#fff;border-color:rgba(255,255,255,.5);padding:4px 10px;font-size:13px}
+.stu-toast.out{opacity:0}
+.stu-code{font-size:30px!important;letter-spacing:14px;text-align:center;font-family:Tahoma,monospace}
+.nf-mode{border-radius:12px;padding:10px 14px;margin:0 0 12px;font-weight:600;line-height:1.85;background:var(--sheet-2);border-right:5px solid #8a8a8a}
+.nf-mode.m-wait{border-color:#c79a2c}.nf-mode.m-class{border-color:#2f8a52}.nf-mode.m-done{border-color:#2f8a52}.nf-mode.m-home{border-color:#2a6c8c}
+.nf-mode small{display:block;font-weight:400;color:var(--muted)}
+.nf-meta{display:grid;gap:1px;background:var(--sheet-2);border-right:4px solid #7a3e9a;border-radius:8px;padding:6px 10px;margin:0 0 8px;font-size:13px;font-weight:400;line-height:1.7;color:var(--muted)}
+.nf-meta b{color:var(--ink);font-weight:600}
+.nf-code{font-family:Tahoma,sans-serif;unicode-bidi:isolate}
+.nf-tbl{overflow-x:auto}.nf-tbl table{width:100%;border-collapse:collapse;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13.5px}
+.nf-tbl th,.nf-tbl td{border:1px solid var(--line);padding:6px 8px;text-align:center}.nf-tbl th{background:var(--sheet-2)}
+.nf-tbl td.m{background:#dff2e4;color:#1d6b3e}.nf-tbl td.n{background:#fbefd6;color:#8a5a10}.nf-tbl td.w{background:#f8dcd6;color:#9a2f1f}.nf-tbl td.na{color:var(--muted)}.nf-tbl td.sd{white-space:nowrap}
+.nf-h{margin:12px 0 6px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:15px;color:var(--muted)}
+.q-t svg{max-width:100%;height:auto;background:#fff;border-radius:8px}
+.fold3 label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:grid;gap:4px}
+
+/* digestion lesson styles */
+
+:root{
+  --paper:#edf1e7; --sheet:#fbfcf8; --sheet-2:#f2f5ec; --ink:#1d3428; --muted:#55685b; --line:#d5ddcc;
+  --moss:#2f5f3c; --fern:#3e7c4a; --leaf:#7aa84a; --spore:#c4871a; --water:#2a6c8c; --dry:#8b6a45;
+  --ok:#24804f; --ok-bg:#e1f2e6; --bad:#b9412d; --bad-bg:#f8e4df; --sel:#2a6c8c; --sel-bg:#e0edf3;
+  --bar:#1f2a24; --bar-ink:#f1f5ec; --desk:#2c3832; --edge:#d9d4c4; --page:#fdfcf7; --gold:#c9a24a;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+    --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+    --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+    --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111a14; --sheet:#18241c; --sheet-2:#1e2c23; --ink:#e4ece4; --muted:#9fb3a5; --line:#2c3d32;
+  --moss:#8cc79a; --fern:#79b886; --leaf:#9ccc6a; --spore:#e3a843; --water:#6bb3d6; --dry:#c49a6c;
+  --ok:#6fd39a; --ok-bg:#1b3a28; --bad:#f08a76; --bad-bg:#3e221d; --sel:#6bb3d6; --sel-bg:#1a3240;
+  --bar:#070b09; --bar-ink:#e4ece4; --desk:#0b110d; --edge:#2a362f; --page:#151e18; --gold:#c9a24a;
+  color-scheme:dark;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;background:var(--desk)}
+body{margin:0;height:100%;overflow:hidden;display:flex;flex-direction:column;background:var(--desk);color:var(--ink);font-family:"Amiri","Traditional Arabic","Times New Roman",serif;font-size:19px;line-height:2}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+h1,h2,h3,.kufi{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;line-height:1.5;font-weight:700}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.btn,.tab,.toc button,.badge,.top-title,.top-count,.zone-h,.chip,.steps button,.vocab button,.lab-status,.msg,.hint,.where,.fact b{font-family:"Noto Kufi Arabic",Tahoma,sans-serif}
+:focus-visible{outline:3px solid var(--spore);outline-offset:2px;border-radius:6px}
+img,svg{max-width:100%}
+
+/* top bar */
+.top{flex:none;position:relative;z-index:20;background:var(--bar);color:var(--bar-ink)}
+.top-row{display:flex;align-items:center;gap:10px;max-width:860px;margin:auto;padding:10px 14px}
+.top-title{flex:1;min-width:0;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-count{font-size:14px;opacity:.8}
+.icon-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:inherit;border-radius:10px;width:40px;height:40px;display:grid;place-items:center}
+.prog{height:4px;background:rgba(255,255,255,.12)}
+.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+
+/* drawer */
+.drawer{position:fixed;inset:0;z-index:40;display:none}
+.drawer.open{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.drawer-panel{position:absolute;top:0;bottom:0;right:0;width:min(340px,88vw);background:var(--sheet);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 14px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.drawer-panel h2{font-size:20px;margin:0 6px 10px}
+.toc{list-style:none;margin:0;padding:0}
+.toc button{width:100%;text-align:right;background:none;border:0;padding:10px 10px;border-radius:10px;display:flex;gap:10px;align-items:center;font-size:16px}
+.toc button:hover{background:var(--sheet-2)}
+.toc button.cur{background:var(--sel-bg);color:var(--sel);font-weight:700}
+.toc .n{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;flex:none}
+.toc .seen .n{background:var(--fern);border-color:var(--fern);color:#fff}
+
+/* book */
+.desk{flex:1;min-height:0;display:flex;justify-content:center;padding:14px 18px 12px 26px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,rgba(255,255,255,.07),transparent 70%)}
+.book{--turn:850ms;position:relative;width:100%;max-width:780px;height:100%;perspective:2400px}
+.book::before{content:"";position:absolute;top:8px;bottom:8px;left:-12px;width:16px;border-radius:10px 0 0 10px;background:repeating-linear-gradient(90deg,var(--edge) 0 1px,var(--page) 1px 3px);box-shadow:-3px 6px 12px rgba(0,0,0,.4)}
+.book::after{content:"";position:absolute;top:-5px;bottom:-5px;right:-8px;width:14px;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#163223,#2c5a3c 55%,#163223);box-shadow:3px 6px 12px rgba(0,0,0,.4)}
+.page{position:absolute;inset:0;display:none;overflow-y:auto;overscroll-behavior:contain;
+  background:linear-gradient(270deg,rgba(0,0,0,.13),rgba(0,0,0,0) 30px),linear-gradient(90deg,rgba(0,0,0,.05),rgba(0,0,0,0) 16px),var(--page);
+  border-radius:14px 3px 3px 14px;box-shadow:0 12px 30px rgba(0,0,0,.35);padding:16px clamp(18px,4.5vw,44px) 16px;
+  transform-origin:right center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.page.on{display:block;z-index:2}
+.page.under{display:block;z-index:1}
+.page.turn-fwd,.page.turn-back{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.55)}
+.page.turn-fwd{animation:turnFwd var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.turn-back{animation:turnBack var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes turnFwd{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes turnBack{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
+.leaf{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;transform-origin:right center;border-radius:3px 14px 14px 3px;background:linear-gradient(90deg,var(--page) 0,var(--page) 70%,var(--edge) 100%);box-shadow:0 14px 44px rgba(0,0,0,.45)}
+@keyframes leafFwd{0%{transform:rotateY(0);opacity:0}49.9%{opacity:0}50%{opacity:1}82%{opacity:1}100%{transform:rotateY(180deg);opacity:0}}
+@keyframes leafBack{0%{transform:rotateY(180deg);opacity:0}18%{opacity:1}49.9%{opacity:1}50%{opacity:0}100%{transform:rotateY(0);opacity:0}}
+.shade{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;border-radius:14px 3px 3px 14px;background:linear-gradient(90deg,rgba(0,0,0,.4),rgba(0,0,0,0) 75%)}
+@keyframes shade{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
+.corner{position:absolute;left:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 0 14px;
+  background:linear-gradient(45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.corner:hover{width:56px;height:56px}
+.runhead{display:flex;justify-content:space-between;gap:10px;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:14px}
+.folio{text-align:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;color:var(--muted);margin-top:24px;padding-bottom:4px}
+.folio span{display:inline-block;min-width:40px;border-top:1px solid var(--line);padding-top:4px}
+
+/* two-page spread */
+.book.spread{max-width:1320px;transition:transform var(--turn) cubic-bezier(.55,.05,.35,1)}
+.book.spread::before,.book.spread::after{display:none}
+.book.spread.closed{transform:translateX(25%)}
+.book.spread.endonly{transform:translateX(-25%)}
+.book.spread .page{width:50%}
+.book.spread .page.pos-r{left:auto;right:0;border-radius:3px 14px 14px 3px;transform-origin:left center;background:linear-gradient(90deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l{right:auto;left:0;border-radius:14px 3px 3px 14px;transform-origin:right center;background:linear-gradient(270deg,rgba(0,0,0,.17),rgba(0,0,0,0) 40px),var(--page)}
+.book.spread .page.pos-l[data-page="cover"]{background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.09),transparent 60%),linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 34px),#1d4530;border-radius:14px 4px 4px 14px}
+.page.flipL-out,.page.flipR-in,.page.flipR-out,.page.flipL-in{display:block;z-index:4;box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.page.flipL-out{animation:fLout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-in{animation:fRin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipR-out{animation:fRout var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+.page.flipL-in{animation:fLin var(--turn) cubic-bezier(.55,.05,.35,1) forwards}
+@keyframes fLout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(180deg)}}
+@keyframes fRin{0%{transform:rotateY(-180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+@keyframes fRout{0%{transform:rotateY(0);filter:brightness(1)}50%,100%{filter:brightness(.8)}100%{transform:rotateY(-180deg)}}
+@keyframes fLin{0%{transform:rotateY(180deg);filter:brightness(.8)}50%{filter:brightness(.8)}100%{transform:rotateY(0);filter:brightness(1)}}
+.corner-back{display:none}
+.book.spread .corner-back{display:block;position:absolute;right:0;bottom:0;z-index:5;width:44px;height:44px;border:0;padding:0;border-radius:0 0 14px 0;background:linear-gradient(-45deg,var(--desk) 0 49%,var(--edge) 50%,var(--page) 100%);box-shadow:-3px -3px 6px rgba(0,0,0,.18);transition:width .2s,height .2s}
+.book.spread .corner-back:hover{width:56px;height:56px}
+.book.spread .corner-back[hidden]{display:none}
+
+/* AR card on page */
+.ar-card{display:flex;gap:14px;align-items:center;border:1.5px solid var(--ink);border-radius:14px;padding:12px 14px;margin:0 0 20px;background:var(--sheet)}
+.ar-card h3{margin:0;font-size:17px}
+.ar-card p{margin:2px 0 8px;font-size:16px;color:var(--muted);line-height:1.8}
+.ar-marker{flex:none;width:84px;height:84px;color:var(--ink);position:relative;overflow:hidden;border-radius:4px}
+.ar-marker svg{display:block;width:100%;height:100%}
+.ar-marker::after{content:"";position:absolute;left:0;right:0;height:30%;background:linear-gradient(transparent,rgba(42,168,101,.55),transparent);animation:scanl 2.6s linear infinite}
+@keyframes scanl{from{top:-30%}to{top:100%}}
+
+/* AR overlay */
+.ar{position:fixed;inset:0;z-index:60;background:radial-gradient(ellipse at 50% 38%,#24392d 0%,#0a120d 70%,#050806 100%);color:#eaf6ee;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;opacity:0;transition:opacity .35s}
+.ar.on{opacity:1}
+.ar.cam{background:#000}
+.ar video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.ar.cam video{display:block}
+.ar canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;display:block}
+.ar canvas:active{cursor:grabbing}
+.ar-hud{position:absolute;inset:0;pointer-events:none;padding:calc(env(safe-area-inset-top,0px) + 12px) 14px calc(env(safe-area-inset-bottom,0px) + 14px);display:flex;flex-direction:column}
+.ar-hud button{pointer-events:auto}
+.ar-top{display:flex;align-items:center;gap:10px;position:relative;z-index:2}
+.ar-live{display:inline-flex;align-items:center;gap:6px;font-size:12px;border:1px solid rgba(125,255,176,.6);color:#7dffb0;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.ar-live::before{content:"";width:7px;height:7px;border-radius:50%;background:#7dffb0;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+.ar-title{flex:1;min-width:0;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-x{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.4);color:#fff;font-size:17px}
+.brk{position:absolute;width:30px;height:30px;border:3px solid rgba(125,255,176,.75)}
+.b1{top:calc(env(safe-area-inset-top,0px) + 66px);right:14px;border-left:0;border-bottom:0}
+.b2{top:calc(env(safe-area-inset-top,0px) + 66px);left:14px;border-right:0;border-bottom:0}
+.b3{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);right:14px;border-left:0;border-top:0}
+.b4{bottom:calc(env(safe-area-inset-bottom,0px) + 200px);left:14px;border-right:0;border-top:0}
+.ar-scan{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:14px;transition:opacity .5s;font-size:15px}
+.reticle{width:130px;height:130px;border-radius:50%;border:2px dashed #7dffb0;position:relative;animation:spin 4s linear infinite}
+.reticle::after{content:"";position:absolute;inset:44%;border-radius:50%;background:#7dffb0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ar-labels{position:absolute;inset:0;overflow:hidden}
+.ar-lbl{position:absolute;transform:translate(-50%,calc(-100% - 16px));background:rgba(6,18,11,.84);border:1px solid #7dffb0;color:#eaf6ee;font-size:13px;padding:3px 10px;border-radius:8px;white-space:nowrap;transition:opacity .3s;opacity:0}
+.ar-lbl::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:16px;background:#7dffb0}
+.ar-bottom{margin-top:auto;display:grid;gap:10px;justify-items:center;position:relative;z-index:2}
+.ar-cap{background:rgba(6,18,11,.86);border:1px solid rgba(125,255,176,.5);border-radius:14px;padding:10px 18px;font-size:15.5px;line-height:1.9;max-width:680px;text-align:center;min-height:52px}
+.ar-tl{display:flex;gap:6px}
+.ar-tl i{width:20px;height:5px;border-radius:3px;background:rgba(255,255,255,.25)}
+.ar-tl i.on{background:#7dffb0}
+.ar-ctrl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ar-ctrl button{border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px}
+.ar-hint{font-size:11.5px;opacity:.65;text-align:center}
+.ar-toast{background:#3a1f1a;border:1px solid #f08a76;border-radius:10px;padding:8px 14px;font-size:13.5px;max-width:560px;text-align:center}
+
+/* launch steps */
+.lsteps{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:ls}
+.lsteps li{counter-increment:ls;background:var(--sheet-2);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:8px}
+.lsteps label{display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.8}
+.lsteps label::before{content:counter(ls,arabic-indic);flex:none;width:28px;height:28px;border-radius:50%;background:var(--fern);color:#fff;display:grid;place-items:center;font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:13px;margin-top:3px}
+.lsteps input[type="checkbox"]{width:20px;height:20px;accent-color:var(--fern);margin-top:6px;flex:none}
+
 /* student card + survey + sync */
 .stu-modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:20px}
 .stu-modal[hidden]{display:none}
@@ -552,7 +1106,7 @@ table.data th{background:var(--sheet-2);font-weight:600}
     <button class="icon-btn" id="menuBtn" aria-label="فهرس الكتاب">
       <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
-    <div class="top-title" id="topTitle">النباتات اللابذرية</div>
+    <div class="top-title" id="topTitle">الهضم والإخراج والتنفس والدوران</div>
     <div class="top-count" id="topCount"></div>
     <button class="icon-btn" id="sndBtn" aria-label="صوت تقليب الصفحات" aria-pressed="true"></button>
   </div>
@@ -939,6 +1493,17 @@ table.data th{background:var(--sheet-2);font-weight:600}
   </div>
 </section>
 
+<!-- ============ NAFES ============ -->
+<section class="page" data-page="nafes" data-title="تدرّب على نافس">
+  <header class="pg-h"><div class="where">بنك «نافس» · المرحلة الابتدائية</div><h2>تدرّب على «نافس»</h2></header>
+  <p>أسئلة «نافس» كما وردت في بنك الأسئلة، ومعها مستوى كل سؤال: <b>معرفة</b> أو <b>تطبيق</b> أو <b>استدلال</b>. أجب عنها جميعًا ثم اضغط «صحّح إجاباتي»، فيظهر تشخيص مهاراتك في صفحة التشخيص.</p><p style="margin:6px 0 10px"><a class="btn" href="honor.html?l=digestion6" target="_blank" rel="noopener" style="text-decoration:none">🏆 لوحة الشرف: المتميزون في تدريب نافس</a></p>
+  <div class="act" data-kind="post">
+    <div class="act-h"><span class="badge b-post">نافس</span><h3>ثلاثة أسئلة</h3></div>
+    <div id="nfMode" class="nf-mode" hidden></div>
+    <div id="q-nafes"></div>
+  </div>
+</section>
+
 <!-- ============ RESULTS ============ -->
 <section class="page" data-page="results" data-title="تقرير الإنجاز">
   <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تقرير الإنجاز</h2></header>
@@ -956,21 +1521,26 @@ table.data th{background:var(--sheet-2);font-weight:600}
 </section>
 
 <!-- ============ DIAGNOSIS ============ -->
-<section class="page" data-page="diagnosis" data-title="تشخيص تحقق الأهداف">
-  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>تشخيص تحقق أهداف الدرس</h2></header>
-  <p>يُحسب مستوى تحقق كل هدف من إجاباتك في التقويم الختامي (٧٠٪)، ومن الأنشطة المرتبطة به (٣٠٪).</p>
+<section class="page" data-page="diagnosis" data-title="تشخيص الأهداف ومهارات نافس">
+  <header class="pg-h"><div class="where">نهاية الدرس</div><h2>التشخيص</h2></header>
   <div class="row no-print" style="margin:0 0 14px"><label>اسم الطالبة / الطالب: <input type="text" id="stuName" data-save="stuName" style="width:210px;text-align:right"></label></div>
+  <h3 style="margin:0 0 8px;font-size:19px">١. تحقق أهداف الدرس</h3>
+  <p class="hint">من التقويم الختامي (٧٠٪) والأنشطة المرتبطة بكل هدف (٣٠٪).</p>
   <div id="diagOut"></div>
+  <h3 style="margin:18px 0 8px;font-size:19px">٢. مهارات «نافس»</h3>
+  <div id="nafesDiag"></div>
   <p class="hint">مستويات الإتقان: متقن ٨٠٪ فأكثر، قريب من الإتقان ٦٠–٧٩٪، يحتاج إلى علاج أقل من ٦٠٪.</p>
 </section>
 
 <!-- ============ PLAN ============ -->
 <section class="page" data-page="plan" data-title="الخطة العلاجية">
   <header class="pg-h"><div class="where">نهاية الدرس</div><h2>الخطة العلاجية</h2></header>
+  <h3 style="margin:0 0 8px;font-size:19px">١. علاج أهداف الدرس</h3>
   <div id="planOut"></div>
+  <h3 style="margin:18px 0 8px;font-size:19px">٢. علاج مهارات «نافس»</h3>
+  <div id="nafesPlan"></div>
   <div class="row no-print" style="margin-bottom:12px"><button class="btn" id="printPlan">اطبع التشخيص والخطة</button></div>
 </section>
-
 
 <!-- ============ SURVEY ============ -->
 <section class="page" data-page="survey" data-title="رأيك يهمنا">
@@ -981,6 +1551,7 @@ table.data th{background:var(--sheet-2);font-weight:600}
   <div class="row"><button class="btn primary" id="svSend">أرسل رأيي</button></div>
   <div class="msg" id="svMsg"></div>
 </section>
+
 
 <div class="leaf" id="leaf"></div><div class="shade" id="shade"></div>
 <button class="corner" id="corner" aria-label="اقلب إلى الصفحة التالية"></button><button class="corner-back" id="cornerBack" aria-label="ارجع إلى الصفحة السابقة"></button>
@@ -1017,9 +1588,15 @@ table.data th{background:var(--sheet-2);font-weight:600}
 <div class="stu-modal" id="stuModal" hidden role="dialog" aria-modal="true" aria-labelledby="stuTitle">
   <div class="stu-card">
     <h3 id="stuTitle">مرحبًا بك في الكتاب التفاعلي</h3>
-    <p style="margin:0">اكتب اسمك ورمز فصلك ليعرف معلمك نتائجك ويساعدك.</p>
-    <label>الاسم الثلاثي<input type="text" id="stuNm" maxlength="60" autocomplete="name"></label>
-    <label>رمز الفصل (يعطيك إياه المعلم)<input type="text" id="stuCls" maxlength="20" placeholder="مثال: 6أ"></label>
+    <div id="stuCodeBox" hidden>
+      <p style="margin:0">اكتب رمز الدخول المكوّن من ٤ أرقام، تجده في البطاقة التي أعطاك إياها معلمك.</p>
+      <label>رمز الدخول<input type="text" id="stuCode" inputmode="numeric" maxlength="4" dir="ltr" autocomplete="off" class="stu-code"></label>
+    </div>
+    <div id="stuNameBox">
+      <p style="margin:0">اكتب اسمك ورمز فصلك ليعرف معلمك نتائجك ويساعدك.</p>
+      <label>الاسم الثلاثي<input type="text" id="stuNm" maxlength="60" autocomplete="name"></label>
+      <label>رمز الفصل (يعطيك إياه المعلم)<input type="text" id="stuCls" maxlength="20" placeholder="مثال: 6أ"></label>
+    </div>
     <div class="stu-err" id="stuErr"></div>
     <div class="row" style="margin:0"><button class="btn primary" id="stuSave">ابدأ</button><button class="btn ghost" id="stuSkip">تصفح فقط دون حفظ</button></div>
   </div>
@@ -1071,7 +1648,7 @@ function quiz(el,qs,o){
   function finish(){
     done=true;const got=picks.filter((p,i)=>p===qs[i].a).length,p=Math.round(got/qs.length*100);
     const s=$(".score",el);s.hidden=false;
-    s.innerHTML='<span class="big">'+ar(got)+' / '+ar(qs.length)+'</span><span>'+praise(p)+'</span><button class="btn ghost" data-act="retry">أعد المحاولة</button>';
+    s.innerHTML='<span class="big">'+ar(got)+' / '+ar(qs.length)+'</span><span>'+praise(p)+'</span>'+(o.noRetry?'':'<button class="btn ghost" data-act="retry">أعد المحاولة</button>');
     if(o.key)saveScore(o.key,got,qs.length,picks.map((p,i)=>p===qs[i].a));
   }
   el.addEventListener("click",e=>{
@@ -1086,7 +1663,7 @@ function quiz(el,qs,o){
     if(a.dataset.act==="check"){
       const m=$(".msg",el);
       if(picks.some(p=>p===null)){m.className="msg bad";m.textContent="أجب عن جميع الأسئلة أولًا ("+ar(picks.filter(p=>p===null).length)+" بلا إجابة).";return}
-      m.textContent="";qs.forEach((q,i)=>mark(i));a.disabled=true;finish();
+      m.textContent="";if(o.noReveal)$$(".opt",el).forEach(x=>{x.disabled=true});else qs.forEach((q,i)=>mark(i));a.disabled=true;finish();
     }
     if(a.dataset.act==="retry"){draw()}
   });
@@ -1257,7 +1834,7 @@ const T11=(x,y,t,a,c)=>'<text x="'+x+'" y="'+y+'" font-size="11" fill="'+(c||"#4
 function stepper(el,steps){let i=0;
   function draw(){const s=steps[i];el.innerHTML='<div class="st-card"><div class="st-k">'+ar(i+1)+' / '+ar(steps.length)+'</div><h4>'+s.h+'</h4>'+(s.svg?'<div class="st-svg">'+s.svg+'</div>':'')+'<p>'+s.t+'</p></div><div class="row" style="justify-content:space-between"><button class="btn" data-sp="-1"'+(i===0?" disabled":"")+'>السابق</button><div class="st-dots">'+steps.map((x,k)=>'<i class="'+(k===i?"on":"")+'"></i>').join("")+'</div><button class="btn primary" data-sp="1"'+(i===steps.length-1?" disabled":"")+'>التالي</button></div>'}
   el.addEventListener("click",e=>{const b=e.target.closest("[data-sp]");if(!b)return;i=Math.max(0,Math.min(steps.length-1,i+(+b.dataset.sp)));draw()});draw()}
-
+const NUM=(x,y,n)=>'<circle cx="'+x+'" cy="'+y+'" r="11" fill="#1e5a7a"/><text x="'+x+'" y="'+(y+4)+'" font-size="12" fill="#fff" text-anchor="middle" font-family="Tahoma">'+n+'</text>';
 /* ---------- cover art ---------- */
 (function(){
   let s='<rect width="800" height="300" fill="#eaf4ec"/>';
@@ -1461,7 +2038,24 @@ quiz($("#q-post"),[
 ],{key:"post",instant:false});
 
 /* ---------- results ---------- */
-const LABELS={"f-explore":"أستكشف: الأمعاء الغليظة","f-invert":"الهضم في اللافقاريات","f-path":"رحلة الطعام","f-digest":"تحقق: الهضم والإخراج","f-resporg":"أعضاء التنفس","f-airway":"مسار الهواء","f-resp":"تحقق: التنفس","f-circ":"أجهزة الدوران","f-temp":"تصنيف درجة الحرارة","f-tempq":"تحقق: درجة الحرارة","f-blood":"رحلة الدم","f-readfig":"أقرأ الشكل","f-rev4":"مراجعة: س٤","f-rev5":"مراجعة: س٥","f-math":"العلوم والرياضيات","f-cmap1":"خريطة المفاهيم"};
+const LABELS={"f-explore":"أستكشف: الأمعاء الغليظة","f-invert":"الهضم في اللافقاريات","f-path":"رحلة الطعام","f-digest":"تحقق: الهضم والإخراج","f-resporg":"أعضاء التنفس","f-airway":"مسار الهواء","f-resp":"تحقق: التنفس","f-circ":"أجهزة الدوران","f-temp":"تصنيف درجة الحرارة","f-tempq":"تحقق: درجة الحرارة","f-blood":"رحلة الدم","f-readfig":"أقرأ الشكل","f-rev4":"مراجعة: س٤","f-rev5":"مراجعة: س٥","f-math":"العلوم والرياضيات","f-cmap1":"خريطة المفاهيم","nafes":"تدرّب على نافس"};
+
+/* ---------- NAFES bank items (6-5-1-1-3، كما وردت في البنك) ---------- */
+const SV={stom:'<svg viewBox="0 0 320 90" style="width:300px;max-width:100%;display:block;margin:8px auto;background:#f4f4f4;border-radius:6px">'+[0,1,2,3].map(i=>{const x=40+i*78,k=[1,.8,.62,.8][i];return '<path d="M'+(x-8)+' 12 q-2 14 6 22 q'+(-26*k)+' 6 '+(-20*k)+' 30 q12 18 34 6 q14 -10 6 -34 q-8 -12 -20 -6 q-4 -10 -4 -18z" fill="#cfc6c6" stroke="#777" stroke-width="2"/>'}).join("")+'</svg>'};
+const LVT=["معرفة","تطبيق","استدلال"];
+const NF_DOM=["١- علوم الحياة"];
+const NF_SUB=["١-١ التركيب والوظيفة في المخلوقات الحية"];
+const NF_STDS=[{code:"٦-٥-١-١-٣",dom:0,sub:0,t:"تحديد أجهزة الجسم الرئيسة وأعضائها المتخصصة وربطها بوظائفها لدعم نمو المخلوقات الحية (النبات والحيوان) وبقائها"}];
+const CODE=c=>'<span dir="ltr" class="nf-code">'+c+'</span>';
+const nq=x=>{const S=NF_STDS[x.std];return '<div class="nf-meta"><span><b>المجال الرئيسي:</b> '+NF_DOM[S.dom]+'</span><span><b>المجال الفرعي:</b> '+NF_SUB[S.sub]+'</span><span><b>المعيار:</b> '+CODE(S.code)+' '+S.t+'</span><span><b>المستوى الإدراكي:</b> <span class="nlv l'+x.lv+'">'+LVT[x.lv]+'</span></span></div>'+x.q};
+const NAFES_Q=[
+  {lv:0,std:0,q:"أحد مكونات الدم وتساعد في نقل الأكسجين للخلايا:",o:["كريات الدم البيضاء","كريات الدم الحمراء","البلازما","الصفائح الدموية"],a:1},
+  {lv:1,std:0,q:"أثناء ممارسة التمارين الرياضية، يحتاج الجسم إلى ضخ المزيد من الدم لتلبية احتياجات الأنسجة للأكسجين. ما هو العضو المسؤول عن هذه العملية:",o:["الرئة","المعدة","القلب","الدماغ"],a:2},
+  {lv:2,std:0,q:"يوضح الشكل المجاور حركة الطعام داخل المعدة. فأي أجهزة الجسم تتآزر في هذه الحركة:"+SV.stom,o:["الهضمي والتنفسي","الهضمي والعضلي","الهضمي والإخراج","الهضمي والدوراني"],a:1}
+];
+const PRE_IDX=[];
+quiz($("#q-nafes"),NAFES_Q.map(x=>({q:nq(x),o:x.o,a:x.a})),{key:"nafes",instant:false});
+
 function renderResults(){
   const s=store.get("scores",{});const pct=k=>s[k]?Math.round(s[k].got/s[k].total*100):null;
   const pre=pct("pre"),post=pct("post");
@@ -1484,7 +2078,7 @@ function currentName(){const h=location.hash.replace("#","");return names.indexO
 let curIdx=-1,curSpread=-1,busy=false;
 const reduceMotion=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 const TURN=850;
-pages.forEach((p,i)=>{if(i===0)return;p.insertAdjacentHTML("afterbegin",'<div class="runhead"><span>العلوم · الصف السادس الابتدائي</span><span>الدرس الأول: الهضم والإخراج والتنفس والدوران</span></div>');p.insertAdjacentHTML("beforeend",'<div class="folio"><span>'+ar(i)+'</span></div>')});
+pages.forEach((p,i)=>{if(i===0)return;p.insertAdjacentHTML("afterbegin",'<div class="runhead"><span>العلوم · الصف السادس الابتدائي</span><span>الفصل الرابع · الدرس الأول: الهضم والإخراج والتنفس والدوران</span></div>');p.insertAdjacentHTML("beforeend",'<div class="folio"><span>'+ar(i)+'</span></div>')});
 let snd=store.get("snd",true),actx=null;
 const SPK='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3z" fill="currentColor"/>';
 function paintSnd(){const b=$("#sndBtn");b.setAttribute("aria-pressed",snd);b.innerHTML=SPK+(snd?'<path d="M13 7.5q2 2.5 0 5M15 5.5q4 4.5 0 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>':'<path d="M13 7l5 6M18 7l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>')+'</svg>'}
@@ -1622,7 +2216,7 @@ function bookTexture(title){
   for(let i=0;i<19;i++){const w=i%6===5?420:780-((i*37)%90);rr(W/2-120-w,150+i*58,w,15)}
   for(let i=0;i<3;i++){const w=780-((i*53)%120);rr(W-120-w,Hh-230+i*58,w,15)}
   x.direction="rtl";x.textAlign="right";x.fillStyle="#2f5f3c";x.font='700 58px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillText(title,W-120,150);
-  x.font='400 30px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillStyle="#7a8a7f";x.fillText("العلوم · الصف السادس · الدرس الأول",W-120,212);
+  x.font='400 30px "Noto Kufi Arabic", Tahoma, sans-serif';x.fillStyle="#7a8a7f";x.fillText("العلوم · الصف السادس · الدرس الثاني",W-120,212);
   const cx=W*.75,cy=Hh*.52,bw=640,bh=600,L=70;x.strokeStyle="#22a565";x.lineWidth=9;x.lineCap="round";
   [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(q=>{const X=cx+q[0]*bw/2,Y=cy+q[1]*bh/2;x.beginPath();x.moveTo(X-q[0]*L,Y);x.lineTo(X,Y);x.lineTo(X,Y-q[1]*L);x.stroke()});
   const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;tx.anisotropy=R.capabilities.getMaxAnisotropy();return tx;
@@ -1659,6 +2253,17 @@ function resize(){const w=window.innerWidth,h=window.innerHeight;R.setSize(w,h,f
 function dispose(o){o.traverse(m=>{if(m.geometry)m.geometry.dispose();if(m.material)(Array.isArray(m.material)?m.material:[m.material]).forEach(mt=>{if(mt.map)mt.map.dispose();mt.dispose()})})}
 
 /* ---------- scenes ---------- */
+function MOL(H){
+  const atom=(c,r)=>new THREE.Mesh(new THREE.SphereGeometry(r,14,10),H.M(c,{roughness:.4}));
+  const grp=(list)=>{const G=new THREE.Group();list.forEach(a=>{const m=atom(a[0],a[1]);m.position.set(a[2],a[3],0);m.castShadow=true;G.add(m)});return G};
+  return {
+    CO2:()=>grp([[0x333333,.16,0,0],[0xe03b3b,.13,-.27,0],[0xe03b3b,.13,.27,0]]),
+    H2O:()=>grp([[0xe03b3b,.16,0,0],[0xffffff,.1,-.18,.14],[0xffffff,.1,.18,.14]]),
+    O2:()=>grp([[0xe03b3b,.14,-.12,0],[0xe03b3b,.14,.12,0]]),
+    SUG:()=>{const l=[];for(let i=0;i<6;i++)l.push([0xf4f4f4,.11,Math.cos(i/6*Math.PI*2)*.26,Math.sin(i/6*Math.PI*2)*.26]);return grp(l)},
+    HALF:(c)=>grp([[c||0xf4f4f4,.11,-.13,0],[c||0xf4f4f4,.11,.13,0],[c||0xf4f4f4,.11,0,.2]])
+  };
+}
 function pathOf(H,pts){return new THREE.CatmullRomCurve3(pts.map(p=>H.V(p[0],p[1],p[2]||0)))}
 const SCENES={
 invert(g,H){const {V,M,mesh,seg,ease,lerp,back}=H;
@@ -1859,10 +2464,10 @@ function cmapAct(el,cfg){
     arm()});
   draw();
 }
-cmapAct($("#a-cmap1"),{key:"f-cmap1",root:"جسم الحيوان",top:["يحصل على الطاقة من ◀","food"],mid:"وتعمل معًا أجهزة",
-  cols:[[{s:"dig"},{l:"يفكك"},{s:"digx"},{l:"ويتخلص من الفضلات بـ"},{s:"exc"}],[{s:"res"},{l:"يطلق الطاقة من"},{s:"resx"}],[{s:"cir"},{l:"ينقل"},{s:"cirx"}]],
-  groups:{food:["الغذاء"],dig:["الهضم"],digx:["الغذاء إلى مواد بسيطة"],exc:["الإخراج"],res:["التنفس"],resx:["الجلوكوز بوجود الأكسجين"],cir:["الدوران"],cirx:["الأكسجين والجلوكوز والفضلات"]},
-  chips:["الغذاء","الهضم","الغذاء إلى مواد بسيطة","الإخراج","التنفس","الجلوكوز بوجود الأكسجين","الدوران","الأكسجين والجلوكوز والفضلات","متغيرة درجة الحرارة","الخياشيم"]});
+cmapAct($("#a-cmap1"),{key:"f-cmap1",root:"الخلية",top:["يحيط بها ◀","mem"],mid:"ومن عملياتها الحيوية",
+  cols:[[{s:"pas"},{l:"دون طاقة، ومنه"},{s:"pasx"},{s:"pasx"}],[{s:"act"},{l:"يحتاج إلى"},{s:"en"}],[{s:"ph"},{l:"يحدث في"},{s:"chl"},{l:"والتنفس الخلوي في"},{s:"mit"}]],
+  groups:{mem:["الغشاء البلازمي"],pas:["النقل السلبي"],pasx:["الانتشار","الخاصية الأسموزية"],act:["النقل النشط"],en:["الطاقة"],ph:["البناء الضوئي"],chl:["البلاستيدات الخضراء"],mit:["الميتوكندريا"]},
+  chips:["الغشاء البلازمي","النقل السلبي","الانتشار","الخاصية الأسموزية","النقل النشط","الطاقة","البناء الضوئي","البلاستيدات الخضراء","الميتوكندريا","الكروموسومات","حمض اللاكتيك"]});
 
 
 /* ---------- marker card ---------- */
@@ -1939,6 +2544,39 @@ function buildPlan(D,weak){
 $("#printPlan").addEventListener("click",()=>{try{window.print()}catch(e){}});
 $("#stuName").addEventListener("input",()=>{store.set("t:stuName",$("#stuName").value);renderDiag()});
 
+/* ================= NAFES diagnosis & remedial ================= */
+
+const NREM=[
+  {tip:"<b>المعرفة</b> تعني أن تتذكر أجزاء أجهزة الجسم ووظائفها. راجع: الدم ينقل الأكسجين والمواد الغذائية إلى الخلايا، والقلب يضخ الدم، والرئتان مكان تبادل الغازات.",pages:[["circ","ما الدوران؟"],["blood","الدورة الدموية"]],
+   rq:[{q:"العضو الذي يضخ الدم إلى جميع أجزاء الجسم:",o:["الرئة","القلب","المعدة","الكلية"],a:1},{q:"في الحويصلات الهوائية ينتقل الأكسجين إلى:",o:["الدم","المعدة","الجلد","الكبد"],a:0}]},
+  {tip:"<b>التطبيق</b> يعني استعمال ما تعرفه في موقف جديد. اسأل نفسك: ما الذي يحتاجه الجسم في هذا الموقف (أكسجين أكثر؟ طاقة أكثر؟)، وأي عضو يوفّر ذلك؟",pages:[["resp","ما التنفس؟"],["blood","الدورة الدموية"]],
+   rq:[{q:"عند الجري يزداد معدل التنفس لأن الخلايا تحتاج إلى:",o:["أكسجين أكثر لإطلاق الطاقة","ماء أقل","غذاء أقل","ثاني أكسيد كربون أكثر"],a:0},{q:"متسلق جبل شاهق يشعر بالتعب لأن الهواء هناك فيه:",o:["أكسجين أقل","ماء أكثر","غذاء أقل","حرارة أعلى"],a:0}]},
+  {tip:"<b>الاستدلال</b> يعني التفكير في صورة أو موقف: ما الذي يحدث في الشكل؟ ومن يقوم بهذه الحركة أو الوظيفة؟ تذكّر أن أجهزة الجسم تعمل معًا؛ فالهضم والتنفس والدوران يتكاملون لإيصال الطاقة إلى الخلايا.",pages:[["human","الهضم في الإنسان"],["circ","ما الدوران؟"]],
+   rq:[{q:"يعمل جهازا الهضم والتنفس معًا؛ فالهضم يوفر الجلوكوز والتنفس يوفر:",o:["الأكسجين","الفضلات","البروتين","الدهون"],a:0},{q:"أي الجهازين يتعاونان لإيصال الأكسجين إلى الخلايا؟",o:["التنفسي والدوراني","الهضمي والإخراجي","العضلي والهيكلي","العصبي والهضمي"],a:0}]}
+];
+function nafesStats(){const s=store.get("scores",{}),n=s.nafes,p=s.pre;
+  const agg=(det,map,k)=>{let g=0,t=0;det.forEach((ok,i)=>{if(map[i]===k){t++;if(ok)g++}});return t?Math.round(g/t*100):null};
+  const lvMap=NAFES_Q.map(x=>x.lv),stdMap=NAFES_Q.map(x=>x.std),preMap=PRE_IDX.map(i=>NAFES_Q[i].lv);
+  const subMap=NAFES_Q.map(x=>NF_STDS[x.std].sub),cell=(det,sd,lv)=>{let g=0,t=0;det.forEach((ok,i)=>{if(NAFES_Q[i].std===sd&&NAFES_Q[i].lv===lv){t++;if(ok)g++}});return {g:g,t:t}};
+  return {post:n&&n.detail&&n.detail.length===NAFES_Q.length?{pct:Math.round(n.got/n.total*100),lv:[0,1,2].map(k=>agg(n.detail,lvMap,k)),std:NF_STDS.map((_,k)=>agg(n.detail,stdMap,k)),sub:NF_SUB.map((_,k)=>agg(n.detail,subMap,k)),dom:NF_DOM.map((_,k)=>agg(n.detail,NAFES_Q.map(x=>NF_STDS[x.std].dom),k)),mx:NF_STDS.map((_,sd)=>[0,1,2].map(lv=>cell(n.detail,sd,lv)))}:null,
+    pre:p&&p.detail&&p.detail.length===PRE_IDX.length?{pct:Math.round(p.got/p.total*100),lv:[0,1,2].map(k=>agg(p.detail,preMap,k))}:null}}
+let nSig=null;
+function mxTable(mx){const c=v=>{if(!v.t)return '<td class="na">—</td>';const p=v.g/v.t,k=p>=.8?"m":p>=.6?"n":"w";return '<td class="'+k+'">'+ar(v.g)+' / '+ar(v.t)+'</td>'};
+  return '<div class="nf-tbl"><table><tr><th>المعيار</th>'+LVT.map(l=>'<th>'+l+'</th>').join("")+'<th>المجموع</th></tr>'+NF_STDS.map((S,i)=>{const g=mx[i].reduce((a,v)=>a+v.g,0),t=mx[i].reduce((a,v)=>a+v.t,0);return '<tr><td class="sd">'+CODE(S.code)+'</td>'+mx[i].map(c).join("")+c({g:g,t:t})+'</tr>'}).join("")+'</table></div><p class="hint" style="margin:4px 0 0">كل خانة: عدد الإجابات الصحيحة من عدد أسئلة هذا المعيار في هذا المستوى. والخانة «—» تعني أن البنك لا يضم سؤالًا لها.</p>'}
+function renderNafes(){const d=$("#nafesDiag"),p=$("#nafesPlan");if(!d)return;const st=nafesStats(),s=store.get("scores",{});
+  if(!st.post){d.innerHTML='<div class="sheet"><p>حل أسئلة «تدرّب على نافس» أولًا ليظهر تشخيص مهاراتك.</p><div class="row" style="margin-bottom:12px"><button class="btn primary" data-go="nafes">اذهب إلى أسئلة نافس</button></div></div>';p.innerHTML='<div class="sheet"><p>تُبنى خطة مهارات نافس تلقائيًا بعد التشخيص.</p></div>';nSig=null;return}
+  const lvl=v=>v>=80?"m":v>=60?"n":"w",healed=k=>{const r=s["nrem-"+k];return !!(r&&r.got>=2)};
+  const row=(t,pre,post,h)=>{const L=lvl(post),x=h&&L!=="m"?"r":L;return '<div class="obj-row"><div class="top-l"><h4>'+t+'</h4><span class="lvl '+x+'">'+(x==="r"?"تم العلاج":LVN[L])+'</span></div><div class="obj-bar"><i style="width:'+post+'%;background:'+LVC[L]+'"></i></div><div class="evid">بعد الدرس '+ar(post)+'٪'+(pre!=null?' · قبل الدرس '+ar(pre)+'٪':'')+'</div></div>'};
+  d.innerHTML='<div class="diag-sum"><span class="big">'+ar(st.post.pct)+'٪</span><span>نتيجتك في أسئلة «نافس»'+(st.pre?'<br>في التقويم القبلي: '+ar(st.pre.pct)+'٪':'')+'</span></div><h4 class="nf-h">جدول التشخيص: المعيار × المستوى الإدراكي</h4>'+mxTable(st.post.mx)+
+    '<h4 class="nf-h">حسب المجال الرئيسي</h4>'+(NF_DOM.length>1?NF_DOM.map((t,k)=>row(t,null,st.post.dom[k],false)).join(""):row(NF_DOM[0],st.pre?st.pre.pct:null,st.post.pct,false))+
+    '<h4 class="nf-h">حسب المجال الفرعي</h4>'+NF_SUB.map((t,k)=>row(t,null,st.post.sub[k],false)).join("")+
+    '<h4 class="nf-h">حسب المعيار</h4>'+NF_STDS.map((S,k)=>row(CODE(S.code)+' '+S.t,null,st.post.std[k],false)).join("")+
+    '<h4 class="nf-h">حسب المستوى الإدراكي</h4>'+[0,1,2].map(k=>row(LVT[k],st.pre?st.pre.lv[k]:null,st.post.lv[k],healed(k))).join("");
+  const weak=[0,1,2].filter(k=>st.post.lv[k]<80),sig=weak.join(",");
+  if(sig!==nSig){nSig=sig;
+    p.innerHTML=weak.length?weak.map(k=>{const r=NREM[k];return '<div class="plan-card" data-nlv="'+k+'"><div class="top-l"><h4>مستوى '+LVT[k]+' ('+ar(st.post.lv[k])+'٪)</h4><span class="lvl pb"></span></div><ol class="plan-steps"><li><span class="k">١</span><div><b>أين أخطأت؟</b><div class="concept">'+NF_STDS.map((S,sd)=>{const v=st.post.mx[sd][k];return v.t&&v.g<v.t?'• '+CODE(S.code)+' '+S.t+' ('+ar(v.g)+' من '+ar(v.t)+')':''}).filter(Boolean).join("<br>")+'</div></div></li><li><span class="k">٢</span><div><b>كيف أجيب عن أسئلة هذا المستوى؟</b><div class="concept">'+r.tip+'</div></div></li><li><span class="k">٣</span><div><b>أراجع</b><div class="row no-print" style="margin-top:6px">'+r.pages.map(x=>'<button class="btn" data-go="'+x[0]+'">'+x[1]+'</button>').join("")+'</div><div class="print-only">'+r.pages.map(x=>x[1]).join("، ")+'</div></div></li><li><span class="k">٤</span><div><b>أتدرّب</b> <span class="hint">(يتحقق العلاج بإجابتين صحيحتين)</span><div id="nrq'+k+'"></div></div></li></ol></div>'}).join(""):'<div class="sheet"><p><b>أحسنت!</b> أتقنت مستويات «نافس» الثلاثة في هذا الدرس.</p></div>';
+    weak.forEach(k=>quiz($("#nrq"+k),NREM[k].rq,{key:"nrem-"+k}))}
+  $$("[data-nlv]").forEach(c=>{const k=+c.dataset.nlv,b=$(".pb",c),h=healed(k),L=lvl(st.post.lv[k]);c.classList.toggle("healed",h);b.className="lvl pb "+(h?"r":L);b.textContent=h?"تم العلاج":LVN[L]})}
 
 /* ================= cloud sync ================= */
 const LESSON_ID="digestion6";
@@ -1959,25 +2597,70 @@ function paintStu(){const e=$("#stuLine");if(!e)return;
   if(!STU||STU.skip){e.textContent="أنت في وضع التصفح؛ نتائجك محفوظة على جهازك فقط.";setSync("");return}
   e.innerHTML="<b>الطالب:</b> "+esc(STU.name)+" · <b>الفصل:</b> "+esc(STU.cls)+(STU.code?" · <b>الرمز:</b> "+esc(STU.code):"");
   if(!fdb)setSync("لم يُربط الكتاب بقاعدة البيانات بعد؛ النتائج محفوظة على جهازك فقط.")}
-function payload(){const sc=store.get("scores",{}),D=diagnose(),pick=k=>sc[k]?{got:sc[k].got,total:sc[k].total}:null,o={};
+function payload(){const sc=store.get("scores",{}),D=diagnose(),N=nafesStats(),pick=k=>sc[k]?{got:sc[k].got,total:sc[k].total}:null,o={};
   Object.keys(sc).forEach(k=>{if(k!=="pre"&&k!=="post")o[k]=pick(k)});
-  return {lesson:LESSON_ID,sid:sid(),name:STU.name,cls:STU.cls,code:STU.code||null,pre:pick("pre"),post:pick("post"),scores:o,
-    objectives:D?D.map(d=>d.pct):null,healed:D?D.map(d=>d.healed):null,survey:store.get("survey",null),
-    seen:(store.get("seen",[])||[]).length,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}}
+  return {lesson:LESSON_ID,sid:sid(),name:STU.name,cls:STU.cls,code:STU.code||null,nafesClass:STU.code?store.get("nfClass",null):null,nafesHome:STU.code?store.get("nfHome",null):null,pre:pick("pre"),post:pick("post"),scores:o,
+    objectives:D?D.map(d=>d.pct):null,healed:D?D.map(d=>d.healed):null,
+    nafes:N.post?{pct:N.post.pct,lv:N.post.lv,std:N.post.std,sub:N.post.sub,prePct:N.pre?N.pre.pct:null,preLv:N.pre?N.pre.lv:null,healed:[0,1,2].map(k=>!!(sc["nrem-"+k]&&sc["nrem-"+k].got>=2))}:null,
+    survey:store.get("survey",null),seen:(store.get("seen",[])||[]).length,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}}
 function queueSync(){if(!fdb||!STU||STU.skip)return;clearTimeout(syncT);setSync("جارٍ حفظ نتائجك…");
   syncT=setTimeout(()=>{const P=payload();if(STU.code)Object.keys(P).forEach(k=>{if(P[k]==null)delete P[k]});fdb.collection("durus_results").doc(LESSON_ID+"__"+sid()).set(P,STU.code?{merge:true}:{})
     .then(()=>setSync("✓ نتائجك محفوظة ويراها معلمك."))
     .catch(()=>setSync("تعذّر الحفظ الآن، وسيُعاد المحاولة مع نشاطك القادم."))},1200)}
-const _saveScore=saveScore;saveScore=function(k,g,t,d){_saveScore(k,g,t,d);queueSync()};
-function askStu(){if(fdb){toHub(true);return}$("#stuModal").hidden=false;$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
-$("#stuSave").addEventListener("click",()=>{const n=$("#stuNm").value.trim().replace(/\s+/g," "),c=$("#stuCls").value.trim();
+const _saveScore=saveScore;saveScore=function(k,g,t,d){_saveScore(k,g,t,d);if(k==="nafes")nfRecord(g,t);renderNafes();queueSync()};
+/* ---- وضع الحصة / المنزل ---- */
+const ROSTER_ON=!!fdb;let LIVE=null,liveUnsub=null,NFMODE="",fails=0,lockUntil=0;
+if(ROSTER_ON){$("#stuNameBox").hidden=true;$("#stuCodeBox").hidden=false;if(STU&&!STU.skip&&!STU.code)STU=null}
+function nfRecord(g,t){if(!STU||!STU.code)return;const N=nafesStats();if(!N.post)return;
+  if(NFMODE==="class"&&!store.get("nfClass",null))store.set("nfClass",{got:g,total:t,pct:N.post.pct,lv:N.post.lv,std:N.post.std,sess:(LIVE&&LIVE.sid)||"",at:Date.now()});
+  else if(NFMODE==="home"){const H=store.get("nfHome",null)||{n:0,best:0,first:null};H.n++;H.last=N.post.pct;H.best=Math.max(H.best,N.post.pct);if(H.first==null)H.first=N.post.pct;H.at=Date.now();store.set("nfHome",H)}
+  nfMode()}
+const untilMs=()=>LIVE&&LIVE.until?(LIVE.until.toMillis?LIVE.until.toMillis():+LIVE.until):0;
+const whenTxt=ms=>{try{return new Date(ms).toLocaleString("ar-SA",{weekday:"long",hour:"numeric",minute:"2-digit"})}catch(e){return ""}};
+function curMode(){if(!fdb||!STU||STU.skip||!STU.code)return "free";const C=store.get("nfClass",null),u=untilMs(),inWin=!!(LIVE&&(LIVE.classes||[LIVE.cls]).indexOf(STU.cls)>=0),live=!!(LIVE&&LIVE.open&&inWin&&Date.now()<u);
+  if(C)return live&&C.sess===LIVE.sid?"done":"home";if(live)return "class";
+  if(LIVE&&((LIVE.homeOpen||[]).indexOf(STU.cls)>=0||(inWin&&Date.now()>=u)))return "home";return "wait"}
+setInterval(()=>{if(LIVE)nfMode()},30000);
+function nfMode(){const box=$("#nfMode");if(!box)return;const m=curMode(),C=store.get("nfClass",null),H=store.get("nfHome",null);
+  const msg={free:"",
+    wait:'🔒 يبدأ اختبار «نافس» الرسمي عندما يفتحه معلمك.<small>بعده يُفتح لك التدريب في المنزل، وتُحسب محاولاتك في «أبطال التدريب المنزلي».</small>',
+    class:'🟢 الاختبار الرسمي · فصل '+esc(STU&&STU.cls)+'<small>لك محاولة واحدة تُحسب في لوحة الشرف'+(untilMs()?'، ويُغلق الاختبار '+whenTxt(untilMs()):'')+'. أجب عن كل الأسئلة بهدوء ثم اضغط «سلّم إجاباتي».</small>',
+    done:'✓ سلّمت إجابتك في الاختبار الرسمي'+(C?': '+ar(C.got)+' من '+ar(C.total):'')+'<small>تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء الاختبار'+(untilMs()?' ('+whenTxt(untilMs())+')':'')+'.</small>',
+    home:'🏠 التدريب المنزلي'+'<small>'+(C?'نتيجتك في الاختبار الرسمي: '+ar(C.got)+' من '+ar(C.total)+'. ':'')+(H?'أفضل نتيجة لك في المنزل: '+ar(H.best)+'٪ (عدد المحاولات: '+ar(H.n)+'). ':'')+'كل محاولة تُحسب في «أبطال التدريب المنزلي».</small>'}[m];
+  box.hidden=!msg;box.className="nf-mode m-"+m;box.innerHTML=msg;
+  if(m===NFMODE)return;const prev=NFMODE;NFMODE=m;if(prev==="class"&&m==="done")return;nfBuild(m)}
+function nfBuild(m){const old=$("#q-nafes"),el=old.cloneNode(false);old.replaceWith(el);
+  if(m==="wait"||m==="done"){el.innerHTML="";return}
+  const seed=STU&&STU.code?+STU.code:0;
+  const qs=NAFES_Q.map((x,i)=>{if(!seed)return {q:nq(x),o:x.o,a:x.a};const idx=x.o.map((_,j)=>j);let r=(seed*31+i*17)%9973;
+    for(let k=idx.length-1;k>0;k--){r=(r*1103+12345)%9973;const t=r%(k+1),tmp=idx[k];idx[k]=idx[t];idx[t]=tmp}
+    return {q:nq(x),o:idx.map(j=>x.o[j]),a:idx.indexOf(x.a)}});
+  quiz(el,qs,m==="class"?{key:"nafes",instant:false,noReveal:true,noRetry:true,checkLabel:"سلّم إجاباتي"}:{key:"nafes",instant:false})}
+function watchLive(){if(!fdb||!STU||!STU.code||liveUnsub)return;
+  liveUnsub=fdb.collection("durus_live").doc(LESSON_ID).onSnapshot(d=>{LIVE=d.exists?d.data():null;nfMode()},()=>{LIVE=null;nfMode()})}
+function hydrate(){if(!fdb||!STU||!STU.code)return;fdb.collection("durus_results").doc(LESSON_ID+"__r"+STU.code).get().then(d=>{if(!d.exists)return;const x=d.data();
+  if(x.nafesClass&&!store.get("nfClass",null))store.set("nfClass",x.nafesClass);
+  if(x.nafesHome){const H=store.get("nfHome",null);store.set("nfHome",H?{n:Math.max(H.n,x.nafesHome.n||0),best:Math.max(H.best,x.nafesHome.best||0),first:x.nafesHome.first!=null?x.nafesHome.first:H.first,last:H.last}:x.nafesHome)}
+  nfMode()}).catch(()=>{})}
+function codeLogin(){const er=$("#stuErr"),b=$("#stuSave"),c=$("#stuCode").value.replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/\D/g,"");
+  if(Date.now()<lockUntil){er.textContent="محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.";return}
+  if(c.length!==4){er.textContent="اكتب الرمز المكوّن من ٤ أرقام.";return}
+  er.textContent="جارٍ التحقق…";b.disabled=true;
+  fdb.collection("durus_roster").doc(c).get().then(d=>{
+    if(!d.exists){if(++fails>=5){fails=0;lockUntil=Date.now()+60000}er.textContent="الرمز غير صحيح. تأكد منه أو اسأل معلمك.";return}
+    const r=d.data();const switched=!!(STU&&STU.code&&STU.code!==c);if(switched)store.clear();
+    STU={name:r.name,cls:r.cls,code:c};store.set("stu",STU);if(switched){location.reload();return}store.set("t:stuName",r.name);const si=$("#stuName");if(si)si.value=r.name;
+    er.textContent="";$("#stuModal").hidden=true;renderDiag();paintStu();watchLive();hydrate();nfMode();queueSync()})
+   .catch(()=>{er.textContent="تعذّر التحقق الآن. تحقّق من اتصالك بالإنترنت."}).finally(()=>{b.disabled=false})}
+$("#stuCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
+function askStu(){if(fdb){toHub(true);return}$("#stuModal").hidden=false;if(ROSTER_ON){$("#stuCode").value="";$("#stuErr").textContent="";setTimeout(()=>$("#stuCode").focus(),50);return}$("#stuNm").value=STU&&!STU.skip?STU.name:"";$("#stuCls").value=STU&&!STU.skip?STU.cls:"";$("#stuErr").textContent="";setTimeout(()=>$("#stuNm").focus(),50)}
+$("#stuSave").addEventListener("click",()=>{if(ROSTER_ON){codeLogin();return}const n=$("#stuNm").value.trim().replace(/\s+/g," "),c=$("#stuCls").value.trim();
   if(n.split(" ").length<2||!c){$("#stuErr").textContent="اكتب اسمك (اسمين على الأقل) ورمز فصلك.";return}
   STU={name:n,cls:c};store.set("stu",STU);store.set("t:stuName",n);const si=$("#stuName");if(si)si.value=n;
   $("#stuModal").hidden=true;renderDiag();paintStu();queueSync()});
-$("#stuSkip").addEventListener("click",()=>{STU={skip:true};store.set("stu",STU);$("#stuModal").hidden=true;paintStu()});
+$("#stuSkip").addEventListener("click",()=>{STU={skip:true};if(!ROSTER_ON)store.set("stu",STU);$("#stuModal").hidden=true;paintStu()});
 $("#stuEdit").addEventListener("click",askStu);
 window.addEventListener("hashchange",()=>{if(!STU&&currentName()!=="cover")askStu()});
-/* survey */
 (function(){
   const Q=["استمتعت بتعلّم الدرس بالكتاب التفاعلي","ساعدتني المشاهد المجسّمة على فهم الدرس","الأنشطة والمحاكيات جعلت الدرس أسهل","عرفت من التشخيص ما أحتاج إلى مراجعته","أتمنى أن تكون دروس أخرى بهذه الطريقة"];
   let sv=store.get("survey",null)||{a:[0,0,0,0,0],c:""};
@@ -1987,9 +2670,12 @@ window.addEventListener("hashchange",()=>{if(!STU&&currentName()!=="cover")askSt
   $("#svSend").addEventListener("click",()=>{const m=$("#svMsg");if(sv.a.some(v=>!v)){m.className="msg bad";m.textContent="اختر رقمًا لكل عبارة.";return}
     sv.c=$("#svComment").value.trim().slice(0,400);store.set("survey",{a:sv.a,c:sv.c});queueSync();m.className="msg ok";m.textContent="شكرًا لك! وصل رأيك."});
 })();
-paintStu();
-bindSaves();renderResults();renderDiag();show();
-if(!STU&&currentName()!=="cover")askStu();
+paintStu();renderNafes();
+
+bindSaves();renderResults();renderDiag();renderNafes();show();watchLive();hydrate();nfMode();
+if(!STU&&(ROSTER_ON||currentName()!=="cover"))askStu();
+else if(STU&&STU.code){const t=document.createElement("div");t.className="stu-toast";t.innerHTML='👋 مرحبًا <b>'+esc(STU.name)+'</b> · فصل '+esc(STU.cls)+' <button class="btn ghost" type="button">لست أنا؟ بدّل الطالب</button>';
+  document.body.appendChild(t);t.querySelector("button").onclick=()=>{t.remove();askStu()};setTimeout(()=>{t.classList.add("out");setTimeout(()=>t.remove(),600)},9000)}
 })();
 </script>
 </body>

@@ -56,7 +56,7 @@ ol.top .m{font-size:26px;width:34px;text-align:center}ol.top .n{flex:1;font-weig
 const P=new URLSearchParams(location.search),lesson=P.get("l")||"cells6",demo=P.get("demo")==="1",app=document.getElementById("app");
 const AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v).replace(/\d/g,d=>AR[d]);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const TITLES={cells6:"الخلية النباتية والخلية الحيوانية"};
+const TITLES={resources6:"موارد الأرض والحفاظ عليها",ecosys6:"مقارنة الأنظمة البيئية",foodchain6:"السلاسل والشبكات الغذائية وهرم الطاقة",digestion6:"الهضم والإخراج والتنفس والدوران",microbes6:"المخلوقات الحية الدقيقة",plants6:"عمليات الحياة في النباتات",cells6:"الخلية النباتية والخلية الحيوانية",heredity6:"الوراثة والصفات"};
 const medal=r=>r===1?"🥇":r===2?"🥈":r===3?"🥉":"⭐";
 let LIVE=null,ROS=[],RES=[],showNames=true;
 

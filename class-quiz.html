@@ -63,42 +63,16 @@ td.m{background:color-mix(in srgb,var(--ok) 20%,var(--card))}td.n{background:col
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
+<script src="nafes-data.js"></script>
 <script>
 (function(){
 "use strict";
-const NUM=(x,y,n)=>'<circle cx="'+x+'" cy="'+y+'" r="11" fill="#1e5a7a"/><text x="'+x+'" y="'+(y+4)+'" font-size="12" fill="#fff" text-anchor="middle" font-family="Tahoma">'+n+'</text>';
-const SV={
-  mito:'<svg viewBox="0 0 170 80" style="width:170px;display:block;margin:6px 0"><ellipse cx="85" cy="40" rx="72" ry="30" fill="#e9a25a" stroke="#b5701a" stroke-width="3"/><path d="M22 40 q10 -22 20 0 t20 0 t20 0 t20 0 t20 0 t18 0" stroke="#fff3d6" stroke-width="5" fill="none"/></svg>',
-  catUni:'<svg viewBox="0 0 300 110" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="2" y="2" width="140" height="106" rx="10" fill="#fff" stroke="#ccc"/>'+NUM(20,20,"١")+'<circle cx="72" cy="62" r="30" fill="#f4f4f4" stroke="#555" stroke-width="2"/><path d="M48 42 l6 -20 l12 14 M96 42 l-6 -20 l-12 14" fill="#f4f4f4" stroke="#555" stroke-width="2"/><circle cx="62" cy="58" r="3"/><circle cx="82" cy="58" r="3"/><path d="M68 70 q4 4 8 0" stroke="#555" fill="none"/><rect x="158" y="2" width="140" height="106" rx="10" fill="#fff" stroke="#ccc"/>'+NUM(176,20,"٢")+'<path d="M200 60 q10 -24 26 -8 q16 -14 18 8 q14 10 -4 22 q-14 14 -28 2 q-22 -2 -12 -24z" fill="#9fd4d8" stroke="#3a8a8f" stroke-width="2"/><circle cx="222" cy="62" r="6" fill="#c0507a"/><ellipse cx="268" cy="50" rx="18" ry="8" fill="#9fd48a" stroke="#4a8a3a" stroke-width="2" transform="rotate(-30 268 50)"/><ellipse cx="262" cy="86" rx="16" ry="7" fill="#d8c48a" stroke="#8a7a3a" stroke-width="2"/></svg>',
-  arrows:'<svg viewBox="0 0 300 120" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="160" y="14" width="120" height="86" rx="10" fill="#bfe6a8" stroke="#3e8a3a" stroke-width="7"/><ellipse cx="236" cy="62" rx="30" ry="22" fill="#8fc6ef"/><circle cx="190" cy="40" r="10" fill="#7a5bc8"/><line x1="296" y1="4" x2="278" y2="20" stroke="#e05a3a" stroke-width="3"/>'+NUM(220,112,"١")+'<ellipse cx="70" cy="58" rx="58" ry="44" fill="#9fd4e0" stroke="#3a8a8f" stroke-width="3"/><circle cx="76" cy="54" r="16" fill="#e05a8a"/><circle cx="76" cy="54" r="6" fill="#f2e26a"/><line x1="120" y1="20" x2="88" y2="46" stroke="#e05a3a" stroke-width="3"/>'+NUM(70,112,"٢")+'</svg>',
-  fig12:'<svg viewBox="0 0 300 120" style="width:300px;max-width:100%;display:block;margin:6px 0"><rect x="160" y="10" width="124" height="90" rx="4" fill="#fff" stroke="#555" stroke-width="2"/><rect x="166" y="16" width="112" height="78" rx="4" fill="none" stroke="#555"/><rect x="214" y="44" width="56" height="44" rx="14" fill="#fff" stroke="#555"/><circle cx="196" cy="40" r="14" fill="#fff" stroke="#555"/><ellipse cx="190" cy="76" rx="9" ry="5" fill="none" stroke="#555"/>'+NUM(222,112,"١")+'<ellipse cx="72" cy="56" rx="60" ry="44" fill="#fff" stroke="#555" stroke-width="2"/><circle cx="72" cy="52" r="18" fill="#fff" stroke="#555"/><ellipse cx="38" cy="72" rx="10" ry="5" fill="none" stroke="#555"/><ellipse cx="104" cy="40" rx="10" ry="5" fill="none" stroke="#555"/>'+NUM(72,112,"٢")+'</svg>',
-  plantOnly:'<svg viewBox="0 0 170 100" style="width:170px;display:block;margin:6px 0"><rect x="6" y="6" width="158" height="88" rx="8" fill="#d6efc4" stroke="#3e8a3a" stroke-width="7"/><ellipse cx="100" cy="52" rx="44" ry="28" fill="#8fc6ef"/><circle cx="34" cy="34" r="9" fill="#7a5bc8"/><ellipse cx="30" cy="70" rx="9" ry="5" fill="#2f8a2f"/><ellipse cx="60" cy="24" rx="9" ry="5" fill="#2f8a2f"/><ellipse cx="150" cy="80" rx="8" ry="5" fill="#2f8a2f"/></svg>'
-};
-const NAFES_Q=[
-  {lv:0,std:0,q:"المخلوق الحي الوحيد الذي لا يحتوي على نواة:",o:["البكتيريا","الفطريات","الحيوانات","النباتات"],a:0},
-  {lv:0,std:0,q:"أصغر الوحدات البنائية في المخلوقات الحية التي يمكن أن تقوم بالعمليات الحيوية هي:",o:["الخلايا","العناصر","المركبات","الجراثيم"],a:0},
-  {lv:1,std:0,q:"أي التراكيب التالية توجد في خلايا جسمك؟",o:["جدار خلوي","بلاستيدات خضراء","كلوروفيل","سيتوبلازم"],a:3},
-  {lv:1,std:0,q:"توضح الصورة جزءًا من أجزاء الخلية، وهو مسؤول عن:"+SV.mito,o:["إنتاج الطاقة","البناء الضوئي","إخراج الفضلات","التحكم بالوظائف الحيوية"],a:0},
-  {lv:2,std:0,q:"من خلال ملاحظة الصورتين، ما الذي يميز الصورة (١) عن الصورة (٢)؟"+SV.catUni,o:["خلايا بدائية النوى","عديدة الخلايا","الخلايا من نوع واحد","وحيدة الخلية"],a:1},
-  {lv:0,std:1,q:"تركيب يتحكم في جميع أنشطة الخلية:",o:["الميتوكندريا","النواة","البلاستيدات","الغشاء الخلوي"],a:1},
-  {lv:0,std:1,q:"أي أجزاء الخلية التالية يوجد في الخلية النباتية ولا يوجد في الخلية الحيوانية؟",o:["جدار خلوي","الميتوكندريا","السيتوبلازم","النواة"],a:0},
-  {lv:1,std:1,q:"تحتاج المخلوقات الحية (الحيوان والنبات) إلى عمليتي البناء الضوئي والتنفس الخلوي. فيمَ تختلف هاتان العمليتان؟",o:["البناء الضوئي يطلق طاقة<br>التنفس الخلوي يستهلك طاقة","البناء الضوئي ينتج غذاء<br>التنفس الخلوي يستهلك غذاء","البناء الضوئي ينتج ماء<br>التنفس الخلوي يستعمل ماء","البناء الضوئي يتم في وجود الأكسجين<br>التنفس الخلوي يتم في وجود ثاني أكسيد الكربون"],a:1},
-  {lv:1,std:1,q:"أي المخلوقات الحية التالية قادر على عملية التنفس، وقادر أيضًا على عملية البناء الضوئي؟",o:["الفراشة","الصبّار","البكتيريا","الثعلب"],a:1},
-  {lv:2,std:1,q:"تشير الأسهم في الصورتين إلى:"+SV.arrows,o:["١- السيتوبلازم ٢- بلاستيدات خضراء","١- الفجوة ٢- النواة","١- الجدار الخلوي ٢- النواة","١- السيتوبلازم ٢- الميتوكندريا"],a:2},
-  {lv:2,std:1,q:"أي العبارات التالية صحيحة للتمييز بين الشكل ١ والشكل ٢؟"+SV.fig12,o:["الفجوة الكبيرة للشكل ١","الجدار الخلوي للشكل ٢","عدم وجود نواة للشكل ١","البلاستيدات الخضراء للشكل ٢"],a:0},
-  {lv:1,std:2,q:"عملية يتم فيها استعمال طاقة الضوء لصنع الغذاء:",o:["الهضم","التنفس الخلوي","التنفس اللاهوائي","البناء الضوئي"],a:3}
-];
-const LVT=["معرفة","تطبيق","استدلال"];
-const NF_DOM=["١- علوم الحياة"];
-const NF_SUB=["١-١ التركيب والوظيفة في المخلوقات الحية","١-٣ الأنظمة البيئية وتفاعلاتها"];
-const NF_STDS=[
-  {code:"٦-٥-١-١-١",dom:0,sub:0,t:"وصف تراكيب الخلية، وربطها بوظائفها الحيوية"},
-  {code:"٦-٥-١-١-٢",dom:0,sub:0,t:"تحديد الاختلافات من حيث التركيب والوظيفة بين الخلية النباتية والخلية الحيوانية"},
-  {code:"٦-٥-١-٣-٣",dom:0,sub:1,t:"تمثيل العلاقات بين المخلوقات الحية التي تؤدي إلى تدوير المادة في النظام البيئي، وتحديد العلاقة بين النباتات وطاقة الشمس لإنتاج الغذاء"}];
+const LSN=new URLSearchParams(location.search).get("l")||"cells6",D=(window.NAFES_DATA||{})[LSN]||window.NAFES_DATA.cells6;
+const NAFES_Q=D.Q,LVT=["معرفة","تطبيق","استدلال"],NF_DOM=D.DOM,NF_SUB=D.SUB,NF_STDS=D.STDS;
 const P=new URLSearchParams(location.search),lesson=P.get("l")||"cells6",demo=P.get("demo")==="1",app=document.getElementById("app");
 const AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v).replace(/\d/g,d=>AR[d]),KEYS=["أ","ب","ج","د"];
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const TITLE="الخلية النباتية والخلية الحيوانية";
+const TITLE=D.title;
 let db=null,auth=null,classes=[],ST=null;
 const N=NAFES_Q.length;
 // ترتيب ثابت مخلوط للخيارات حتى لا تكون الإجابة الصحيحة في الموضع نفسه دائمًا

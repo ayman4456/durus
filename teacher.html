@@ -97,7 +97,7 @@ input[type=text]{border:1.5px solid var(--line);background:var(--card);border-ra
       <div id="cqRes" class="hn-prev"></div>
     </section>
     <section class="card noprint" id="rosCard"><h2>👥 كشف الطلاب ورموز الدخول</h2>
-      <p class="hint">ارفع ملف Excel فيه عمود «الاسم» وعمود «الفصل» (أو ملفًا لفصل واحد واكتب اسم الفصل). يُولَّد لكل طالب رمز من ٤ أرقام يدخل به الكتاب، ومن ليس في الكشف لا يستطيع حفظ نتيجة ولا دخول المنافسة.</p>
+      <p class="hint">ارفع <b>كشف نظام نور كما هو</b> (تتعرّف عليه المنصة تلقائيًا)، أو ملف Excel فيه عمود «الاسم» وعمود «الفصل»، أو استورد الكشف مباشرة بإضافة «مِجهر — نور» في متصفح كروم. يُولَّد لكل طالب رمز من ٤ أرقام يدخل به الكتاب، ومن ليس في الكشف لا يستطيع حفظ نتيجة ولا دخول المنافسة.</p>
       <div class="row"><input type="file" id="xlFile" accept=".xlsx,.xls,.csv"><label>الفصل لكل الملف (اختياري) <input type="text" id="xlCls" placeholder="مثال: 6أ" style="width:90px"></label></div>
       <div id="xlPrev"></div>
       <div class="row" style="margin-top:10px"><input type="text" id="addNm" placeholder="إضافة طالب: الاسم"><input type="text" id="addCls" placeholder="الفصل" style="width:80px"><button class="btn" id="addBtn">إضافة</button><span class="hint" id="rosMsg"></span></div>
@@ -110,7 +110,7 @@ input[type=text]{border:1.5px solid var(--line);background:var(--card);border-ra
       <section class="card chart"><h2>متوسط تحقق أهداف الدرس</h2><div id="chObj"></div><div class="legend"><span><i style="background:var(--ok)"></i>متقن ≥٨٠٪</span><span><i style="background:var(--mid)"></i>٦٠–٧٩٪</span><span><i style="background:var(--bad)"></i>أقل من ٦٠٪</span></div></section>
       <section class="card chart"><h2>توزيع درجات التقويم الختامي</h2><div id="chDist"></div></section>
       <section class="card chart" id="nfCard" hidden><h2>مهارات «نافس»: قبل الدرس وبعده</h2><div id="chNafes"></div><div class="legend"><span><i style="background:var(--pre)"></i>قبل الدرس</span><span><i style="background:var(--post)"></i>بعد الدرس</span></div><p class="hint" id="nfNote"></p></section>
-      <section class="card chart" id="nfCard2" hidden><h2>«نافس» حسب المعيار</h2><div id="chNafesStd"></div><p class="hint">٦-٥-١-١-١ تراكيب الخلية ووظائفها · ٦-٥-١-١-٢ الاختلافات بين الخليتين · ٦-٥-١-٣-٣ النباتات وطاقة الشمس</p></section>
+      <section class="card chart" id="nfCard2" hidden><h2>«نافس» حسب المعيار</h2><div id="chNafesStd"></div><p class="hint" id="nfStdHint"></p></section>
       <section class="card chart"><h2>رضا الطلاب (من ٥)</h2><div id="chSurvey"></div><p class="hint" id="svN"></p></section>
     </div>
 
@@ -149,8 +149,14 @@ input[type=text]{border:1.5px solid var(--line);background:var(--card);border-ra
 const $=s=>document.querySelector(s),AR="٠١٢٣٤٥٦٧٨٩",ar=n=>String(n).replace(/\d/g,d=>AR[d]).replace(/\./g,"٫");
 const esc=x=>String(x==null?"":x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const LESSONS={
-  digestion6:{title:"الهضم والإخراج والتنفس والدوران (سادس)",obj:["الهضم والإخراج","التنفس","الدوران","درجة حرارة الجسم"]},
-  cells6:{file:"cells6-book.html",title:"الخلية النباتية والخلية الحيوانية (سادس)",obj:["أجزاء الخلية ووظائفها","المقارنة بين الخليتين","انتقال المواد","البناء الضوئي والتنفس"],nafes:true}
+  digestion6:{title:"الهضم والإخراج والتنفس والدوران (سادس)",obj:["الهضم والإخراج","التنفس","الدوران","درجة حرارة الجسم"],file:"digestion-book.html",nafes:true,stds:[["٦-٥-١-١-٣","أجهزة الجسم وأعضاؤها"]]},
+  cells6:{file:"cells6-book.html",title:"الخلية النباتية والخلية الحيوانية (سادس)",obj:["أجزاء الخلية ووظائفها","المقارنة بين الخليتين","انتقال المواد","البناء الضوئي والتنفس"],nafes:true,stds:[["٦-٥-١-١-١","تراكيب الخلية ووظائفها"],["٦-٥-١-١-٢","الاختلافات بين الخليتين"],["٦-٥-١-٣-٣","النباتات وطاقة الشمس"]]},
+  heredity6:{file:"heredity-book.html",title:"الوراثة والصفات (سادس)",obj:["الوراثة وأنواع الصفات","كيف تُورث الصفات","مخطط السلالة","الانتخاب الطبيعي"],nafes:true,stds:[["٦-٥-١-٤-١","وراثة الصفات"]]},
+  plants6:{file:"plants-book.html",title:"عمليات الحياة في النباتات (سادس)",obj:["الجذور والسيقان ونقل الماء","الأوراق والبناء الضوئي","التلقيح والإخصاب والبذور","دورات الحياة وتخزين الغذاء"],nafes:true,stds:[["٦-٥-١-١-٣","أجهزة الجسم وأعضاؤها"],["٦-٥-١-١-٤","دورات الحياة"]]},
+  microbes6:{file:"microbes-book.html",title:"المخلوقات الحية الدقيقة (سادس)",obj:["المجموعات وتعريفها","الخصائص والفوائد والأضرار","طرق التكاثر","عفن الخبز"],nafes:true,stds:[["٦-٥-١-٢-١","تصنيف المخلوقات الحية"],["٦-٥-١-١-٤","دورات الحياة والتكاثر"]]},
+  foodchain6:{file:"foodchain-book.html",title:"السلاسل والشبكات الغذائية وهرم الطاقة (سادس)",obj:["السلاسل الغذائية","الشبكات الغذائية","هرم الطاقة","التغيرات في النظام البيئي"],nafes:true,stds:[["٦-٥-١-٣-٣","تدوير المادة والطاقة"],["٦-٥-١-٣-١","المجتمع الحيوي وعلاقاته"]]},
+  ecosys6:{file:"ecosystems-book.html",title:"مقارنة الأنظمة البيئية (سادس)",obj:["النظام البيئي والمناخ","المناطق الحيوية على اليابسة","المياه العذبة والمحيط","التكيف مع البيئة"],nafes:true,stds:[["٦-٥-١-٣-٤","التكيف مع البيئة"],["٦-٥-١-٣-١","المجتمع الحيوي والعوامل غير الحيوية"]]},
+  resources6:{file:"resources-book.html",title:"موارد الأرض والحفاظ عليها (سادس)",obj:["التربة ونطاقاتها","أنواع التربة وحفظها","حماية الموارد والقواعد الثلاث","مصادر الطاقة"],nafes:true,stds:[["٦-٥-١-٣-٥","أثر النشاط الإنساني"],["٦-٥-١-٣-٤","التكيف (تربة الغابات)"],["٦-٥-٣-٢-٣","العوامل المؤثرة في سطح الأرض"]]}
 };
 const SURVEY=["الاستمتاع بالتعلم","المشاهد المجسّمة ساعدت على الفهم","الأنشطة جعلت الدرس أسهل","التشخيص وضّح ما أراجعه","أتمنى دروسًا أخرى هكذا"];
 const TQ=["اختصر الكتاب التفاعلي وقت التحضير","ساعد التشخيص على معرفة احتياجات الطلاب","زاد تفاعل الطلاب في الحصة","سهّلت الخطة العلاجية متابعة المتعثرين","سأستخدم الكتب التفاعلية في دروس أخرى"];
@@ -213,16 +219,44 @@ function rosRender(){const cl=[...new Set(ROSTER.map(x=>x.cls))].sort((a,b)=>a.l
     const ch=[];for(let i=0;i<dups.length;i+=400)ch.push(dups.slice(i,i+400));
     Promise.all(ch.map(c=>{const b=db.batch();c.forEach(x=>b.delete(db.collection("durus_roster").doc(x.code)));return b.commit()})).then(()=>{$("#rosMsg").textContent="✓ حُذف المكرر"}).catch(()=>{$("#rosMsg").textContent="تعذّر الحذف.";dd.disabled=false})};
   sessRender();if(rows.length||demo)render()}
-function parseSheet(aoa){aoa=aoa.filter(r=>r&&r.some(c=>String(c==null?"":c).trim()));let h=-1,ni=0,ci=-1;
-  for(let i=0;i<Math.min(10,aoa.length);i++){const r=aoa[i].map(c=>String(c==null?"":c).trim());const n=r.findIndex(c=>/اسم/.test(c));if(n>=0){h=i;ni=n;ci=r.findIndex(c=>/فصل|شعبة/.test(c)&&!/اسم/.test(c));if(ci<0)ci=r.findIndex(c=>/صف/.test(c)&&!/اسم/.test(c));break}}
+const ORD={"الأول":1,"الثاني":2,"الثالث":3,"الرابع":4,"الخامس":5,"السادس":6};
+const cleanNm=n=>String(n||"").replace(/\s*-\s*/g," ").replace(/\s+/g," ").trim();
+function gradeKey(g){const m=Object.keys(ORD).find(k=>g.indexOf(k)===0);const n=m?ORD[m]:"";return /المتوسط/.test(g)?n+"م":/الثانوي/.test(g)?n+"ث":String(n)}
+/* كشف نظام نور: أوراق متعددة، وفي كل ورقة «الصف» و«الفصل» ثم جدول «م · اسم الطالب …». نأخذ الاسم والفصل فقط */
+function parseNoor(aoa){const out=[];let g="",c="",ni=-1,mi=-1,fi=-1;
+  aoa.forEach(r0=>{const r=(r0||[]).map(x=>String(x==null?"":x).trim());if(!r.some(Boolean))return;
+    if(r.indexOf("اسم الطالب")>=0){ni=r.indexOf("اسم الطالب");mi=r.indexOf("م");fi=r.indexOf("الفصل");return}
+    const isRow=ni>=0&&mi>=0&&/^\d+$/.test(r[mi]||"")&&r[ni];
+    if(!isRow){if(r.indexOf("الصف")>=0){const v=r.find(x=>/الابتدائي|المتوسط|الثانوي/.test(x));if(v){g=v;ni=-1}}
+      if(r.indexOf("الفصل")>=0){const v=r.find(x=>/^\d{1,2}$/.test(x));if(v)c=v}return}
+    const cc=fi>=0&&/^\d{1,2}$/.test(r[fi]||"")?r[fi]:c;
+    out.push({name:cleanNm(r[ni]),grade:g,cls:gradeKey(g)+"/"+cc})});
+  return out.filter(x=>x.name.length>2)}
+function parseSheet(aoa){
+  const flat=aoa.map(r=>(r||[]).map(x=>String(x==null?"":x).trim()));
+  if(flat.some(r=>r.indexOf("اسم الطالب")>=0)&&flat.some(r=>r.indexOf("الصف")>=0&&r.some(x=>/الابتدائي|المتوسط|الثانوي/.test(x))))return parseNoor(flat);
+  const rows=flat.filter(r=>r.some(Boolean));let h=-1,ni=0,ci=-1;
+  for(let i=0;i<Math.min(10,rows.length);i++){const r=rows[i];const n=r.findIndex(c=>/اسم/.test(c));if(n>=0){h=i;ni=n;ci=r.findIndex(c=>/فصل|شعبة/.test(c)&&!/اسم/.test(c));if(ci<0)ci=r.findIndex(c=>/صف/.test(c)&&!/اسم/.test(c));break}}
   const fixed=$("#xlCls").value.trim();
-  return aoa.slice(h+1).map(r=>({name:String(r[ni]==null?"":r[ni]).trim().replace(/\s+/g," "),cls:fixed||(ci>=0?String(r[ci]==null?"":r[ci]).trim():"")})).filter(x=>x.name.length>2&&!/^\d+$/.test(x.name))}
-function xlPreview(){if(!XL){$("#xlPrev").innerHTML="";return}const L=parseSheet(XL),dup=L.filter(x=>ROSTER.some(y=>y.name===x.name&&y.cls===x.cls)),nw=L.filter(x=>dup.indexOf(x)<0),noCls=nw.filter(x=>!x.cls);
-  const by={};nw.forEach(x=>{by[x.cls||"؟"]=(by[x.cls||"؟"]||0)+1});
-  $("#xlPrev").innerHTML='<div class="sess-state">وُجد '+ar(L.length)+' اسمًا: '+Object.keys(by).map(c=>"فصل "+esc(c)+" ("+ar(by[c])+")").join("، ")+(dup.length?'<br><span class="miss">'+ar(dup.length)+' موجودون في الكشف مسبقًا وسيُتجاوزون.</span>':'')+
-    '<br><span class="miss">أول الأسماء: '+nw.slice(0,4).map(x=>esc(x.name)).join("، ")+'</span>'+
-    (noCls.length?'<br><b style="color:var(--bad)">لم أجد عمود الفصل؛ اكتب اسم الفصل في الخانة أعلاه.</b>':'<div class="row" style="margin-top:6px"><button class="btn primary" id="xlSave">حفظ '+ar(nw.length)+' طالبًا في الكشف وتوليد الرموز</button></div>')+'</div>';
-  const b=$("#xlSave");if(b)b.onclick=()=>{if(b.disabled)return;b.disabled=true;b.textContent="جارٍ الحفظ…";rosAdd(nw)}}
+  return rows.slice(h+1).map(r=>({name:cleanNm(r[ni]),cls:fixed||(ci>=0?String(r[ci]||"").trim():"")})).filter(x=>x.name.length>2&&!/^\d+$/.test(x.name))}
+let XN=null,XSRC="";
+function xlPreview(){if(!XL&&!XN){$("#xlPrev").innerHTML="";return}
+  const L=XN||parseSheet(XL),noCls=L.filter(x=>!x.cls||/\/$/.test(x.cls)||/^\//.test(x.cls));
+  const groups={};L.forEach(x=>{const k=x.cls||"؟";(groups[k]=groups[k]||{k:k,g:x.grade||"",n:0,d:0}).n++;if(ROSTER.some(y=>y.name===x.name&&y.cls===x.cls))groups[k].d++});
+  const keys=Object.keys(groups).sort((a,b)=>a.localeCompare(b,"ar",{numeric:true})),has6=keys.some(k=>/^6\//.test(k));
+  $("#xlPrev").innerHTML='<div class="sess-state">'+(XSRC?'<b>'+XSRC+'</b><br>':'')+'وُجد '+ar(L.length)+' اسمًا في '+ar(keys.length)+' فصول. اختر الفصول التي تريد إضافتها:'+
+    '<div class="row" style="margin:6px 0;flex-wrap:wrap">'+keys.map(k=>{const G=groups[k];return '<label style="border:1px solid var(--line);border-radius:10px;padding:4px 10px"><input type="checkbox" data-xg="'+esc(k)+'"'+((!has6||/^6\//.test(k))?" checked":"")+'> فصل '+esc(k)+(G.g?' <span class="miss">'+esc(G.g)+'</span>':'')+' ('+ar(G.n)+(G.d?' · '+ar(G.d)+' موجودون':'')+')</label>'}).join("")+'</div>'+
+    '<span class="miss">نأخذ الاسم والفصل فقط؛ لا يُحفظ رقم الهوية ولا جوال ولي الأمر.</span>'+
+    (noCls.length?'<br><b style="color:var(--bad)">لم أجد الفصل لبعض الأسماء؛ اكتب اسم الفصل في الخانة أعلاه.</b>':'<div class="row" style="margin-top:6px"><button class="btn primary" id="xlSave">حفظ الفصول المختارة وتوليد الرموز</button><span class="miss" id="xlCount"></span></div>')+'</div>';
+  const sel=()=>{const ks=new Set([...document.querySelectorAll("[data-xg]:checked")].map(i=>i.dataset.xg));return L.filter(x=>ks.has(x.cls)&&!ROSTER.some(y=>y.name===x.name&&y.cls===x.cls))};
+  const upd=()=>{const c=$("#xlCount");if(c)c.textContent=ar(sel().length)+" طالبًا جديدًا"};document.querySelectorAll("[data-xg]").forEach(i=>i.onchange=upd);upd();
+  const b=$("#xlSave");if(b)b.onclick=()=>{const nw=sel();if(!nw.length||b.disabled)return;b.disabled=true;b.textContent="جارٍ الحفظ…";rosAdd(nw);XN=null;XSRC=""}}
+/* استقبال الكشف من إضافة «مِجهر — نور» عبر رابط محلي (#noor=…) دون إرساله إلى أي خادم */
+(function(){const h=location.hash;if(h.indexOf("#noor=")!==0)return;
+  try{const raw=decodeURIComponent(escape(atob(h.slice(6).replace(/-/g,"+").replace(/_/g,"/"))));const d=JSON.parse(raw);
+    XN=(d.s||[]).map(x=>({name:cleanNm(x.n),grade:x.g||"",cls:x.c||""})).filter(x=>x.name.length>2);XSRC="كشف مستورد من نظام نور عبر الإضافة"}catch(e){XSRC=""}
+  history.replaceState(null,"",location.pathname+location.search);
+  setTimeout(()=>{xlPreview();const c=$("#rosCard");if(c)c.scrollIntoView({behavior:"smooth"})},400)})();
 function newCode(used){for(let k=0;k<5000;k++){const c=String(1000+Math.floor(Math.random()*9000));if(!used.has(c)){used.add(c);return c}}return null}
 function rosAdd(list){if(!list.length)return;const used=new Set(ROSTER.map(x=>x.code)),add=list.map(x=>({name:x.name,cls:x.cls,code:newCode(used)}));
   if(demo||!db){ROSTER=ROSTER.concat(add);XL=null;$("#xlFile").value="";xlPreview();rosRender();$("#rosMsg").textContent="✓ أُضيف "+ar(add.length);return}
@@ -264,7 +298,7 @@ function render(){
   const K=[[ar(R.length),"طالبًا وطالبة"],[aPre==null?"—":ar(aPre)+"٪","متوسط القبلي"],[aPost==null?"—":ar(aPost)+"٪","متوسط الختامي"],[gain==null?"—":(gain>=0?"+":"")+ar(gain),"متوسط التحسّن (نقطة مئوية)"],[withObj.length?ar(Math.round(mastered/withObj.length*100))+"٪":"—","أتقنوا أهداف الدرس"],[needs.length?ar(healed)+" / "+ar(needs.length):"—","أنهوا الخطة العلاجية"]];
   const NF=R.filter(r=>r.nafes);if(L.nafes){K.push([NF.length?ar(avg(NF.map(r=>r.nafes.pct)))+"٪":"—","متوسط أسئلة نافس"]);const nh=NF.filter(r=>r.nafes.lv.some(v=>v<80));K.push([nh.length?ar(nh.filter(r=>r.nafes.lv.every((v,i)=>v>=80||(r.nafes.healed&&r.nafes.healed[i]))).length)+" / "+ar(nh.length):"—","أنهوا علاج مهارات نافس"])}
   $("#nfCard").hidden=!L.nafes;renderHonor();sessRender();$("#nfCard2").hidden=!L.nafes;
-  if(L.nafes){const LV=["معرفة","تطبيق","استدلال"];bars($("#chNafes"),LV,[{color:"var(--pre)",data:LV.map((_,i)=>avg(NF.map(r=>r.nafes.preLv?r.nafes.preLv[i]:null)))},{color:"var(--post)",data:LV.map((_,i)=>avg(NF.map(r=>r.nafes.lv[i])))}],100);$("#nfNote").textContent="عدد من حلّوا أسئلة نافس: "+ar(NF.length);bars($("#chNafesStd"),["٦-٥-١-١-١","٦-٥-١-١-٢","٦-٥-١-٣-٣"],[{color:col,data:[0,1,2].map(i=>avg(NF.map(r=>r.nafes.std?r.nafes.std[i]:null)))}],100)}
+  if(L.nafes){const LV=["معرفة","تطبيق","استدلال"];bars($("#chNafes"),LV,[{color:"var(--pre)",data:LV.map((_,i)=>avg(NF.map(r=>r.nafes.preLv?r.nafes.preLv[i]:null)))},{color:"var(--post)",data:LV.map((_,i)=>avg(NF.map(r=>r.nafes.lv[i])))}],100);$("#nfNote").textContent="عدد من حلّوا أسئلة نافس: "+ar(NF.length);const SD=L.stds||[];bars($("#chNafesStd"),SD.map(x=>x[0]),[{color:col,data:SD.map((_,i)=>avg(NF.map(r=>r.nafes.std?r.nafes.std[i]:null)))}],100);$("#nfStdHint").textContent=SD.map(x=>x[0]+" "+x[1]).join(" · ")}
   $("#kpis").innerHTML=K.map(k=>'<div class="kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>').join("");
   const byCls=cls?[cls]:classes;
   bars($("#chPrePost"),byCls.length>1?byCls:["المجموع"],[{color:"var(--pre)",data:(byCls.length>1?byCls:[null]).map(c=>avg(R.filter(r=>!c||r.cls===c).map(r=>pct(r.pre))))},{color:"var(--post)",data:(byCls.length>1?byCls:[null]).map(c=>avg(R.filter(r=>!c||r.cls===c).map(r=>pct(r.post))))}],100);
@@ -304,6 +338,7 @@ function startDemo(){$("#demoNote").hidden=false;$("#dash").hidden=false;
 $("#xlFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;if(!window.XLSX){$("#xlPrev").innerHTML='<p class="msg">تعذّر تحميل قارئ Excel؛ تحقّق من الاتصال.</p>';return}
   const rd=new FileReader();rd.onload=()=>{try{const wb=XLSX.read(new Uint8Array(rd.result),{type:"array"});XL=[];wb.SheetNames.forEach(n=>{XL=XL.concat(XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:""}))});xlPreview()}catch(err){$("#xlPrev").innerHTML='<p class="msg">تعذّرت قراءة الملف.</p>'}};rd.readAsArrayBuffer(f)});
 $("#xlCls").addEventListener("input",xlPreview);
+$("#xlFile").addEventListener("click",()=>{XN=null;XSRC=""});
 $("#addBtn").addEventListener("click",()=>{const n=$("#addNm").value.trim().replace(/\s+/g," "),c=$("#addCls").value.trim();if(n.length<3||!c){$("#rosMsg").textContent="اكتب الاسم والفصل.";return}if(ROSTER.some(x=>x.name===n&&x.cls===c)){$("#rosMsg").textContent="الطالب موجود في الكشف.";return}rosAdd([{name:n,cls:c}]);$("#addNm").value=""});
 $("#rosList").addEventListener("click",e=>{const p=e.target.closest("[data-print]");if(p){e.preventDefault();printCards(p.dataset.print);return}
   const d=e.target.closest("[data-del]");if(!d)return;const x=ROSTER.find(y=>y.code===d.dataset.del);if(!x||!confirm("حذف "+x.name+" من الكشف؟ لن يستطيع الدخول برمزه."))return;
