@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>الاختبار العام في الحصة · نافس</title>
+<title>التحدي الجماعي على السبورة · نافس</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -80,7 +80,7 @@ const POS=[1,3,0,2,3,1,2,0,1,3,2,0],ORD=NAFES_Q.map((x,i)=>{const idx=x.o.map((_
 
 function setup(){
   const pre=P.get("cls")||"";
-  app.innerHTML=(demo?'<div class="demo">نسخة تجريبية: لا تُحفظ النتائج</div>':'')+'<header><h1>🖥 الاختبار العام في الحصة<small>أسئلة «نافس» · '+TITLE+' · الصف السادس</small></h1></header>'+
+  app.innerHTML=(demo?'<div class="demo">نسخة تجريبية: لا تُحفظ النتائج</div>':'')+'<header><h1>🖥 التحدي الجماعي على السبورة<small>أسئلة «نافس» · '+TITLE+' · الصف السادس</small></h1></header>'+
    '<div class="card setup"><p style="margin:0">تُعرض الأسئلة على السبورة واحدًا تلو الآخر، ويجيب الطلاب معًا برفع الأيدي أو بطاقات (أ، ب، ج، د). بعد كشف الإجابة اضغط زرًا واحدًا: هل أجاب الكل، أم الأغلب، أم النصف، أم القليل، أم لا أحد.</p>'+
    '<label>الفصل<select id="cls">'+(classes.length?classes.map(c=>'<option'+(c===pre?' selected':'')+'>'+esc(c)+'</option>').join(""):'<option value="">لا يوجد كشف</option>')+'</select></label>'+
    '<div class="msg" id="sm"></div><button class="btn primary" id="go">ابدأ</button></div>';
@@ -92,7 +92,7 @@ const LEV=[{v:1,t:"الكل",e:"🟢"},{v:.75,t:"الأغلب",e:"🟢"},{v:.5,t
 function meta(x){const S=NF_STDS[x.std];return '<div class="meta"><span><b>المجال الرئيسي:</b> '+NF_DOM[S.dom]+'</span><span><b>المجال الفرعي:</b> '+NF_SUB[S.sub]+'</span><span><b>المعيار:</b> <span class="code">'+S.code+'</span> '+S.t+'</span><span><b>المستوى:</b> <span class="lvb l'+x.lv+'">'+LVT[x.lv]+'</span></span></div>'}
 
 function q(){const x=NAFES_Q[ST.i],sh=ST.shown,v=ST.correct[ST.i];
-  app.innerHTML='<header><h1>فصل '+esc(ST.cls)+' · الاختبار العام<small>أسئلة «نافس» · '+TITLE+'</small></h1><button class="btn" id="fs">ملء الشاشة</button></header>'+
+  app.innerHTML='<header><h1>فصل '+esc(ST.cls)+' · التحدي الجماعي<small>أسئلة «نافس» · '+TITLE+'</small></h1><button class="btn" id="fs">ملء الشاشة</button></header>'+
    '<div class="dots">'+NAFES_Q.map((_,k)=>'<i class="'+(ST.correct[k]!=null?'d ':'')+(k===ST.i?'c':'')+'"></i>').join("")+'</div>'+
    '<div class="card">'+meta(x)+'<div class="qn">السؤال '+ar(ST.i+1)+' من '+ar(N)+'</div><div class="qt">'+x.q+'</div>'+
    '<div class="opts">'+ORD[ST.i].map((oj,j)=>'<div class="op'+(sh?(oj===x.a?' ok':' dim'):'')+'"><span class="k">'+KEYS[j]+'</span><span>'+x.o[oj]+'</span></div>').join("")+'</div>'+
@@ -115,7 +115,7 @@ function stats(){const pc=(f)=>{let g=0,t=0;NAFES_Q.forEach((x,i)=>{if(f(x)){g+=
     mx:NF_STDS.map((_,s)=>[0,1,2].map(l=>pc(x=>x.std===s&&x.lv===l)))}}
 function result(){const S=stats(),cls=v=>v==null?"na":v>=80?"m":v>=60?"n":"w",cell=v=>'<td class="'+cls(v)+'">'+(v==null?'—':ar(v)+'٪')+'</td>';
   const weak=NF_STDS.map((s,k)=>({s:s,v:S.std[k]})).sort((a,b)=>a.v-b.v)[0],wl=[0,1,2].sort((a,b)=>S.lv[a]-S.lv[b])[0];
-  app.innerHTML='<header><h1>نتيجة فصل '+esc(ST.cls)+' في الاختبار العام<small>عدد الأسئلة: '+ar(N)+' · النتيجة تقديرية من إجابات الفصل</small></h1><button class="btn" id="back">مراجعة الأسئلة</button></header>'+
+  app.innerHTML='<header><h1>نتيجة فصل '+esc(ST.cls)+' في التحدي الجماعي<small>عدد الأسئلة: '+ar(N)+' · النتيجة تقديرية من إجابات الفصل</small></h1><button class="btn" id="back">مراجعة الأسئلة</button></header>'+
    '<div class="grid2"><div class="card"><div class="big">'+ar(S.pct)+'٪</div><p style="text-align:center;margin:4px 0 0">النسبة التقديرية للإجابات الصحيحة</p>'+
      [0,1,2].map(k=>'<div class="bar"><span>'+LVT[k]+'</span><b>'+ar(S.lv[k])+'٪</b></div><div class="track"><i style="width:'+S.lv[k]+'%"></i></div>').join("")+'</div>'+
    '<div class="card"><h3 style="margin-top:0">التشخيص: المعيار × المستوى</h3><div class="tbl"><table><tr><th>المعيار</th>'+LVT.map(l=>'<th>'+l+'</th>').join("")+'<th>المجموع</th></tr>'+

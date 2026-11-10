@@ -179,6 +179,9 @@ footer b{color:var(--ink);font-weight:600}
 .link{color:var(--green);text-decoration-thickness:2px}
 @media (prefers-color-scheme:dark){.link{color:var(--ok)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.tshelf{margin-top:18px}.tshelf h3{margin:0 0 4px}.tshelf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tshelf-grid a{display:flex;flex-direction:column;justify-content:space-between;min-height:110px;border-radius:16px;padding:12px;color:#fff;text-decoration:none;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.tshelf-grid a small{opacity:.95;font-weight:700}.tshelf-grid a span.go{align-self:flex-start;background:rgba(255,255,255,.22);border-radius:99px;padding:2px 10px;font-size:13px}
 </style>
 </head>
 <body>
@@ -258,12 +261,12 @@ footer b{color:var(--ink);font-weight:600}
       <div class="hello"><h2>أدوات المعلم</h2><span class="who" id="tWho"></span><button class="link" id="tOut">تسجيل الخروج</button></div>
       <div class="tools">
         <a class="card tool wide" href="teacher.html">
-          <span class="ti"><i>🟢</i>الاختبار الرسمي لـ«نافس»</span>
+          <span class="ti"><i>🟢</i>تحدي «نافس» الصفي</span>
           <p>افتحه لفصل أو أكثر لمدة تحددها، وتابع من سلّم ومن لم يسلّم.</p>
           <span class="st" id="tLive">—</span>
         </a>
         <a class="card tool" href="class-quiz.html?l=cells6">
-          <span class="ti"><i>🖥️</i>الاختبار العام على السبورة</span>
+          <span class="ti"><i>🖥️</i>التحدي الجماعي على السبورة</span>
           <p>أسئلة «نافس» للفصل كله، والإجابة برفع البطاقات، بلا أجهزة.</p>
           <span class="st" id="tCq">—</span>
         </a>
@@ -279,8 +282,18 @@ footer b{color:var(--ink);font-weight:600}
         </a>
         <a class="card tool" href="honor.html?l=cells6">
           <span class="ti"><i>🏆</i>لوحة الشرف</span>
-          <p>المنافسة بين الفصول، وأبطال الاختبار الرسمي والتدريب المنزلي.</p>
+          <p>المنافسة بين الفصول، وأبطال تحدي «نافس» الصفي والتدريب المنزلي.</p>
           <span class="st" id="tHon">—</span>
+        </a>
+        <a class="card tool" href="stats.html">
+          <span class="ti"><i>📈</i>الإحصائيات</span>
+          <p>المشاركة والقبلي والبعدي ومعايير «نافس» ومقارنة الفصول.</p>
+          <span class="st">لوحة تحليلية</span>
+        </a>
+        <a class="card tool" href="reports.html">
+          <span class="ti"><i>🗂️</i>التقارير الرسمية</span>
+          <p>تقارير بترويسة رسمية وخلاصة تحليلية لملف الإنجاز.</p>
+          <span class="st">PDF للطباعة</span>
         </a>
         <a class="card tool full" href="teacher.html#rosCard">
           <span class="ti"><i>🪪</i>كشف الطلاب والبطاقات</span>
@@ -291,7 +304,12 @@ footer b{color:var(--ink);font-weight:600}
       <div class="acts">
         <button class="btn gold" id="qrBtn">اعرض الباركود على السبورة</button>
         <a class="btn" id="waBtn" target="_blank" rel="noopener">أرسل للطلاب بالواتساب</a>
-        <button class="btn" id="tBooks">تصفّح الكتب</button>
+        <button class="btn" id="tBooks">📚 اعرض الكتب في الحصة</button>
+      </div>
+      <div class="tshelf" id="tShelf">
+        <h3>📚 اعرض الكتب في الحصة</h3>
+        <p class="sub" style="margin:0 0 8px">يفتح الكتاب في «وضع العرض للمعلم»: تشرح وتحل الأنشطة أمام الطلاب، ولا تُسجَّل أي نتائج.</p>
+        <div class="tshelf-grid" id="tShelfGrid"></div>
       </div>
     </div>
   </section>
@@ -411,10 +429,10 @@ function liveRender(){if(!STU){return}
   const u=untilMs(LIVE),CL=clsOf(LIVE),inWin=CL.indexOf(STU.cls)>=0,now=Date.now(),open=!!(LIVE&&LIVE.open&&inWin&&now<u);
   const C=(MY&&MY.nafesClass)||LS.get(CUR.pfx+":nfClass",null),H=MY&&MY.nafesHome;
   let s,ic,t,p,btn="افتح التدريب";
-  if(C&&open){s="done";ic="✅";t="سلّمت الاختبار الرسمي: "+ar(C.got)+" من "+ar(C.total);p="تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء الاختبار "+when(u)+".";btn="افتح الكتاب"}
-  else if(C){s="home";ic="🏠";t="تدرّب في المنزل";p="نتيجتك في الاختبار الرسمي: "+ar(C.got)+" من "+ar(C.total)+(H?". أفضل نتيجة لك في المنزل: "+ar(H.best)+"٪":"")+". كل محاولة تُحسب في «أبطال التدريب المنزلي»."}
-  else if(open){s="open";ic="🟢";t="الاختبار الرسمي مفتوح الآن";p='لك محاولة واحدة. يُغلق بعد <span class="clock">'+left(u-now)+'</span> ('+when(u)+").";btn="ابدأ الاختبار"}
-  else if(LIVE&&((LIVE.homeOpen||[]).indexOf(STU.cls)>=0||(inWin&&now>=u))){s="home";ic="🏠";t="تدرّب في المنزل";p="انتهى الاختبار الرسمي. تدرّب الآن بمحاولات مفتوحة، وكل محاولة تُحسب في «أبطال التدريب المنزلي»."}
+  if(C&&open){s="done";ic="✅";t="سلّمت تحدي «نافس» الصفي: "+ar(C.got)+" من "+ar(C.total);p="تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء التحدي "+when(u)+".";btn="افتح الكتاب"}
+  else if(C){s="home";ic="🏠";t="تدرّب في المنزل";p="نتيجتك في تحدي «نافس» الصفي: "+ar(C.got)+" من "+ar(C.total)+(H?". أفضل نتيجة لك في المنزل: "+ar(H.best)+"٪":"")+". كل محاولة تُحسب في «أبطال التدريب المنزلي»."}
+  else if(open){s="open";ic="🟢";t="تحدي «نافس» الصفي مفتوح الآن";p='لك محاولة واحدة. يُغلق بعد <span class="clock">'+left(u-now)+'</span> ('+when(u)+").";btn="ابدأ التحدي"}
+  else if(LIVE&&((LIVE.homeOpen||[]).indexOf(STU.cls)>=0||(inWin&&now>=u))){s="home";ic="🏠";t="تدرّب في المنزل";p="انتهى تحدي «نافس» الصفي. تدرّب الآن بمحاولات مفتوحة، وكل محاولة تُحسب في «أبطال التدريب المنزلي»."}
   else{s="wait";ic="🔒";t="اختبار «نافس» لم يبدأ بعد";p="يفتحه معلمك قريبًا. حتى ذلك الحين اقرأ الدرس وحلّ أنشطته.";btn="افتح الكتاب"}
   const el=$("#sLive");el.className="card live s-"+s;$("#lIc").textContent=ic;$("#lT").innerHTML=t+'<small style="display:block;font-size:13px;color:var(--green);font-weight:600">'+CUR.t+'</small>';$("#lP").innerHTML=p;$("#lGo").textContent=btn;$("#lGo").href=CUR.file+(s==="wait"?"":"#nafes");$("#sHonor").href="honor.html?l="+CUR.id}
 function honorRender(){const e=$("#hTxt");if(!HON){e.textContent="المتميزون في تدريب «نافس» والمنافسة بين الفصول";return}
@@ -434,7 +452,9 @@ function teacherInit(){if(tInit)return;tInit=true;
     for(let k=0;k<30;k++)RES.push({lesson:"heredity6",cls:"6/1",nafesClass:{}});for(let k=0;k<22;k++)RES.push({lesson:"heredity6",cls:"6/2",nafesClass:{}});
     CQ=[{lesson:"heredity6",cls:"6/1"},{lesson:"heredity6",cls:"6/3"}];tRender();$("#tHon").textContent="آخر نشر: أمس";return}
   auth=firebase.auth();let subs=[];
-  auth.onAuthStateChanged(u=>{subs.forEach(f=>f());subs=[];$("#tGate").hidden=!!u;$("#tHome").hidden=!u;if(!u)return;
+  auth.onAuthStateChanged(u=>{subs.forEach(f=>f());subs=[];$("#tGate").hidden=!!u;$("#tHome").hidden=!u;
+    try{if(u)localStorage.setItem("durus:teach",JSON.stringify({at:Date.now(),email:u.email}));else localStorage.removeItem("durus:teach")}catch(e){}
+    if(!u)return;
     $("#tWho").textContent=u.email;
     NFL.forEach(l=>subs.push(db.collection("durus_live").doc(l.id).onSnapshot(d=>{TLS[l.id]=d.exists?d.data():null;tRender()},()=>{})));
     subs.push(db.collection("durus_roster").onSnapshot(s=>{ROS=s.docs.map(d=>d.data());tRender()},()=>{}));
@@ -484,6 +504,12 @@ if(STU)bookStu();
 studentView();
 const P=new URLSearchParams(location.search);door(NEXT?"s":P.get("t")==="1"?"t":LS.get("durus:role","s"));
 })();
+
+/* ---------- رف المعلم: عرض الكتب في الحصة ---------- */
+(function(){const g=document.getElementById("tShelfGrid");if(!g||typeof B6==="undefined")return;
+  g.innerHTML=B6.map(b=>'<a href="'+b.f+'" style="background:'+b.bg+'"><b>'+b.t+'</b><small>'+b.k+'</small><span class="go">▶ اعرض في الحصة</span></a>').join("");
+  g.addEventListener("click",e=>{try{const t=JSON.parse(localStorage.getItem("durus:teach")||"null");if(!t)localStorage.setItem("durus:teach",JSON.stringify({at:Date.now()}));else{t.at=Date.now();localStorage.setItem("durus:teach",JSON.stringify(t))}}catch(err){}});
+  const tb=document.getElementById("tBooks");if(tb)tb.onclick=()=>document.getElementById("tShelf").scrollIntoView({behavior:"smooth"});})();
 </script>
 </body>
 </html>

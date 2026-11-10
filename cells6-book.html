@@ -560,6 +560,7 @@ table.data th{background:var(--sheet-2);font-weight:600}
 .q-t svg{max-width:100%;height:auto;background:#fff;border-radius:8px}
 .fold3 label{font-family:"Noto Kufi Arabic",Tahoma,sans-serif;font-size:14px;color:var(--moss);display:grid;gap:4px}
 </style>
+<script>window.__T=(function(){try{var t=JSON.parse(localStorage.getItem("durus:teach")||"null");return !!(t&&t.at&&Date.now()-t.at<43200000)}catch(e){return false}})();</script>
 </head>
 <body>
 
@@ -868,7 +869,7 @@ table.data th{background:var(--sheet-2);font-weight:600}
 
 <!-- ============ NAFES ============ -->
 <section class="page" data-page="nafes" data-title="تدرّب على نافس">
-  <header class="pg-h"><div class="where">بنك «نافس» · المرحلة الابتدائية</div><h2>تدرّب على «نافس»</h2></header>
+  <header class="pg-h"><div class="where">بنك «نافس» · المرحلة الابتدائية</div><h2>تدرّب على «نافس»</h2></header><p class="nf-note" style="margin:4px 0 8px;padding:6px 10px;border-radius:10px;background:#fff6dc;border:1px solid #e6c56a;font-size:14px">🎯 <b>تحدٍّ تدريبي</b> على مهارات «نافس» داخل المنصة، <b>وليس اختبارًا رسميًا</b>.</p>
   <p>أسئلة «نافس» كما وردت في بنك الأسئلة، ومعها مستوى كل سؤال: <b>معرفة</b> أو <b>تطبيق</b> أو <b>استدلال</b>. أجب عنها جميعًا ثم اضغط «صحّح إجاباتي»، فيظهر تشخيص مهاراتك في صفحة التشخيص.</p><p style="margin:6px 0 10px"><a class="btn" href="honor.html?l=cells6" target="_blank" rel="noopener" style="text-decoration:none">🏆 لوحة الشرف: المتميزون في تدريب نافس</a></p>
   <div class="act" data-kind="post">
     <div class="act-h"><span class="badge b-post">نافس</span><h3>اثنا عشر سؤالًا</h3></div>
@@ -995,9 +996,9 @@ const AR="٠١٢٣٤٥٦٧٨٩";
 const ar=n=>String(n).replace(/\d/g,d=>AR[d]).replace(/\./g,"٫");
 const toEn=s=>String(s).trim().replace(/[٠-٩]/g,d=>AR.indexOf(d)).replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫,]/g,".");
 const store={
-  get(k,d){try{const v=localStorage.getItem("c6l2:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
-  set(k,v){try{localStorage.setItem("c6l2:"+k,JSON.stringify(v))}catch(e){}},
-  clear(){try{Object.keys(localStorage).filter(k=>k.indexOf("c6l2:")===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+  get(k,d){try{const v=localStorage.getItem((window.__T?"T:c6l2:":"c6l2:")+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem((window.__T?"T:c6l2:":"c6l2:")+k,JSON.stringify(v))}catch(e){}},
+  clear(){try{Object.keys(localStorage).filter(k=>k.indexOf((window.__T?"T:c6l2:":"c6l2:"))===0).forEach(k=>localStorage.removeItem(k))}catch(e){}}
 };
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function saveScore(key,got,total,detail){const s=store.get("scores",{});s[key]={got:got,total:total,detail:detail||null};store.set("scores",s);renderResults();renderDiag()}
@@ -2012,14 +2013,15 @@ try{if(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase){if(!firebase.ap
 const HUBSTU=(()=>{try{return JSON.parse(localStorage.getItem("durus:stu")||"null")}catch(e){return null}})();
 function toHub(sw){const n=(location.pathname.split("/").pop()||"")+location.hash;location.replace("index.html?"+(sw?"switch=1&":"")+"next="+encodeURIComponent(n))}
 let GATED=false;
-if(fdb){
+if(window.__T){STU={skip:true,teacher:1}}
+else if(fdb){
   if(!HUBSTU||!HUBSTU.code){GATED=true;STU={skip:true,gate:1};toHub(false)}
   else if(!STU||STU.code!==HUBSTU.code){if(STU&&STU.code)store.clear();STU={name:HUBSTU.name,cls:HUBSTU.cls,code:HUBSTU.code};store.set("stu",STU)}
 }
 function sid(){if(STU&&STU.code)return "r"+STU.code;let x=store.get("sid","");if(!x){x=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("sid",x)}return x}
 function setSync(t){const e=$("#syncState");if(e)e.textContent=t}
 function paintStu(){const e=$("#stuLine");if(!e)return;
-  if(!STU||STU.skip){e.textContent="أنت في وضع التصفح؛ نتائجك محفوظة على جهازك فقط.";setSync("");return}
+  if(!STU||STU.skip){e.textContent=window.__T?"👨‍🏫 وضع العرض للمعلم: يمكنك الشرح وحل الأنشطة أمام الطلاب، ولا تُسجَّل أي نتائج.":"أنت في وضع التصفح؛ نتائجك محفوظة على جهازك فقط.";setSync("");return}
   e.innerHTML="<b>الطالب:</b> "+esc(STU.name)+" · <b>الفصل:</b> "+esc(STU.cls)+(STU.code?" · <b>الرمز:</b> "+esc(STU.code):"");
   if(!fdb)setSync("لم يُربط الكتاب بقاعدة البيانات بعد؛ النتائج محفوظة على جهازك فقط.")}
 function payload(){const sc=store.get("scores",{}),D=diagnose(),N=nafesStats(),pick=k=>sc[k]?{got:sc[k].got,total:sc[k].total}:null,o={};
@@ -2048,10 +2050,10 @@ function curMode(){if(!fdb||!STU||STU.skip||!STU.code)return "free";const C=stor
 setInterval(()=>{if(LIVE)nfMode()},30000);
 function nfMode(){const box=$("#nfMode");if(!box)return;const m=curMode(),C=store.get("nfClass",null),H=store.get("nfHome",null);
   const msg={free:"",
-    wait:'🔒 يبدأ اختبار «نافس» الرسمي عندما يفتحه معلمك.<small>بعده يُفتح لك التدريب في المنزل، وتُحسب محاولاتك في «أبطال التدريب المنزلي».</small>',
-    class:'🟢 الاختبار الرسمي · فصل '+esc(STU&&STU.cls)+'<small>لك محاولة واحدة تُحسب في لوحة الشرف'+(untilMs()?'، ويُغلق الاختبار '+whenTxt(untilMs()):'')+'. أجب عن كل الأسئلة بهدوء ثم اضغط «سلّم إجاباتي».</small>',
-    done:'✓ سلّمت إجابتك في الاختبار الرسمي'+(C?': '+ar(C.got)+' من '+ar(C.total):'')+'<small>تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء الاختبار'+(untilMs()?' ('+whenTxt(untilMs())+')':'')+'.</small>',
-    home:'🏠 التدريب المنزلي'+'<small>'+(C?'نتيجتك في الاختبار الرسمي: '+ar(C.got)+' من '+ar(C.total)+'. ':'')+(H?'أفضل نتيجة لك في المنزل: '+ar(H.best)+'٪ (عدد المحاولات: '+ar(H.n)+'). ':'')+'كل محاولة تُحسب في «أبطال التدريب المنزلي».</small>'}[m];
+    wait:'🔒 يبدأ تحدي «نافس» الصفي عندما يفتحه معلمك.<small>بعده يُفتح لك التدريب في المنزل، وتُحسب محاولاتك في «أبطال التدريب المنزلي».</small>',
+    class:'🟢 تحدي «نافس» الصفي · فصل '+esc(STU&&STU.cls)+'<small>لك محاولة واحدة تُحسب في لوحة الشرف'+(untilMs()?'، ويُغلق التحدي '+whenTxt(untilMs()):'')+'. أجب عن كل الأسئلة بهدوء ثم اضغط «سلّم إجاباتي».</small>',
+    done:'✓ سلّمت إجابتك في تحدي «نافس» الصفي'+(C?': '+ar(C.got)+' من '+ar(C.total):'')+'<small>تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء التحدي'+(untilMs()?' ('+whenTxt(untilMs())+')':'')+'.</small>',
+    home:'🏠 التدريب المنزلي'+'<small>'+(C?'نتيجتك في تحدي «نافس» الصفي: '+ar(C.got)+' من '+ar(C.total)+'. ':'')+(H?'أفضل نتيجة لك في المنزل: '+ar(H.best)+'٪ (عدد المحاولات: '+ar(H.n)+'). ':'')+'كل محاولة تُحسب في «أبطال التدريب المنزلي».</small>'}[m];
   box.hidden=!msg;box.className="nf-mode m-"+m;box.innerHTML=msg;
   if(m===NFMODE)return;const prev=NFMODE;NFMODE=m;if(prev==="class"&&m==="done")return;nfBuild(m)}
 function nfBuild(m){const old=$("#q-nafes"),el=old.cloneNode(false);old.replaceWith(el);
@@ -2102,6 +2104,23 @@ if(!STU&&(ROSTER_ON||currentName()!=="cover"))askStu();
 else if(STU&&STU.code){const t=document.createElement("div");t.className="stu-toast";t.innerHTML='👋 مرحبًا <b>'+esc(STU.name)+'</b> · فصل '+esc(STU.cls)+' <button class="btn ghost" type="button">لست أنا؟ بدّل الطالب</button>';
   document.body.appendChild(t);t.querySelector("button").onclick=()=>{t.remove();askStu()};setTimeout(()=>{t.classList.add("out");setTimeout(()=>t.remove(),600)},9000)}
 })();
+</script>
+<style>
+.teach-bar{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:9999;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;background:#1d3a2e;color:#fff;border-radius:16px;padding:6px 10px;box-shadow:0 8px 24px rgba(0,0,0,.3);font:700 14px Tahoma,sans-serif;max-width:96vw}
+.teach-bar button{border:0;border-radius:10px;padding:6px 10px;background:#f2c84a;color:#2a1f00;font:inherit;cursor:pointer}
+.teach-bar button.ghost{background:#2f5a46;color:#fff}
+body.teach-big .page{font-size:1.18em}body.teach-big .page h2{font-size:1.25em}
+</style>
+<script>
+(function(){if(!window.__T)return;document.body.classList.add("teach-mode");
+  var b=document.createElement("div");b.className="teach-bar";
+  b.innerHTML='<span>👨‍🏫 وضع العرض للمعلم · لا تُسجَّل نتائج</span><button data-t="fs">⛶ ملء الشاشة</button><button data-t="big">🔍 تكبير الخط</button><button class="ghost" data-t="reset">↺ مسح الإجابات</button><button class="ghost" data-t="hide">إخفاء</button>';
+  document.body.appendChild(b);
+  b.addEventListener("click",function(e){var t=e.target.closest("[data-t]");if(!t)return;var k=t.dataset.t;
+    if(k==="fs"){var d=document.documentElement;if(!document.fullscreenElement){(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}else{(document.exitFullscreen||document.webkitExitFullscreen).call(document)}}
+    if(k==="big")document.body.classList.toggle("teach-big");
+    if(k==="reset"&&confirm("مسح إجابات العرض في هذا الكتاب؟")){Object.keys(localStorage).filter(function(x){return x.indexOf("T:")===0}).forEach(function(x){localStorage.removeItem(x)});location.reload()}
+    if(k==="hide")b.style.display="none"})})();
 </script>
 </body>
 </html>

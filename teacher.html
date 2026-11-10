@@ -85,13 +85,13 @@ input[type=text]{border:1.5px solid var(--line);background:var(--card);border-ra
       <p class="hint" style="margin:6px 0 0">تتحدث البيانات مباشرة كلما أنهى طالب نشاطًا.</p>
     </section>
 
-    <section class="card noprint" id="sessCard" hidden><h2>🟢 الاختبار الرسمي لـ«نافس»</h2>
-      <p class="hint">افتح الاختبار لفصل أو أكثر لمدة تحددها: يحلّه كل طالب مرة واحدة من جهازه (في المنزل أو بأجهزة المدرسة)، وتُحسب محاولته في لوحة الشرف والمنافسة بين الفصول، ولا تظهر الإجابات الصحيحة حتى تنتهي المدة. بعد انتهائها يُفتح التدريب المنزلي تلقائيًا.</p>
+    <section class="card noprint" id="sessCard" hidden><h2>🟢 تحدي «نافس» الصفي</h2>
+      <p class="hint">افتح التحدي لفصل أو أكثر لمدة تحددها: يحلّه كل طالب مرة واحدة من جهازه (في المنزل أو بأجهزة المدرسة)، وتُحسب محاولته في لوحة الشرف والمنافسة بين الفصول، ولا تظهر الإجابات الصحيحة حتى تنتهي المدة. بعد انتهائها يُفتح التدريب المنزلي تلقائيًا.</p>
       <div class="row"><b>الفصول:</b><span id="sessCls" class="row"></span></div>
-      <div class="row" style="margin-top:8px"><label>المدة <select id="sessDur"><option value="1">ساعة واحدة (في الحصة)</option><option value="24" selected>٢٤ ساعة</option><option value="72">٣ أيام</option></select></label><button class="btn primary" id="sessStart">افتح الاختبار الرسمي</button><button class="btn" id="sessEnd" hidden>إنهاء الآن</button><button class="btn" id="sessScreen">شاشة المتابعة</button></div>
+      <div class="row" style="margin-top:8px"><label>المدة <select id="sessDur"><option value="1">ساعة واحدة (في الحصة)</option><option value="24" selected>٢٤ ساعة</option><option value="72">٣ أيام</option></select></label><button class="btn primary" id="sessStart">افتح تحدي «نافس» الصفي</button><button class="btn" id="sessEnd" hidden>إنهاء الآن</button><button class="btn" id="sessScreen">شاشة المتابعة</button></div>
       <div id="sessState" class="sess-state">—</div>
     </section>
-    <section class="card noprint" id="cqCard" hidden><h2>🖥 الاختبار العام في الحصة</h2>
+    <section class="card noprint" id="cqCard" hidden><h2>🖥 التحدي الجماعي على السبورة</h2>
       <p class="hint">تُعرض أسئلة «نافس» على السبورة سؤالًا سؤالًا، ويجيب الفصل كله معًا برفع الأيدي أو البطاقات، ثم تكتب عدد من أجاب صحيحًا، فيخرج تشخيص للفصل حسب المعيار والمستوى الإدراكي. لا يحتاج الطلاب إلى أجهزة.</p>
       <div class="row"><label>الفصل <select id="cqCls"></select></label><button class="btn primary" id="cqGo">ابدأ على السبورة</button></div>
       <div id="cqRes" class="hn-prev"></div>
@@ -200,7 +200,7 @@ function honorData(){const L=LESSONS[lesson],per=+$("#hnPer").value,top=+$("#hnT
 function renderHonor(){const L=LESSONS[lesson];$("#hnCard").hidden=!L.nafes;if(!L.nafes)return;HB=honorData();
   const nm=(a,g)=>a.length?a.map(x=>ar(x.rank)+". "+esc(x.name)+(g?" ("+esc(x.cls)+")":"")+(x.pct!=null?" — "+ar(x.pct)+"٪":"")+(x.tries?" · المحاولات: "+ar(x.tries):"")).join("<br>"):"لا يوجد بعد";
   $("#hnPrev").innerHTML='<div><b>🏫 المنافسة بين الفصول</b><br>'+(HB.cmp.length?HB.cmp.map(c=>ar(c.rank)+". فصل "+esc(c.cls)+" — المؤشر "+ar(c.index)+" (متوسط "+ar(c.avg)+"٪"+(c.part!=null?"، مشاركة "+ar(c.part)+"٪":"")+")").join("<br>"):"لا يوجد بعد")+'</div>'+
-    '<div><b>أبطال الاختبار الرسمي ('+ar(HB.n)+' طالبًا)</b><br>'+nm(HB.grade,1)+'</div>'+
+    '<div><b>أبطال تحدي «نافس» الصفي ('+ar(HB.n)+' طالبًا)</b><br>'+nm(HB.grade,1)+'</div>'+
     '<div><b>🏠 أبطال التدريب المنزلي</b><br>'+nm(HB.home,1)+'</div>'+
     HB.classes.map(c=>'<div><b>فصل '+esc(c.cls)+' ('+ar(c.n)+')</b><br>'+nm(c.top)+(c.imp?'<br>🚀 الأكثر تقدّمًا: '+esc(c.imp.name):'')+'</div>').join("")}
 
@@ -278,7 +278,7 @@ function sessRender(){const L=LESSONS[lesson];$("#sessCard").hidden=!L.nafes;$("
   const cl=[...new Set(ROSTER.map(x=>x.cls))].sort((a,b)=>a.localeCompare(b,"ar"));
   const line=c=>{const d=R.filter(r=>r.cls===c&&r.nafesClass),codes=new Set(d.map(r=>r.code)),miss=ROSTER.filter(x=>x.cls===c&&!codes.has(x.code)),a=d.length?Math.round(d.reduce((s,r)=>s+r.nafesClass.pct,0)/d.length):null;
     return '<div><b>فصل '+esc(c)+'</b>: سلّم '+ar(d.length)+' من '+ar(rosCount(c))+(a!=null?' · متوسط '+ar(a)+'٪':'')+(open&&CL.indexOf(c)>=0&&miss.length?'<details><summary class="miss">لم يسلّموا بعد ('+ar(miss.length)+')</summary><span class="miss">'+miss.map(x=>esc(x.name)).join("، ")+'</span></details>':'')+'</div>'};
-  $("#sessState").innerHTML=(open?'<span class="on">● الاختبار الرسمي مفتوح لـ '+CL.map(c=>"فصل "+esc(c)).join("، ")+'</span> — ينتهي '+fmtT(u):(LIVE&&CL.length&&u?'انتهى آخر اختبار رسمي ('+CL.map(esc).join("، ")+') '+fmtT(LIVE.endedAt&&LIVE.endedAt.toMillis?LIVE.endedAt.toMillis():LIVE.endedAt||u)+'.':'لا يوجد اختبار رسمي مفتوح الآن.'))+(cl.length?cl.map(line).join(""):'');
+  $("#sessState").innerHTML=(open?'<span class="on">● تحدي «نافس» الصفي مفتوح لـ '+CL.map(c=>"فصل "+esc(c)).join("، ")+'</span> — ينتهي '+fmtT(u):(LIVE&&CL.length&&u?'انتهى آخر تحدٍّ صفي ('+CL.map(esc).join("، ")+') '+fmtT(LIVE.endedAt&&LIVE.endedAt.toMillis?LIVE.endedAt.toMillis():LIVE.endedAt||u)+'.':'لا يوجد تحدٍّ صفي مفتوح الآن.'))+(cl.length?cl.map(line).join(""):'');
   cqRender()}
 let CQ=[],cqUnsub=null;
 function cqRender(){const by={};CQ.filter(x=>x.lesson===lesson).forEach(x=>{const t=x.at&&x.at.toMillis?x.at.toMillis():0;if(!by[x.cls]||by[x.cls]._t<t)by[x.cls]=Object.assign({_t:t},x)});
@@ -345,11 +345,11 @@ $("#rosList").addEventListener("click",e=>{const p=e.target.closest("[data-print
   if(demo||!db){ROSTER=ROSTER.filter(y=>y!==x);rosRender();return}db.collection("durus_roster").doc(x.code).delete()});
 $("#sessStart").addEventListener("click",()=>{const cls=[...document.querySelectorAll("#sessCls input:checked")].map(i=>i.value);if(!cls.length){$("#sessState").textContent="اختر فصلًا واحدًا على الأقل.";return}
   const h=+$("#sessDur").value,lab=h===1?"ساعة واحدة":h===24?"٢٤ ساعة":"٣ أيام";
-  if(!confirm("فتح الاختبار الرسمي لـ "+cls.map(c=>"فصل "+c).join("، ")+" لمدة "+lab+"؟\nلكل طالب محاولة واحدة تُحسب في لوحة الشرف."))return;
+  if(!confirm("فتح تحدي «نافس» الصفي لـ "+cls.map(c=>"فصل "+c).join("، ")+" لمدة "+lab+"؟\nلكل طالب محاولة واحدة تُحسب في لوحة الشرف."))return;
   const prev=liveCls(),H=[...new Set(((LIVE&&LIVE.homeOpen)||[]).concat(prev))].filter(c=>cls.indexOf(c)<0),data={open:true,classes:cls,cls:cls[0],sid:Date.now().toString(36),homeOpen:H};
   if(demo||!db){LIVE=Object.assign(data,{until:Date.now()+h*3600e3});sessRender();return}
-  db.collection("durus_live").doc(lesson).set(Object.assign(data,{startedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+h*3600e3),by:auth.currentUser.email})).catch(()=>$("#sessState").textContent="تعذّر فتح الاختبار: تحقّق من قواعد Firestore.")});
-$("#sessEnd").addEventListener("click",()=>{const CL=liveCls();if(!LIVE||!confirm("إنهاء الاختبار الرسمي الآن لـ "+CL.join("، ")+"؟ من لم يسلّم لن تُحسب له محاولة رسمية."))return;
+  db.collection("durus_live").doc(lesson).set(Object.assign(data,{startedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+h*3600e3),by:auth.currentUser.email})).catch(()=>$("#sessState").textContent="تعذّر فتح التحدي: تحقّق من قواعد Firestore.")});
+$("#sessEnd").addEventListener("click",()=>{const CL=liveCls();if(!LIVE||!confirm("إنهاء تحدي «نافس» الصفي الآن لـ "+CL.join("، ")+"؟ من لم يسلّم لن تُحسب له محاولة في التحدي."))return;
   if(demo||!db){LIVE.open=false;LIVE.endedAt=Date.now();LIVE.homeOpen=[...new Set((LIVE.homeOpen||[]).concat(CL))];sessRender();return}
   db.collection("durus_live").doc(lesson).update({open:false,endedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+10*60e3),homeOpen:firebase.firestore.FieldValue.arrayUnion(...CL)})});
 $("#cqGo").addEventListener("click",()=>{const c=$("#cqCls").value;window.open("class-quiz.html?l="+lesson+"&cls="+encodeURIComponent(c)+(demo?"&demo=1":""),"_blank")});
@@ -368,7 +368,7 @@ $("#hnPub").addEventListener("click",()=>{if(!HB)return;
 if(demo){startDemo();return}
 if(!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase)){$("#cfgCard").hidden=false;return}
 firebase.initializeApp(window.DURUS_FB);auth=firebase.auth();db=firebase.firestore();tSurvey();
-auth.onAuthStateChanged(u=>{if(unsub){unsub();unsub=null}
+auth.onAuthStateChanged(u=>{try{if(u)localStorage.setItem("durus:teach",JSON.stringify({at:Date.now(),email:u.email}));else localStorage.removeItem("durus:teach")}catch(e){}if(unsub){unsub();unsub=null}
   if(!u){$("#loginCard").hidden=false;$("#dash").hidden=true;$("#logout").hidden=true;$("#who").textContent="";return}
   $("#loginCard").hidden=true;$("#dash").hidden=false;$("#logout").hidden=false;$("#who").textContent=u.email;
   if(cqUnsub)cqUnsub();cqUnsub=db.collection("durus_classquiz").onSnapshot(sn=>{CQ=sn.docs.map(d=>d.data());cqRender()},()=>{});

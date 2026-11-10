@@ -71,8 +71,8 @@ function draw(){
   const cmp=classes.map(c=>{const a=att.filter(r=>r.cls===c),t=ROS.filter(x=>x.cls===c).length,av=a.length?Math.round(a.reduce((s,r)=>s+r.nafesClass.pct,0)/a.length):null,pa=t?Math.min(100,Math.round(a.length/t*100)):0;return {c:c,n:a.length,t:t,av:av,pa:pa,ix:av==null?0:Math.round(av*pa/100)}}).sort((a,b)=>b.ix-a.ix);
   const R=100,C=2*Math.PI*R;
   app.innerHTML=(demo?'<div class="demo">عرض تجريبي ببيانات مولّدة</div>':'')+
-   '<header><h1>اختبار «نافس» الرسمي'+(cls?' · '+esc(cls):'')+'<small>'+esc(TITLES[lesson]||"")+' · العلوم · الصف السادس</small></h1>'+
-   '<span class="pill'+(open?' on':'')+'">'+(open?'● الاختبار مفتوح':cls?'انتهى الاختبار':'لا يوجد اختبار')+'</span>'+
+   '<header><h1>تحدي «نافس» الصفي'+(cls?' · '+esc(cls):'')+'<small>'+esc(TITLES[lesson]||"")+' · العلوم · الصف السادس</small></h1>'+
+   '<span class="pill'+(open?' on':'')+'">'+(open?'● التحدي مفتوح':cls?'انتهى التحدي':'لا يوجد اختبار')+'</span>'+
    '<div class="tools"><button class="btn" id="tgN">'+(showNames?'إخفاء الأسماء':'إظهار الأسماء')+'</button><button class="btn" id="fs">ملء الشاشة</button></div></header>'+
    '<div class="grid">'+
     '<section class="card"><h2>التسليم</h2><div class="ring"><svg viewBox="0 0 240 240"><circle cx="120" cy="120" r="'+R+'" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="20"/><circle cx="120" cy="120" r="'+R+'" fill="none" stroke="#5fd394" stroke-width="20" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100))+'" transform="rotate(-90 120 120)" style="transition:stroke-dashoffset .8s"/><text x="120" y="118" text-anchor="middle" font-size="54" font-weight="800" fill="#f6f3e8" font-family="Noto Kufi Arabic,Tahoma">'+ar(n)+'</text><text x="120" y="156" text-anchor="middle" font-size="20" fill="#a9c4b4" font-family="Noto Kufi Arabic,Tahoma">من '+ar(tot||0)+' طالبًا</text></svg></div>'+
