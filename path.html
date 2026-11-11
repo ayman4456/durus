@@ -67,7 +67,8 @@ function load(){
   if(!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase)){app.innerHTML='<div class="msg">المنصة غير متصلة الآن.</div>';return}
   if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);db=firebase.firestore();
   db.collection("durus_live").doc(pid).get().then(d=>{if(!d.exists||d.data().type!=="path"){app.innerHTML='<div class="msg">لم يُعثر على هذا المسار.</div>';return}PATH=d.data();
-    return db.collection("durus_results").doc(pid+"__r"+STU.code).get().then(r=>{MY=r.exists?r.data():null;start()})}).catch(()=>{app.innerHTML='<div class="msg">تعذّر التحميل. تحقّق من الاتصال ثم أعد المحاولة.</div>'})}
+    /* قبل التسليم لا توجد وثيقة نتيجة، وقواعد الحماية ترفض قراءتها؛ فنعدّ الرفض «لم يسلّم بعد» */
+    return db.collection("durus_results").doc(pid+"__r"+STU.code).get().then(r=>r.exists?r.data():null,()=>null).then(r=>{MY=r;start()})}).catch(e=>{console.error(e);app.innerHTML='<div class="msg">تعذّر التحميل. تحقّق من الاتصال ثم أعد المحاولة.</div>'})}
 function start(){$("#h1").textContent="🧭 "+PATH.title;$("#hp").textContent=STU.name+" · "+STU.cls;build();
   const now=Date.now(),open=PATH.open&&now<toMs(PATH.until),mine=(PATH.classes||[]).indexOf(STU.cls)>=0;
   if(MY&&MY.nafesClass){result(!open);return}
