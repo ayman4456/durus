@@ -437,8 +437,8 @@ function mine(){if(!STU||!db){liveRender();return}
   db.collection("durus_results").doc(CUR.id+"__r"+STU.code).get().then(d=>{MY=d.exists?d.data():null;liveRender()}).catch(()=>{MY=null;liveRender()})}
 function liveRender(){if(!STU){return}
   const u=untilMs(LIVE),CL=clsOf(LIVE),inWin=CL.indexOf(STU.cls)>=0,now=Date.now(),open=!!(LIVE&&LIVE.open&&inWin&&now<u);
-  const C=(MY&&MY.nafesClass)||LS.get(CUR.pfx+":nfClass",null),H=MY&&MY.nafesHome;
-  let s,ic,t,p,btn="افتح التدريب";const SC=LS.get(CUR.pfx+":scores",{})||{},DONE=!!((MY&&MY.pre&&MY.post)||(SC.pre&&SC.post));
+  const OWN=(function(){try{const o=localStorage.getItem(CUR.pfx+":__owner");return o===null||o===String(STU.code)}catch(e){return false}})(),C=(MY&&MY.nafesClass)||(OWN?LS.get(CUR.pfx+":nfClass",null):null),H=MY&&MY.nafesHome;
+  let s,ic,t,p,btn="افتح التدريب";const SC=(OWN?LS.get(CUR.pfx+":scores",{}):{})||{},DONE=!!((MY&&MY.pre&&MY.post)||(SC.pre&&SC.post));
   if(C&&open){s="done";ic="✅";t="سلّمت تحدي «نافس» الصفي: "+ar(C.got)+" من "+ar(C.total);p="تظهر الإجابات الصحيحة ويُفتح التدريب المنزلي بعد انتهاء التحدي "+when(u)+".";btn="افتح الكتاب"}
   else if(C){s="home";ic="🏠";t="تدرّب في المنزل";p="نتيجتك في تحدي «نافس» الصفي: "+ar(C.got)+" من "+ar(C.total)+(H?". أفضل نتيجة لك في المنزل: "+ar(H.best)+"٪":"")+". كل محاولة تُحسب في «أبطال التدريب المنزلي»."}
   else if(open&&!DONE){s="lock";ic="📖";t="أكمل الدرس أولًا، ثم ادخل التحدي";p='تحدي «نافس» الصفي مفتوح، لكنه يُفتح لك بعد أن تحل <b>التقويم القبلي</b> و<b>التقويم الختامي</b> في الدرس. يُغلق بعد <span class="clock">'+left(u-now)+'</span> ('+when(u)+").";btn="ابدأ الدرس"}

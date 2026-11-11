@@ -572,8 +572,10 @@ table.data th{background:var(--sheet-2);font-weight:600}
 .pn-grid{width:100%;max-width:360px;display:block;margin:0 auto}.pn-out{text-align:center;margin:6px 0 0}
 .fn-svg{width:100%;max-width:420px;display:block;margin:6px auto;background:#f7f1e3;border-radius:12px}
 </style>
-<script>window.__T=(function(){try{var t=JSON.parse(localStorage.getItem("durus:teach")||"null");return !!(t&&t.at&&Date.now()-t.at<43200000)}catch(e){return false}})();</script>
-</head>
+<script>window.__T=(function(){try{var t=JSON.parse(localStorage.getItem("durus:teach")||"null");return !!(t&&t.at&&Date.now()-t.at<43200000)}catch(e){return false}})();</script><script>(function(){/* بيانات الكتاب في هذا الجهاز تخص طالبًا واحدًا: إذا دخل طالب آخر تُمسح بيانات من قبله */
+try{var P="ce6:",s=JSON.parse(localStorage.getItem("durus:stu")||"null"),me=s&&s.code?String(s.code):"",own=localStorage.getItem(P+"__owner");
+if(window.__T||!me)return;if(own===null){localStorage.setItem(P+"__owner",me);return}if(own!==me){Object.keys(localStorage).filter(function(k){return k.indexOf(P)===0}).forEach(function(k){localStorage.removeItem(k)});localStorage.setItem(P+"__owner",me)}}catch(e){}})();</script>
+<style>.home-btn{display:inline-grid;place-items:center;text-decoration:none;color:inherit}</style></head>
 <body>
 
 <div class="top">
@@ -581,7 +583,7 @@ table.data th{background:var(--sheet-2);font-weight:600}
     <button class="icon-btn" id="menuBtn" aria-label="فهرس الكتاب">
       <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
-    <div class="top-title" id="topTitle">مقارنة الأنظمة البيئية</div>
+    <a class="icon-btn home-btn" id="homeBtn" href="index.html" aria-label="الرجوع إلى الصفحة الرئيسية" title="الصفحة الرئيسية"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9.5 10 3l7 6.5M5 8v8.5h3.8v-5h2.4v5H15V8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a><div class="top-title" id="topTitle">مقارنة الأنظمة البيئية</div>
     <div class="top-count" id="topCount"></div>
     <button class="icon-btn" id="sndBtn" aria-label="صوت تقليب الصفحات" aria-pressed="true"></button>
   </div>
@@ -2015,5 +2017,5 @@ body.teach-big .page{font-size:1.18em}body.teach-big .page h2{font-size:1.25em}
   window.addEventListener("storage",check);setInterval(check,2000);setTimeout(check,300);
 })();
 </script>
-</body>
+<script>(function(){var h=document.getElementById("homeBtn");if(h&&window.__T)h.href="index.html?t=1"})();</script></body>
 </html>
