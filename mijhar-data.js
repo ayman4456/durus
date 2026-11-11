@@ -32,7 +32,7 @@ function load(cb,onNeedLogin){
   const auth=firebase.auth(),db=firebase.firestore();
   auth.onAuthStateChanged(u=>{if(!u){onNeedLogin(auth);return}
     Promise.all(["durus_roster","durus_results","durus_classquiz"].map(c=>db.collection(c).get().then(s=>s.docs.map(d=>Object.assign({_id:d.id},d.data()))).catch(()=>[])))
-      .then(([ro,re,cq])=>{ro.forEach(r=>{if(!r.code)r.code=r._id});cb({roster:ro,results:re,classquiz:cq,demo:false,user:u})})})}
+      .then(([ro,re,cq])=>{re=re.filter(r=>!String(r.lesson||"").startsWith("path_"));ro.forEach(r=>{if(!r.code)r.code=r._id});cb({roster:ro,results:re,classquiz:cq,demo:false,user:u})})})}
 
 window.MJ={ar,esc,ORDER,TITLE,pct,mean,band,sortCls,hijri,load,ND};
 })();

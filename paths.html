@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مسار نافس — المعلم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1f3a5f;--teal:#2f8f73;--gold:#e0b44a;--bg:#f3f6f9;--card:#fff;--ink:#14213d;--ink2:#2f4a68;--line:#d9e2ec;--good:#1f8a5b;--mid:#c48a12;--bad:#c8463d;color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#101826;--card:#182235;--ink:#f2f6fb;--ink2:#cddcf0;--line:#2c3b55;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101826;--card:#182235;--ink:#f2f6fb;--ink2:#cddcf0;--line:#2c3b55;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:"Cairo",Tahoma,sans-serif;font-weight:700;line-height:1.7}
+header{background:linear-gradient(135deg,#1f3a5f,#2f8f73);color:#fff;padding:18px 16px 30px;border-bottom-left-radius:44px}
+header h1{margin:0;font-size:clamp(24px,6vw,34px);font-weight:900}header p{margin:2px 0 0;color:#e3eef8}
+.wrap{max-width:900px;margin:-18px auto 0;padding:0 12px 30px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:900}
+label.f{display:flex;flex-direction:column;gap:4px;margin:8px 0}
+input,select,button{font:inherit;font-weight:800;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:8px 10px}
+.btn{cursor:pointer;border:0;border-radius:14px;padding:10px 18px;font-weight:900}
+.pri{background:var(--teal);color:#fff}.gold{background:var(--gold);color:#2a1f00}.ghost{background:var(--card);border:2px solid var(--line);color:var(--ink)}.danger{background:#fbe9e7;color:#8a2a20}
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.ls{display:flex;gap:10px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:10px;cursor:pointer}
+.ls input{width:20px;height:20px;accent-color:var(--teal)}
+.ls.on{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 8%,transparent)}
+.ls small{display:block;color:var(--ink2);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{border:2px solid var(--line);border-radius:99px;padding:4px 12px;cursor:pointer}.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sum{background:color-mix(in srgb,var(--gold) 14%,transparent);border-radius:14px;padding:10px 12px;margin:10px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.path{border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+.path .t{font-size:18px;font-weight:900}.path .m{color:var(--ink2);font-size:14px}
+.st{display:inline-block;border-radius:99px;padding:0 10px;font-size:13px;color:#fff}.st.open{background:var(--good)}.st.closed{background:#6b7c93}
+table{width:100%;border-collapse:collapse;font-size:14px}th{background:var(--navy);color:#fff;padding:7px;text-align:right}td{padding:6px 7px;border-bottom:1px solid var(--line)}
+.tw{overflow-x:auto}
+.good{color:var(--good)}.mid{color:var(--mid)}.bad{color:var(--bad)}
+.msg{color:var(--bad);min-height:1.4em}.ok{color:var(--good)}
+.demo{background:#fff4d6;color:#6b4a00;border:1px solid #e8c56a;border-radius:12px;padding:6px 10px;margin-bottom:10px}
+@media print{header .noprint,.noprint{display:none!important}}
+</style>
+</head>
+<body>
+<header><h1>🧭 مسار نافس</h1><p>تحدٍّ تدريبي يجمع أسئلة «نافس» لعدة دروس تختارها، ويُرسل لفصولك بضغطة.</p></header>
+<div class="wrap">
+  <div id="demoNote" class="demo" hidden>⚠️ وضع تجريبي: لا يُحفظ شيء ولا يُرسل للطلاب.</div>
+  <div class="card" id="login" hidden><h2>دخول المعلم</h2><label class="f">البريد<input id="em" type="email" autocomplete="username"></label><label class="f">كلمة المرور<input id="pw" type="password" autocomplete="current-password"></label><button class="btn pri" id="go">دخول</button><div class="msg" id="lm"></div></div>
+  <div id="app" hidden>
+    <div class="card">
+      <h2>١. اختر الدروس</h2>
+      <p style="margin:0;color:var(--ink2)">تدخل في المسار <b>جميع أسئلة «نافس»</b> للدروس المحددة.</p>
+      <div class="lessons" id="lessons"></div>
+      <h2 style="margin-top:14px">٢. الفصول</h2>
+      <div class="chips" id="classes"></div>
+      <h2 style="margin-top:14px">٣. التفاصيل</h2>
+      <div class="row">
+        <label class="f" style="flex:1 1 260px">اسم المسار<input id="title" placeholder="مثال: مسار نافس — الوحدة الأولى"></label>
+        <label class="f">المدة<select id="hours"><option value="1">ساعة</option><option value="2">ساعتان</option><option value="24">يوم</option><option value="48" selected>يومان</option><option value="72">٣ أيام</option><option value="168">أسبوع</option></select></label>
+      </div>
+      <div class="sum" id="sum">اختر درسًا واحدًا على الأقل.</div>
+      <button class="btn pri" id="send">🚀 أرسل المسار</button> <span class="msg" id="sm"></span>
+    </div>
+    <div class="card"><h2>المسارات المرسلة</h2><div id="list">لا توجد مسارات بعد.</div></div>
+    <div class="card" id="resCard" hidden><div class="row"><h2 id="resT" style="flex:1"></h2><button class="btn ghost noprint" onclick="print()">🖨️ طباعة</button></div><div id="res"></div></div>
+  </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="nafes-data.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);const AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v==null?"":v).replace(/\d/g,d=>AR[d]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ND=window.NAFES_DATA||{};const ORDER=["cells6","heredity6","plants6","microbes6","digestion6","foodchain6","ecosys6","resources6"].filter(k=>ND[k]);
+const LV=["معرفة","تطبيق","استدلال"];
+const toMs=v=>!v?0:typeof v==="number"?v:v.toMillis?v.toMillis():v.seconds?v.seconds*1000:0;
+const P=new URLSearchParams(location.search),DEMO=P.get("demo")==="1"||!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase);
+let db=null,auth=null,ROSTER=[],SEL=new Set(),CLS=new Set(),PATHS=[],DEMOSTORE={live:{},res:{}};
+function boot(){
+  if(DEMO){$("#demoNote").hidden=false;ROSTER=[{name:"طالب ١",cls:"6/1",code:"1001"},{name:"طالب ٢",cls:"6/2",code:"1002"},{name:"طالب ٣",cls:"6/3",code:"1003"}];show();return}
+  if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);db=firebase.firestore();auth=firebase.auth();
+  auth.onAuthStateChanged(u=>{if(!u){$("#login").hidden=false;$("#app").hidden=true;$("#go").onclick=()=>auth.signInWithEmailAndPassword($("#em").value.trim(),$("#pw").value).catch(()=>$("#lm").textContent="البريد أو كلمة المرور غير صحيحة.");return}
+    $("#login").hidden=true;db.collection("durus_roster").get().then(s=>{ROSTER=s.docs.map(d=>Object.assign({code:d.id},d.data()));show()});
+    db.collection("durus_live").where("type","==","path").onSnapshot(s=>{PATHS=s.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>toMs(b.startedAt||b.created)-toMs(a.startedAt||a.created));list()})})}
+function show(){$("#app").hidden=false;
+  $("#lessons").innerHTML=ORDER.map(k=>{const D=ND[k],lv=[0,1,2].map(i=>D.Q.filter(q=>q.lv===i).length);return '<label class="ls" data-l="'+k+'"><input type="checkbox" value="'+k+'"><span><b>'+esc(D.title)+'</b><small>'+ar(D.Q.length)+' أسئلة · معرفة '+ar(lv[0])+' · تطبيق '+ar(lv[1])+' · استدلال '+ar(lv[2])+'</small></span></label>'}).join("");
+  $("#lessons").onchange=e=>{const c=e.target;if(c.checked)SEL.add(c.value);else SEL.delete(c.value);c.closest(".ls").classList.toggle("on",c.checked);sum()};
+  const cs=[...new Set(ROSTER.map(r=>r.cls))].filter(Boolean).sort((a,b)=>String(a).localeCompare(String(b),"ar",{numeric:true}));
+  $("#classes").innerHTML=cs.length?cs.map(c=>'<span class="chip" data-c="'+esc(c)+'">'+esc(c)+'</span>').join(""):'<span style="color:var(--bad)">ارفع كشف الطلاب أولًا من لوحة المعلم.</span>';
+  $("#classes").onclick=e=>{const c=e.target.closest("[data-c]");if(!c)return;const v=c.dataset.c;if(CLS.has(v))CLS.delete(v);else CLS.add(v);c.classList.toggle("on");sum()};
+  $("#send").onclick=send;sum();if(DEMO)list()}
+function sum(){const ls=ORDER.filter(k=>SEL.has(k));if(!ls.length){$("#sum").textContent="اختر درسًا واحدًا على الأقل.";return}
+  const Q=ls.reduce((a,k)=>a.concat(ND[k].Q),[]),lv=[0,1,2].map(i=>Q.filter(q=>q.lv===i).length),std=new Set();ls.forEach(k=>ND[k].STDS.forEach(s=>std.add(s.code)));
+  $("#sum").innerHTML='📋 المسار: <b>'+ar(ls.length)+'</b> دروس · <b>'+ar(Q.length)+'</b> سؤالًا · <b>'+ar(std.size)+'</b> معايير<br>معرفة '+ar(lv[0])+' · تطبيق '+ar(lv[1])+' · استدلال '+ar(lv[2])+' · الفصول: '+(CLS.size?[...CLS].map(esc).join("، "):"لم تُحدد")}
+function send(){const ls=ORDER.filter(k=>SEL.has(k)),m=$("#sm");m.className="msg";
+  if(!ls.length){m.textContent="اختر الدروس.";return}if(!CLS.size){m.textContent="اختر فصلًا واحدًا على الأقل.";return}
+  const h=+$("#hours").value,title=$("#title").value.trim()||("مسار نافس: "+ls.map(k=>ND[k].title).join(" + ")),id="path_"+Date.now().toString(36);
+  const std=[];ls.forEach(k=>ND[k].STDS.forEach(s=>{if(!std.some(x=>x.code===s.code))std.push({code:s.code,t:s.t})}));
+  const data={type:"path",title:title.slice(0,120),lessons:ls,classes:[...CLS],open:true,sid:id,stds:std,qn:ls.reduce((a,k)=>a+ND[k].Q.length,0)};
+  if(DEMO){DEMOSTORE.live[id]=Object.assign({},data,{startedAt:Date.now(),until:Date.now()+h*3600e3});PATHS=Object.keys(DEMOSTORE.live).map(k=>Object.assign({id:k},DEMOSTORE.live[k])).reverse();m.className="ok";m.textContent="✓ أُرسل (تجريبيًا).";list();return}
+  $("#send").disabled=true;
+  db.collection("durus_live").doc(id).set(Object.assign(data,{startedAt:firebase.firestore.FieldValue.serverTimestamp(),until:firebase.firestore.Timestamp.fromMillis(Date.now()+h*3600e3),by:auth.currentUser.email}))
+   .then(()=>{m.className="ok";m.textContent="✓ أُرسل المسار، ويظهر الآن للطلاب في المنصة.";SEL.clear();CLS.clear();show()}).catch(()=>{m.textContent="تعذّر الإرسال. تحقّق من الاتصال."}).then(()=>$("#send").disabled=false)}
+function list(){if(!PATHS.length){$("#list").textContent="لا توجد مسارات بعد.";return}const now=Date.now();
+  $("#list").innerHTML=PATHS.map(p=>{const open=p.open&&now<toMs(p.until);return '<div class="path"><div class="row"><span class="t" style="flex:1">'+esc(p.title)+'</span><span class="st '+(open?"open":"closed")+'">'+(open?"مفتوح":"مغلق")+'</span></div><div class="m">'+(p.lessons||[]).map(k=>ND[k]?ND[k].title:k).map(esc).join(" · ")+'<br>الفصول: '+(p.classes||[]).map(esc).join("، ")+' · '+ar(p.qn||0)+' سؤالًا'+(open?' · يُغلق '+new Date(toMs(p.until)).toLocaleString("ar-SA",{weekday:"long",hour:"numeric",minute:"2-digit"}):"")+'</div><div class="row" style="margin-top:6px"><button class="btn gold" data-r="'+p.id+'">📊 النتائج</button>'+(open?'<button class="btn danger" data-x="'+p.id+'">إغلاق المسار</button>':'')+'</div></div>'}).join("");
+  $("#list").onclick=e=>{const r=e.target.closest("[data-r]"),x=e.target.closest("[data-x]");
+    if(x&&confirm("إغلاق المسار الآن؟ لن يستطيع الطلاب التسليم بعده.")){if(DEMO){DEMOSTORE.live[x.dataset.x].open=false;PATHS.find(p=>p.id===x.dataset.x).open=false;list()}else db.collection("durus_live").doc(x.dataset.x).update({open:false,until:firebase.firestore.Timestamp.fromMillis(Date.now())})}
+    if(r)results(PATHS.find(p=>p.id===r.dataset.r))}}
+const col=p=>p==null?"":p>=80?"good":p>=60?"mid":"bad";
+const pc=p=>p==null?"—":'<b class="'+col(p)+'">'+ar(p)+'٪</b>';
+const mean=a=>{a=a.filter(v=>v!=null&&!isNaN(v));return a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null};
+function results(p){$("#resCard").hidden=false;$("#resT").textContent="📊 "+p.title;$("#res").textContent="جارٍ التحميل…";
+  const go=R=>{const n=ROSTER.filter(r=>(p.classes||[]).indexOf(r.cls)>=0).length;if(!R.length){$("#res").innerHTML="لم يسلّم أي طالب بعد. المستهدفون: "+ar(n);return}
+    const av=mean(R.map(r=>r.nafesClass&&r.nafesClass.pct)),lv=[0,1,2].map(i=>mean(R.map(r=>r.nafes&&r.nafes.lv?r.nafes.lv[i]:null)));
+    const stds=(p.stds||[]).map((s,i)=>({code:s.code,t:s.t,m:mean(R.map(r=>r.nafes&&r.nafes.std?r.nafes.std[i]:null))})).sort((a,b)=>(a.m==null?999:a.m)-(b.m==null?999:b.m));
+    const byL=(p.lessons||[]).map(k=>({k,m:mean(R.map(r=>r.nafes&&r.nafes.les?r.nafes.les[k]:null))}));
+    $("#res").innerHTML='<p>سلّم <b>'+ar(R.length)+'</b> من '+ar(n)+' طالبًا · المتوسط '+pc(av)+' · معرفة '+pc(lv[0])+' · تطبيق '+pc(lv[1])+' · استدلال '+pc(lv[2])+'</p>'+
+      '<h3>حسب الدرس</h3><div class="tw"><table><tr><th>الدرس</th><th>متوسط الإتقان</th></tr>'+byL.map(x=>'<tr><td>'+esc(ND[x.k]?ND[x.k].title:x.k)+'</td><td>'+pc(x.m)+'</td></tr>').join("")+'</table></div>'+
+      '<h3>حسب المعيار (الأضعف أولًا)</h3><div class="tw"><table><tr><th>المعيار</th><th>متوسط الإتقان</th></tr>'+stds.map(x=>'<tr><td><span dir="ltr">'+esc(x.code)+'</span> '+esc(x.t.slice(0,80))+'</td><td>'+pc(x.m)+'</td></tr>').join("")+'</table></div>'+
+      '<h3>الطلاب</h3><div class="tw"><table><tr><th>م</th><th>الطالب</th><th>الفصل</th><th>الدرجة</th><th>النسبة</th><th>أضعف درس</th></tr>'+R.slice().sort((a,b)=>(b.nafesClass?b.nafesClass.pct:0)-(a.nafesClass?a.nafesClass.pct:0)).map((r,i)=>{const L=r.nafes&&r.nafes.les||{},w=Object.keys(L).sort((a,b)=>L[a]-L[b])[0];
+        return '<tr><td>'+ar(i+1)+'</td><td>'+esc(r.name)+'</td><td>'+esc(r.cls)+'</td><td>'+(r.nafesClass?ar(r.nafesClass.got)+' / '+ar(r.nafesClass.total):"—")+'</td><td>'+pc(r.nafesClass&&r.nafesClass.pct)+'</td><td>'+(w&&L[w]<80?esc(ND[w]?ND[w].title:w)+' ('+ar(L[w])+'٪)':'—')+'</td></tr>'}).join("")+'</table></div>';
+    $("#resCard").scrollIntoView({behavior:"smooth"})};
+  if(DEMO){go(Object.values(DEMOSTORE.res).filter(r=>r.lesson===p.id));return}
+  db.collection("durus_results").where("lesson","==",p.id).get().then(s=>go(s.docs.map(d=>d.data()))).catch(()=>$("#res").textContent="تعذّر تحميل النتائج.")}
+boot();
+})();
+</script>
+</body>
+</html>

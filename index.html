@@ -182,6 +182,10 @@ footer b{color:var(--ink);font-weight:600}
 .tshelf{margin-top:18px}.tshelf h3{margin:0 0 4px}.tshelf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tshelf-grid a{display:flex;flex-direction:column;justify-content:space-between;min-height:110px;border-radius:16px;padding:12px;color:#fff;text-decoration:none;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.18)}
 .tshelf-grid a small{opacity:.95;font-weight:700}.tshelf-grid a span.go{align-self:flex-start;background:rgba(255,255,255,.22);border-radius:99px;padding:2px 10px;font-size:13px}
+#sPaths .pcard{display:flex;align-items:center;gap:12px;border-radius:18px;padding:12px 14px;margin:10px 0;background:linear-gradient(135deg,#1f3a5f,#2f8f73);color:#fff;text-decoration:none}
+#sPaths .pcard .ic{font-size:30px}#sPaths .pcard b{display:block;font-size:17px}#sPaths .pcard small{display:block;font-size:13px;opacity:.95}
+#sPaths .pcard .go{margin-inline-start:auto;background:#e0b44a;color:#2a1f00;border-radius:12px;padding:6px 12px;font-weight:800;white-space:nowrap}
+#sPaths .pcard.done{background:linear-gradient(135deg,#2f5a46,#3f8f6b)}
 </style>
 </head>
 <body>
@@ -219,11 +223,12 @@ footer b{color:var(--ink);font-weight:600}
     <div id="sHome">
       <div class="hello" id="sHello" hidden><h2 id="sName"></h2><span class="who" id="sCls"></span><button class="link" id="sSwitch">لست أنا؟ بدّل الطالب</button></div>
       <div class="card live s-wait" id="sLive" hidden>
-        <span class="ic" id="lIc">🔒</span><h3 id="lT">اختبار «نافس»</h3>
+        <span class="ic" id="lIc">🔒</span><h3 id="lT">تحدي «نافس»</h3>
         <a class="btn solid go" id="lGo" href="cells6-book.html#nafes">افتح التدريب</a>
         <p id="lP"></p>
       </div>
 
+      <div id="sPaths"></div>
       <div class="sec">
         <div class="sec-h"><h2>كتب الصف السادس</h2><span>العلوم</span></div>
         <div class="books" id="shelf6"></div>
@@ -284,6 +289,11 @@ footer b{color:var(--ink);font-weight:600}
           <span class="ti"><i>🏆</i>لوحة الشرف</span>
           <p>المنافسة بين الفصول، وأبطال تحدي «نافس» الصفي والتدريب المنزلي.</p>
           <span class="st" id="tHon">—</span>
+        </a>
+        <a class="card tool" href="paths.html">
+          <span class="ti"><i>🧭</i>مسار نافس</span>
+          <p>اختر عدة دروس، فتُرسل جميع أسئلة «نافس» لها في تحدٍّ واحد لفصولك.</p>
+          <span class="st">تحدٍّ متعدد الدروس</span>
         </a>
         <a class="card tool" href="stats.html">
           <span class="ti"><i>📈</i>الإحصائيات</span>
@@ -417,7 +427,7 @@ function codeLogin(){const c=$("#sCode").value.replace(/[٠-٩]/g,d=>AR.indexOf(
     const r=d.data();STU={name:r.name,cls:r.cls,code:c};LS.set("durus:stu",STU);m.textContent="";if(NEXT){location.replace(NEXT);return}studentView()})
    .catch(()=>{m.style.color="";m.textContent="تعذّر التحقق. تحقّق من اتصالك بالإنترنت."}).finally(()=>{$("#sGo").disabled=false})}
 $("#sGo").onclick=codeLogin;$("#sCode").addEventListener("keydown",e=>{if(e.key==="Enter")codeLogin()});
-function signOutStu(){LS.del("durus:stu");try{Object.keys(localStorage).filter(k=>/^(pl6|hr6|dg1|nsp1|cell1|dna1):/.test(k)).forEach(k=>localStorage.removeItem(k))}catch(e){}STU=null;MY=null;LIVES={};liveSubs.forEach(f=>f());liveSubs=[]}
+function signOutStu(){LS.del("durus:stu");try{Object.keys(localStorage).filter(k=>/^(pl6|hr6|dg1|nsp1|cell1|dna1|c6l2|mc6|fc6|ce6|er6|path):/.test(k)).forEach(k=>localStorage.removeItem(k))}catch(e){}STU=null;MY=null;LIVES={};liveSubs.forEach(f=>f());liveSubs=[]}
 $("#sSwitch").onclick=()=>{signOutStu();studentView();$("#sCode").value="";$("#sCode").focus()};
 function choose(){const n=pickLesson();if(n!==CUR||!LIVE){CUR=n;MY=null;HON=null;honor();}LIVE=LIVES[CUR.id]||null;mine()}
 function honor(){if(!db)return;db.collection("durus_honor").doc(CUR.id).get().then(d=>{HON=d.exists?d.data():null;honorRender()}).catch(()=>{})}
@@ -504,13 +514,25 @@ if(NEXT&&FB&&!STU)setTimeout(()=>{$("#sMsg").style.color="var(--muted)";$("#sMsg
 if(STU)bookStu();
 studentView();
 const P=new URLSearchParams(location.search);door(NEXT?"s":P.get("t")==="1"?"t":LS.get("durus:role","s"));
-})();
 
 /* ---------- رف المعلم: عرض الكتب في الحصة ---------- */
 (function(){const g=document.getElementById("tShelfGrid");if(!g||typeof B6==="undefined")return;
   g.innerHTML=B6.map(b=>'<a href="'+b.f+'" style="background:'+b.bg+'"><b>'+b.t+'</b><small>'+b.k+'</small><span class="go">▶ اعرض في الحصة</span></a>').join("");
   g.addEventListener("click",e=>{try{const t=JSON.parse(localStorage.getItem("durus:teach")||"null");if(!t)localStorage.setItem("durus:teach",JSON.stringify({at:Date.now()}));else{t.at=Date.now();localStorage.setItem("durus:teach",JSON.stringify(t))}}catch(err){}});
   const tb=document.getElementById("tBooks");if(tb)tb.onclick=()=>document.getElementById("tShelf").scrollIntoView({behavior:"smooth"});})();
+
+/* ---------- مسار نافس: بطاقات الطالب ---------- */
+(function(){let unsub=null,PS=[];const box=()=>document.getElementById("sPaths");
+  const toMs=v=>!v?0:typeof v==="number"?v:v.toMillis?v.toMillis():v.seconds?v.seconds*1000:0;
+  function draw(){const b=box();if(!b)return;if(!STU){b.innerHTML="";return}const now=Date.now();
+    const mine=PS.filter(p=>(p.classes||[]).indexOf(STU.cls)>=0&&(p.open&&now<toMs(p.until)||p._done&&now-toMs(p.until)<7*864e5));
+    b.innerHTML=mine.map(p=>{const open=p.open&&now<toMs(p.until);return '<a class="pcard'+(p._done?" done":"")+'" href="path.html?p='+encodeURIComponent(p.id)+'"><span class="ic">'+(p._done?"✅":"🧭")+'</span><span><b>'+esc(p.title)+'</b><small>'+(p._done?"سلّمت: "+ar(p._done.got)+" من "+ar(p._done.total)+(open?"":" · اعرض المراجعة"):"مسار نافس · "+ar(p.qn||0)+" سؤالًا · محاولة واحدة")+'</small></span><span class="go">'+(p._done?"النتيجة":"ابدأ المسار")+'</span></a>'}).join("")}
+  function start(){if(unsub||!STU||typeof db==="undefined"||!db)return;
+    unsub=db.collection("durus_live").where("type","==","path").onSnapshot(s=>{PS=s.docs.map(d=>Object.assign({id:d.id},d.data()));
+      Promise.all(PS.filter(p=>(p.classes||[]).indexOf(STU.cls)>=0).map(p=>db.collection("durus_results").doc(p.id+"__r"+STU.code).get().then(r=>{p._done=r.exists&&r.data().nafesClass?r.data().nafesClass:null}).catch(()=>{}))).then(draw)},()=>{})}
+  setInterval(()=>{start();draw()},4000);setTimeout(()=>{start();draw()},800)})();
+
+})();
 </script>
 </body>
 </html>

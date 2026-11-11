@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مسار نافس — «مِجهر»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1f3a5f;--teal:#2f8f73;--gold:#e0b44a;--bg:#f3f6f9;--card:#fff;--ink:#14213d;--ink2:#2f4a68;--line:#d9e2ec;--good:#1f8a5b;--bad:#c8463d;color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#101826;--card:#182235;--ink:#f2f6fb;--ink2:#cddcf0;--line:#2c3b55;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101826;--card:#182235;--ink:#f2f6fb;--ink2:#cddcf0;--line:#2c3b55;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Cairo",Tahoma,sans-serif;font-weight:700;line-height:1.75}
+header{background:linear-gradient(135deg,#1f3a5f,#2f8f73);color:#fff;padding:18px 16px 34px;border-bottom-left-radius:44px}
+header h1{margin:0;font-size:clamp(22px,6vw,32px);font-weight:900}header p{margin:2px 0 0;color:#e3eef8}
+.wrap{max-width:760px;margin:-20px auto 0;padding:0 12px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
+.note{background:#fff6dc;color:#4a3500;border:1px solid #e6c56a;border-radius:12px;padding:8px 10px;font-size:14.5px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:8px;font-size:14px}
+.prog{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:4px}.prog i{display:block;height:100%;background:var(--teal);width:0}
+.q{border-bottom:1px solid var(--line);padding:12px 0}.q:last-child{border-bottom:0}
+.meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12.5px;margin-bottom:6px}
+.meta span{background:color-mix(in srgb,var(--teal) 10%,transparent);border-radius:99px;padding:0 9px}
+.meta .lv0{background:#e3f2fd}.meta .lv1{background:#fff3e0}.meta .lv2{background:#f3e5f5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .meta .lv0,:root:not([data-theme="light"]) .meta .lv1,:root:not([data-theme="light"]) .meta .lv2{background:#2a3a55}}
+.qt{font-size:17px;margin-bottom:6px}.qt svg,.qt table{max-width:100%}
+.opts{display:grid;gap:6px}
+.opt{text-align:right;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:9px 12px;font:inherit;font-weight:700;cursor:pointer}
+.opt.on{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,transparent)}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,transparent)}.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.btn{display:inline-block;border:0;border-radius:14px;padding:11px 22px;font:inherit;font-weight:900;cursor:pointer;background:var(--teal);color:#fff;text-decoration:none}
+.btn.gold{background:var(--gold);color:#2a1f00}
+.big{font-size:44px;font-weight:900;color:var(--teal);text-align:center}
+table{width:100%;border-collapse:collapse;font-size:14.5px}th{background:var(--navy);color:#fff;padding:7px;text-align:right}td{padding:7px;border-bottom:1px solid var(--line)}
+.good{color:var(--good)}.bad{color:var(--bad)}.mid{color:#b07d10}
+.msg{text-align:center;padding:30px 10px;font-size:18px}
+</style>
+</head>
+<body>
+<header><h1 id="h1">🧭 مسار نافس</h1><p id="hp">العلوم · الصف السادس</p></header>
+<div class="wrap" id="app"><div class="msg">جارٍ التحميل…</div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="nafes-data.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s),app=$("#app");const AR="٠١٢٣٤٥٦٧٨٩",ar=v=>String(v==null?"":v).replace(/\d/g,d=>AR[d]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ND=window.NAFES_DATA||{},LV=["معرفة","تطبيق","استدلال"];
+const FILE={cells6:"cells6-book.html",heredity6:"heredity-book.html",plants6:"plants-book.html",microbes6:"microbes-book.html",digestion6:"digestion-book.html",foodchain6:"foodchain-book.html",ecosys6:"ecosystems-book.html",resources6:"resources-book.html"};
+const toMs=v=>!v?0:typeof v==="number"?v:v.toMillis?v.toMillis():v.seconds?v.seconds*1000:0;
+const P=new URLSearchParams(location.search),pid=P.get("p")||"",DEMO=P.get("demo")==="1";
+let STU=null;try{STU=JSON.parse(localStorage.getItem("durus:stu"))}catch(e){}
+if(DEMO&&!STU)STU={name:"طالب تجريبي",cls:"6/1",code:"9999"};
+if(!STU||!STU.code){location.replace("index.html?next="+encodeURIComponent("path.html?p="+pid));return}
+const LK="path:"+pid+":"+STU.code;
+const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let db=null,PATH=null,MY=null,Q=[];
+function seeded(a,seed){let s=0;for(const c of String(seed))s=(s*31+c.charCodeAt(0))%2147483647;const r=()=>(s=(s*16807)%2147483647)/2147483647;a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function build(){const all=[];(PATH.lessons||[]).forEach(k=>{const D=ND[k];if(!D)return;D.Q.forEach((q,i)=>all.push({k,i,q,code:D.STDS[q.std].code}))});Q=seeded(all,pid+STU.code)}
+function load(){
+  if(DEMO){PATH={type:"path",title:"مسار نافس التجريبي",lessons:["cells6","heredity6"],classes:["6/1"],open:true,until:Date.now()+3600e3,stds:[]};
+    ["cells6","heredity6"].forEach(k=>ND[k].STDS.forEach(s=>{if(!PATH.stds.some(x=>x.code===s.code))PATH.stds.push({code:s.code,t:s.t})}));MY=lsGet(LK+":demoRes",null);start();return}
+  if(!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase)){app.innerHTML='<div class="msg">المنصة غير متصلة الآن.</div>';return}
+  if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);db=firebase.firestore();
+  db.collection("durus_live").doc(pid).get().then(d=>{if(!d.exists||d.data().type!=="path"){app.innerHTML='<div class="msg">لم يُعثر على هذا المسار.</div>';return}PATH=d.data();
+    return db.collection("durus_results").doc(pid+"__r"+STU.code).get().then(r=>{MY=r.exists?r.data():null;start()})}).catch(()=>{app.innerHTML='<div class="msg">تعذّر التحميل. تحقّق من الاتصال ثم أعد المحاولة.</div>'})}
+function start(){$("#h1").textContent="🧭 "+PATH.title;$("#hp").textContent=STU.name+" · "+STU.cls;build();
+  const now=Date.now(),open=PATH.open&&now<toMs(PATH.until),mine=(PATH.classes||[]).indexOf(STU.cls)>=0;
+  if(MY&&MY.nafesClass){result(!open);return}
+  if(!mine){app.innerHTML='<div class="msg">هذا المسار ليس لفصلك.</div>';return}
+  if(!open){app.innerHTML='<div class="msg">⏰ انتهى وقت هذا المسار.</div>';return}
+  quiz()}
+function quiz(){const A=lsGet(LK,{});
+  app.innerHTML='<div class="card"><div class="note">🎯 <b>تحدٍّ تدريبي</b> على مهارات «نافس»، وليس اختبارًا رسميًا. يجمع أسئلة: '+(PATH.lessons||[]).map(k=>ND[k]?ND[k].title:k).map(esc).join("، ")+'. لك <b>محاولة واحدة</b>، وتُحفظ إجاباتك على جهازك حتى تسلّم.</div></div>'+
+    '<div class="bar"><span>أجبت عن <b id="cnt">٠</b> من '+ar(Q.length)+'</span><span>يُغلق '+new Date(toMs(PATH.until)).toLocaleString("ar-SA",{weekday:"long",hour:"numeric",minute:"2-digit"})+'</span></div>'+
+    '<div class="card" id="qs">'+Q.map((x,n)=>'<div class="q" data-n="'+n+'"><div class="meta"><span>'+ar(n+1)+'</span><span>'+esc(ND[x.k].title)+'</span><span class="lv'+x.q.lv+'">'+LV[x.q.lv]+'</span><span dir="ltr">'+esc(x.code)+'</span></div><div class="qt">'+x.q.q+'</div><div class="opts">'+x.q.o.map((o,j)=>'<button class="opt'+(A[n]===j?" on":"")+'" data-j="'+j+'">'+["أ","ب","ج","د"][j]+'. '+o+'</button>').join("")+'</div></div>').join("")+'</div>'+
+    '<div style="text-align:center"><button class="btn" id="sub">سلّم إجاباتي</button><div class="bad" id="sm" style="margin-top:6px"></div></div>';
+  const cnt=()=>$("#cnt").textContent=ar(Object.keys(lsGet(LK,{})).length);cnt();
+  $("#qs").onclick=e=>{const b=e.target.closest(".opt");if(!b)return;const n=+b.closest(".q").dataset.n,a=lsGet(LK,{});a[n]=+b.dataset.j;lsSet(LK,a);b.parentNode.querySelectorAll(".opt").forEach(x=>x.classList.toggle("on",x===b));cnt()};
+  $("#sub").onclick=submit}
+function submit(){const A=lsGet(LK,{}),miss=Q.length-Object.keys(A).length;
+  if(miss>0&&!confirm("بقي "+ar(miss)+" سؤالًا دون إجابة. هل تسلّم الآن؟"))return;
+  if(!confirm("تسليم نهائي؟ لا يمكنك الإجابة مرة أخرى."))return;
+  const det=Q.map((x,n)=>A[n]===x.q.a),got=det.filter(Boolean).length,pct=Math.round(got/Q.length*100);
+  const agg=f=>{const m={};Q.forEach((x,n)=>{const k=f(x);(m[k]=m[k]||[0,0]);m[k][1]++;if(det[n])m[k][0]++});return m};
+  const lv=[0,1,2].map(i=>{const a=agg(x=>x.q.lv)[i];return a?Math.round(a[0]/a[1]*100):null});
+  const sm=agg(x=>x.code),std=(PATH.stds||[]).map(s=>sm[s.code]?Math.round(sm[s.code][0]/sm[s.code][1]*100):null);
+  const lm=agg(x=>x.k),les={};Object.keys(lm).forEach(k=>les[k]=Math.round(lm[k][0]/lm[k][1]*100));
+  const rec={lesson:pid,sid:"r"+STU.code,name:STU.name,cls:STU.cls,code:STU.code,nafesClass:{got,total:Q.length,pct,sess:pid,det:det},nafes:{pct,lv,std,les}};
+  $("#sub").disabled=true;
+  if(DEMO){MY=rec;lsSet(LK+":demoRes",rec);result(false);return}
+  rec.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
+  db.collection("durus_results").doc(pid+"__r"+STU.code).set(rec,{merge:true}).then(()=>{MY=rec;result(false)})
+    .catch(()=>{$("#sm").textContent="تعذّر التسليم: ربما انتهى الوقت أو انقطع الاتصال. حاول مرة أخرى.";$("#sub").disabled=false})}
+function result(showAnswers){const C=MY.nafesClass,N=MY.nafes||{},les=N.les||{};
+  const cls=p=>p>=80?"good":p>=60?"mid":"bad";
+  const weak=Object.keys(les).filter(k=>les[k]<80).sort((a,b)=>les[a]-les[b]);
+  app.innerHTML='<div class="card"><div class="big">'+ar(C.got)+' / '+ar(C.total)+'</div><div style="text-align:center">نسبتك <b class="'+cls(C.pct)+'">'+ar(C.pct)+'٪</b>'+(N.lv?' · معرفة '+(N.lv[0]==null?"—":ar(N.lv[0])+"٪")+' · تطبيق '+(N.lv[1]==null?"—":ar(N.lv[1])+"٪")+' · استدلال '+(N.lv[2]==null?"—":ar(N.lv[2])+"٪"):"")+'</div></div>'+
+    '<div class="card"><h3 style="margin:0 0 6px">نتيجتك في كل درس</h3><table><tr><th>الدرس</th><th>النسبة</th><th></th></tr>'+Object.keys(les).map(k=>'<tr><td>'+esc(ND[k]?ND[k].title:k)+'</td><td><b class="'+cls(les[k])+'">'+ar(les[k])+'٪</b></td><td>'+(les[k]<80&&FILE[k]?'<a href="'+FILE[k]+'#plan">راجِع الدرس</a>':'✅')+'</td></tr>').join("")+'</table>'+
+    (weak.length?'<p>📌 <b>خطتك:</b> ابدأ بمراجعة «'+esc(ND[weak[0]].title)+'»، ثم افتح صفحة الخطة العلاجية في الكتاب.</p>':'<p>🌟 أداء متقن في كل الدروس!</p>')+'</div>'+
+    (showAnswers&&C.det?'<div class="card"><h3 style="margin:0 0 6px">مراجعة الإجابات</h3>'+Q.map((x,n)=>'<div class="q"><div class="meta"><span>'+ar(n+1)+'</span><span>'+esc(ND[x.k].title)+'</span><span>'+LV[x.q.lv]+'</span></div><div class="qt">'+x.q.q+'</div><div class="opts">'+x.q.o.map((o,j)=>'<div class="opt'+(j===x.q.a?" right":"")+'">'+["أ","ب","ج","د"][j]+'. '+o+'</div>').join("")+'</div>'+(C.det[n]?'<div class="good">✓ أجبت صحيحًا</div>':'<div class="bad">✗ راجع هذا السؤال</div>')+'</div>').join("")+'</div>':'<div class="card note">تظهر الإجابات الصحيحة بعد انتهاء وقت المسار.</div>')+
+    '<div style="text-align:center"><a class="btn gold" href="index.html">العودة إلى المنصة</a></div>'}
+load();
+})();
+</script>
+</body>
+</html>
