@@ -2106,5 +2106,34 @@ body.teach-big .page{font-size:1.18em}body.teach-big .page h2{font-size:1.25em}
     if(k==="reset"&&confirm("مسح إجابات العرض في هذا الكتاب؟")){Object.keys(localStorage).filter(function(x){return x.indexOf("T:")===0}).forEach(function(x){localStorage.removeItem(x)});location.reload()}
     if(k==="hide")b.style.display="none"})})();
 </script>
+<style>
+.nf-lock{border:2px solid #e0b44a;background:#fff8e6;color:#3a2a00;border-radius:16px;padding:14px;margin:10px 0}
+.nf-lock h3{margin:0 0 6px;font-size:19px}
+.nf-lock ul{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+.nf-lock li{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:8px 10px;border:1px solid #f0dca0}
+.nf-lock li.ok{border-color:#9fd4b4;background:#f0faf3}
+.nf-lock li a{margin-inline-start:auto;font-weight:700}
+.nf-lock .go{display:inline-block;margin-top:6px;background:#1f7a4c;color:#fff;border-radius:12px;padding:8px 16px;text-decoration:none;font-weight:700}
+</style>
+<script>
+(function(){var PFX="pl6:";
+  function sc(){try{return JSON.parse(localStorage.getItem(PFX+"scores")||"{}")||{}}catch(e){return {}}}
+  function has(k){try{return localStorage.getItem(PFX+k)!=null}catch(e){return false}}
+  function check(){if(window.__T)return;var page=document.querySelector('[data-page="nafes"]');if(!page)return;
+    var q=page.querySelector("#q-nafes"),m=page.querySelector("#nfMode"),s=sc(),pre=!!s.pre,post=!!s.post,done=(pre&&post)||has("nfClass");
+    var box=page.querySelector(".nf-lock");
+    if(done){if(box)box.remove();if(q)q.style.display="";if(m)m.style.display="";return}
+    if(q)q.style.display="none";if(m)m.style.display="none";
+    if(!box){box=document.createElement("div");box.className="nf-lock";var anchor=page.querySelector(".act")||q;anchor.parentNode.insertBefore(box,anchor)}
+    var first=!pre?"pretest":"posttest";
+    box.innerHTML='<h3>📖 أكمل الدرس أولًا</h3><div>يُفتح لك تحدي «نافس» الصفي وتدريب «نافس» بعد أن تمرّ بالدرس كاملًا وتحل التقويمين:</div>'+
+      '<ul><li class="'+(pre?"ok":"")+'">'+(pre?"✅":"⬜")+' التقويم القبلي'+(pre?"":'<a href="#pretest">ابدأه</a>')+'</li>'+
+      '<li>📚 صفحات الدرس وأنشطته<a href="#goals">من البداية</a></li>'+
+      '<li class="'+(post?"ok":"")+'">'+(post?"✅":"⬜")+' التقويم الختامي'+(post?"":'<a href="#posttest">ابدأه</a>')+'</li></ul>'+
+      '<a class="go" href="#'+first+'">أكمل الآن ←</a>'}
+  window.addEventListener("hashchange",function(){setTimeout(check,50)});
+  window.addEventListener("storage",check);setInterval(check,2000);setTimeout(check,300);
+})();
+</script>
 </body>
 </html>
