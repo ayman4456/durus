@@ -105,7 +105,7 @@ function render(){const L=$("#fL").value,C=$("#fC").value;
   const healed=new Set(R.filter(r=>(r.healed||[]).some(Boolean)||(r.nafes&&(r.nafes.healed||[]).some(Boolean))).map(r=>r.code||r.name+r.cls)).size;
   const chal=R.filter(r=>r.nafesClass).length;
   const K=[["الطلاب في الكشف",ar(ros.length),""],["المشاركون",ar(who.size),"g"],["نسبة المشاركة",ros.length?ar(Math.round(who.size/ros.length*100))+"٪":"—","g"],
-    ["متوسط القبلي",preA==null?"—":ar(preA)+"٪","y"],["متوسط الختامي",postA==null?"—":ar(postA)+"٪","g"],["التحسّن",preA!=null&&postA!=null?"+"+ar(postA-preA)+" نقطة":"—","g"],
+    ["متوسط القبلي",preA==null?"—":ar(preA)+"٪","y"],["متوسط الختامي",postA==null?"—":ar(postA)+"٪","g"],["التغيّر بعد الدرس",preA!=null&&postA!=null?(postA>=preA?"+"+ar(postA-preA):"−"+ar(preA-postA))+" نقطة":"—",preA!=null&&postA!=null&&postA<preA?"r":"g"],
     ["متوسط «نافس»",nfA==null?"—":ar(nfA)+"٪",""],["تسليمات تحدي «نافس» الصفي",ar(chal),""],["طلاب أنجزوا علاجًا",ar(healed),"y"]];
   $("#kpis").innerHTML=K.map(k=>'<div class="kpi '+k[2]+'"><b>'+k[1]+'</b><span>'+k[0]+'</span></div>').join("");
   /* قبلي وبعدي */

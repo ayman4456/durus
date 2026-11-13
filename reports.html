@@ -120,14 +120,15 @@ const P=p=>p==null?"—":'<span class="'+cls(p)+'">'+ar(p)+'٪</span>';
 const today=()=>hijri(new Date());
 function scope(){const L=$("#rL").value,C=$("#rC").value;return {L,C,R:D.results.filter(r=>(!L||r.lesson===L)&&(!C||r.cls===C)),lt:L?TITLE(L):"جميع الدروس",ct:C||"جميع الفصول"}}
 function make(){if(!D)return;const t=$("#rType").value;$("#out").innerHTML=t==="impact"?impact():t==="std"?stdR():t==="class"?classR():studentR()}
+const chg=(n,a,b,s1,s2)=>{if(a==null||b==null)return n+': لا تتوفر بيانات كافية';const d=b-a;return d>0?'ارتفع '+n+' من '+ar(a)+'٪'+s1+' إلى '+ar(b)+'٪'+s2+' (+'+ar(d)+' نقطة)':d<0?'انخفض '+n+' من '+ar(a)+'٪'+s1+' إلى '+ar(b)+'٪'+s2+' ('+ar(-d)+' نقطة)':'استقر '+n+' عند '+ar(b)+'٪'};
 function impact(){const {R,lt,ct,C}=scope();const ls=ORDER.filter(l=>R.some(r=>r.lesson===l));
   const rows=ls.map(l=>{const rr=R.filter(r=>r.lesson===l),a=mean(rr.map(r=>pct(r.pre))),b=mean(rr.map(r=>pct(r.post))),na=mean(rr.map(r=>r.nafes&&r.nafes.prePct)),nb=mean(rr.map(r=>r.nafes&&r.nafes.pct));return {l,n:new Set(rr.map(r=>r.code||r.name)).size,a,b,na,nb}});
   const A=mean(R.map(r=>pct(r.pre))),B=mean(R.map(r=>pct(r.post))),NA=mean(R.map(r=>r.nafes&&r.nafes.prePct)),NB=mean(R.map(r=>r.nafes&&r.nafes.pct));
   const ros=D.roster.filter(r=>!C||r.cls===C).length,who=new Set(R.map(r=>r.code||r.name)).size;
   const best=rows.filter(r=>r.a!=null&&r.b!=null).sort((x,y)=>(y.b-y.a)-(x.b-x.a))[0];
-  const sum=rows.length?'شارك '+ar(who)+' طالبًا'+(ros?' من '+ar(ros)+' ('+ar(Math.round(who/ros*100))+'٪)':'')+' في '+ar(rows.length)+' دروس. ارتفع متوسط التقويم من '+ar(A)+'٪ قبل الدرس إلى '+ar(B)+'٪ بعده (+'+ar(B-A)+' نقطة)'+(NA!=null&&NB!=null?'، وارتفع متوسط مهارات «نافس» من '+ar(NA)+'٪ إلى '+ar(NB)+'٪':'')+'.'+(best?' أعلى أثر في درس «'+esc(TITLE(best.l))+'» (+'+ar(best.b-best.a)+' نقطة).':''):'لا توجد نتائج بعد.';
+  const sum=rows.length?'شارك '+ar(who)+' طالبًا'+(ros?' من '+ar(ros)+' ('+ar(Math.round(who/ros*100))+'٪)':'')+' في '+ar(rows.length)+' دروس. '+chg('متوسط التقويم',A,B,' قبل الدرس',' بعده')+(NA!=null&&NB!=null?'، و'+chg('متوسط مهارات «نافس»',NA,NB,'',''):'')+'.'+(best&&best.b>best.a?' أعلى أثر في درس «'+esc(TITLE(best.l))+'» (+'+ar(best.b-best.a)+' نقطة).':''):'لا توجد نتائج بعد.';
   return page("تقرير أثر الممارسة","أثر منصة «مِجهر» في تعلّم العلوم ومهارات «نافس»",[["الفصل",esc(ct)],["المادة","العلوم"],["الصف","السادس الابتدائي"],["الدروس",ar(rows.length)],["المشاركون",ar(who)],["تاريخ التقرير",today()]],sum,
-    '<div class="sec">نتائج الدروس قبل التطبيق وبعده</div>'+tbl(["م","الدرس","المشاركون","القبلي","الختامي","التحسّن","«نافس» قبل","«نافس» بعد"],rows.map((r,i)=>[ar(i+1),esc(TITLE(r.l)),ar(r.n),P(r.a),P(r.b),r.a!=null&&r.b!=null?'<b class="good">+'+ar(r.b-r.a)+'</b>':"—",P(r.na),P(r.nb)])))}
+    '<div class="sec">نتائج الدروس قبل التطبيق وبعده</div>'+tbl(["م","الدرس","المشاركون","القبلي","الختامي","التحسّن","«نافس» قبل","«نافس» بعد"],rows.map((r,i)=>[ar(i+1),esc(TITLE(r.l)),ar(r.n),P(r.a),P(r.b),r.a!=null&&r.b!=null?(r.b>=r.a?'<b class="good">+'+ar(r.b-r.a)+'</b>':'<b class="bad">−'+ar(r.a-r.b)+'</b>'):"—",P(r.na),P(r.nb)])))}
 function stdR(){const {R,lt,ct}=scope();const M={};
   R.forEach(r=>{const Dl=MJ.ND[r.lesson];if(!Dl||!r.nafes||!r.nafes.std)return;r.nafes.std.forEach((p,k)=>{const S=Dl.STDS[k];if(!S||p==null)return;const key=S.code;(M[key]=M[key]||{t:S.t,v:[],ls:new Set()}).v.push(p);M[key].ls.add(Dl.title)})});
   const L=Object.keys(M).map(k=>({k,t:M[k].t,m:mean(M[k].v),n:M[k].v.length,ls:[...M[k].ls].join("، ")})).sort((a,b)=>a.m-b.m);
