@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>استبانة «مِجهر»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1f3a5f;--teal:#2f8f73;--gold:#e0b44a;--bg:#f3f6f5;--card:#fff;--ink:#14213d;--ink2:#2f4a68;--line:#d9e2ec;color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#101826;--card:#182235;--ink:#f2f6fb;--ink2:#cddcf0;--line:#2c3b55;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101826;--card:#182235;--ink:#f2f6fb;--ink2:#cddcf0;--line:#2c3b55;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:"Cairo",Tahoma,sans-serif;font-weight:700;line-height:1.75}
+header{background:linear-gradient(135deg,#1f3a5f,#2f8f73);color:#fff;padding:20px 16px 36px;border-bottom-left-radius:44px}
+header h1{margin:0;font-size:clamp(24px,6vw,34px);font-weight:900}header p{margin:2px 0 0;color:#e3eef8}
+.wrap{max-width:720px;margin:-22px auto 0;padding:0 12px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
+.it{border-bottom:1px solid var(--line);padding:12px 0}.it:last-child{border-bottom:0}
+.it .q{font-size:17px;margin-bottom:8px}.it .q b{color:var(--teal)}
+.ch{display:flex;gap:8px;flex-wrap:wrap}
+.ch button{flex:1 1 0;min-width:84px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 6px;font:inherit;font-weight:800;cursor:pointer}
+.ch button .e{display:block;font-size:26px;line-height:1.2}
+.ch button.on{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 14%,transparent)}
+textarea,input{width:100%;font:inherit;font-weight:700;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px;min-height:44px}
+textarea{min-height:90px}
+.btn{display:inline-block;border:0;border-radius:14px;padding:12px 26px;font:inherit;font-weight:900;cursor:pointer;background:var(--teal);color:#fff;text-decoration:none}
+.btn.gold{background:var(--gold);color:#2a1f00}
+.prog{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0 0}.prog i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.msg{min-height:1.5em;color:#c8463d;text-align:center}.ok{color:var(--teal)}
+.done{text-align:center;font-size:19px}.done .big{font-size:56px}
+</style>
+</head>
+<body>
+<header><h1 id="h1">📝 شاركنا رأيك في «مِجهر»</h1><p id="hp">إجاباتك تساعدنا على تطوير المنصة · دقيقتان فقط</p></header>
+<div class="wrap" id="app"><div class="card">جارٍ التحميل…</div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="nafes-data.js"></script>
+<script src="mijhar-data.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s),app=$("#app"),SV=MJ.SURVEY,ar=MJ.ar,esc=MJ.esc;
+const P=new URLSearchParams(location.search),ROLE=P.get("r")==="teacher"?"teacher":"student",DEMO=P.get("demo")==="1";
+const FB=!DEMO&&!!(window.DURUS_FB&&window.DURUS_FB.apiKey&&window.firebase);let db=null,auth=null;
+if(FB){if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);db=firebase.firestore();auth=firebase.auth()}
+let STU=null;try{STU=JSON.parse(localStorage.getItem("durus:stu"))}catch(e){}
+if(DEMO&&!STU)STU={name:"طالب تجريبي",cls:"6/1",code:"9999"};
+const ITEMS=ROLE==="teacher"?SV.teacher:SV.student;
+const OPTS=ROLE==="teacher"?[[5,"موافق بشدة","🤩"],[4,"موافق","🙂"],[3,"محايد","😐"],[2,"غير موافق","🙁"],[1,"غير موافق بشدة","😞"]]:[[2,"موافق","😊"],[1,"محايد","😐"],[0,"غير موافق","🙁"]];
+let A=ITEMS.map(()=>null),TXT="";
+function form(prev){if(prev&&prev.a){A=prev.a.slice();TXT=prev.txt||""}
+  $("#h1").textContent=ROLE==="teacher"?"📝 استبانة المعلم: أثر «مِجهر»":"📝 شاركنا رأيك في «مِجهر»";
+  if(ROLE==="student"&&STU)$("#hp").textContent=STU.name+" · فصل "+STU.cls+" · دقيقتان فقط";
+  app.innerHTML=(prev?'<div class="card ok">✓ سبق أن أجبت، ويمكنك تعديل إجاباتك ثم الإرسال مجددًا.</div>':'')+
+   '<div class="card"><div>أجبت عن <b id="cnt">٠</b> من '+ar(ITEMS.length)+'</div><div class="prog"><i id="pg"></i></div></div>'+
+   '<div class="card" id="items">'+ITEMS.map((q,i)=>'<div class="it"><div class="q"><b>'+ar(i+1)+'.</b> '+esc(q)+'</div><div class="ch">'+OPTS.map(o=>'<button data-i="'+i+'" data-v="'+o[0]+'" class="'+(A[i]===o[0]?"on":"")+'"><span class="e">'+o[2]+'</span>'+o[1]+'</button>').join("")+'</div></div>').join("")+'</div>'+
+   '<div class="card"><div class="q" style="margin-bottom:6px">'+(ROLE==="teacher"?"ملاحظات أو مقترحات للتطوير (اختياري):":"ما أكثر شيء أعجبك في «مِجهر»؟ وما الذي تقترح إضافته؟ (اختياري)")+'</div><textarea id="txt" maxlength="400">'+esc(TXT)+'</textarea></div>'+
+   '<div style="text-align:center"><button class="btn" id="send">إرسال</button><div class="msg" id="msg"></div></div>';
+  const upd=()=>{const n=A.filter(v=>v!=null).length;$("#cnt").textContent=ar(n);$("#pg").style.width=(n/ITEMS.length*100)+"%"};upd();
+  $("#items").onclick=e=>{const b=e.target.closest("[data-i]");if(!b)return;const i=+b.dataset.i;A[i]=+b.dataset.v;b.parentNode.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));upd()};
+  $("#send").onclick=send}
+function send(){const m=$("#msg");if(A.some(v=>v==null)){m.textContent="أجب عن جميع البنود قبل الإرسال.";return}
+  const sv={role:ROLE,a:A,txt:$("#txt").value.trim().slice(0,400),at:Date.now()};$("#send").disabled=true;m.textContent="";
+  if(DEMO||!FB){thanks();return}
+  let pr;
+  if(ROLE==="student")pr=db.collection("durus_results").doc("survey_mijhar__r"+STU.code).set({lesson:"survey_mijhar",sid:"r"+STU.code,name:STU.name,cls:STU.cls,code:STU.code,survey:sv,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  else pr=db.collection("durus_teacher").doc("survey__"+auth.currentUser.uid).set({survey:Object.assign(sv,{email:auth.currentUser.email})});
+  pr.then(thanks).catch(()=>{m.textContent="تعذّر الإرسال. تحقّق من الاتصال ثم أعد المحاولة.";$("#send").disabled=false})}
+function thanks(){app.innerHTML='<div class="card done"><div class="big">🌟</div><b>شكرًا لك!</b><br>وصلت إجاباتك، وستساعدنا على تطوير «مِجهر».<br><br><a class="btn gold" href="'+(ROLE==="teacher"?"index.html?t=1":"index.html")+'">العودة إلى المنصة</a></div>';try{localStorage.setItem("durus:survey:"+(ROLE==="teacher"?"t":(STU&&STU.code)),"1")}catch(e){}}
+/* التشغيل */
+if(ROLE==="student"){
+  if(!STU||!STU.code){location.replace("index.html?next="+encodeURIComponent("survey.html"));return}
+  if(!FB){form(null);return}
+  db.collection("durus_results").doc("survey_mijhar__r"+STU.code).get().then(d=>d.exists?d.data().survey:null,()=>null).then(form)
+}else{
+  if(!FB){form(null);return}
+  auth.onAuthStateChanged(u=>{if(!u){app.innerHTML='<div class="card"><b>دخول المعلم</b><input id="em" type="email" placeholder="البريد" style="margin:8px 0" autocomplete="username"><input id="pw" type="password" placeholder="كلمة المرور" autocomplete="current-password"><div style="margin-top:10px"><button class="btn" id="go">دخول</button></div><div class="msg" id="lm"></div></div>';
+      $("#go").onclick=()=>auth.signInWithEmailAndPassword($("#em").value.trim(),$("#pw").value).catch(()=>$("#lm").textContent="البريد أو كلمة المرور غير صحيحة.");return}
+    db.collection("durus_teacher").doc("survey__"+u.uid).get().then(d=>d.exists?d.data().survey:null,()=>null).then(form)})}
+})();
+</script>
+</body>
+</html>

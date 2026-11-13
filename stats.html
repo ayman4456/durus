@@ -73,6 +73,7 @@ td{padding:7px 8px;border-bottom:1px solid var(--line)}tr:nth-child(even) td{bac
     </div>
     <div class="card"><h2>خريطة الإتقان: الدرس × مستوى «نافس»</h2><p class="note">الأحمر يحتاج علاجًا، والأصفر قريب من الإتقان، والأخضر متقن</p><div class="tw" id="cHeat"></div></div>
     <div class="card"><h2>معايير «نافس»</h2><p class="note">متوسط الإتقان لكل معيار عبر الدروس المختارة</p><div class="tw" id="cStd"></div></div>
+    <div class="card"><h2>📝 استبانة أثر «مِجهر»</h2><p class="note">نسبة الموافقة على كل بند</p><div class="tw" id="cSurvey"></div></div>
     <div class="grid">
       <div class="card"><h2>🏅 الأعلى أداءً</h2><div class="tw" id="tTop"></div></div>
       <div class="card"><h2>🩺 يحتاجون إلى علاج</h2><div class="tw" id="tLow"></div></div>
@@ -138,6 +139,16 @@ function render(){const L=$("#fL").value,C=$("#fC").value;
   const SM={};R.forEach(r=>{const Dl=MJ.ND[r.lesson];if(!Dl||!r.nafes||!r.nafes.std)return;r.nafes.std.forEach((p,k)=>{const S=Dl.STDS[k];if(!S||p==null)return;(SM[S.code]=SM[S.code]||{t:S.t,v:[]}).v.push(p)})});
   const sl=Object.keys(SM).map(k=>({k:k,t:SM[k].t,m:mean(SM[k].v),n:SM[k].v.length})).sort((a,b)=>a.m-b.m);
   $("#cStd").innerHTML=sl.length?'<table><tr><th>المعيار</th><th>متوسط الإتقان</th><th>عدد النتائج</th><th>المستوى</th></tr>'+sl.map(x=>'<tr><td><span dir="ltr">'+x.k+'</span> '+esc(x.t.slice(0,70))+(x.t.length>70?"…":"")+'</td><td><b>'+ar(x.m)+'٪</b></td><td>'+ar(x.n)+'</td><td><span class="pill" style="background:'+col(x.m)+'">'+band(x.m)+'</span></td></tr>').join("")+'</table>':'لا توجد نتائج «نافس» بعد.';
+
+  /* الاستبانة */
+  const SVY=MJ.SURVEY,sv=(D.survey||[]).filter(r=>!C||r.cls===C),ts=D.tsurvey||[];
+  const bar=(p)=>'<div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:12px;border-radius:9px;background:#e3ebe8;overflow:hidden"><div style="height:100%;width:'+(p||0)+'%;background:'+col(p)+'"></div></div><b style="min-width:3.2em">'+(p==null?"—":ar(p)+"٪")+'</b></div>';
+  const sp=SVY.student.map((q,i)=>sv.length?Math.round(sv.filter(r=>r.survey.a&&r.survey.a[i]===2).length/sv.length*100):null);
+  const tp=SVY.teacher.map((q,i)=>ts.length?Math.round(ts.filter(r=>r.survey.a&&r.survey.a[i]>=4).length/ts.length*100):null);
+  $("#cSurvey").innerHTML=(sv.length||ts.length)?
+    '<table><tr><th>الطلاب ('+ar(sv.length)+')</th><th style="width:40%">موافق</th></tr>'+SVY.student.map((q,i)=>'<tr><td>'+esc(q)+'</td><td>'+bar(sp[i])+'</td></tr>').join("")+'</table>'+
+    (ts.length?'<table style="margin-top:10px"><tr><th>المعلمون ('+ar(ts.length)+')</th><th style="width:40%">موافق أو موافق بشدة</th></tr>'+SVY.teacher.map((q,i)=>'<tr><td>'+esc(q)+'</td><td>'+bar(tp[i])+'</td></tr>').join("")+'</table>':'')
+    :'لم تصل إجابات بعد. يجد الطلاب دعوة الاستبانة في المنصة، والمعلمون في «استبانة قياس الأثر».';
   /* الطلاب */
   const S={};R.forEach(r=>{const k=r.code||r.name+r.cls;(S[k]=S[k]||{n:r.name,c:r.cls,p:[],f:[]});S[k].p.push(pct(r.post));S[k].f.push(r.nafes&&r.nafes.pct)});
   const st=Object.values(S).map(x=>({n:x.n,c:x.c,m:mean(x.p),f:mean(x.f),k:x.p.filter(v=>v!=null).length})).filter(x=>x.m!=null);

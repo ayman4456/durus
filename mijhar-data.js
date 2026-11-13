@@ -23,7 +23,7 @@ function demo(){const cls=["6/1","6/2","6/3"],R=[],S=[];let seed=7;const rnd=()=
         nafes:{pct:np,lv:[Math.round(50+rnd()*50),Math.round(35+rnd()*60),Math.round(20+rnd()*70)],std:Array.from({length:ns},()=>Math.round(30+rnd()*70)),prePct:Math.round(np-20+rnd()*15),healed:[rnd()<.3,rnd()<.3,rnd()<.3]},
         nafesClass:rnd()<.7?{got:Math.round(np/100*nq),total:nq,pct:np}:null,nafesHome:rnd()<.5?{n:1+Math.floor(rnd()*4),best:Math.min(100,np+Math.round(rnd()*20))}:null,
         updatedAt:{toMillis:()=>Date.now()-Math.floor(rnd()*20)*864e5}})})}});
-  return {roster:S,results:R,classquiz:[],demo:true}}
+  const SV=S.slice(0,24).map(x=>({lesson:"survey_mijhar",name:x.name,cls:x.cls,code:x.code,survey:{role:"student",a:SURVEY.student.map(()=>rnd()<.7?2:rnd()<.6?1:0),txt:""}}));const TS=[0,1,2].map(i=>({_id:"survey__d"+i,survey:{role:"teacher",a:SURVEY.teacher.map(()=>rnd()<.6?5:4)}}));return {roster:S,results:R,classquiz:[],survey:SV,tsurvey:TS,demo:true}}
 
 function load(cb,onNeedLogin){
   const P=new URLSearchParams(location.search);
@@ -31,8 +31,13 @@ function load(cb,onNeedLogin){
   if(!firebase.apps.length)firebase.initializeApp(window.DURUS_FB);
   const auth=firebase.auth(),db=firebase.firestore();
   auth.onAuthStateChanged(u=>{if(!u){onNeedLogin(auth);return}
-    Promise.all(["durus_roster","durus_results","durus_classquiz"].map(c=>db.collection(c).get().then(s=>s.docs.map(d=>Object.assign({_id:d.id},d.data()))).catch(()=>[])))
-      .then(([ro,re,cq])=>{re=re.filter(r=>!String(r.lesson||"").startsWith("path_"));ro.forEach(r=>{if(!r.code)r.code=r._id});cb({roster:ro,results:re,classquiz:cq,demo:false,user:u})})})}
+    Promise.all(["durus_roster","durus_results","durus_classquiz","durus_teacher"].map(c=>db.collection(c).get().then(s=>s.docs.map(d=>Object.assign({_id:d.id},d.data()))).catch(()=>[])))
+      .then(([ro,re,cq,tt])=>{const sv=re.filter(r=>r.lesson==="survey_mijhar"&&r.survey);re=re.filter(r=>!String(r.lesson||"").startsWith("path_")&&r.lesson!=="survey_mijhar");const ts=(tt||[]).filter(d=>String(d._id).startsWith("survey__")&&d.survey);ro.forEach(r=>{if(!r.code)r.code=r._id});cb({roster:ro,results:re,classquiz:cq,survey:sv,tsurvey:ts,demo:false,user:u})})})}
 
-window.MJ={ar,esc,ORDER,TITLE,pct,mean,band,sortCls,hijri,load,ND};
+const SURVEY={
+  student:["الدروس في منصة «مِجهر» ممتعة وتشدّني للتعلم.","الأنشطة والواقع المعزز ساعدتني على فهم الدرس.","أصبحت أفهم أسئلة «نافس» وطريقة حلها أكثر من قبل.","أشعر بثقة أكبر استعدادًا لاختبار «نافس».","عرفت من نتيجتي ما أتقنه وما أحتاج إلى مراجعته.","ساعدتني الخطة العلاجية على تحسين مستواي.","التحدي ولوحة الشرف شجّعاني على الاجتهاد.","أرغب في دروس مثلها في الرياضيات والقراءة."],
+  sAxes:["التشويق","الفهم","مهارات «نافس»","الثقة والاستعداد","التشخيص","العلاج","الدافعية","الاستدامة"],
+  teacher:["أسهمت المنصة في رفع مستوى الطلاب في مهارات «نافس».","زادت المنصة دافعية الطلاب ومشاركتهم في التعلم.","وفّرت التقارير والتشخيص معلومات واضحة عن مستوى الطالب.","المنصة سهلة الاستخدام للطالب والمعلم.","أؤيد تعميم المبادرة على مواد وصفوف أخرى."],
+  sLabels:["غير موافق","محايد","موافق"],tLabels:["غير موافق بشدة","غير موافق","محايد","موافق","موافق بشدة"]};
+window.MJ={SURVEY,ar,esc,ORDER,TITLE,pct,mean,band,sortCls,hijri,load,ND};
 })();

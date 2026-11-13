@@ -186,6 +186,7 @@ footer b{color:var(--ink);font-weight:600}
 #sPaths .pcard .ic{font-size:30px}#sPaths .pcard b{display:block;font-size:17px}#sPaths .pcard small{display:block;font-size:13px;opacity:.95}
 #sPaths .pcard .go{margin-inline-start:auto;background:#e0b44a;color:#2a1f00;border-radius:12px;padding:6px 12px;font-weight:800;white-space:nowrap}
 #sPaths .pcard.done{background:linear-gradient(135deg,#2f5a46,#3f8f6b)}
+#sSurvey a{display:flex;align-items:center;gap:12px;border-radius:18px;padding:12px 14px;margin:10px 0;background:#fff8e6;border:2px dashed #e0b44a;color:#3a2a00;text-decoration:none;font-weight:800}#sSurvey a .ic{font-size:28px}#sSurvey a .go{margin-inline-start:auto;background:#e0b44a;border-radius:12px;padding:6px 12px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -228,7 +229,7 @@ footer b{color:var(--ink);font-weight:600}
         <p id="lP"></p>
       </div>
 
-      <div id="sPaths"></div>
+      <div id="sPaths"></div><div id="sSurvey"></div>
       <div class="sec">
         <div class="sec-h"><h2>كتب الصف السادس</h2><span>العلوم</span></div>
         <div class="books" id="shelf6"></div>
@@ -294,6 +295,11 @@ footer b{color:var(--ink);font-weight:600}
           <span class="ti"><i>🧭</i>مسار نافس</span>
           <p>اختر عدة دروس، فتُرسل جميع أسئلة «نافس» لها في تحدٍّ واحد لفصولك.</p>
           <span class="st">تحدٍّ متعدد الدروس</span>
+        </a>
+        <a class="card tool" href="survey.html?r=teacher">
+          <span class="ti"><i>📝</i>استبانة قياس الأثر</span>
+          <p>أجب عن استبانة المعلم، وتظهر نتائج الطلاب والمعلمين في الإحصائيات وتقرير الأثر.</p>
+          <span class="st">٥ بنود للمعلم · ٨ للطالب</span>
         </a>
         <a class="card tool" href="stats.html">
           <span class="ti"><i>📈</i>الإحصائيات</span>
@@ -531,6 +537,13 @@ const P=new URLSearchParams(location.search);door(NEXT?"s":P.get("t")==="1"?"t":
     unsub=db.collection("durus_live").where("type","==","path").onSnapshot(s=>{PS=s.docs.map(d=>Object.assign({id:d.id},d.data()));
       Promise.all(PS.filter(p=>(p.classes||[]).indexOf(STU.cls)>=0).map(p=>db.collection("durus_results").doc(p.id+"__r"+STU.code).get().then(r=>{p._done=r.exists&&r.data().nafesClass?r.data().nafesClass:null}).catch(()=>{}))).then(draw)},()=>{})}
   setInterval(()=>{start();draw()},4000);setTimeout(()=>{start();draw()},800)})();
+
+
+/* ---------- استبانة الأثر: دعوة الطالب ---------- */
+(function(){const draw=()=>{const b=document.getElementById("sSurvey");if(!b)return;
+  let done=false;try{done=!!(STU&&localStorage.getItem("durus:survey:"+STU.code))}catch(e){}
+  b.innerHTML=STU&&!done?'<a href="survey.html"><span class="ic">📝</span><span>شاركنا رأيك في «مِجهر»<br><small>٨ أسئلة قصيرة · دقيقتان</small></span><span class="go">ابدأ</span></a>':''};
+  setTimeout(draw,700);setInterval(draw,5000)})();
 
 })();
 </script>
